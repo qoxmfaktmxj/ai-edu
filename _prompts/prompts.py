@@ -16,7 +16,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COURSE = ROOT / "content" / "courses" / "interactive-site"
 MD = ROOT / "_prompts" / "prompts.md"
-CARD = re.compile(r'(<figure class="prompt" data-title="([^"]+)">.*?<pre>)(.*?)(</pre>)', re.S)
+CARD = re.compile(r'(<figure class="prompt[^"]*" data-title="([^"]+)">.*?<pre>)(.*?)(</pre>)', re.S)
 BANNED = {"\u00b7": ", ", "\u2014": "-", "\u2013": "-"}  # middle dot, em dash, en dash
 
 

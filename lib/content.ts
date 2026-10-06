@@ -54,12 +54,12 @@ function promptsHtml(course: Course): string {
   for (const id of course.chapters) {
     if (id === "prompts" || id === "glossary") continue;
     const html = readFragment(course.slug, id);
-    const cards = [...html.matchAll(/<figure class="prompt" data-title="([^"]+)">[\s\S]*?<pre>([\s\S]*?)<\/pre>/g)];
+    const cards = [...html.matchAll(/<figure class="prompt([^"]*)" data-title="([^"]+)">[\s\S]*?<pre>([\s\S]*?)<\/pre>/g)];
     if (!cards.length) continue;
     blocks.push(`<h3><a href="/courses/${course.slug}/${id}">${headOf(id, html).title}</a></h3>`);
-    for (const [, title, pre] of cards) {
+    for (const [, extra, title, pre] of cards) {
       blocks.push(
-        `<figure class="prompt"><figcaption><i class="ph ph-chat-circle-text"></i>${title}</figcaption><pre>${pre}</pre></figure>`,
+        `<figure class="prompt${extra}" data-title="${title}"><figcaption><i class="ph ph-chat-circle-text"></i>${title}</figcaption><pre>${pre}</pre></figure>`,
       );
       count++;
     }

@@ -65,6 +65,29 @@ export default function Enhance() {
       block.appendChild(btn);
     });
 
+    document.querySelectorAll<HTMLElement>(".prompt.is-fold").forEach((block) => {
+      const pre = block.querySelector("pre");
+      if (!pre || block.querySelector(".fold-btn")) return;
+      const size = (pre.textContent ?? "").length.toLocaleString("ko-KR");
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "fold-btn";
+      const paint = () => {
+        const open = block.classList.contains("is-open");
+        btn.setAttribute("aria-expanded", String(open));
+        btn.innerHTML = open
+          ? '<i class="ph ph-caret-up"></i>접기'
+          : `<i class="ph ph-caret-down"></i>전체 펼치기 (약 ${size}자)`;
+      };
+      btn.addEventListener("click", () => {
+        block.classList.toggle("is-open");
+        paint();
+        if (!block.classList.contains("is-open")) block.scrollIntoView({ block: "nearest" });
+      });
+      paint();
+      block.appendChild(btn);
+    });
+
     // Missing screenshots are marked on the server; show labeled slots only locally or with ?slots.
     if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || /[?&]slots/.test(location.search)) {
       root.classList.add("show-slots");
