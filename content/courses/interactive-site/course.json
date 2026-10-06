@@ -1,0 +1,69 @@
+{
+  "slug": "interactive-site",
+  "no": 1,
+  "title": "AI와 함께, 직접 만지는 내 사이트",
+  "summary": "코딩을 몰라도 괜찮습니다. Claude에게 말로 부탁해 화면을 만들고, 모션을 넣고, 내 주소로 배포합니다.",
+  "chapters": [
+    "goal",
+    "install",
+    "github",
+    "vercel",
+    "skills",
+    "topics",
+    "build",
+    "motion",
+    "finish",
+    "trouble",
+    "work",
+    "prompts",
+    "glossary"
+  ],
+  "hero": {
+    "before": "AI와 함께,",
+    "em": "직접 만지는",
+    "after": "내 사이트"
+  },
+  "secondaryCta": {
+    "to": "topics",
+    "label": "주제 먼저 보기"
+  },
+  "videoNote": "이 소개 영상도 HTML로 만들었습니다. 8장에서 같은 방법으로 직접 만들어 봅니다.",
+  "roadmap": [
+    {
+      "to": "install",
+      "icon": "ph-download-simple",
+      "title": "설치하기",
+      "text": "Claude 앱과 Claude Code를 내 PC에 준비"
+    },
+    {
+      "to": "github",
+      "icon": "ph-plugs-connected",
+      "title": "연결하기",
+      "text": "GitHub와 Vercel 가입, 계정 연동"
+    },
+    {
+      "to": "skills",
+      "icon": "ph-magic-wand",
+      "title": "스킬 넣기",
+      "text": "디자인과 모션 실력을 Claude에 추가"
+    },
+    {
+      "to": "topics",
+      "icon": "ph-layout",
+      "title": "화면 만들기",
+      "text": "주제를 고르고 첫 화면을 구성"
+    },
+    {
+      "to": "build",
+      "icon": "ph-hand-tap",
+      "title": "움직이게 하기",
+      "text": "모션, 클릭, 스크롤에 반응하는 기능"
+    },
+    {
+      "to": "finish",
+      "icon": "ph-rocket-launch",
+      "title": "배포하고 다듬기",
+      "text": "내 주소로 공개하고 한 번 더 개선"
+    }
+  ]
+}

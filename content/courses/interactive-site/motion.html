@@ -1,0 +1,450 @@
+<section class="chapter" id="motion">
+  <header class="chapter-head">
+    <span class="chapter-num">08</span>
+    <h2>hyperframes로 모션 영상 만들기</h2>
+    <p class="chapter-lead">말로 부탁하면 HTML로 장면이 만들어지고, 그것이 MP4 영상 파일이 됩니다. 이 사이트 맨 위의 소개 영상도 같은 방법으로 만들었고, 이 장에서 여러분의 영상을 만들어 사이트에 넣습니다.</p>
+    <div class="chapter-meta"><span><i class="ph ph-clock"></i>약 40분</span><span><i class="ph ph-gauge"></i>난이도 보통</span></div>
+  </header>
+
+  <h3>hyperframes가 무엇인가요</h3>
+  <p><strong>hyperframes</strong>는 "HTML로 영상을 쓰고, MP4 파일로 뽑아내는" 오픈소스 도구입니다. 공식 소개 문구는 "Write HTML. Render video. Built for agents."(HTML을 쓰고, 영상을 뽑는다. 에이전트를 위해 만들었다)입니다. 여기서 에이전트란 Claude나 Codex처럼 사람 대신 파일을 만들고 명령을 실행하는 AI를 말합니다.</p>
+  <p>여러분이 영상을 만드는 과정은 이렇게 흘러갑니다.</p>
+  <ol>
+    <li><strong>말로 부탁합니다.</strong> "10초짜리 소개 영상, 제목이 부드럽게 등장하고 장면은 3개"처럼 적습니다.</li>
+    <li><strong>Claude가 장면을 만듭니다.</strong> 화면의 글자, 색, 움직임을 HTML, CSS, JavaScript 파일로 짭니다. 여러분이 코드를 쓸 필요는 없습니다.</li>
+    <li><strong>미리보기로 확인하고 말로 고칩니다.</strong> 브라우저에서 영상을 재생해 보고 "2초 더 길게" 같은 수정을 말로 부탁합니다.</li>
+    <li><strong>MP4 파일로 뽑습니다(렌더).</strong> hyperframes가 장면을 한 컷씩 그려서 영상 파일로 합칩니다. 재생하면서 녹화하는 방식이 아니라 컷마다 정확히 그리기 때문에 PC가 느려도 장면이 끊기지 않는 것이 장점입니다.</li>
+  </ol>
+  <p>내 PC에서 렌더하는 한 별도 사용료는 없습니다. 도구는 Apache 2.0 라이선스의 오픈소스입니다. 이 교육 첫 화면의 소개 영상(<a href="/courses/interactive-site">첫 화면 보기</a>)도 이 도구로 만든 MP4 파일이고, 사이트에는 아래 6단계에서 배울 방식 그대로 들어 있습니다.</p>
+
+  <div class="callout word">
+    <i class="ph ph-book-open"></i>
+    <strong>렌더(Render), MP4, 스튜디오</strong>
+    <div>
+      <p><strong>렌더</strong>는 설계도(HTML)를 실제 완성품(영상 파일)으로 뽑아내는 작업입니다. <strong>MP4</strong>는 거의 모든 PC, 휴대폰, 브라우저에서 재생되는 가장 흔한 영상 파일 형식입니다. <strong>스튜디오</strong>는 hyperframes가 브라우저에서 열어 주는 미리보기 편집 화면입니다.</p>
+    </div>
+  </div>
+
+  <h3>언제 쓰면 좋은가요</h3>
+  <p>"움직이는 장면을 한 번 정해서 보여 주고 싶을 때" 씁니다. 사이트용으로만 쓰는 도구가 아니고, 만든 MP4 파일은 발표 자료나 메신저, 메일 어디에도 올릴 수 있습니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>용도</th><th>예시</th><th>길이 감각</th><th>먼저 불러 볼 스킬</th></tr></thead>
+    <tbody>
+      <tr><td>내 사이트 소개 영상</td><td>사이트 첫 화면에 소리 없이 반복되는 소개 영상</td><td>10초 안팎</td><td><code>/hyperframes:motion-graphics</code> 또는 <code>/hyperframes:product-launch-video</code></td></tr>
+      <tr><td>발표 오프닝</td><td>발표 시작 때 틀어 두는 제목, 팀 이름 등장 영상</td><td>5~10초</td><td><code>/hyperframes:motion-graphics</code></td></tr>
+      <tr><td>SNS용 짧은 클립</td><td>행사 안내, 새 소식 알림 (세로 화면 비율도 요청 가능)</td><td>10~15초</td><td><code>/hyperframes:motion-graphics</code> 또는 <code>/hyperframes:general-video</code></td></tr>
+      <tr><td>업무용: 숫자 카운트업</td><td>"이번 달 처리 건수"가 0에서 올라가며 멈추는 보고용 장면</td><td>6~10초</td><td><code>/hyperframes:motion-graphics</code></td></tr>
+      <tr><td>업무용: 공지 영상</td><td>교육, 행사, 캠페인 안내를 움직이는 글자로 전달</td><td>10~20초</td><td><code>/hyperframes:motion-graphics</code> 또는 <code>/hyperframes:general-video</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout warn">
+    <i class="ph ph-warning"></i>
+    <strong>연습에는 가짜 숫자를 쓰세요</strong>
+    <div><p>카운트업 영상에 실제 실적, 고객 이름, 미공개 계획 같은 회사 정보를 넣지 마세요. 연습은 "1,284건" 같은 가짜 숫자로 하고, 실제 업무 자료를 넣어도 되는지는 회사 보안 정책을 먼저 확인하세요.</p></div>
+  </div>
+
+  <h3>사이트 안 모션과 무엇이 다른가요</h3>
+  <p>7장에서 만든 "스크롤하면 바뀌고, 누르면 반응하는" 모션과 hyperframes 영상은 둘 다 "움직이는 화면"이지만 성격이 다릅니다.</p>
+  <div class="compare">
+    <div>
+      <h4>사이트 안 모션 (CSS/JS)</h4>
+      <ul>
+        <li>방문자가 스크롤하고, 누르고, 슬라이더를 움직이면 <strong>화면이 그에 반응</strong>합니다.</li>
+        <li>코드가 방문자의 브라우저에서 그때그때 실행되어 용량이 작고 글자가 선명합니다.</li>
+        <li>화면 크기와 기기 성능에 따라 움직임이 조금씩 달라질 수 있습니다.</li>
+        <li>수정하면 새로고침만으로 바로 확인합니다.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>hyperframes 영상 (MP4)</h4>
+      <ul>
+        <li><strong>정해진 장면</strong>이 처음부터 끝까지 똑같이 재생됩니다. 방문자는 보기만 합니다(재생, 일시정지 정도).</li>
+        <li>누가 어디서 열어도 만든 사람이 본 그대로 보입니다.</li>
+        <li>파일 하나라서 사이트 밖에서도 씁니다. 발표 오프닝, 메일, SNS 업로드가 가능합니다.</li>
+        <li>용량이 크고, 고치면 다시 렌더해야 합니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout why">
+    <i class="ph ph-question"></i>
+    <strong>무엇을 골라야 하나요?</strong>
+    <div><p>질문 하나로 정하세요. "방문자가 눌러 보게 하고 싶은가?"가 예라면 사이트 안 모션입니다. "내가 정한 이야기를 처음부터 끝까지 보여 주고 싶은가?"가 예라면 영상입니다. 둘을 섞는 것이 가장 좋습니다. 이 사이트도 첫 화면은 영상으로 첫인상을 주고, 아래의 복사 버튼과 목차 강조는 사이트 안 모션으로 만들었습니다.</p></div>
+  </div>
+
+  <h3>먼저 준비물 확인하기</h3>
+  <p>영상을 뽑으려면 내 PC에 아래 준비물이 필요합니다. 5장에서 hyperframes 플러그인은 이미 설치했습니다. 여기서는 영상을 실제로 뽑는 데 필요한 프로그램을 확인합니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>준비물</th><th>하는 일</th><th>확인 방법</th><th>정상일 때</th></tr></thead>
+    <tbody>
+      <tr><td>Node.js 22 이상</td><td>hyperframes 도구(<code>npx</code>)를 실행합니다.</td><td>터미널에서 <code>node -v</code></td><td><code>v22.x.x</code> 이상 숫자가 나옵니다.</td></tr>
+      <tr><td>FFmpeg</td><td>그려 낸 장면들을 하나의 영상 파일로 합칩니다.</td><td>터미널에서 <code>ffmpeg -version</code></td><td>버전 정보가 여러 줄 나옵니다.</td></tr>
+      <tr><td>Chrome(화면 없는 모드)</td><td>장면을 한 컷씩 그립니다.</td><td>따로 확인하지 않습니다.</td><td>렌더할 때 hyperframes가 알아서 씁니다.</td></tr>
+      <tr><td>hyperframes 스킬</td><td>Claude가 영상 만드는 법을 알게 합니다.</td><td>입력창에 <code>/</code> 를 쳐서 목록 확인</td><td><code>/hyperframes:hyperframes</code> 가 보입니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p>한 번에 점검하는 명령도 있습니다. <code>npx hyperframes doctor</code> 는 "영상을 뽑는 데 필요한 것이 이 PC에 다 있는지"를 검사해서 알려 줍니다. 직접 입력하지 않아도 되고, 아래 프롬프트처럼 Claude에게 맡기면 결과를 쉬운 말로 풀어 줍니다.</p>
+  <figure class="prompt" data-title="영상 제작 준비물 확인과 설치 부탁">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>내 PC에서 hyperframes로 영상을 만들 준비가 됐는지 확인해줘.
+1) Node.js 22 이상, FFmpeg 가 설치돼 있는지 버전까지 확인
+2) 없거나 버전이 낮으면 내 운영체제(Windows 또는 Mac)에 맞는 설치 방법을 알려주고, 내가 허락하면 설치까지 진행
+3) 설치 후 새 터미널에서도 두 명령이 잘 잡히는지(PATH) 확인하고, 마지막에 npx hyperframes doctor 결과를 쉬운 말로 설명
+설치는 한 단계씩 진행하고, 명령을 실행하기 전에 무엇을 하는 명령인지 먼저 말해줘.</pre>
+  </figure>
+  <p class="prompt-note">설치 명령이 나오면 5장에서 배운 대로 명령과 출처를 읽고 "Yes"를 누르세요.</p>
+  <div class="callout check">
+    <i class="ph ph-check-circle"></i>
+    <strong>확인 포인트</strong>
+    <div><p><code>node -v</code> 가 22 이상이고, <code>ffmpeg -version</code> 이 버전을 보여 주고, doctor 결과에 큰 문제가 없다고 나오면 준비 완료입니다. Windows에서 FFmpeg를 직접 설치한다면 공식 사이트(ffmpeg.org)의 Download 페이지가 안내하는 Windows용 빌드를 받아 압축을 풀고, 그 안의 bin 폴더를 PATH(프로그램을 어디서든 찾게 해 주는 경로 설정)에 추가해야 합니다. 이 과정은 어려우니 Claude에게 맡기는 쪽을 권합니다.</p></div>
+  </div>
+
+  <h3>단계별 실습: 10초 소개 영상 만들기</h3>
+  <p>내 주제 하나를 정해 7단계로 갑니다. 처음에는 "10초, 장면 3개"로 작게 시작하세요. 작게 끝내 본 경험이 다음 영상을 훨씬 쉽게 만듭니다.</p>
+  <ol class="steps">
+    <li class="step">
+      <h4>영상 기획을 한 줄로 정합니다</h4>
+      <p>입력창을 열기 전에 종이나 메모장에 한 줄만 적습니다. 정할 것은 네 가지입니다.</p>
+      <ul>
+        <li><strong>길이:</strong> 10초로 시작합니다. 길수록 만들고 고칠 것이 늘어납니다.</li>
+        <li><strong>분위기:</strong> 밝고 경쾌하게, 차분하고 고급스럽게, 어두운 배경의 미래적인 느낌, 귀엽고 장난스럽게 중에서 하나를 고릅니다.</li>
+        <li><strong>장면 3개:</strong> 장면 1은 제목 등장(0~3초), 장면 2는 핵심 한 가지(3~7초), 장면 3은 마무리(7~10초)로 나눕니다.</li>
+        <li><strong>마지막 한 줄:</strong> 사이트 주소입니다. 아직 모르면 [내 주소]로 두었다가 나중에 바꿉니다.</li>
+      </ul>
+      <div class="callout tip">
+        <i class="ph ph-lightbulb"></i>
+        <strong>한 줄 기획 예시</strong>
+        <div><p>"딸기 소개 사이트를 알리는 10초 영상. 분위기는 밝고 상큼하게. 장면 1은 딸기 이름이 통통 튀며 등장, 장면 2는 '달콤, 상큼, 한 입' 세 단어가 차례로 등장, 장면 3은 사이트 주소를 가운데에 고정."</p></div>
+      </div>
+      <div class="callout why">
+        <i class="ph ph-question"></i>
+        <strong>왜 장면이 3개인가요?</strong>
+        <div><p>10초 안에 장면이 많으면 정신없고 글자를 읽을 시간이 없습니다. 한 장면에 2~3초가 읽기 편한 속도입니다.</p></div>
+      </div>
+    </li>
+    <li class="step">
+      <h4>프롬프트로 만듭니다</h4>
+      <p>5장에서 설치한 영상 스킬을 맨 앞에 부르고 기획을 적습니다. 10초 안팎의 짧은 모션그래픽에는 <code>/hyperframes:motion-graphics</code> 가 맞습니다. 어느 스킬을 쓸지 잘 모르겠으면 <code>/hyperframes:hyperframes</code> 로 시작하세요. 안내 데스크처럼 알맞은 스킬로 연결해 줍니다.</p>
+      <figure class="prompt" data-title="10초 소개 영상 만들기 (motion-graphics)">
+        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+        <pre>/hyperframes:motion-graphics
+내 [주제] 사이트를 소개하는 10초 영상을 만들어줘.
+- 제목이 부드럽게 등장
+- 핵심 장면 3개 (각 2~3초): [장면 1], [장면 2], [장면 3]
+- 마지막에 사이트 주소 [내 주소]
+- 분위기: [예: 밝고 경쾌하게]
+- 화면은 가로 16:9
+영상 작업 파일은 내 사이트 폴더 바로 옆에 my-video 폴더를 새로 만들어서 거기서 작업해줘. 사이트 폴더 안에는 만들지 마.
+질문은 꼭 필요한 것만 하고, 정해지지 않은 부분은 네가 어울리게 정해서 진행해줘.</pre>
+      </figure>
+      <p class="prompt-note">영상 작업은 파일이 많이 생기므로 사이트 폴더와 따로 둡니다. 그래야 사이트를 GitHub에 올릴 때 영상 작업 파일이 딸려 올라가지 않습니다.</p>
+      <p>보내면 아래 순서로 진행됩니다. 화면 문구는 업데이트로 조금 다를 수 있습니다.</p>
+      <ol>
+        <li>Claude가 영상 스킬을 불러 읽고, 꼭 필요한 것만 질문합니다. 10초 안팎의 짧은 모션그래픽은 질문이 거의 없지만, 더 긴 영상이나 <code>/hyperframes:hyperframes</code> 로 시작했을 때는 "먼저 장면 구성안(스토리보드)을 볼 것인지", "Claude가 알아서 만들지 같이 만들지"를 묻기도 합니다. 잘 모르겠으면 "스토리보드를 먼저 보여주고, 같이 만들자"라고 답하면 안전합니다.</li>
+        <li>답한 내용은 영상 폴더에 <code>BRIEF.md</code> 같은 메모 파일로 남을 수 있습니다. 스킬에 따라 파일 이름은 다릅니다. 나중에 같은 영상을 이어서 고칠 때 Claude가 이 파일을 읽으므로 다시 설명할 필요가 없습니다.</li>
+        <li>스킬을 최신 상태로 맞추는 명령(<code>npx hyperframes skills update ...</code>)을 실행해도 되는지 물을 수 있습니다. hyperframes 자체의 업데이트 명령이므로, 명령이 <code>npx hyperframes</code> 로 시작하는지 읽고 허용하면 됩니다.</li>
+        <li>my-video 폴더가 만들어지고 장면 파일들이 작성됩니다. 폴더를 새로 만들거나 사이트 폴더 밖에 파일을 쓸 때 허락 창이 뜰 수 있습니다. 경로가 my-video인지 읽고 허용하세요.</li>
+        <li>Claude가 구성을 스스로 검사(<code>lint</code>, <code>check</code>)한 뒤 미리보기를 열어 주고, 보통 "지금 렌더할까요, 고칠 곳이 있나요?"라고 묻습니다. 아직 고칠 곳이 있다면 다음 단계처럼 말로 고치고, 마음에 들면 5단계에서 렌더합니다.</li>
+      </ol>
+      <div class="callout tip">
+        <i class="ph ph-lightbulb"></i>
+        <strong>질문 없이 바로 보고 싶다면</strong>
+        <div><p>프롬프트 끝에 "질문 없이 바로 만들어줘"라고 적으면 Claude가 정해서 한 번에 진행합니다. 결과가 마음에 안 들면 4단계에서 말로 고치면 됩니다.</p></div>
+      </div>
+      <h4>영상 종류에 따라 부르는 스킬이 달라집니다</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>스킬</th><th>이럴 때</th></tr></thead>
+        <tbody>
+          <tr><td><code>/hyperframes:motion-graphics</code></td><td>10초 안팎의 짧은 모션그래픽(제목 등장, 숫자 카운트업 등)</td></tr>
+          <tr><td><code>/hyperframes:product-launch-video</code></td><td>내 사이트나 제품을 소개하는 홍보 영상, 사이트 둘러보기 영상</td></tr>
+          <tr><td><code>/hyperframes:faceless-explainer</code></td><td>얼굴 없이 글자와 그림으로 주제를 설명하는 영상</td></tr>
+          <tr><td><code>/hyperframes:general-video</code></td><td>장면이 여러 개인 영상, 조금 긴 영상</td></tr>
+          <tr><td><code>/hyperframes:hyperframes</code></td><td>어느 것을 쓸지 모를 때의 안내 데스크</td></tr>
+        </tbody>
+      </table></div>
+    </li>
+    <li class="step">
+      <h4>미리보기로 확인합니다</h4>
+      <p>영상은 렌더하기 전에 브라우저에서 미리 볼 수 있습니다. Claude에게 "미리보기를 열어줘"라고 말하면 대신 실행하고 주소를 알려 줍니다. 직접 하려면 영상 폴더에서 아래 명령을 입력합니다.</p>
+      <figure class="cmd">
+        <figcaption><i class="ph ph-terminal-window"></i>PowerShell (영상 폴더에서)</figcaption>
+        <pre><code><span class="c"># 영상 작업 폴더로 이동</span>
+cd my-video
+
+<span class="c"># 브라우저 스튜디오로 미리보기 열기 (기본 주소: http://localhost:3002)</span>
+npx hyperframes preview</code></pre>
+      </figure>
+      <p>브라우저 탭이 열리고 영상 스튜디오 화면이 나타납니다. 별도의 스튜디오 앱은 Mac과 Linux용으로 안내되어 있고, Windows에서는 이 명령으로 열리는 브라우저 스튜디오를 쓰면 됩니다. 화면은 대략 이렇게 구성됩니다.</p>
+      <ul>
+        <li><strong>가운데:</strong> 영상이 재생되는 미리보기 화면입니다. 그 아래에 장면이 시간 순서로 늘어선 타임라인이 있습니다. 재생 버튼을 누르거나 타임라인을 눌러 원하는 시점으로 이동해 보세요. 화면 문구와 배치는 버전에 따라 조금 다를 수 있습니다.</li>
+        <li><strong>왼쪽:</strong> 프로젝트 파일을 보는 탭들(Code, Compositions, Assets, Catalog)이 있습니다. 처음에는 볼 필요가 없습니다.</li>
+        <li><strong>오른쪽:</strong> 선택한 글자나 도형의 설정을 보는 패널(Design, Layers, Variables, Renders)이 있습니다. 글자를 눌러 선택하면 글자 내용, 색, 크기를 여기서 바꿀 수 있습니다.</li>
+      </ul>
+      <figure class="shot" data-shot="08-hf-preview">
+        <img src="/assets/shots/08-hf-preview.png" alt="hyperframes 브라우저 스튜디오에서 10초 소개 영상을 미리보기하는 화면" loading="lazy">
+        <figcaption>그림 설명: 브라우저에 열린 hyperframes 스튜디오입니다. 가운데에 영상 미리보기, 그 아래에 타임라인, 왼쪽에 프로젝트 탭, 오른쪽에 설정 패널이 보입니다. 재생 버튼을 눌러 장면 3개가 순서대로 나오는지 확인하는 단계입니다.</figcaption>
+      </figure>
+      <div class="callout check">
+        <i class="ph ph-check-circle"></i>
+        <strong>성공했을 때 모습</strong>
+        <div><p>재생하면 제목이 등장하고, 장면 2, 장면 3이 이어지고, 마지막에 사이트 주소가 보입니다. 처음부터 끝까지 한 번 끊김 없이 보세요. 글자가 잘리거나 너무 빨리 지나가는 곳을 메모해 두면 다음 단계에서 그대로 말로 고칠 수 있습니다.</p></div>
+      </div>
+      <div class="callout warn">
+        <i class="ph ph-warning"></i>
+        <strong>화면이 안 열리거나 비어 있다면</strong>
+        <div>
+          <ul>
+            <li>미리보기는 명령이 켜져 있는 동안만 보입니다. 터미널을 닫았다면 다시 실행하세요. 끄고 싶을 때는 터미널에서 <kbd>Ctrl</kbd>+<kbd>C</kbd>를 누릅니다.</li>
+            <li>다른 미리보기를 이미 켜 두었다면 먼저 끄고 다시 시도하세요.</li>
+            <li>그래도 안 되면 터미널의 오류 문구를 복사해 Claude에게 붙여넣고 "이 오류를 해결해줘"라고 말하세요. 점검 명령 <code>npx hyperframes doctor</code> 도 실행해 달라고 하면 원인을 좁혀 줍니다.</li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li class="step">
+      <h4>말로 고칩니다</h4>
+      <p>보면서 느낀 점을 Claude에게 그대로 말하세요. 코드를 고칠 필요가 없고, 고치면 미리보기가 몇 초 안에 바뀝니다. 바로 안 바뀌면 브라우저를 새로고침하세요. 효과가 큰 요령은 하나입니다. <strong>막연하게 말하지 말고 숫자와 위치로 말하는 것</strong>입니다.</p>
+      <div class="compare">
+        <div>
+          <h4>막연한 말</h4>
+          <ul>
+            <li>"좀 더 멋지게 해줘."</li>
+            <li>"느낌이 별로야."</li>
+            <li>"더 빠르게."</li>
+          </ul>
+        </div>
+        <div class="is-pick">
+          <h4>구체적인 말 <span class="tag">추천</span></h4>
+          <ul>
+            <li>"제목 글자를 지금의 2배로 키워줘."</li>
+            <li>"장면 2를 3초에서 2초로 줄여줘."</li>
+            <li>"배경을 어두운 남색으로, 글자는 흰색으로 바꿔줘."</li>
+            <li>"0:03 지점에 내 이름과 직함을 아래쪽에 작게 넣어줘."</li>
+            <li>"마지막 3초 동안 주소를 가운데에 고정해줘."</li>
+          </ul>
+        </div>
+      </div>
+      <p>고칠 때 지킬 세 가지입니다.</p>
+      <ul>
+        <li><strong>한 번에 하나만 바꿉니다.</strong> "글자 키우고, 색 바꾸고, 속도도 올려줘"처럼 여러 개를 한꺼번에 말하면 무엇이 좋아졌는지 알 수 없습니다.</li>
+        <li><strong>잘 된 부분은 건드리지 말라고 못 박습니다.</strong> 고치다가 멀쩡하던 곳이 바뀌는 일을 막아 줍니다.</li>
+        <li><strong>시간으로 위치를 말합니다.</strong> 영상에서는 "0:03 지점"처럼 말하는 것이 가장 정확합니다.</li>
+      </ul>
+      <figure class="prompt" data-title="영상 한 군데만 고치기">
+        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+        <pre>장면 2의 글자가 너무 빨리 지나가. 장면 2를 3초에서 4초로 늘리고, 글자가 나타나는 속도만 조금 느리게 해줘.
+장면 1과 장면 3은 지금 그대로 두고 건드리지 마.
+고친 뒤 미리보기에서 처음부터 끝까지 다시 확인할 수 있게 해줘.</pre>
+      </figure>
+      <p class="prompt-note">마음에 들 때까지 "말하고, 보고, 한 가지만 다시 말하기"를 반복합니다. 열 번 이상 고쳐도 정상입니다.</p>
+      <div class="callout tip">
+        <i class="ph ph-lightbulb"></i>
+        <strong>엉망이 됐을 때</strong>
+        <div><p>고치다 보니 오히려 나빠졌다면 "처음 버전으로 돌아가서 제목 장면만 다시 만들어줘"처럼 잘 되던 상태로 되돌린 뒤 한 가지씩 다시 쌓으세요. 처음부터 다시 쓰는 것보다 빠릅니다. 글자 하나, 색 하나 같은 작은 수정은 스튜디오 오른쪽 패널에서 직접 바꿀 수도 있습니다.</p></div>
+      </div>
+    </li>
+    <li class="step">
+      <h4>렌더해서 MP4로 뽑습니다</h4>
+      <p>미리보기가 마음에 들면 영상 파일로 뽑습니다. Claude에게 아래처럼 말하거나 직접 명령을 입력합니다. 뽑는 도중에는 창을 닫지 말고 기다리세요. 영상 길이와 PC 성능에 따라 시간이 다르게 걸립니다.</p>
+      <figure class="prompt" data-title="영상을 MP4로 렌더하기">
+        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+        <pre>지금 영상을 draft 품질로 렌더해서 renders 폴더에 저장해줘. 렌더 전에 lint 와 check 로 문제가 없는지 먼저 확인해줘. 끝나면 파일 경로, 영상 길이, 파일 크기를 알려줘.</pre>
+      </figure>
+      <figure class="cmd">
+        <figcaption><i class="ph ph-terminal-window"></i>직접 할 때 (영상 폴더에서)</figcaption>
+        <pre><code><span class="c"># 구성을 검사 (문제가 있으면 알려 줍니다)</span>
+npx hyperframes lint
+npx hyperframes check
+
+<span class="c"># MP4로 렌더. 파일 이름을 안 정하면 renders 폴더에 저장됩니다</span>
+npx hyperframes render --output renders/intro.mp4</code></pre>
+      </figure>
+      <p>품질은 세 단계입니다. 수정하는 동안에는 빠른 <strong>draft</strong>로 확인하고, 마음에 드는 최종본 하나만 <strong>standard</strong>로 뽑는 것이 시간을 가장 아끼는 방법입니다. 말로 요청할 때는 "draft로", "standard로", "high로"라고 이름을 직접 말하세요. 최신 버전은 이름을 붙이지 않았을 때의 기본 품질이 위 세 이름과 다를 수 있으므로, 최종본에는 "standard로 뽑아줘"라고 지정하는 것이 안전합니다.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>품질</th><th>쓰는 때</th></tr></thead>
+        <tbody>
+          <tr><td>draft</td><td>수정하면서 빠르게 확인할 때. 화질은 낮지만 장면 확인에는 충분합니다.</td></tr>
+          <tr><td>standard</td><td>대부분의 최종본. 사이트, SNS용으로 충분합니다. 공식 문서도 대부분의 완성 작업에 이것을 권합니다.</td></tr>
+          <tr><td>high</td><td>보관용 큰 원본이 필요할 때. 용량이 커서 사이트에 올리는 용도로는 필요 없습니다.</td></tr>
+        </tbody>
+      </table></div>
+      <p>화면 크기는 보통 가로 1920 x 세로 1080(풀HD), 초당 30장(30fps)으로 만듭니다. 장면을 만들 때 정한 크기를 그대로 따르고, 따로 정하지 않으면 30fps입니다. 사이트용 영상에는 이것으로 충분합니다. 4K나 60fps는 시간이 몇 배로 늘고 파일이 훨씬 커지므로 꼭 필요할 때만 요청하세요.</p>
+      <p>스튜디오 화면에서도 렌더할 수 있습니다. 위쪽의 Export(내보내기) 버튼을 누르면 Renders 패널이 열리고, 여기서 형식(MP4 등)과 크기를 고른 뒤 진행 상황을 봅니다. 완성된 파일은 같은 패널에서 내려받습니다. 어느 방법으로 뽑아도 결과 영상은 같은 방식으로 만들어집니다.</p>
+      <figure class="shot" data-shot="08-hf-render">
+        <img src="/assets/shots/08-hf-render.png" alt="hyperframes 렌더가 끝나고 renders 폴더에 MP4 파일이 생긴 화면" loading="lazy">
+        <figcaption>그림 설명: 렌더가 끝난 화면입니다. Claude 대화창(또는 터미널)에 완료 메시지와 renders 폴더 안 MP4 파일 경로가 보이고, 파일 탐색기에서 같은 renders 폴더를 열어 영상 파일이 들어 있는 모습입니다. 이 파일을 더블클릭하면 재생됩니다.</figcaption>
+      </figure>
+      <div class="callout check">
+        <i class="ph ph-check-circle"></i>
+        <strong>끝나면 꼭 실제 파일을 열어서 확인하세요</strong>
+        <div><p>파일 탐색기에서 renders 폴더를 열고 MP4를 더블클릭해 처음부터 끝까지 재생해 보세요. 첫 1초와 마지막 1초, 글자가 잘리지 않았는지, 장면이 바뀌는 순간이 자연스러운지를 봅니다. 자동 검사(lint, check)는 구조 오류만 찾아 줄 뿐, 영상이 보기 좋은지는 사람 눈으로만 알 수 있습니다.</p></div>
+      </div>
+    </li>
+    <li class="step">
+      <h4>사이트에 넣습니다</h4>
+      <p>만든 MP4를 내 사이트 첫 화면에 넣어 봅니다. 아래 프롬프트에서 영상 태그 설정, 파일 크기 줄이기, 모바일 확인을 한꺼번에 부탁합니다.</p>
+      <figure class="prompt" data-title="렌더한 영상을 사이트 첫 화면에 넣기">
+        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+        <pre>my-video/renders 폴더의 [파일 이름].mp4 영상을 내 사이트 첫 화면에 넣어줘.
+- 영상 파일은 내 사이트 폴더의 assets/video/ 안에 intro.mp4 라는 이름으로 복사
+- video 태그에 autoplay muted loop playsinline 을 모두 넣어서, 소리 없이 자동으로 반복 재생되게 해줘
+- 영상이 로딩되기 전에 보일 대표 이미지(poster)도 영상 첫 장면으로 한 장 만들어서 같이 넣어줘
+- 파일 크기를 가능하면 5MB 이하, 최대 10MB 이하로 줄여줘. FFmpeg로 해상도와 화질을 낮춰도 되는데, 줄이기 전과 후의 크기를 알려줘
+- 휴대폰 화면 폭에서도 영상이 잘리지 않게 확인해줘
+- 운영체제의 "움직임 줄이기" 설정을 켠 사람에게는 자동 재생을 끄고 재생 버튼을 보여줘
+끝나면 내가 확인할 방법을 알려줘.</pre>
+      </figure>
+      <p class="prompt-note">이 사이트 맨 위의 소개 영상도 같은 방식으로 들어 있습니다.</p>
+      <p>프롬프트에 나온 설정이 무슨 뜻인지 알아 두면 문제가 생겼을 때 Claude에게 정확히 말할 수 있습니다.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>설정</th><th>뜻</th><th>빠지면</th></tr></thead>
+        <tbody>
+          <tr><td>autoplay</td><td>페이지가 열리면 영상이 저절로 재생됩니다.</td><td>방문자가 재생 버튼을 눌러야 시작합니다.</td></tr>
+          <tr><td>muted</td><td>소리를 끈 상태로 재생합니다.</td><td>브라우저는 소리가 나는 영상의 자동 재생을 막는 경우가 많아서, 영상이 멈춘 채로 보일 수 있습니다.</td></tr>
+          <tr><td>loop</td><td>끝나면 처음부터 다시 재생합니다.</td><td>한 번 재생하고 멈춥니다.</td></tr>
+          <tr><td>playsinline</td><td>휴대폰에서 전체 화면으로 바뀌지 않고 페이지 안에서 재생합니다.</td><td>일부 기기에서 영상이 전체 화면으로 튀어나옵니다.</td></tr>
+          <tr><td>poster</td><td>영상이 로딩되기 전에 대신 보이는 대표 이미지입니다.</td><td>로딩 동안 검은 상자가 보일 수 있습니다.</td></tr>
+        </tbody>
+      </table></div>
+      <h4>파일 크기를 줄여야 하는 이유</h4>
+      <p>영상은 사이트에서 가장 무거운 파일입니다. 크면 방문자가 모바일 데이터로 열 때 느리고, GitHub에도 한도가 있습니다. GitHub 공식 문서 기준으로 <strong>50MiB를 넘는 파일을 올리면 경고</strong>가 나오고, <strong>100MiB를 넘으면 아예 올라가지 않습니다</strong>(그 이상은 Git LFS라는 별도 방식이 필요합니다). 웹 브라우저에서 파일을 끌어다 올리는 방식은 25MiB까지만 됩니다. 풀HD 원본 렌더를 그대로 올리면 이 한도에 가까워질 수 있으므로, 사이트에 넣는 영상은 줄여서 쓰는 것이 좋습니다. 목표는 5MB 안팎입니다.</p>
+      <figure class="cmd">
+        <figcaption><i class="ph ph-terminal-window"></i>Claude가 실행하는 줄이기 명령 예 (참고용)</figcaption>
+        <pre><code><span class="c"># 가로 1280으로 줄이고(-vf scale), 화질 숫자를 높여 용량을 줄임(-crf 28)</span>
+<span class="c"># -an: 소리 제거 (배경 영상은 muted 라서 필요 없음)</span>
+<span class="c"># -movflags +faststart: 다 받기 전에 먼저 재생 시작</span>
+<span class="c"># -pix_fmt yuv420p: 거의 모든 브라우저와 휴대폰에서 재생되는 형식</span>
+ffmpeg -i my-video/renders/intro.mp4 -vf "scale=1280:-2" -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -movflags +faststart assets/video/intro.mp4</code></pre>
+      </figure>
+      <figure class="cmd">
+        <figcaption><i class="ph ph-code"></i>HTML 영상 태그 모양 (참고용, 이 사이트 첫 화면과 같은 방식)</figcaption>
+        <pre><code>&lt;video src="/assets/video/intro.mp4" poster="/assets/video/intro-poster.jpg"
+       autoplay muted loop playsinline preload="metadata"&gt;&lt;/video&gt;</code></pre>
+      </figure>
+      <figure class="shot" data-shot="08-video-in-site">
+        <img src="/assets/shots/08-video-in-site.png" alt="내 사이트 첫 화면에서 소개 영상이 재생되는 모습" loading="lazy">
+        <figcaption>그림 설명: 내 사이트의 첫 화면(브라우저 미리보기)에서 소개 영상이 소리 없이 재생되고 있는 화면입니다. 영상 위나 옆에 제목과 소개 글이 함께 보이고, 영상이 화면 폭에 맞게 잘리지 않고 들어가 있는지 확인합니다.</figcaption>
+      </figure>
+      <div class="callout check">
+        <i class="ph ph-check-circle"></i>
+        <strong>성공했을 때 모습</strong>
+        <div><p>Claude가 알려 준 방법(보통 사이트 폴더의 index.html을 브라우저로 열기, 또는 미리보기 주소 접속)으로 열었을 때 첫 화면에서 영상이 저절로 시작하고, 끝나면 반복되며, 소리는 나지 않습니다. 줄이기 전과 후의 파일 크기도 Claude가 알려 주었는지 확인하세요.</p></div>
+      </div>
+    </li>
+    <li class="step">
+      <h4>배포합니다</h4>
+      <p>3장과 4장에서 GitHub와 Vercel을 연결해 두었다면 변경 사항을 GitHub에 올리는 것만으로 Vercel이 새로 배포합니다. 아래 프롬프트로 올리기와 확인을 부탁하세요.</p>
+      <figure class="prompt" data-title="영상 포함해서 GitHub에 올리고 배포">
+        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+        <pre>영상이 들어간 변경 사항을 GitHub에 올려서 Vercel에 배포해줘.
+1) 올리기 전에 git status 로 어떤 파일이 바뀌었는지 보여주고, 영상 파일 크기도 알려줘. 100MB를 넘는 파일이 있으면 올리지 말고 먼저 알려줘.
+2) 커밋 메시지는 "첫 화면에 소개 영상 추가"로 하고 push 해줘.
+3) Vercel 배포가 끝나면 내 사이트 주소를 알려주고, 그 주소에서 영상이 잘 나오는지 내가 확인할 방법을 알려줘.</pre>
+      </figure>
+      <p class="prompt-note">파일이 외부(GitHub)로 올라가는 작업이므로 허락 창이 뜹니다. 어떤 저장소로 올라가는지, 올라가는 파일 목록이 맞는지 읽고 허용하세요.</p>
+      <p>1~2분 뒤 내 사이트 주소(<code>[내 프로젝트].vercel.app</code> 형태)를 브라우저에서 열어 보세요. 첫 화면에서 영상이 소리 없이 자동 재생되고 반복되면 성공입니다. 휴대폰으로도 한 번 열어 보면 좋습니다. 아래 경우에는 해당 항목을 확인하세요.</p>
+      <div class="faq">
+        <details class="detail">
+          <summary>배포했는데 옛날 화면이 그대로예요</summary>
+          <div class="detail-body"><p>브라우저가 예전 화면을 기억하고 있을 수 있습니다. <kbd>Ctrl</kbd>+<kbd>F5</kbd>로 강력 새로고침하거나, 시크릿 창에서 같은 주소를 열어 보세요. 그래도 같으면 Vercel 대시보드의 Deployments에서 방금 배포가 성공(Ready)인지 확인합니다.</p></div>
+        </details>
+        <details class="detail">
+          <summary>영상 자리가 검은 상자로만 보여요</summary>
+          <div class="detail-body"><p>영상 파일 경로나 이름이 맞지 않는 경우가 많습니다. 서버는 대문자와 소문자를 다른 글자로 취급하므로 <code>Intro.mp4</code> 와 <code>intro.mp4</code> 는 다른 파일입니다. Claude에게 "영상 태그의 경로와 실제 파일 이름이 정확히 같은지, 파일이 GitHub에 올라갔는지 확인해줘"라고 부탁하세요.</p></div>
+        </details>
+        <details class="detail">
+          <summary>영상이 자동으로 재생되지 않아요</summary>
+          <div class="detail-body"><p>autoplay, muted, playsinline 중 하나가 빠졌는지 확인하세요. 또 휴대폰의 저전력 모드처럼 기기 설정에 따라 자동 재생이 제한되기도 합니다. 이 경우에도 poster 이미지가 보이도록 해 두면 빈 화면은 피할 수 있습니다.</p></div>
+        </details>
+        <details class="detail">
+          <summary>push가 거절되거나 배포가 실패해요</summary>
+          <div class="detail-body"><p>파일이 100MiB를 넘었는지 먼저 확인하세요. 크기를 줄이는 프롬프트를 다시 보내면 됩니다. 크기가 문제가 아니라면 오류 문구를 복사해 Claude에게 붙여넣고 "이 오류를 해결해줘"라고 하세요.</p></div>
+        </details>
+      </div>
+    </li>
+  </ol>
+
+  <h3>블록 카탈로그로 부품 추가하기</h3>
+  <p>hyperframes에는 미리 만들어 둔 "영상 부품(블록)" 카탈로그가 있습니다. 숫자 그래프, 장면 전환, SNS 안내 화면 같은 것을 처음부터 만들지 않고 가져다 쓰는 방식입니다. 설치는 명령 한 줄입니다.</p>
+  <figure class="cmd">
+    <figcaption><i class="ph ph-terminal-window"></i>PowerShell (영상 폴더에서)</figcaption>
+    <pre><code><span class="c"># 애니메이션 차트 블록 추가 (compositions 폴더에 data-chart.html 파일이 생깁니다)</span>
+npx hyperframes add data-chart
+
+<span class="c"># 어떤 블록이 있는지 훑어보기</span>
+npx hyperframes catalog</code></pre>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>블록 이름</th><th>무엇인가요</th><th>쓰는 곳</th></tr></thead>
+    <tbody>
+      <tr><td>data-chart</td><td>막대와 선 그래프가 차례로 나타나는 15초짜리 차트(1920 x 1080)</td><td>보고용 숫자 영상</td></tr>
+      <tr><td>flash-through-white</td><td>화면이 하얗게 번쩍이며 다음 장면으로 넘어가는 전환 효과</td><td>장면 사이 연결</td></tr>
+      <tr><td>instagram-follow</td><td>SNS 팔로우를 안내하는 겹침 화면(오버레이)</td><td>SNS 클립 마무리</td></tr>
+    </tbody>
+  </table></div>
+  <p>블록 전체 목록은 hyperframes 공식 사이트(hyperframes.heygen.com)의 Catalog 페이지에서 볼 수 있습니다. 직접 명령을 외우지 않아도 Claude에게 "카탈로그에서 어울리는 블록을 찾아서 넣어줘"라고 말하면 알아서 찾아 줍니다.</p>
+  <figure class="prompt" data-title="카탈로그 블록으로 숫자 그래프 넣기">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>hyperframes 카탈로그의 data-chart 블록을 써서 장면 2에 막대 그래프를 넣어줘.
+숫자는 연습용 가짜 값으로 월별 [1월 120, 2월 180, 3월 260]을 쓰고, 그래프가 차례로 올라오게 해줘.
+블록이 15초짜리라서 내 영상 길이(10초)에 맞게 줄여줘. 장면 1과 3은 건드리지 마.</pre>
+  </figure>
+  <details class="detail">
+    <summary>더 알아보기: 영상 파일 말고 장면 자체를 사이트에 넣는 방법</summary>
+    <div class="detail-body">
+      <p>hyperframes에는 MP4 대신 장면(HTML) 자체를 웹페이지 안에서 재생하는 <code>@hyperframes/player</code> 라는 부품도 있습니다. 영상 파일 없이 장면을 재생하고 건너뛰기도 할 수 있습니다. 다만 이 교육에서는 가장 쉽고 어디서나 똑같이 재생되는 MP4 방식만 사용합니다.</p>
+    </div>
+  </details>
+
+  <h3>Codex를 쓰는 분을 위한 안내</h3>
+  <p>5장에서 hyperframes 스킬을 Codex에도 설치했다면 같은 방식으로 영상을 만들 수 있습니다. 영상 만들기 자체(기획, 미리보기, 렌더, 사이트에 넣기)는 도구가 같아서 동일합니다. 다른 점은 스킬을 부르는 방법뿐입니다. Codex에서는 <code>/스킬이름</code> 대신 입력창에 <code>$</code> 를 치고 목록에서 hyperframes를 고르거나, "hyperframes 스킬을 사용해서 10초 소개 영상을 만들어줘"처럼 스킬 이름을 말로 언급하세요. 목록에서 이름이 보이지 않으면 5장의 Codex 안내를 다시 확인하세요.</p>
+
+  <h3>자주 막히는 곳</h3>
+  <div class="faq">
+    <details class="detail">
+      <summary>렌더가 너무 오래 걸려요</summary>
+      <div class="detail-body">
+        <ul>
+          <li>수정 중에는 draft 품질로 뽑으세요.</li>
+          <li>4K와 60fps는 시간과 용량이 크게 늘어나므로 기본값(1080p, 30fps)을 쓰세요.</li>
+          <li>영상 길이를 줄이고 장면 수를 줄이면 빨라집니다.</li>
+          <li>브라우저 탭과 무거운 프로그램을 닫고 다시 시도해 보세요.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="detail">
+      <summary>영상에 소리(음악, 목소리)도 넣고 싶어요</summary>
+      <div class="detail-body">
+        <p>가능합니다. Claude에게 "배경음악을 넣어줘", "내레이션을 넣어줘"라고 말하면 오디오용 스킬(<code>/hyperframes:hyperframes-audio</code> 등)을 써서 처리합니다. 단, 음악은 <strong>저작권이 해결된 파일(직접 만든 것, 사용권이 있는 것)만</strong> 쓰세요. 그리고 사이트 첫 화면의 자동 재생 영상은 소리를 끄고 재생(muted)하는 것이 원칙이므로, 소리가 있는 영상은 방문자가 재생 버튼을 눌러야 나오게 해야 합니다.</p>
+      </div>
+    </details>
+    <details class="detail">
+      <summary>우리 회사 로고나 내 사진을 넣고 싶어요</summary>
+      <div class="detail-body">
+        <p>이미지 파일을 영상 작업 폴더의 <code>assets</code> 폴더에 넣고 "assets/logo.png 를 마지막 장면 가운데에 넣어줘"처럼 파일 이름으로 말하세요. 사용 권한이 있는 이미지만 쓰고, 개인정보가 있는 사진은 쓰지 마세요.</p>
+      </div>
+    </details>
+    <details class="detail">
+      <summary>결과가 너무 마음에 안 들어요. 처음부터 다시 해야 하나요?</summary>
+      <div class="detail-body">
+        <p>대부분 다시 시작할 필요가 없습니다. "장면 2의 글자 속도만 느리게", "배경색만 바꿔줘"처럼 한 가지씩 고치세요. 많이 어긋났다면 "가장 단순한 버전으로 돌아가서 제목 장면만 다시 만들어줘"라고 말하고, 잘 되는 것을 확인한 뒤에 하나씩 추가합니다.</p>
+      </div>
+    </details>
+    <details class="detail">
+      <summary>"hyperframes 명령을 찾을 수 없다"거나 렌더가 바로 실패해요</summary>
+      <div class="detail-body">
+        <p>Node.js 버전이 22 미만이거나 FFmpeg가 없을 가능성이 높습니다. 위의 "영상 제작 준비물 확인과 설치 부탁" 프롬프트를 다시 보내세요. 그래도 안 되면 오류 문구를 복사해서 Claude에게 붙여넣고 "<code>npx hyperframes doctor</code> 결과와 함께 원인을 알려줘"라고 말하세요.</p>
+      </div>
+    </details>
+  </div>
+
+  <h3>이 장 마무리 체크리스트</h3>
+  <ul class="checklist">
+    <li><label><input type="checkbox" id="chk-motion-1"><span>hyperframes가 "HTML로 영상을 쓰고 MP4로 뽑는 도구"라는 것을 설명할 수 있다</span></label></li>
+    <li><label><input type="checkbox" id="chk-motion-2"><span>Node.js 22 이상과 FFmpeg가 준비된 것을 확인했다</span></label></li>
+    <li><label><input type="checkbox" id="chk-motion-3"><span>한 줄 기획(길이, 분위기, 장면 3개, 주소)으로 10초 영상을 만들었다</span></label></li>
+    <li><label><input type="checkbox" id="chk-motion-4"><span>미리보기에서 영상을 보고, 숫자와 위치로 한 가지씩 말로 고쳐 봤다</span></label></li>
+    <li><label><input type="checkbox" id="chk-motion-5"><span>MP4로 렌더해서 실제 파일을 처음부터 끝까지 재생해 봤다</span></label></li>
+    <li><label><input type="checkbox" id="chk-motion-6"><span>파일 크기를 줄여 사이트 첫 화면에 넣고, 배포 주소에서 자동 재생되는 것을 확인했다</span></label></li>
+  </ul>
+</section>
