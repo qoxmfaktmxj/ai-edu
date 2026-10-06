@@ -11,22 +11,21 @@
 | 필요 | `01-final-site-address.png` | 그림 설명: 맨 위 주소창에 .vercel.app으로 끝나는 내 주소가 보이고, 아래에 완성된 사이트가 열려 있습니다. 교육이 끝났을 때 이 모습이 목표입니다. |
 | 필요 | `01-copy-button.png` | 그림 설명: 프롬프트 카드 오른쪽 위에 있는 "복사" 버튼입니다. 누르면 "복사됨"으로 바뀌고 약 1~2초 뒤 원래대로 돌아옵니다. |
 | 완료 | `02-claude-download.png` | 그림 설명: claude.com/download 페이지(한국어 화면)입니다. 큰 제목 "Claude 다운로드" 아래에 내 컴퓨터용 다운로드 버튼이 있습니다. Windows에서 열면 "Windows용 다운로드" 버튼이 보이고, Windows ARM 컴퓨터용 "Windows(arm64)" 링크와 Microsoft Store 배지도 함께 보입니다. Mac에서 열면 Mac용 버튼이 먼저 보입니다. 화면 구성과 문구는 업데이트로 조금 다를 수 있습니다. |
-| 필요 | `02-claude-login.png` | 그림 설명: 앱을 처음 실행하면 보이는 로그인 화면입니다. 평소 쓰는 로그인 방법을 고르고, 브라우저가 열리면 거기서 로그인을 마친 뒤 앱으로 돌아옵니다. 로그인이 끝나면 앱 위쪽에 Chat, Cowork, Code 탭이 보입니다. |
 | 필요 | `02-code-tab.png` | 그림 설명: 앱 위쪽 가운데 Chat, Cowork, Code 세 탭이 나란히 있고, 그중 Code 탭이 선택된 모습입니다. 아래쪽에 입력창이 보이고, 입력창 근처에 Local 선택과 Select folder 버튼이 있습니다. |
-| 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-site 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-site 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
+| 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-setup 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-setup 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
 | 필요 | `02-permission-dialog.png` | 그림 설명: Manual 모드에서 Claude가 실행하려는 명령(예: claude.ai의 공식 설치 명령)이나 바꾸려는 파일 내용을 보여 주며 허용을 묻는 화면입니다. 내용을 읽은 뒤 Accept(허용) 또는 Reject(거절) 버튼을 누릅니다. 입력창 옆에는 현재 권한 모드(Manual)를 보여 주는 선택기가 보입니다. 버튼 이름은 업데이트로 조금 다를 수 있습니다. |
 | 필요 | `02-claude-version.png` | 그림 설명: 새로 연 PowerShell 창입니다. 첫 줄 맨 앞에 PS가 보이고, claude --version 입력 아래에 "2.1.xxx (Claude Code)" 형태의 버전 줄이 나온 모습입니다. 이 줄이 보이면 설치와 PATH 등록이 모두 성공한 것입니다. |
-| 필요 | `02-first-file.png` | 그림 설명: 왼쪽에는 Claude 앱의 대화 창에서 "hello.txt를 만들었습니다"와 추가된 줄 수 표시가 보이고, 오른쪽에는 파일 탐색기에서 연 ai-site 폴더 안에 hello.txt가 실제로 생긴 모습입니다. 내 PC에 진짜 파일이 생겼다는 것을 눈으로 확인하는 장면입니다. |
 | 필요 | `03-github-signup.png` | 그림 설명: github.com/signup 첫 화면. 이메일 입력 칸과 Continue 버튼이 보입니다. 한 칸을 채우고 Continue를 누르면 다음 칸(비밀번호, 사용자 이름)이 차례로 나타납니다. |
 | 필요 | `03-github-verify.png` | 그림 설명: 이메일로 받은 인증 코드를 입력하는 화면. 입력 칸에 코드를 넣으면 자동으로 다음 화면으로 넘어갑니다. (개인 이메일 주소는 가려서 캡처하세요.) |
-| 필요 | `03-gh-auth-login.png` | 그림 설명: PowerShell에 질문이 한 줄씩 나오고 선택지 옆에 화살표 표시가 있습니다. 선택한 항목은 색이 바뀝니다. 질문마다 아래 단계의 답을 고르고 Enter를 누릅니다. |
-| 필요 | `03-gh-device-code.png` | 그림 설명: 왼쪽 PowerShell에 "First copy your one-time code"와 코드가 보이고, 오른쪽 브라우저의 Device Activation 화면에는 코드를 넣는 칸과 Continue 버튼이 있습니다. 코드는 가려서 캡처하세요. |
-| 필요 | `03-gh-authorize.png` | 그림 설명: GitHub CLI가 요청하는 권한 목록이 보이는 승인 화면. 아래쪽의 초록색 Authorize 버튼을 누르는 위치를 표시하세요. |
-| 필요 | `03-repo-created.png` | 그림 설명: github.com/[내 사용자 이름]/my-first-site 화면. 저장소 이름과 Private 표시, main 브랜치 선택 칸, 파일 목록의 README.md, 마지막 커밋 메시지가 보입니다. 사용자 이름은 가려서 캡처하세요. |
+| 필요 | `03-new-repo.png` | 그림 설명: Repository name에 ai-site, 공개 범위는 Private, README 추가는 꺼진 상태에서 Create repository 버튼을 누르는 위치를 표시하세요. |
+| 필요 | `03-repo-quick-setup.png` | 그림 설명: 빈 저장소를 만든 직후의 Quick setup 화면입니다. HTTPS 버튼과 저장소 주소, 그 오른쪽 복사 버튼의 위치를 표시하세요. |
+| 필요 | `03-gcm-signin.png` | 그림 설명: git clone을 입력하면 뜨는 GitHub 로그인 창입니다. Sign in with your browser 버튼의 위치를 표시하세요. |
+| 필요 | `03-gcm-authorize.png` | 그림 설명: 브라우저에 열린 GitHub 승인 화면입니다. Authorize 버튼의 위치를 표시하세요. |
+| 필요 | `03-clone-done.png` | 그림 설명: clone이 끝난 cmd 창입니다. Cloning into 'ai-site' 줄과 빈 저장소 안내 줄이 보입니다. |
 | 완료 | `04-vercel-signup.png` | 그림 설명: vercel.com/signup 화면. "Continue with GitHub" 버튼 위치를 표시하세요. 이 버튼이 이 교재에서 누를 버튼입니다. |
 | 필요 | `04-vercel-plan.png` | 그림 설명: Hobby(개인, 무료)와 Pro가 나란히 보이는 화면. Hobby 쪽을 고르는 위치를 표시하세요. 이런 화면이 나오지 않는 계정도 있습니다. |
-| 필요 | `04-vercel-github-app.png` | 그림 설명: GitHub의 Vercel 앱 설치 화면. Repository access에서 Only select repositories를 선택하고, my-first-site를 고른 뒤 Install 버튼을 누르는 위치를 표시하세요. |
-| 필요 | `04-vercel-import.png` | 그림 설명: "Import Git Repository" 목록에서 my-first-site 줄 오른쪽의 Import 버튼을 누르는 위치를 표시하세요. |
+| 필요 | `04-vercel-github-app.png` | 그림 설명: GitHub의 Vercel 앱 설치 화면. Repository access에서 Only select repositories를 선택하고, ai-site를 고른 뒤 Install 버튼을 누르는 위치를 표시하세요. |
+| 필요 | `04-vercel-import.png` | 그림 설명: "Import Git Repository" 목록에서 ai-site 줄 오른쪽의 Import 버튼을 누르는 위치를 표시하세요. |
 | 필요 | `04-vercel-configure.png` | 그림 설명: Configure Project 화면. Project Name 칸, Framework Preset(Other), Root Directory(./)가 보이고 맨 아래에 Deploy 버튼이 있습니다. |
 | 필요 | `04-vercel-deploy-done.png` | 그림 설명: 축하 문구와 사이트 미리보기 그림이 보이는 배포 완료 화면. Continue to Dashboard 버튼의 위치를 표시하세요. |
 | 필요 | `04-vercel-domains.png` | 그림 설명: 프로젝트 화면의 Domains 항목. https://[프로젝트이름].vercel.app 링크와 Production Deployment의 Ready 표시를 가리키세요. 이 주소가 내 사이트 주소입니다. |
