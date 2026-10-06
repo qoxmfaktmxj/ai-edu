@@ -79,7 +79,7 @@
 
 /* ---------- base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); -webkit-text-size-adjust: 100%; }
+html { scroll-padding-top: calc(var(--nav-h) + 16px); -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--bg);
@@ -246,6 +246,8 @@ mark { background: var(--accent-soft); color: inherit; padding: 0 .2em; border-r
 
 /* ---------- chapter ---------- */
 .chapter { padding: clamp(56px, 7vw, 96px) 0 0; }
+/* Off-screen chapters skip layout and paint until scrolled near. Real size is remembered once rendered. */
+.chapter { content-visibility: auto; contain-intrinsic-size: auto 6000px; }
 .chapter + .chapter { border-top: 1px solid var(--line); margin-top: clamp(56px, 7vw, 96px); }
 .chapter-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 22px; align-items: start; margin-bottom: 36px; }
 .chapter-num {
@@ -465,7 +467,6 @@ html.show-slots .shot.is-missing::before {
   .reveal.is-in { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   .roadmap ol::before, .roadmap li::before { transition: none; }
   .topic, .example, .btn { transition: none; }
 }
@@ -475,7 +476,7 @@ html.show-slots .shot.is-missing::before {
   .topbar, .toc, .copy, .hero-media, .skip { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
   .layout { display: block; padding: 0; }
-  .chapter { break-before: page; padding-top: 0; }
+  .chapter { break-before: page; padding-top: 0; content-visibility: visible; }
   .detail { break-inside: avoid; }
   .detail:not([open]) > .detail-body { display: block; }
   .cmd { background: #f4f4f4; border-color: #ccc; }
