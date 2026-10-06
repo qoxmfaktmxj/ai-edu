@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>딸기 일러스트 자산 시트</title>
+    <style>
+      body { margin: 0; font-family: sans-serif; }
+      .row { display: flex; gap: 24px; padding: 32px; align-items: center; flex-wrap: wrap; }
+      .dark { background: #17090f; }
+      .cream { background: #fff3e8; }
+      svg.big { width: 600px; height: 800px; }
+      svg.mid { width: 300px; height: 400px; }
+      svg.sm { width: 140px; height: 140px; }
+      .zoom { width: 900px; height: 500px; overflow: hidden; position: relative; }
+      .zoom svg { position: absolute; width: 4200px; height: 5600px; left: -900px; top: -1700px; }
+    </style>
+    <script src="assets/art.js"></script>
+  </head>
+  <body>
+    <svg id="defs" width="0" height="0" style="position:absolute"><defs></defs></svg>
+    <div class="row dark" id="r1"></div>
+    <div class="row cream" id="r2"></div>
+    <div class="row dark"><div class="zoom" id="z"></div></div>
+    <script>
+      const A = window.StrawberryArt;
+      document.querySelector("#defs defs").innerHTML = A.defs + A.pieceSymbols();
+      const berry = `<svg class="big" viewBox="0 0 600 800">${A.berry()}</svg>`;
+      const half = (c, b) =>
+        `<svg class="mid" viewBox="0 0 600 800"><use href="#berryArt" clip-path="url(#${c})"/><path d="${A.BODY}" fill="url(#fleshBand)" clip-path="url(#${b})"/></svg>`;
+      const section = `<svg class="mid" viewBox="0 0 600 800">${A.section()}</svg>`;
+      const small = (id) => `<svg class="sm" viewBox="0 0 100 100"><use href="#${id}" width="100" height="100"/></svg>`;
+      const extras = half("halfL", "bandL") + half("halfR", "bandR") + section +
+        ["piece0", "piece1", "piece2", "piece3"].map((p) => `<svg class="sm" viewBox="0 0 120 120"><use href="#${p}"/></svg>`).join("") +
+        ["dropA", "dropB", "dropC"].map(small).join("");
+      document.getElementById("r1").innerHTML = berry + extras;
+      document.getElementById("r2").innerHTML = `<svg class="big" viewBox="0 0 600 800"><use href="#berryArt"/></svg>` + extras.replace(/secLine/g, "x");
+      document.getElementById("z").innerHTML = `<svg viewBox="0 0 600 800"><use href="#berryArt"/><use href="#macro"/></svg>`;
+    </script>
+  </body>
+</html>
