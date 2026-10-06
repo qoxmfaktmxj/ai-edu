@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>해오름시의 하루</title>
+  <meta name="description" content="슬라이더를 움직이면 해가 지고 창문마다 불이 켜지는 2D 도시. 하루를 20초에 돌려 볼 수 있습니다.">
+  <meta name="theme-color" content="#111a26">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111a26'/%3E%3Cpath d='M4 28V17h6v11M11 28V9h7v19M19 28V14h6v14' fill='%23f6a56b'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%23ffd45a'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    /* ==========================================================
+       핵심 아이디어: 하루의 시각 "--t" (0 ~ 24) 하나로 모든 것이 움직입니다.
+       JS는 슬라이더 값을 --t 에 넣을 뿐이고, 하늘색, 해와 달의 위치,
+       창문 불빛, 네온, 전조등은 전부 CSS 계산식이 --t 로부터 만들어 냅니다.
+       ========================================================== */
+
+    /* 숫자 변수로 등록해 두면 계산 결과가 한 번만 만들어져 아래 요소들이 물려받습니다 */
+    @property --t     { syntax: "<number>"; inherits: true; initial-value: 19.6; }
+    @property --night { syntax: "<number>"; inherits: true; initial-value: 0; }
+    @property --glow  { syntax: "<number>"; inherits: true; initial-value: 0; }
+    @property --lamp  { syntax: "<number>"; inherits: true; initial-value: 0; }
+    @property --neon  { syntax: "<number>"; inherits: true; initial-value: 0; }
+    @property --dark  { syntax: "<number>"; inherits: true; initial-value: 0; }
+    @property --glass { syntax: "<color>";  inherits: true; initial-value: #a7c9d6; }
+
+    :root {
+      --t: 19.6;
+      /* 밤의 깊이: 18시에 어두워지기 시작해 20시에 완전한 밤, 4시 30분부터 밝아져 6시 30분에 낮 */
+      --night: max(clamp(0, calc((var(--t) - 18) / 2), 1), clamp(0, calc((6.5 - var(--t)) / 2), 1));
+      /* 노을, 새벽빛의 세기: 18시 12분과 6시 근처에서 가장 강함 */
+      --glow: max(clamp(0, calc(1 - max(var(--t) - 18.2, 18.2 - var(--t)) / 1.8), 1),
+                  clamp(0, calc(1 - max(var(--t) - 6, 6 - var(--t)) / 1.5), 1));
+      /* 가로등과 전조등: 해 질 무렵부터 새벽까지 */
+      --lamp: max(clamp(0, calc((var(--t) - 17.8) / 1.2), 1), clamp(0, calc((6.2 - var(--t)) / 1.2), 1));
+      /* 네온 간판: 밤에만 */
+      --neon: max(clamp(0, calc((var(--t) - 19.2) / 0.8), 1), clamp(0, calc((5.4 - var(--t)) / 0.8), 1));
+      /* 안내 글상자의 밝은 모드/어두운 모드 전환 (0 또는 1) */
+      --dark: clamp(0, calc((var(--night) - 0.5) * 100), 1);
+      /* 불이 꺼진 유리창의 색: 낮에는 하늘빛, 밤에는 어둡게 */
+      --glass: color-mix(in oklab, #a7c9d6, #0a1220 calc(var(--night) * 90%));
+
+      --ink: #111a26;
+      --paper: #f6f1e4;
+      --coral: #ff7a59;
+      --font: "Pretendard Variable", Pretendard, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--font);
+      overflow: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+    :focus-visible { outline: 3px solid #ffd45a; outline-offset: 3px; }
+
+    .app {
+      height: 100vh;
+      height: 100dvh;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+
+    /* ---------- 무대 (하늘 + 도시) ---------- */
+    .stage {
+      position: relative;
+      overflow: hidden;
+      container-type: size;
+      /* 도시 그림의 높이, 그림 한 칸(viewBox 1단위)의 화면 길이 */
+      --ch: min(62cqh, max(35cqw, 48cqh));
+      --su: max(100cqw / 1600, var(--ch) / 560);
+    }
+    .scene { position: absolute; inset: 0; pointer-events: none; }
+
+    /* 하늘: 네 장의 그라데이션을 겹치고 투명도만 --t 로 계산합니다 */
+    .sky { position: absolute; inset: 0; }
+    .sky-night { background: linear-gradient(to top, #1d3556 14%, #11213d 50%, #070d1c 100%); }
+    .sky-day   { background: linear-gradient(to top, #f5ecd5 14%, #cfe5e6 40%, #8ec3dd 100%);
+                 opacity: calc(1 - var(--night)); }
+    .sky-dawn  { background: linear-gradient(to top, #fbc994 14%, #f4a98d 34%, rgba(143, 185, 201, 0) 72%);
+                 opacity: clamp(0, calc(1 - max(var(--t) - 6, 6 - var(--t)) / 1.6), 1); }
+    .sky-dusk  { background: linear-gradient(to top, #f7a64a 14%, #ec6b4b 34%, rgba(75, 99, 132, .55) 60%, rgba(75, 99, 132, 0) 85%);
+                 opacity: clamp(0, calc(1 - max(var(--t) - 18.4, 18.4 - var(--t)) / 2), 1); }
+
+    /* 별: 밤에만 */
+    .stars { position: absolute; inset: 0 0 38% 0;
+             opacity: clamp(0, calc((var(--night) - .35) * 1.8), 1); }
+    .star { position: absolute; width: var(--s); height: var(--s); border-radius: 50%;
+            background: #fff6e0; animation: twinkle 3.2s ease-in-out var(--d) infinite alternate; }
+    @keyframes twinkle { from { opacity: .3; } to { opacity: 1; } }
+
+    /* 해와 달: 반원 호를 따라 움직입니다 (cos, sin 으로 위치 계산) */
+    .orbit {
+      --rx: 46cqw;
+      --ry: 52cqh;
+      --sz: clamp(54px, 8.5cqmin, 92px);
+      position: absolute; left: 50%;
+      bottom: calc(var(--su) * 118);
+      width: var(--sz); height: var(--sz);
+      margin-left: calc(var(--sz) / -2);
+      margin-bottom: calc(var(--sz) / -2);
+      transform: translate(calc(cos(var(--a)) * var(--rx) * -1), calc(sin(var(--a)) * var(--ry) * -1));
+    }
+    .sun  { --a: calc((var(--t) - 6) * 15deg); }    /*  6시에 왼쪽 지평선, 12시에 정상, 18시에 오른쪽 */
+    .moon { --a: calc((var(--t) - 18) * 15deg); }   /* 18시에 떠올라 24시에 정상, 6시에 집니다 */
+    .orbit i { position: absolute; border-radius: 50%; display: block; }
+    .halo { left: 50%; top: 50%; width: 300%; height: 300%; translate: -50% -50%; }
+    .disc { inset: 0; }
+    .sun .halo  { background: radial-gradient(circle, rgba(255, 218, 130, .55) 0, rgba(255, 218, 130, 0) 62%); }
+    .sun .disc  { background: radial-gradient(circle at 40% 38%, #fff8d2 0 28%, #ffd75e 68%, #ffbd3a 100%); }
+    .sun .warm  { inset: 0; background: #ff7a3c;   /* 지평선 가까이에서 주황빛으로 */
+                  opacity: clamp(0, calc(1 - sin(var(--a)) * 2.2), 1); }
+    .moon .halo { background: radial-gradient(circle, rgba(214, 230, 255, .26) 0, rgba(214, 230, 255, 0) 62%); }
+    .moon .disc {
+      background:
+        radial-gradient(circle at 63% 30%, rgba(176, 168, 140, .55) 0 7%, transparent 8%),
+        radial-gradient(circle at 36% 60%, rgba(176, 168, 140, .5) 0 11%, transparent 12%),
+        radial-gradient(circle at 70% 68%, rgba(176, 168, 140, .5) 0 5%, transparent 6%),
+        radial-gradient(circle at 36% 34%, #fbf6e3 0 52%, #e9e1c6 100%);
+    }
+
+    /* 구름: 천천히 흘러가고, 밤에는 거의 사라집니다 */
+    .cloud {
+      position: absolute; left: 0; top: var(--y);
+      width: var(--w); height: calc(var(--w) * .2);
+      border-radius: 999px;
+      background: color-mix(in oklab, color-mix(in oklab, #fff, #ffb98a calc(var(--glow) * 60%)), #3a4f73 calc(var(--night) * 100%));
+      opacity: calc(.92 - var(--night) * .5);
+      animation: drift var(--dur) linear var(--delay) infinite;
+    }
+    .cloud::before, .cloud::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+    .cloud::before { width: 36%; height: 170%; left: 14%; bottom: 28%; }
+    .cloud::after  { width: 26%; height: 125%; left: 50%; bottom: 28%; }
+    @keyframes drift { from { transform: translateX(-40cqw); } to { transform: translateX(135cqw); } }
+
+    /* ---------- 도시 (SVG) ---------- */
+    .city { position: absolute; left: 0; bottom: 0; width: 100%; height: var(--ch); display: block; }
+
+    /* 건물 색: 낮의 고유 색 -> 노을빛을 더하고 -> 밤에는 짙은 남색으로 */
+    .far { fill: color-mix(in oklab, color-mix(in oklab, #b4c4cb, #f0b07a calc(var(--glow) * 30%)), #17263f calc(var(--night) * 92%)); }
+    .b   { fill: color-mix(in oklab, color-mix(in oklab, var(--d), #ff9a52 calc(var(--glow) * 26%)), #0b1322 calc(var(--night) * 88%)); }
+    .b.f { fill: color-mix(in oklab, color-mix(in oklab, var(--d), #ff9a52 calc(var(--glow) * 22%)), #070d18 calc(var(--night) * 90%)); }
+    .t1 { --d: #d8c5ab; } .t2 { --d: #c79b82; } .t3 { --d: #8fa7ab; }
+    .t4 { --d: #e8ddc8; } .t5 { --d: #6e8b95; } .t6 { --d: #b9806a; }
+    .f1 { --d: #b7694f; } .f2 { --d: #3d6a70; } .f3 { --d: #d3ae63; }
+    .f4 { --d: #e7dcc6; } .f5 { --d: #8e5b52; } .f6 { --d: #5f8a73; }
+    .shade { fill: rgba(10, 16, 30, .1); }
+    .dk    { fill: rgba(10, 16, 30, .3); }
+    .line  { fill: none; stroke: rgba(10, 16, 30, .45); stroke-width: 3; stroke-linecap: round; }
+    .blink { fill: #ff5448; animation: blink 1.8s ease-in-out infinite; }
+    @keyframes blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: .15; } }
+
+    /* 창문: 불이 켜지는 시각(--on)과 꺼지는 시각(--off)이 창문마다 정해져 있습니다 */
+    .win { fill: var(--glass); }
+    .win.lit {
+      --L: max(clamp(0, calc((var(--t) - var(--on)) * 3), 1), clamp(0, calc((var(--off) - var(--t)) * 3), 1));
+      fill: color-mix(in oklab, var(--lc) calc(var(--L) * 100%), var(--glass));
+    }
+    .c0 { --lc: #ffd88a; } .c1 { --lc: #ffbb66; } .c2 { --lc: #d7ecff; } .c3 { --lc: #fff0c6; }
+    .door { fill: rgba(10, 16, 30, .32); }
+    .shelf { fill: rgba(10, 16, 30, .13); }
+
+    /* 간판: 낮에는 어두운 판, 밤에는 네온 */
+    .board { fill: #1a212c; }
+    .sign text { font-family: var(--font); font-weight: 800; font-size: 25px; }
+    .nb  { fill: color-mix(in oklab, var(--c), #1a212c 64%); }
+    .nl  { opacity: var(--neon); filter: drop-shadow(0 0 3px var(--c)); }
+    .nl text { fill: var(--c); }
+    .rim { fill: none; stroke: var(--c); stroke-width: 2.5; }
+    .flick.k1 { animation: flick 7s linear infinite; }
+    .flick.k2 { animation: flick 11s linear infinite; }
+    @keyframes flick { 0%, 100% { opacity: 1; } 46% { opacity: 1; } 47% { opacity: .4; } 49% { opacity: 1; }
+                       51% { opacity: .6; } 52% { opacity: 1; } }
+
+    /* 길 */
+    .walk { fill: color-mix(in oklab, #cfc7b8, #141b26 calc(var(--night) * 85%)); }
+    .curb { fill: color-mix(in oklab, #a8a091, #0c1119 calc(var(--night) * 85%)); }
+    .road { fill: color-mix(in oklab, #4b525a, #0f141b calc(var(--night) * 80%)); }
+    .dash { stroke: color-mix(in oklab, #efe4c2, #6c7075 calc(var(--night) * 50%)); stroke-width: 3; stroke-dasharray: 26 22; fill: none; }
+    .tree  { fill: color-mix(in oklab, #6a9a5c, #0f1d1a calc(var(--night) * 86%)); }
+    .trunk { fill: color-mix(in oklab, #6b5543, #0d1118 calc(var(--night) * 85%)); }
+
+    /* 가로등 */
+    .pole { fill: none; stroke: #2b323a; stroke-width: 4; stroke-linecap: round; }
+    .lh   { fill: color-mix(in oklab, #ffe6a8 calc(var(--lamp) * 100%), #4c555d); }
+    .cone { fill: url(#cone); opacity: var(--lamp); }
+    .pool { fill: url(#pool); opacity: var(--lamp); }
+
+    /* 자동차: 도로를 계속 지나가고, 어두워지면 전조등이 켜집니다 */
+    .drive { transform: translateX(var(--x0)); animation: drive-r var(--dur) linear var(--delay) infinite; }
+    .drive.rev { animation-name: drive-l; }
+    @keyframes drive-r { from { transform: translateX(-320px); } to { transform: translateX(1900px); } }
+    @keyframes drive-l { from { transform: translateX(1900px); } to { transform: translateX(-420px); } }
+    .car-body  { fill: var(--body); }
+    .car-glass { fill: rgba(20, 30, 44, .78); }
+    .car-wheel { fill: #14171c; }
+    .car-hub   { fill: #8a9099; }
+    .car-tail  { fill: #d2392f; }
+    .car-head  { fill: color-mix(in oklab, #fff3c4 calc(var(--lamp) * 100%), #cfd6d8); }
+    .beam      { fill: url(#beam); opacity: var(--lamp); }
+
+    /* ---------- 안내 글상자 ---------- */
+    .intro {
+      position: absolute; z-index: 5; top: 14px; left: 14px;
+      width: max-content; max-width: min(440px, calc(100% - 28px));
+      padding: 8px 18px 14px; border-radius: 16px;
+      background: color-mix(in srgb, rgba(252, 248, 238, .84), rgba(11, 19, 32, .74) calc(var(--dark) * 100%));
+      color: color-mix(in srgb, #1b2530, #f6f1e4 calc(var(--dark) * 100%));
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      transition: background-color .4s, color .4s;
+    }
+    .back {
+      display: inline-flex; align-items: center; gap: 4px; min-height: 32px;
+      font-size: 13px; font-weight: 600; color: inherit; opacity: .78; text-decoration: none;
+    }
+    .back:hover { opacity: 1; text-decoration: underline; }
+    .back svg { width: 14px; height: 14px; }
+    .eyebrow { margin: 2px 0 0; font-size: 13px; font-weight: 700;
+               color: color-mix(in srgb, #b8452a, #ffb08a calc(var(--dark) * 100%)); transition: color .4s; }
+    h1 { margin: 2px 0 0; font-size: clamp(22px, 1.6vw + 15px, 36px); line-height: 1.2; font-weight: 800; letter-spacing: -.02em; word-break: keep-all; text-wrap: balance; }
+    .lead { margin: 8px 0 0; font-size: 14px; line-height: 1.5; opacity: .85; word-break: keep-all; }
+
+    /* ---------- 아래 조작 막대 ---------- */
+    .bar {
+      background: var(--ink); border-top: 1px solid rgba(255, 255, 255, .09);
+      padding: 12px 16px max(14px, env(safe-area-inset-bottom));
+    }
+    .bar-in {
+      max-width: 1040px; margin: 0 auto;
+      display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "cap cap cap" "play slider clock";
+      gap: 6px 22px; align-items: center;
+    }
+    .caption { grid-area: cap; margin: 0; font-size: 15px; line-height: 1.5; color: #cdd5df; min-height: 1.5em; word-break: keep-all; }
+    .play {
+      grid-area: play; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-width: 132px; height: 46px; padding: 0 20px; border: 0; border-radius: 999px;
+      background: var(--coral); color: var(--ink); font: 700 16px/1 var(--font); cursor: pointer;
+      transition: transform .15s, background-color .15s;
+    }
+    .play:hover { background: #ff8e72; }
+    .play:active { transform: scale(.97); }
+    .play svg { width: 16px; height: 16px; fill: currentColor; }
+    .play .i-pause, .play[data-on="1"] .i-play { display: none; }
+    .play[data-on="1"] .i-pause { display: block; }
+
+    .slider-wrap { grid-area: slider; min-width: 0; }
+    .slider {
+      -webkit-appearance: none; appearance: none; display: block;
+      width: 100%; height: 32px; margin: 0; background: transparent; cursor: pointer;
+      --daybar: linear-gradient(90deg, #0e1a33 0%, #0e1a33 19%, #f3a073 27%, #8fcbe2 33%, #bfe6ef 50%, #8fcbe2 66%,
+                                #f5a24c 74%, #d9644a 79%, #16264a 87%, #0e1a33 100%);
+    }
+    .slider::-webkit-slider-runnable-track { height: 12px; border-radius: 99px; background: var(--daybar); }
+    .slider::-moz-range-track { height: 12px; border-radius: 99px; background: var(--daybar); }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 30px; height: 30px; margin-top: -9px; border-radius: 50%;
+      background: #fff4d6; border: 4px solid var(--coral); box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+    }
+    .slider::-moz-range-thumb {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: #fff4d6; border: 4px solid var(--coral); box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+    }
+    .slider:focus-visible { outline: none; }
+    .slider:focus-visible::-webkit-slider-thumb { outline: 3px solid #ffd45a; outline-offset: 2px; }
+    .slider:focus-visible::-moz-range-thumb { outline: 3px solid #ffd45a; outline-offset: 2px; }
+    .ticks { position: relative; height: 18px; margin-top: 2px; font-size: 12px; color: #9aa5b3; }
+    .ticks span { position: absolute; top: 0; white-space: nowrap; left: calc(15px + (100% - 30px) * var(--p)); transform: translateX(-50%); }
+
+    .clock { grid-area: clock; display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
+    .clock-time { font-size: 30px; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+    .clock-part { display: inline-block; min-width: 3.2em; text-align: center; padding: 5px 12px; border-radius: 999px;
+                  font-size: 14px; font-weight: 700; color: var(--ink); background: #f6a56b; }
+    [data-part="아침"] .clock-part { background: #f8d38e; }
+    [data-part="낮"]   .clock-part { background: #a9dcef; }
+    [data-part="저녁"] .clock-part { background: #f6a56b; }
+    [data-part="밤"]   .clock-part { background: #9fb8e0; }
+
+    @media (max-width: 640px) {
+      .bar-in { grid-template-columns: 1fr auto; grid-template-areas: "cap cap" "clock play" "slider slider"; gap: 8px 12px; }
+      .caption { font-size: 14px; min-height: 3em; }
+      .clock { justify-content: flex-start; }
+      .clock-time { font-size: 28px; }
+      .intro { top: 10px; left: 10px; max-width: calc(100% - 20px); padding: 6px 16px 12px; }
+    }
+    @media (max-height: 560px) { .lead { display: none; } }
+
+    /* 움직임 줄이기 설정: 구름, 별, 자동차, 깜빡임을 모두 멈춥니다 */
+    @media (prefers-reduced-motion: reduce) {
+      .cloud, .star, .drive, .flick, .blink { animation: none !important; }
+      .cloud { transform: translateX(calc(var(--x0, 20) * 1cqw)); }
+      .play, .intro, .eyebrow { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" data-part="저녁">
+    <div class="stage">
+      <div class="scene" role="img" aria-label="건물 창문과 가로등, 도로 위 자동차가 보이는 도시 풍경. 아래 슬라이더로 시간을 바꾸면 하늘과 불빛이 달라집니다.">
+        <div class="sky sky-night"></div>
+        <div class="sky sky-day"></div>
+        <div class="sky sky-dawn"></div>
+        <div class="sky sky-dusk"></div>
+        <div class="stars" id="stars"></div>
+
+        <div class="orbit sun"><i class="halo"></i><i class="disc"></i><i class="warm"></i></div>
+        <div class="orbit moon"><i class="halo"></i><i class="disc"></i></div>
+
+        <div class="cloud" style="--y:13%;--w:clamp(110px,20cqw,300px);--dur:130s;--delay:-34s;--x0:62"></div>
+        <div class="cloud" style="--y:25%;--w:clamp(80px,14cqw,210px);--dur:170s;--delay:-120s;--x0:18"></div>
+        <div class="cloud" style="--y:35%;--w:clamp(96px,17cqw,250px);--dur:150s;--delay:-70s;--x0:84"></div>
+
+        <svg class="city" viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="beam" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#fff3c4" stop-opacity=".8"/><stop offset="1" stop-color="#fff3c4" stop-opacity="0"/>
+            </linearGradient>
+            <radialGradient id="pool">
+              <stop offset="0" stop-color="#ffd98a" stop-opacity=".7"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="cone" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#ffe3a0" stop-opacity=".4"/><stop offset="1" stop-color="#ffe3a0" stop-opacity=".03"/>
+            </linearGradient>
+            <!-- 자동차 한 대: 오른쪽을 보고 있고, 바퀴 바닥이 y=0 입니다 -->
+            <g id="car">
+              <path class="beam" d="M92 -17 L280 -36 L280 8 L92 -9Z"/>
+              <path class="car-body" d="M3 -9 C3 -17 8 -19 15 -20 L30 -21 L41 -34 C43 -36 46 -37 49 -37 H67 C71 -37 74 -35 76 -32 L83 -21 L91 -19 C94 -18 95 -14 95 -10 V-8 C95 -6 93 -5 91 -5 H7 C4 -5 3 -6 3 -9Z"/>
+              <path class="car-glass" d="M46 -33 H66 C68 -33 70 -32 71 -30 L76 -22 H41 Z"/>
+              <circle class="car-wheel" cx="24" cy="-8" r="8"/><circle class="car-hub" cx="24" cy="-8" r="3"/>
+              <circle class="car-wheel" cx="75" cy="-8" r="8"/><circle class="car-hub" cx="75" cy="-8" r="3"/>
+              <rect class="car-tail" x="3" y="-17" width="5" height="5" rx="1"/>
+              <rect class="car-head" x="89" y="-18" width="6" height="5" rx="1.5"/>
+            </g>
+          </defs>
+
+          <g class="far" id="far"></g>
+          <g id="mid"></g>
+          <g id="front"></g>
+
+          <!-- 인도와 도로 -->
+          <rect class="walk" x="-50" y="452" width="1700" height="30"/>
+          <rect class="curb" x="-50" y="478" width="1700" height="5"/>
+          <rect class="road" x="-50" y="483" width="1700" height="90"/>
+          <path class="dash" d="M-50 528H1650"/>
+
+          <g id="trees"></g>
+          <g id="lamps"></g>
+
+          <g id="cars">
+            <g class="drive" style="--x0:380px;--dur:21s;--delay:-6s"><g transform="translate(0 515) scale(.92)"><use href="#car" style="--body:#e8624c"/></g></g>
+            <g class="drive" style="--x0:1180px;--dur:21s;--delay:-16.5s"><g transform="translate(0 515) scale(.92)"><use href="#car" style="--body:#efe6d2"/></g></g>
+            <g class="drive rev" style="--x0:900px;--dur:15s;--delay:-4s"><g transform="translate(104 557) scale(-1.1 1.1)"><use href="#car" style="--body:#2f8f8a"/></g></g>
+            <g class="drive rev" style="--x0:200px;--dur:15s;--delay:-11.5s"><g transform="translate(104 557) scale(-1.1 1.1)"><use href="#car" style="--body:#e3b04b"/></g></g>
+          </g>
+        </svg>
+      </div>
+
+      <header class="intro">
+        <a class="back" href="../../#topics" aria-label="교육자료로 돌아가기">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+          교육자료로 돌아가기
+        </a>
+        <p class="eyebrow">해오름시</p>
+        <h1>하루가 켜지고 꺼지는 도시</h1>
+        <p class="lead">아래 슬라이더로 시간을 움직여 보세요. 해오름시의 하루가 펼쳐집니다.</p>
+      </header>
+    </div>
+
+    <section class="bar" aria-label="시간 조절">
+      <div class="bar-in">
+        <p class="caption" id="caption"></p>
+        <button class="play" id="play" type="button" data-on="0" aria-label="자동 재생 시작, 하루를 20초에 재생">
+          <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 1.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4L4.7 1.1a.8.8 0 0 0-1.2.7z"/></svg>
+          <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3.6" height="12" rx="1"/><rect x="9.4" y="2" width="3.6" height="12" rx="1"/></svg>
+          <span id="play-text">자동 재생</span>
+        </button>
+        <div class="slider-wrap">
+          <input class="slider" id="time" type="range" min="0" max="24" step="0.05" value="19.6" aria-label="하루 중 시각, 0시부터 24시까지">
+          <div class="ticks" aria-hidden="true">
+            <span style="--p:0">0시</span><span style="--p:.25">6시</span><span style="--p:.5">12시</span><span style="--p:.75">18시</span><span style="--p:1">24시</span>
+          </div>
+        </div>
+        <div class="clock" aria-hidden="true">
+          <span class="clock-time" id="clock-time">19:36</span>
+          <span class="clock-part" id="clock-part">저녁</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <noscript><p style="position:fixed;top:12px;right:12px;margin:0;padding:8px 12px;background:#f6f1e4;color:#111a26;border-radius:8px">이 화면은 JavaScript가 켜져 있어야 움직입니다.</p></noscript>
+
+  <script>
+    (() => {
+      'use strict';
+      const root = document.documentElement;
+      const app = document.querySelector('.app');
+      const $ = (id) => document.getElementById(id);
+      const slider = $('time'), playBtn = $('play'), playText = $('play-text');
+      const timeEl = $('clock-time'), partEl = $('clock-part'), capEl = $('caption');
+
+      /* ---------- 1. 결정적 난수 ----------
+         같은 시드면 항상 같은 값이 나옵니다. 새로고침해도 도시 모양이 그대로입니다. */
+      const rng = (seed) => {
+        let a = seed >>> 0;
+        return () => {
+          a = (a + 0x6D2B79F5) >>> 0;
+          let t = a;
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      };
+
+      /* ---------- 2. 도시 만들기 ---------- */
+      const GROUND = 452;   // 건물이 서 있는 바닥선 (viewBox 기준 y)
+
+      // [x, 너비, 높이]  멀리 보이는 흐릿한 건물
+      const FAR = [[0,100,130],[90,120,150],[200,90,120],[290,130,150],[410,100,140],[500,110,280],[600,90,335],
+                   [690,100,265],[780,110,350],[880,90,290],[960,120,320],[1070,100,150],[1160,120,135],
+                   [1270,100,150],[1360,130,125],[1480,140,150]];
+      // [x, 너비, 높이, 색 번호, 지붕 모양]  가운데에 높은 건물이 모여 있습니다
+      const MID = [[-20,100,125,3,'flat'],[80,110,138,1,'flat'],[190,120,128,4,'slant'],[310,110,134,2,'flat'],
+                   [420,105,126,5,'flat'],
+                   [525,95,232,1,'step'],[620,95,298,5,'tank'],[715,170,372,6,'sign'],[885,100,316,3,'flat'],
+                   [985,100,244,2,'spire'],
+                   [1085,110,132,4,'flat'],[1195,100,126,1,'flat'],[1295,110,138,5,'slant'],
+                   [1405,100,128,3,'flat'],[1505,110,134,2,'flat']];
+      // [x, 너비, 높이, 색 번호, 간판 글자, 네온 색]  길가의 가게
+      const SHOPS = [[0,210,106,1,'카페','#4fe0c6'],[210,200,118,2,'치킨','#ff6a55'],[410,190,104,3,'서점','#ffc04a'],
+                     [600,260,114,4,'약국','#7fe36c'],[860,200,108,5,'라멘','#ff8a4d'],[1060,210,120,6,'꽃집','#ff7fa8'],
+                     [1270,170,106,1,'빵집','#ffd45a'],[1440,160,112,2,'분식','#5cc8ff']];
+
+      const f = (n) => n.toFixed(2);
+
+      // 간판 한 개: 꺼진 글자 + 켜진 네온(밤에만 보임)
+      const sign = (cx, y, w, text, color, k) =>
+        `<g class="sign" style="--c:${color}"><rect class="board" x="${cx - w / 2}" y="${y}" width="${w}" height="36" rx="6"/>` +
+        `<text class="nb" x="${cx}" y="${y + 27}" text-anchor="middle">${text}</text>` +
+        `<g class="flick k${k}"><g class="nl"><rect class="rim" x="${cx - w / 2 + 3}" y="${y + 3}" width="${w - 6}" height="30" rx="4"/>` +
+        `<text x="${cx}" y="${y + 27}" text-anchor="middle">${text}</text></g></g></g>`;
+
+      function drawFar() {
+        return FAR.map(([x, w, h]) => `<rect x="${x}" y="${GROUND - h}" width="${w + 1}" height="${h + 4}"/>`).join('');
+      }
+
+      function drawMid() {
+        const r = rng(2024);
+        let out = '';
+        for (const [x, w, h, tone, roof] of MID) {
+          const top = GROUND - h, cx = x + w / 2;
+          out += `<g class="b t${tone}"><rect x="${x}" y="${top}" width="${w}" height="${h + 4}"/>`;
+          if (roof === 'step')  out += `<rect x="${x + w * .2}" y="${top - 22}" width="${w * .6}" height="23"/>`;
+          if (roof === 'slant') out += `<path d="M${x} ${top}L${x + w} ${top - 28}V${top}Z"/>`;
+          if (roof === 'tank')  out += `<rect class="dk" x="${x + w * .55}" y="${top - 26}" width="26" height="27" rx="3"/><path class="dk" d="M${x + w * .55 - 3} ${top - 26}h32l-16-12z"/>`;
+          if (roof === 'spire') out += `<path class="line" d="M${cx} ${top}V${top - 60}"/><circle class="blink" cx="${cx}" cy="${top - 62}" r="3.5"/>`;
+          if (roof === 'sign')  out += `<path class="line" d="M${cx - 38} ${top}V${top - 14}M${cx + 38} ${top}V${top - 14}"/>` + sign(cx, top - 50, 124, '해오름', '#ffc247', 0);
+          out += `<rect class="shade" x="${x + w * .8}" y="${top}" width="${w * .2}" height="${h + 4}"/>`;
+
+          // 창문 격자. 한 칸마다 켜지는 시각(on)과 꺼지는 시각(off)을 미리 정해 둡니다.
+          const cols = Math.floor((w - 16) / 20), rows = Math.floor((h - 34) / 26);
+          const ox = x + (w - cols * 20) / 2 + 4.5, bias = r() * .5;
+          for (let j = 0; j < rows; j++) {
+            for (let i = 0; i < cols; i++) {
+              const wx = ox + i * 20, wy = top + 20 + j * 26;
+              if (wy + 15 > GROUND - 100) continue;                     // 가게에 가려지는 아래쪽은 생략
+              if (r() < .3) { out += `<rect class="win" x="${f(wx)}" y="${wy}" width="11" height="15" rx="1.5"/>`; continue; }  // 끝까지 꺼져 있는 창
+              const o = Math.min(1, bias + r() * .5);
+              const on = 17.2 + o * 3.4, off = 4.4 + r() * 2.8;        // 17시 12분 ~ 20시 36분 사이에 하나씩 켜짐
+              const c = r() < .62 ? 0 : r() < .55 ? 1 : r() < .6 ? 2 : 3;
+              out += `<rect class="win lit c${c}" style="--on:${f(on)};--off:${f(off)}" x="${f(wx)}" y="${wy}" width="11" height="15" rx="1.5"/>`;
+            }
+          }
+          out += '</g>';
+        }
+        return out;
+      }
+
+      function drawFront() {
+        const r = rng(11);
+        return SHOPS.map(([x, w, h, tone, text, color], idx) => {
+          const top = GROUND - h, cx = x + w / 2;
+          const on = 16.8 + r() * 1.4, off = 5 + r() * 1.2;            // 가게 유리창은 가장 먼저 켜집니다
+          const wy = top + 56, wh = GROUND - wy - 8, st = `--on:${f(on)};--off:${f(off)}`;
+          return `<g class="b f f${tone}"><rect x="${x}" y="${top}" width="${w + 1}" height="${h + 4}"/>` +
+            `<rect class="shade" x="${x + w * .86}" y="${top}" width="${w * .14}" height="${h + 4}"/>` +
+            `<rect class="win lit c0" style="${st}" x="${x + 14}" y="${wy}" width="${f(w * .5)}" height="${wh}" rx="3"/>` +
+            `<rect class="win lit c0" style="${st}" x="${f(x + 22 + w * .5)}" y="${wy}" width="${f(w * .2)}" height="${wh}" rx="3"/>` +
+            `<rect class="shelf" x="${x + 14}" y="${f(wy + wh * .6)}" width="${f(w * .7 + 8)}" height="3"/>` +
+            `<rect class="door" x="${x + w - 40}" y="${wy}" width="26" height="${wh}" rx="2"/>` +
+            sign(cx, top + 10, 100, text, color, idx % 3) + '</g>';
+        }).join('');
+      }
+
+      function drawStreet() {
+        const trees = [70, 330, 520, 730, 960, 1180, 1350, 1540].map((x, i) =>
+          `<g class="tree"><rect class="trunk" x="${x - 3}" y="436" width="6" height="44"/>` +
+          `<circle cx="${x}" cy="426" r="${20 + (i % 3) * 3}"/><circle cx="${x - 13}" cy="436" r="14"/><circle cx="${x + 13}" cy="437" r="15"/></g>`).join('');
+        const lamps = [205, 600, 860, 1060, 1440].map((x) =>
+          `<g><path class="cone" d="M${x + 34} 389L${x + 6} 481H${x + 62}Z"/><ellipse class="pool" cx="${x + 34}" cy="482" rx="58" ry="7"/>` +
+          `<path class="pole" d="M${x} 482V396Q${x} 384 ${x + 13} 384H${x + 30}"/><rect class="lh" x="${x + 24}" y="383" width="20" height="6" rx="3"/></g>`).join('');
+        $('trees').innerHTML = trees;
+        $('lamps').innerHTML = lamps;
+      }
+
+      function drawStars() {
+        const r = rng(99);
+        let out = '';
+        for (let i = 0; i < 80; i++) {
+          const s = 1 + r() * 1.8;
+          out += `<i class="star" style="left:${f(r() * 100)}%;top:${f(Math.pow(r(), 1.25) * 100)}%;--s:${f(s)}px;--d:${f(-r() * 4)}s"></i>`;
+        }
+        $('stars').innerHTML = out;
+      }
+
+      $('far').innerHTML = drawFar();
+      $('mid').innerHTML = drawMid();
+      $('front').innerHTML = drawFront();
+      drawStreet();
+      drawStars();
+
+      /* ---------- 3. 시간 -> 화면 ---------- */
+      const partOf = (h) => (h >= 5.5 && h < 11) ? '아침' : (h >= 11 && h < 17) ? '낮' : (h >= 17 && h < 20) ? '저녁' : '밤';
+      const CAPTIONS = [
+        [0, '깊은 밤입니다. 가로등과 몇몇 창문만 깨어 있습니다.'],
+        [4.5, '새벽빛이 번지고, 창문의 불이 하나둘 꺼집니다.'],
+        [6.5, '해가 건물 위로 오르고, 거리가 분주해집니다.'],
+        [10, '한낮입니다. 도로 위로 차들이 쉬지 않고 지나갑니다.'],
+        [16.5, '해가 기울고 노을이 번집니다. 첫 불빛이 켜집니다.'],
+        [18.5, '하늘이 어두워지면서 창문마다 불이 하나씩 켜집니다.'],
+        [20.5, '밤입니다. 네온 간판이 켜지고, 차들은 전조등으로 길을 비춥니다.']
+      ];
+      const pad = (n) => String(n).padStart(2, '0');
+      let t = 0, shown = { time: '', part: '', cap: -1 };
+
+      function setT(v) {
+        t = Math.min(24, Math.max(0, v));
+        root.style.setProperty('--t', t.toFixed(3));        // 화면의 모든 변화는 이 한 줄에서 시작됩니다
+
+        const total = Math.round(t * 60), hh = Math.floor(total / 60), mm = total % 60;
+        const label = `${pad(hh)}:${pad(mm)}`;
+        if (label === shown.time) return;
+        shown.time = label;
+        const part = partOf(t % 24);
+        const h12 = (hh % 12) || 12;
+        timeEl.textContent = label;
+        slider.setAttribute('aria-valuetext', `${hh % 24 < 12 ? '오전' : '오후'} ${h12}시${mm ? ` ${mm}분` : ''}, ${part}`);
+        if (part !== shown.part) { shown.part = part; partEl.textContent = part; app.dataset.part = part; }
+        let ci = 0;
+        CAPTIONS.forEach(([from], i) => { if (t >= from) ci = i; });
+        if (ci !== shown.cap) { shown.cap = ci; capEl.textContent = CAPTIONS[ci][1]; }
+      }
+
+      /* ---------- 4. 슬라이더와 자동 재생 ---------- */
+      let playing = false, last = 0;
+      const DAY_SECONDS = 20;                                  // 하루를 20초에
+
+      function frame(now) {
+        if (!playing) return;
+        const dt = Math.min(0.1, (now - last) / 1000);
+        last = now;
+        const next = t + dt * 24 / DAY_SECONDS;
+        setT(next >= 24 ? next - 24 : next);
+        slider.value = t;
+        requestAnimationFrame(frame);
+      }
+      function play(on) {
+        playing = on;
+        playBtn.dataset.on = on ? '1' : '0';
+        playText.textContent = on ? '정지' : '자동 재생';
+        playBtn.setAttribute('aria-label', on ? '정지, 자동 재생 멈추기' : '자동 재생 시작, 하루를 20초에 재생');
+        if (on) { last = performance.now(); requestAnimationFrame(frame); }
+      }
+
+      slider.addEventListener('input', () => { play(false); setT(parseFloat(slider.value)); });
+      playBtn.addEventListener('click', () => play(!playing));
+
+      // 주소 뒤에 ?t=21 처럼 붙이면 그 시각으로 시작합니다 (확인용)
+      const q = parseFloat(new URLSearchParams(location.search).get('t'));
+      const start = Number.isFinite(q) ? q : 19.6;
+      slider.value = start;
+      setT(start);
+    })();
+  </script>
+</body>
+</html>

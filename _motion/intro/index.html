@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="ko" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>AI 사이트 교실 소개 모션</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Pretendard Variable";
+        font-weight: 45 920;
+        font-style: normal;
+        font-display: block;
+        src: url("assets/PretendardVariable.woff2") format("woff2-variations");
+      }
+      :root {
+        --bg: #0e1014;
+        --surface: #151820;
+        --surface-2: #1c2029;
+        --line: #2a2f3b;
+        --text: #eceef3;
+        --text-2: #b6bcc8;
+        --text-3: #8e95a3;
+        --accent: #8ea4ff;
+        --accent-ink: #0b1030;
+        --accent-soft: #1b2447;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      body {
+        font-family: "Pretendard Variable", sans-serif;
+        color: var(--text);
+        word-break: keep-all;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      .abs {
+        position: absolute;
+      }
+
+      /* persistent background: dot grid drifts exactly one pitch (48px) so it loops */
+      #bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      #grid {
+        position: absolute;
+        left: -48px;
+        top: -48px;
+        width: 2016px;
+        height: 1176px;
+        background-image: radial-gradient(circle, #2a2f3b 1.6px, transparent 2.2px);
+        background-size: 48px 48px;
+        opacity: 0.6;
+      }
+      #vig {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 46%, rgba(14, 16, 20, 0) 30%, #0e1014 100%);
+      }
+
+      /* progress strip */
+      #pg {
+        position: absolute;
+        left: 120px;
+        right: 120px;
+        bottom: 56px;
+        height: 4px;
+        display: flex;
+        gap: 12px;
+        opacity: 0;
+      }
+      #pg .pg {
+        position: relative;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--line);
+        overflow: hidden;
+      }
+      #pg .pg i {
+        position: absolute;
+        inset: 0;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+      }
+      .kicker {
+        position: absolute;
+        left: 120px;
+        top: 84px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 32px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: var(--text-3);
+      }
+      .kicker .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .ch {
+        display: inline-block;
+        transform-origin: 0% 100%;
+      }
+      .sp {
+        display: inline-block;
+        width: 0.26em;
+      }
+      .acc {
+        color: var(--accent);
+      }
+
+      /* scene 1 */
+      #s1 .title {
+        position: absolute;
+        left: 120px;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        font-size: 164px;
+        font-weight: 800;
+        line-height: 1.18;
+        letter-spacing: -0.04em;
+      }
+      #s1 .ln {
+        display: block;
+        white-space: nowrap;
+      }
+      #s1 .bar {
+        width: 200px;
+        height: 12px;
+        margin-top: 44px;
+        border-radius: 6px;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+
+      /* scene 2 */
+      .steps {
+        position: absolute;
+        left: 120px;
+        top: 236px;
+        width: 1680px;
+        height: 260px;
+      }
+      .step {
+        position: absolute;
+        top: 0;
+        width: 420px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+      }
+      .node {
+        position: relative;
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        background: var(--surface-2);
+        border: 3px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 46px;
+        font-weight: 800;
+        color: var(--text-3);
+      }
+      .ping {
+        position: absolute;
+        left: -3px;
+        top: -3px;
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        border: 3px solid var(--accent);
+        opacity: 0;
+      }
+      .lbl {
+        font-size: 54px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        white-space: nowrap;
+        color: var(--text-3);
+      }
+      .seg {
+        position: absolute;
+        top: 49px;
+        width: 288px;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--line);
+        overflow: hidden;
+      }
+      .seg i {
+        position: absolute;
+        inset: 0;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+      #win {
+        position: absolute;
+        left: 340px;
+        top: 560px;
+        width: 1240px;
+        height: 330px;
+        border-radius: 18px;
+        background: var(--surface);
+        border: 2px solid var(--line);
+        overflow: hidden;
+      }
+      .wbar {
+        height: 92px;
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        padding: 0 28px;
+        background: var(--surface-2);
+        border-bottom: 2px solid var(--line);
+      }
+      .wdots {
+        display: flex;
+        gap: 10px;
+      }
+      .wdots b {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #3a4150;
+      }
+      .url {
+        position: relative;
+        flex: 1;
+        height: 56px;
+        border-radius: 28px;
+        background: var(--bg);
+        border: 2px solid var(--line);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        gap: 14px;
+        font-size: 36px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        color: var(--text);
+      }
+      .typed {
+        position: relative;
+        display: inline-block;
+        white-space: nowrap;
+        height: 44px;
+        line-height: 44px;
+      }
+      .uc {
+        position: relative;
+        display: inline-block;
+        opacity: 0;
+      }
+      .uc i {
+        position: absolute;
+        right: -4px;
+        top: 3px;
+        width: 3px;
+        height: 38px;
+        background: var(--accent);
+        opacity: 0;
+      }
+      #caret0 {
+        position: absolute;
+        left: -1px;
+        top: 3px;
+        width: 3px;
+        height: 38px;
+        background: var(--accent);
+        opacity: 0;
+      }
+      .wbody {
+        position: relative;
+        padding: 34px 48px 20px;
+        display: flex;
+        gap: 56px;
+      }
+      .wcol {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .sk {
+        position: relative;
+        height: 22px;
+        border-radius: 11px;
+        background: var(--surface-2);
+        overflow: hidden;
+      }
+      .sk i {
+        position: absolute;
+        inset: 0;
+        background: var(--accent-soft);
+        transform-origin: left center;
+      }
+      .sk.h {
+        height: 38px;
+        border-radius: 19px;
+        width: 62%;
+      }
+      .sk.h i {
+        background: var(--accent);
+      }
+      #chip {
+        position: absolute;
+        right: 48px;
+        bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 52px;
+        padding: 0 24px 0 18px;
+        border-radius: 26px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 28px;
+        font-weight: 700;
+        opacity: 0;
+      }
+
+      /* scene 3 */
+      #stage {
+        position: absolute;
+        left: 320px;
+        top: 170px;
+        width: 1280px;
+        height: 640px;
+        border-radius: 24px;
+        overflow: hidden;
+        background: var(--surface);
+        border: 2px solid var(--line);
+      }
+      .ex {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      #edge {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 6px;
+        height: 100%;
+        background: var(--accent);
+        opacity: 0;
+      }
+      #caprow {
+        position: absolute;
+        left: 320px;
+        top: 850px;
+        width: 1280px;
+        height: 100px;
+      }
+      .cap {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        align-items: baseline;
+        gap: 28px;
+        white-space: nowrap;
+        opacity: 0;
+      }
+      .cap .idx {
+        font-size: 40px;
+        font-weight: 700;
+        color: var(--accent);
+        font-variant-numeric: tabular-nums;
+      }
+      .cap .ttl {
+        font-size: 64px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+      .ticks {
+        position: absolute;
+        right: 0;
+        top: 38px;
+        display: flex;
+        gap: 12px;
+      }
+      .tk {
+        width: 72px;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--line);
+      }
+
+      /* ex A: strawberry */
+      #exA {
+        background: linear-gradient(180deg, #252c40 0%, #151820 100%);
+      }
+      #berry {
+        position: absolute;
+        left: 450px;
+        top: 66px;
+        width: 380px;
+        height: 486px;
+      }
+      #bfloat {
+        width: 100%;
+        height: 100%;
+      }
+      #bshadow {
+        position: absolute;
+        left: 490px;
+        top: 556px;
+        width: 300px;
+        height: 36px;
+        border-radius: 50%;
+        background: #080a10;
+        opacity: 0.55;
+      }
+      .spk {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: var(--accent);
+        border-radius: 3px;
+        opacity: 0;
+      }
+
+      /* ex B: deep sea */
+      #exB {
+        background: linear-gradient(180deg, #0f1a3d 0%, #0a1126 62%, #070b1a 100%);
+        clip-path: inset(0% 100% 0% 0%);
+      }
+      .ray {
+        position: absolute;
+        top: -80px;
+        width: 150px;
+        height: 820px;
+        background: linear-gradient(180deg, rgba(142, 164, 255, 0.16), rgba(142, 164, 255, 0));
+        transform-origin: top center;
+      }
+      .bub {
+        position: absolute;
+        top: 640px;
+        border-radius: 50%;
+        border: 3px solid rgba(142, 164, 255, 0.8);
+        background: rgba(142, 164, 255, 0.14);
+      }
+      #fish {
+        position: absolute;
+        left: 0;
+        top: 250px;
+        width: 160px;
+        height: 80px;
+      }
+
+      /* ex C: city */
+      #exC {
+        background: #000;
+        clip-path: inset(0% 100% 0% 0%);
+      }
+      #skyDay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, #5f82c8 0%, #bcd0f2 100%);
+      }
+      #skyNight {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, #080b22 0%, #1b2447 100%);
+        opacity: 0;
+      }
+      #sun {
+        position: absolute;
+        left: 880px;
+        top: 96px;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: #ffd88a;
+      }
+      #moon {
+        position: absolute;
+        left: 960px;
+        top: 90px;
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: #eceef3;
+        opacity: 0;
+      }
+      .cloud {
+        position: absolute;
+        height: 40px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.85);
+      }
+      .star {
+        position: absolute;
+        border-radius: 50%;
+        background: #eceef3;
+        opacity: 0;
+      }
+      .bld {
+        position: absolute;
+        bottom: 0;
+        background: #3b4d78;
+      }
+      .w2 {
+        position: absolute;
+        width: 24px;
+        height: 32px;
+        border-radius: 3px;
+        background: #7d93c4;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="14"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="bg">
+        <div id="grid" data-layout-allow-overflow></div>
+        <div id="vig"></div>
+      </div>
+
+      <!-- 0-3s title -->
+      <section id="s1" class="clip scene" data-start="0" data-duration="3" data-track-index="1">
+        <div class="kicker"><span class="dot"></span><span>AI 사이트 교실</span></div>
+        <h1 class="title">
+          <span id="l1" class="ln">AI와 함께,</span><span id="l2" class="ln"><span class="acc">직접 만지는</span> 내 사이트</span>
+          <div class="bar"></div>
+        </h1>
+      </section>
+
+      <!-- 3-8s four steps + address bar -->
+      <section id="s2" class="clip scene" data-start="3" data-duration="5" data-track-index="1">
+        <div class="kicker"><span class="dot"></span><span>공개까지 네 단계</span></div>
+        <div class="steps">
+          <div class="seg" style="left: 276px"><i></i></div>
+          <div class="seg" style="left: 696px"><i></i></div>
+          <div class="seg" style="left: 1116px"><i></i></div>
+          <div class="step" style="left: 0px">
+            <div class="node">1<span class="ping"></span></div>
+            <div class="lbl">Claude 앱 설치</div>
+          </div>
+          <div class="step" style="left: 420px">
+            <div class="node">2<span class="ping"></span></div>
+            <div class="lbl">GitHub 연결</div>
+          </div>
+          <div class="step" style="left: 840px">
+            <div class="node">3<span class="ping"></span></div>
+            <div class="lbl">Vercel 배포</div>
+          </div>
+          <div class="step" style="left: 1260px">
+            <div class="node">4<span class="ping"></span></div>
+            <div class="lbl">내 주소로 공개</div>
+          </div>
+        </div>
+        <div id="win">
+          <div class="wbar">
+            <div class="wdots"><b></b><b></b><b></b></div>
+            <div class="url">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8e95a3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="11" width="14" height="10" rx="2.5"></rect>
+                <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+              </svg>
+              <span id="typed" class="typed"><i id="caret0"></i>https://my-city.vercel.app</span>
+            </div>
+          </div>
+          <div class="wbody">
+            <div class="wcol">
+              <div class="sk h"><i class="fill"></i></div>
+              <div class="sk" style="width: 88%"><i class="fill"></i></div>
+              <div class="sk" style="width: 74%"><i class="fill"></i></div>
+              <div class="sk" style="width: 52%"><i class="fill"></i></div>
+            </div>
+          </div>
+          <div id="chip">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8ea4ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            <span>공개됨</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8-12s three example scenes -->
+      <section id="s3" class="clip scene" data-start="8" data-duration="4" data-track-index="1">
+        <div class="kicker"><span class="dot"></span><span>이런 장면도 말로 만들어요</span></div>
+        <div id="stage">
+          <div id="exA" class="ex">
+            <div id="bshadow"></div>
+            <div id="berry">
+              <div id="bfloat">
+                <svg id="bsvg" width="380" height="486" viewBox="-110 -130 220 280">
+                  <path d="M0,-70 C60,-85 105,-45 95,10 C85,75 35,125 0,140 C-35,125 -85,75 -95,10 C-105,-45 -60,-85 0,-70 Z" fill="#ef6a5e"></path>
+                  <path d="M-62,-40 C-72,-10 -70,30 -52,62" fill="none" stroke="#ffb3a8" stroke-width="9" stroke-linecap="round" opacity="0.55"></path>
+                  <g id="seeds"></g>
+                  <g fill="#5fd3a4">
+                    <path transform="translate(0 -66) rotate(-115)" d="M0,0 C-16,-14 -18,-40 0,-58 C18,-40 16,-14 0,0 Z"></path>
+                    <path transform="translate(0 -66) rotate(115)" d="M0,0 C-16,-14 -18,-40 0,-58 C18,-40 16,-14 0,0 Z"></path>
+                    <path transform="translate(0 -66) rotate(-58)" d="M0,0 C-16,-14 -18,-44 0,-62 C18,-44 16,-14 0,0 Z"></path>
+                    <path transform="translate(0 -66) rotate(58)" d="M0,0 C-16,-14 -18,-44 0,-62 C18,-44 16,-14 0,0 Z"></path>
+                    <path transform="translate(0 -66) rotate(0)" d="M0,0 C-16,-14 -18,-46 0,-64 C18,-46 16,-14 0,0 Z"></path>
+                  </g>
+                  <rect x="-5" y="-106" width="10" height="38" rx="5" fill="#3fae83"></rect>
+                </svg>
+              </div>
+            </div>
+            <div class="spk" style="left: 330px; top: 380px"></div>
+            <div class="spk" style="left: 960px; top: 300px"></div>
+            <div class="spk" style="left: 400px; top: 150px"></div>
+            <div class="spk" style="left: 900px; top: 130px"></div>
+            <div class="spk" style="left: 1010px; top: 450px"></div>
+          </div>
+          <div id="exB" class="ex">
+            <div class="ray" style="left: 180px"></div>
+            <div class="ray" style="left: 560px"></div>
+            <div class="ray" style="left: 900px"></div>
+            <div id="bubs"></div>
+            <svg class="abs" style="left: 0; top: 0" width="1280" height="640" viewBox="0 0 1280 640">
+              <path d="M0 640 L0 596 Q80 566 160 600 T330 592 T520 612 T720 588 T940 606 T1120 584 T1280 602 L1280 640 Z" fill="#050813"></path>
+              <g fill="#1b2447">
+                <rect x="120" y="536" width="16" height="70" rx="8"></rect>
+                <rect x="146" y="556" width="14" height="50" rx="7"></rect>
+                <rect x="1040" y="540" width="16" height="66" rx="8"></rect>
+                <rect x="1068" y="560" width="14" height="46" rx="7"></rect>
+                <rect x="1092" y="532" width="16" height="76" rx="8"></rect>
+              </g>
+            </svg>
+            <div id="fish">
+              <svg id="fishb" width="160" height="80" viewBox="0 0 160 80">
+                <polygon points="2,16 42,40 2,64" fill="#8ea4ff"></polygon>
+                <ellipse cx="92" cy="40" rx="58" ry="27" fill="#8ea4ff"></ellipse>
+                <circle cx="126" cy="34" r="5.5" fill="#0b1030"></circle>
+              </svg>
+            </div>
+          </div>
+          <div id="exC" class="ex">
+            <div id="skyDay"></div>
+            <div id="skyNight"></div>
+            <div class="cloud" style="left: 120px; top: 110px; width: 190px"></div>
+            <div class="cloud" style="left: 520px; top: 190px; width: 150px"></div>
+            <div class="cloud" style="left: 1010px; top: 130px; width: 170px"></div>
+            <div id="stars"></div>
+            <div id="sun"></div>
+            <div id="moon"></div>
+            <div id="city" class="abs" style="inset: 0"></div>
+          </div>
+          <div id="edge" data-layout-allow-overflow></div>
+        </div>
+        <div id="caprow">
+          <div id="capA" class="cap"><span class="idx">01</span><span class="ttl">떠 있는 딸기</span></div>
+          <div id="capB" class="cap"><span class="idx">02</span><span class="ttl">기포가 오르는 심해</span></div>
+          <div id="capC" class="cap"><span class="idx">03</span><span class="ttl">낮에서 밤으로, 불 켜지는 도시</span></div>
+          <div class="ticks"><div class="tk"></div><div class="tk"></div><div class="tk"></div></div>
+        </div>
+      </section>
+
+      <!-- 12-14s closing -->
+      <section id="s4" class="clip scene" data-start="12" data-duration="2" data-track-index="1">
+        <div class="kicker"><span class="dot"></span><span>AI 사이트 교실</span></div>
+        <div id="quote" class="abs" style="left: 120px; top: 0; bottom: 0; display: flex; align-items: center; gap: 56px">
+          <div id="vbar" style="width: 12px; height: 520px; border-radius: 6px; background: var(--accent); transform-origin: center top"></div>
+          <div style="display: flex; flex-direction: column; font-size: 150px; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; white-space: nowrap">
+            <div class="row"><span class="acc">말로</span> 부탁하고,</div>
+            <div class="row"><span class="acc">눈으로</span> 확인하고,</div>
+            <div class="row"><span class="acc">함께</span> 고칩니다</div>
+          </div>
+        </div>
+      </section>
+
+      <div id="pg">
+        <div class="pg" style="flex: 3"><i></i></div>
+        <div class="pg" style="flex: 5"><i></i></div>
+        <div class="pg" style="flex: 4"><i></i></div>
+        <div class="pg" style="flex: 2"><i></i></div>
+      </div>
+    </div>
+
+    <script>
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => Array.from(document.querySelectorAll(s));
+      const mk = (cls, parent) => {
+        const d = document.createElement("div");
+        d.className = cls;
+        parent.appendChild(d);
+        return d;
+      };
+      // seeded PRNG so every seek builds the same scene
+      function mulberry32(a) {
+        return function () {
+          a |= 0;
+          a = (a + 0x6d2b79f5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      function splitChars(root, cls) {
+        const out = [];
+        (function walk(n) {
+          Array.from(n.childNodes).forEach((c) => {
+            if (c.nodeType === 3) {
+              const f = document.createDocumentFragment();
+              for (const ch of c.textContent) {
+                const s = document.createElement("span");
+                if (ch === " ") s.className = "sp";
+                else {
+                  s.className = cls;
+                  s.textContent = ch;
+                  out.push(s);
+                }
+                f.appendChild(s);
+              }
+              c.replaceWith(f);
+            } else if (c.nodeType === 1 && c.tagName !== "I") walk(c);
+          });
+        })(root);
+        return out;
+      }
+
+      /* ---- build generated DOM (seeded, runs before the timeline) ---- */
+      const c1 = splitChars($("#l1"), "ch");
+      const c2 = splitChars($("#l2"), "ch");
+
+      // URL typing: one span per char, each carries its own caret
+      const typedEl = $("#typed");
+      const urlText = "https://my-city.vercel.app";
+      const caret0 = $("#caret0");
+      typedEl.textContent = "";
+      typedEl.appendChild(caret0);
+      const uchars = [];
+      for (const ch of urlText) {
+        const s = document.createElement("span");
+        s.className = "uc";
+        s.textContent = ch;
+        const i = document.createElement("i");
+        s.appendChild(i);
+        typedEl.appendChild(s);
+        uchars.push(s);
+      }
+
+      // strawberry seeds
+      (function () {
+        const g = document.getElementById("seeds");
+        const NS = "http://www.w3.org/2000/svg";
+        for (let r = 0; r < 6; r++) {
+          for (let c = -2; c <= 2; c++) {
+            const x = c * 32 + (r % 2 ? 16 : 0);
+            const y = -22 + r * 28;
+            const nx = x / 84;
+            const ny = (y - 24) / 100;
+            if (nx * nx + ny * ny > 0.62) continue;
+            const e = document.createElementNS(NS, "ellipse");
+            e.setAttribute("cx", x);
+            e.setAttribute("cy", y);
+            e.setAttribute("rx", 4.5);
+            e.setAttribute("ry", 8);
+            e.setAttribute("fill", "#ffe3a3");
+            e.setAttribute("transform", "rotate(" + (x > 0 ? 14 : -14) + " " + x + " " + y + ")");
+            g.appendChild(e);
+          }
+        }
+      })();
+
+      // deep sea bubbles
+      const rb = mulberry32(7);
+      const bubs = [];
+      for (let i = 0; i < 20; i++) {
+        const size = 14 + Math.round(rb() * 40);
+        const b = mk("bub", $("#bubs"));
+        b.style.width = size + "px";
+        b.style.height = size + "px";
+        b.style.left = 50 + Math.round(rb() * 1160) + "px";
+        bubs.push({ el: b, size, lead: rb() * 1.2, dur: 1.5 + rb() * 0.9 });
+      }
+
+      // city: buildings, windows, stars
+      const rc = mulberry32(21);
+      const city = $("#city");
+      const blds = [[0, 170, 300], [170, 150, 420], [320, 190, 250], [510, 160, 470], [670, 200, 330], [870, 150, 410], [1020, 130, 280], [1150, 130, 360]];
+      const litWins = [];
+      const darkWins = [];
+      blds.forEach(([x, w, h]) => {
+        const b = mk("bld", city);
+        b.style.left = x + 4 + "px";
+        b.style.width = w - 8 + "px";
+        b.style.height = h + "px";
+        const bw = w - 8;
+        const cols = Math.floor((bw - 20) / 40);
+        const rows = Math.floor((h - 36) / 52);
+        const mx = (bw - (cols * 40 - 16)) / 2;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const win = mk("w2", b);
+            win.style.left = mx + c * 40 + "px";
+            win.style.top = 24 + r * 52 + "px";
+            if (rc() < 0.58) litWins.push({ el: win, delay: rc() * 0.45 });
+            else darkWins.push(win);
+          }
+        }
+      });
+      const rs = mulberry32(99);
+      const stars = [];
+      for (let i = 0; i < 18; i++) {
+        const s = mk("star", $("#stars"));
+        const sz = 3 + Math.round(rs() * 3);
+        s.style.width = sz + "px";
+        s.style.height = sz + "px";
+        s.style.left = 40 + Math.round(rs() * 1200) + "px";
+        s.style.top = 30 + Math.round(rs() * 230) + "px";
+        stars.push(s);
+      }
+
+      /* ---- timeline ---- */
+      const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+      // background drift + progress strip
+      tl.fromTo("#grid", { x: 0 }, { x: 48, duration: 14, ease: "none" }, 0);
+      tl.fromTo("#pg", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.3);
+      [[0, 3], [3, 5], [8, 4], [12, 2]].forEach(([t, d], i) => {
+        tl.fromTo($$("#pg .pg i")[i], { scaleX: 0 }, { scaleX: 1, duration: d, ease: "none" }, t);
+      });
+      tl.to("#pg", { opacity: 0, duration: 0.35, ease: "power1.in" }, 13.62);
+
+      // scene 1: kinetic title (0-3s)
+      tl.fromTo("#s1 .kicker", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.5 }, 0.1);
+      tl.fromTo(c1, { y: 120, opacity: 0, rotation: 7 }, { y: 0, opacity: 1, rotation: 0, duration: 0.8, ease: "expo.out", stagger: 0.05 }, 0.25);
+      tl.fromTo(c2, { y: 120, opacity: 0, rotation: 7 }, { y: 0, opacity: 1, rotation: 0, duration: 0.8, ease: "expo.out", stagger: 0.04 }, 0.6);
+      tl.fromTo("#s1 .bar", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "expo.out" }, 1.3);
+      tl.to("#s1 .title", { y: -36, opacity: 0, duration: 0.4, ease: "power2.in" }, 2.55);
+      tl.to("#s1 .kicker", { opacity: 0, duration: 0.3, ease: "power1.in" }, 2.62);
+
+      // scene 2: four steps light up in sequence, then URL typing (3-8s)
+      const steps = $$("#s2 .step");
+      const nodes = $$("#s2 .node");
+      const lbls = $$("#s2 .lbl");
+      const pings = $$("#s2 .ping");
+      const segs = $$("#s2 .seg i");
+      tl.fromTo("#s2 .kicker", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45 }, 3.05);
+      tl.fromTo(steps, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.06 }, 3.1);
+      tl.fromTo("#s2 .seg", { opacity: 0 }, { opacity: 1, duration: 0.35 }, 3.15);
+      const lit = (i, t) => {
+        tl.to(nodes[i], { backgroundColor: "#8ea4ff", borderColor: "#8ea4ff", color: "#0b1030", duration: 0.2, ease: "none" }, t);
+        tl.fromTo(nodes[i], { scale: 1 }, { scale: 1.12, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        tl.to(lbls[i], { color: "#eceef3", duration: 0.25, ease: "none" }, t);
+        tl.fromTo(pings[i], { scale: 1, opacity: 0.7 }, { scale: 1.7, opacity: 0, duration: 0.55, ease: "power2.out" }, t);
+      };
+      lit(0, 3.5);
+      tl.fromTo(segs[0], { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, 3.85);
+      lit(1, 4.15);
+      tl.fromTo(segs[1], { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, 4.5);
+      lit(2, 4.8);
+      tl.fromTo(segs[2], { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, 5.15);
+      lit(3, 5.45);
+
+      tl.fromTo("#win", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.45 }, 5.6);
+      tl.set(caret0, { opacity: 1 }, 5.8);
+      tl.set(caret0, { opacity: 0 }, 6.15);
+      // typing rhythm: "https://" quick, "my-city" deliberate, ".vercel.app" steady
+      const gaps = [];
+      for (let i = 0; i < uchars.length; i++) gaps.push(i < 8 ? 0.026 : i < 15 ? 0.052 : 0.036);
+      let tt = 6.15;
+      uchars.forEach((s, i) => {
+        tl.set(s, { opacity: 1 }, tt);
+        const caret = s.querySelector("i");
+        tl.set(caret, { opacity: 1 }, tt);
+        if (i < uchars.length - 1) tl.set(caret, { opacity: 0 }, tt + gaps[i]);
+        tt += gaps[i];
+      });
+      const lastCaret = uchars[uchars.length - 1].querySelector("i");
+      tl.set(lastCaret, { opacity: 0 }, tt + 0.22);
+      tl.set(lastCaret, { opacity: 1 }, tt + 0.42);
+      tl.set(lastCaret, { opacity: 0 }, tt + 0.62);
+      tl.fromTo("#win .fill", { scaleX: 0 }, { scaleX: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" }, tt + 0.1);
+      tl.fromTo("#chip", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, tt + 0.25);
+      tl.to(["#s2 .kicker", "#s2 .steps", "#win"], { opacity: 0, y: -24, duration: 0.3, ease: "power2.in" }, 7.7);
+
+      // scene 3: three example scenes cross-cut (8-12s)
+      tl.fromTo("#s3 .kicker", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45 }, 8.05);
+      tl.fromTo("#stage", { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.5 }, 8.0);
+      const WIPE_FROM = "inset(0% 100% 0% 0%)";
+      const WIPE_TO = "inset(0% 0% 0% 0%)";
+      [["#exB", 9.35], ["#exC", 10.65]].forEach(([id, t]) => {
+        tl.fromTo(id, { clipPath: WIPE_FROM }, { clipPath: WIPE_TO, duration: 0.35, ease: "power3.inOut" }, t);
+        tl.fromTo("#edge", { x: -6, opacity: 1 }, { x: 1286, duration: 0.35, ease: "power3.inOut" }, t);
+      });
+      // captions + ticks
+      const tks = $$("#caprow .tk");
+      [["#capA", 8.15, 9.2], ["#capB", 9.45, 10.45], ["#capC", 10.75, 11.7]].forEach(([id, a, b], i) => {
+        tl.fromTo(id, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4 }, a);
+        if (i < 2) tl.to(id, { opacity: 0, y: -24, duration: 0.2, ease: "power2.in" }, b);
+        tl.to(tks[i], { backgroundColor: "#8ea4ff", duration: 0.2, ease: "none" }, a);
+      });
+      // A strawberry floats
+      tl.fromTo("#berry", { scale: 0.7, y: 30, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 8.1);
+      tl.fromTo("#bfloat", { y: 0, rotation: -4 }, { y: -34, rotation: 4, duration: 0.65, ease: "sine.inOut", yoyo: true, repeat: 1 }, 8.55);
+      tl.fromTo("#bshadow", { scaleX: 1, opacity: 0.55 }, { scaleX: 0.74, opacity: 0.3, duration: 0.65, ease: "sine.inOut", yoyo: true, repeat: 1 }, 8.55);
+      tl.fromTo(".spk", { opacity: 0, y: 20, scale: 0.4 }, { opacity: 0.9, y: -30, scale: 1, duration: 0.5, stagger: 0.08 }, 8.4);
+      tl.to(".spk", { opacity: 0, duration: 0.3, ease: "power1.in", stagger: 0.08 }, 8.95);
+      // B bubbles rise (start before reveal so they are mid-water when the wipe lands)
+      bubs.forEach((b) => {
+        tl.fromTo(b.el, { y: 0 }, { y: -(660 + b.size), duration: b.dur, ease: "none" }, 9.35 - b.lead);
+      });
+      tl.fromTo("#fish", { x: -170 }, { x: 1450, duration: 1.5, ease: "none" }, 9.25);
+      tl.fromTo("#fishb", { y: -14 }, { y: 14, duration: 0.42, ease: "sine.inOut", yoyo: true, repeat: 2 }, 9.25);
+      tl.fromTo(".ray", { opacity: 0.6, x: 0 }, { opacity: 1, x: 36, duration: 1.4, ease: "sine.inOut" }, 9.3);
+      // C day to night, windows light up
+      tl.to("#sun", { y: 430, duration: 0.8, ease: "power2.in" }, 10.7);
+      tl.to(".cloud", { x: 80, opacity: 0, duration: 0.45, ease: "power1.in" }, 10.7);
+      tl.to("#skyNight", { opacity: 1, duration: 0.7, ease: "power1.inOut" }, 10.8);
+      tl.to(".bld", { backgroundColor: "#10131f", duration: 0.7, ease: "power1.inOut" }, 10.8);
+      tl.to(darkWins, { backgroundColor: "#1c2236", duration: 0.6, ease: "power1.inOut" }, 10.85);
+      litWins.forEach((w) => {
+        tl.to(w.el, { backgroundColor: "#f2b45c", duration: 0.18, ease: "none" }, 11.1 + w.delay);
+      });
+      tl.fromTo("#moon", { y: 170, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power2.out" }, 10.95);
+      tl.fromTo(stars, { opacity: 0 }, { opacity: 0.9, duration: 0.3, stagger: 0.03, ease: "none" }, 11.0);
+      tl.to(["#s3 .kicker", "#stage", "#caprow"], { opacity: 0, y: -24, duration: 0.3, ease: "power2.in" }, 11.7);
+
+      // scene 4: closing line (12-14s), fades to background so the loop is seamless
+      tl.fromTo("#s4 .kicker", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45 }, 12.05);
+      tl.fromTo("#vbar", { scaleY: 0 }, { scaleY: 1, duration: 0.55, ease: "expo.out" }, 12.05);
+      tl.fromTo("#s4 .row", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.55, ease: "expo.out", stagger: 0.28 }, 12.05);
+      tl.to(["#s4 .kicker", "#quote"], { opacity: 0, y: -20, duration: 0.32, ease: "power2.in" }, 13.62);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+node_modules/
+_motion/**/renders/
+_motion/**/output/
+*.log
+.DS_Store
+Thumbs.db
+.vercel
+_motion/**/snapshots/
+.claude/
