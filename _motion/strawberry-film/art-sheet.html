@@ -29,7 +29,7 @@
         `<svg class="mid" viewBox="0 0 600 800"><use href="#berryArt" clip-path="url(#${c})"/><path d="${A.BODY}" fill="url(#fleshBand)" clip-path="url(#${b})"/></svg>`;
       const section = `<svg class="mid" viewBox="0 0 600 800">${A.section()}</svg>`;
       const small = (id) => `<svg class="sm" viewBox="0 0 100 100"><use href="#${id}" width="100" height="100"/></svg>`;
-      const extras = half("halfL", "bandL") + half("halfR", "bandR") + section +
+      const extras = half("cutL", "bandL") + half("cutR", "bandR") + section +
         ["piece0", "piece1", "piece2", "piece3"].map((p) => `<svg class="sm" viewBox="0 0 120 120"><use href="#${p}"/></svg>`).join("") +
         ["dropA", "dropB", "dropC"].map(small).join("");
       document.getElementById("r1").innerHTML = berry + extras;

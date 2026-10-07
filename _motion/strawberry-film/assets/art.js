@@ -49,10 +49,10 @@
     <stop offset="0" stop-color="#28000a" stop-opacity="0.5"/><stop offset="1" stop-color="#28000a" stop-opacity="0"/></radialGradient>
   <radialGradient id="bodyShade" cx="0.3" cy="0.26" r="0.95">
     <stop offset="0.5" stop-color="#1e0008" stop-opacity="0"/><stop offset="1" stop-color="#1e0008" stop-opacity="0.55"/></radialGradient>
-  <radialGradient id="dimpleDark"><stop offset="0" stop-color="#3c000c" stop-opacity="0.6"/>
-    <stop offset="0.62" stop-color="#50000f" stop-opacity="0.32"/><stop offset="1" stop-color="#50000f" stop-opacity="0"/></radialGradient>
+  <radialGradient id="dimpleDark"><stop offset="0" stop-color="#3c000c" stop-opacity="0.78"/>
+    <stop offset="0.62" stop-color="#50000f" stop-opacity="0.4"/><stop offset="1" stop-color="#50000f" stop-opacity="0"/></radialGradient>
   <radialGradient id="dimpleLit"><stop offset="0.45" stop-color="#ffb0aa" stop-opacity="0"/>
-    <stop offset="0.78" stop-color="#ff9f99" stop-opacity="0.24"/><stop offset="1" stop-color="#ffb4ae" stop-opacity="0"/></radialGradient>
+    <stop offset="0.78" stop-color="#ff8f88" stop-opacity="0.28"/><stop offset="1" stop-color="#ff8f88" stop-opacity="0"/></radialGradient>
   <linearGradient id="seedA" x1="0" y1="0" x2="0.6" y2="1"><stop offset="0" stop-color="#f6dc86"/>
     <stop offset="0.55" stop-color="#cfa137"/><stop offset="1" stop-color="#7d5814"/></linearGradient>
   <linearGradient id="seedB" x1="0" y1="0" x2="0.6" y2="1"><stop offset="0" stop-color="#e9e08a"/>
@@ -78,6 +78,8 @@
     <stop offset="0.55" stop-color="#17090f" stop-opacity="0"/></linearGradient>
   <linearGradient id="sweepG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/>
     <stop offset="0.5" stop-color="#fff3e8" stop-opacity="0.55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <radialGradient id="glintG"><stop offset="0" stop-color="#fff"/><stop offset="0.45" stop-color="#fff" stop-opacity="0.85"/>
+    <stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
   <filter id="b2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2"/></filter>
   <filter id="b4" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4"/></filter>
   <filter id="b8" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter>
@@ -85,14 +87,14 @@
   <filter id="grain" x="0" y="0" width="100%" height="100%">
     <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch"/>
     <feColorMatrix type="saturate" values="0"/></filter>
-  <filter id="wet" filterUnits="userSpaceOnUse" x="100" y="228" width="210" height="170">
+  <filter id="wet" filterUnits="userSpaceOnUse" x="40" y="200" width="380" height="300">
     <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="11" result="t"/>
     <feSpecularLighting in="t" surfaceScale="2.4" specularConstant="0.9" specularExponent="38" lighting-color="#ffd6d0">
       <feDistantLight azimuth="225" elevation="48"/></feSpecularLighting>
     <feComponentTransfer><feFuncA type="linear" slope="1"/></feComponentTransfer></filter>
   <clipPath id="bodyClip"><path d="${BODY}"/></clipPath>
-  <clipPath id="halfL"><rect x="0" y="0" width="300" height="800"/></clipPath>
-  <clipPath id="halfR"><rect x="300" y="0" width="300" height="800"/></clipPath>
+  <clipPath id="cutL"><rect x="0" y="0" width="300" height="800"/></clipPath>
+  <clipPath id="cutR"><rect x="300" y="0" width="300" height="800"/></clipPath>
   <clipPath id="bandL"><rect x="289" y="0" width="11" height="800"/></clipPath>
   <clipPath id="bandR"><rect x="300" y="0" width="11" height="800"/></clipPath>
   <mask id="rimMask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="800">
@@ -129,7 +131,7 @@
           `<ellipse cx="-1" cy="-3" rx="0.9" ry="1.7" fill="#fff8dc" opacity="0.8"/></g>`;
         if (nx < 0.15 && py < 560 && R() < 0.42) {
           const gr = 1.4 + R() * 1.4;
-          glint += `<ellipse cx="${n(px - 7.5 * fx)}" cy="${n(py - 6)}" rx="${n(gr * 1.7)}" ry="${n(gr)}" transform="rotate(-35 ${n(px - 7.5 * fx)} ${n(py - 6)})" fill="#fff" opacity="${n(0.6 + R() * 0.35)}"/>`;
+          glint += `<ellipse cx="${n(px - 7.5 * fx)}" cy="${n(py - 6)}" rx="${n(gr * 2.2)}" ry="${n(gr * 1.3)}" transform="rotate(-35 ${n(px - 7.5 * fx)} ${n(py - 6)})" fill="url(#glintG)" opacity="${n(0.6 + R() * 0.35)}"/>`;
         }
       }
     }
@@ -191,11 +193,11 @@
   // Extra close-up texture, only visible at extreme zoom (scene 1).
   function macroArt() {
     let drops = "";
-    [[214, 300, 7], [168, 352, 4.5], [246, 352, 5.5], [188, 268, 3.2], [262, 290, 3.6]].forEach(([x, y, r]) => {
+    [[236, 392, 7], [192, 448, 4.5], [304, 456, 5.5], [212, 362, 3.2], [334, 402, 3.6]].forEach(([x, y, r]) => {
       drops += `<use href="#dropA" x="${x - r}" y="${y - r}" width="${r * 2}" height="${r * 2}"/>`;
     });
     return `<g id="macro" clip-path="url(#bodyClip)">
-      <rect x="100" y="228" width="210" height="170" filter="url(#wet)" style="mix-blend-mode:screen" opacity="0.3"/>
+      <rect x="40" y="200" width="380" height="300" filter="url(#wet)" style="mix-blend-mode:screen" opacity="0.18"/>
       ${drops}</g>`;
   }
 
@@ -242,13 +244,14 @@
       ${rimSeeds}
       <path d="M248 190 C270 174 330 174 352 190 L344 202 C320 192 280 192 256 202 Z" fill="#2d6a34"/>
       <path d="M292 120 L308 120 L310 188 L290 188 Z" fill="#5b8a3c"/><path d="M299 122 L301 122 L301 186 L299 186 Z" fill="#a8cc7c"/>
-      <path id="secLine" d="${BODY}" fill="none" stroke="#ff6d75" stroke-width="5" vector-effect="non-scaling-stroke"
+      <path id="secLine" d="${BODY}" fill="none" stroke="#ff6d75" stroke-width="7" vector-effect="non-scaling-stroke"
+        transform="translate(300 470) scale(1.035) translate(-300 -470)"
         stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/>`;
   }
 
   // ---------- small fruit pieces (each different) ----------
   const PIECES = [
-    { flesh: "M16 98 L58 18 C82 26 104 58 106 100 Z", skin: "M58 18 C82 26 104 58 106 100", g: [92, 50, 40, 90] },
+    { flesh: "M18 94 C30 68 42 40 58 18 C84 26 104 58 106 100 C80 106 44 104 18 94 Z", skin: "M58 18 C84 26 104 58 106 100", g: [92, 50, 44, 92] },
     { flesh: "M20 32 C46 12 86 16 102 40 L84 104 L28 92 Z", skin: "M20 32 C46 12 86 16 102 40", g: [60, 18, 56, 90] },
     { flesh: "M14 72 C30 28 80 18 108 34 C86 42 50 54 30 88 Z", skin: "M14 72 C30 28 80 18 108 34", g: [50, 30, 52, 70] },
     { flesh: "M30 24 L92 30 C104 56 98 84 86 98 L26 90 Z", skin: "M92 30 C104 56 98 84 86 98", g: [100, 62, 40, 60] },

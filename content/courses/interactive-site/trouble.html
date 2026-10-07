@@ -273,7 +273,7 @@ npx.cmd hyperframes --help</code></pre>
           <dt>증상</dt>
           <dd><code>git : The term 'git' is not recognized as the name of a cmdlet, function, script file, or operable program.</code>, CMD의 <code>'git' is not recognized as an internal or external command</code>, 또는 플러그인을 설치할 때 <code>Failed to clone marketplace repository: Command 'git' not found or is in an unsafe location</code>이 나옵니다.</dd>
           <dt>원인</dt>
-          <dd>Git(코드의 변경 기록을 관리하는 프로그램)이 설치되지 않았거나, 설치했어도 열어 둔 터미널 창이 아직 모르는 경우입니다. 이 교육에서는 3장에서 GitHub에 올릴 때 Git이 필요합니다.</dd>
+          <dd>Git(코드의 변경 기록을 관리하는 프로그램)이 설치되지 않았거나, 설치했어도 열어 둔 터미널 창이 아직 모르는 경우입니다. 이 교육에서는 2장에서 GitHub 저장소를 내려받을 때 Git이 필요합니다.</dd>
         </dl>
         <p><strong>해결 방법</strong></p>
         <ol>
@@ -596,31 +596,26 @@ git remote -v, git branch --show-current, git status, git log --oneline -5 를 �
         </dl>
         <p><strong>해결 방법</strong></p>
         <ol>
-          <li>아래 두 줄을 PowerShell에 입력합니다. 이름은 닉네임이어도 되고, 이메일은 3장에서 확인해 둔 GitHub의 <code>noreply</code> 주소를 쓰는 것을 권장합니다. 큰따옴표는 그대로 둡니다.</li>
+          <li>아래 두 줄을 PowerShell에 입력합니다. 이름은 닉네임이어도 되고, 이메일은 GitHub 가입에 쓴 이메일을 쓰면 됩니다. 큰따옴표는 그대로 둡니다.</li>
           <li>설정 확인은 <code>git config --global user.name</code>과 <code>git config --global user.email</code>을 입력하면 방금 넣은 값이 그대로 나옵니다.</li>
           <li>다시 커밋하면 됩니다. 이미 만든 커밋의 이름은 바뀌지 않고, 앞으로의 커밋부터 적용됩니다.</li>
         </ol>
         <figure class="cmd">
           <figcaption><i class="ph ph-terminal-window"></i>PowerShell (Windows)</figcaption>
           <pre><code>git config --global user.name "[내 이름 또는 닉네임]"
-git config --global user.email "[숫자]+[내 사용자 이름]@users.noreply.github.com"
+git config --global user.email "[GitHub 가입 이메일]"
 
 <span class="c"># 확인</span>
 git config --global user.name
 git config --global user.email</code></pre>
         </figure>
-        <div class="callout warn">
-          <i class="ph ph-warning"></i>
-          <strong>공개 저장소에는 회사 이메일을 쓰지 마세요</strong>
-          <div><p>커밋에 적힌 이메일은 공개 저장소에서 누구나 볼 수 있습니다. GitHub의 <strong>Settings</strong>, <strong>Emails</strong> 화면에서 <strong>Keep my email addresses private</strong>를 켜면 <code>[숫자]+[사용자 이름]@users.noreply.github.com</code> 형식의 비공개용 주소를 쓸 수 있습니다. 자세한 설정은 <a href="/courses/interactive-site/github">3장</a>을 보세요.</p></div>
-        </div>
         <figure class="prompt" data-title="커밋 이름과 이메일 설정">
           <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
           <pre>git 커밋을 하려는데 "Author identity unknown" 오류가 나요.
 현재 git config --global user.name 과 user.email 이 설정되어 있는지 먼저 확인해 주세요. 설정되어 있지 않으면 아래 값으로 설정해 주세요.
 - 이름: [내 이름 또는 닉네임]
-- 이메일: [내 GitHub noreply 주소]
-회사 이메일은 쓰지 마세요. 설정한 뒤에 확인한 결과를 보여 주세요.</pre>
+- 이메일: [GitHub 가입 이메일]
+설정한 뒤에 확인한 결과를 보여 주세요.</pre>
         </figure>
       </div>
     </details>

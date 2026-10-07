@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
     <title>딸기, 한 알 선명한 순간.</title>
     <script src="assets/gsap.min.js"></script>
     <script src="assets/art.js"></script>
@@ -78,7 +78,7 @@
         height: 600px;
         margin: -300px 0 0 -300px;
         border-radius: 50%;
-        background: radial-gradient(circle, #fff3e8 0%, #fff3e8 52%, rgba(255, 243, 232, 0.55) 66%, rgba(255, 243, 232, 0) 72%);
+        background: radial-gradient(circle, #fff3e8 0%, #fff3e8 30%, rgba(255, 243, 232, 0.7) 46%, rgba(255, 243, 232, 0.25) 60%, rgba(255, 243, 232, 0) 71%);
       }
       #glow {
         width: 1000px;
@@ -115,12 +115,12 @@
         position: absolute;
         left: 0;
         right: 0;
-        top: 150px;
+        top: 42px;
         text-align: center;
-        font-size: 640px;
+        font-size: 780px;
         line-height: 1;
         font-weight: 860;
-        letter-spacing: -0.045em;
+        letter-spacing: 0;
         color: var(--burgundy);
         transform-origin: 50% 45%;
       }
@@ -141,8 +141,8 @@
       }
       #t2 .txt {
         left: 160px;
-        top: 456px;
-        font-size: 128px;
+        top: 462px;
+        font-size: 116px;
         font-weight: 820;
         color: var(--burgundy);
       }
@@ -175,49 +175,49 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="28" data-width="1920" data-height="1080">
-      <svg id="defs" width="0" height="0" style="position: absolute" aria-hidden="true"><defs id="defsInner"></defs></svg>
+    <div data-hf-id="hf-sebc" id="root" data-composition-id="main" data-start="0" data-duration="28" data-width="1920" data-height="1080">
+      <svg data-hf-id="hf-1re8" id="defs" width="0" height="0" style="position: absolute" aria-hidden="true"><defs data-hf-id="hf-u98u" id="defsInner" /></svg>
 
       <!-- persistent layers (not clips): driven every frame by render(t) -->
-      <div id="bg" class="layer" style="z-index: 0">
-        <div id="creamVig" class="layer"></div>
-        <div id="light" class="obj"></div>
-        <div id="glow" class="obj"></div>
+      <div data-hf-id="hf-4gi6" id="bg" class="layer" data-layout-allow-overflow="" style="z-index: 0">
+        <div data-hf-id="hf-50jt" id="creamVig" class="layer"></div>
+        <div data-hf-id="hf-nfcn" id="light" class="obj"></div>
+        <div data-hf-id="hf-7y56" id="glow" class="obj"></div>
       </div>
-      <div id="exhibit" class="layer" style="z-index: 1">
-        <div id="halfL" class="obj art"></div>
-        <div id="halfR" class="obj art"></div>
-        <div id="section" class="obj art"></div>
-        <div id="cutLight" class="obj"></div>
+      <div data-hf-id="hf-9at5" id="exhibit" class="layer" data-layout-allow-overflow="" style="z-index: 1">
+        <div data-hf-id="hf-dcrj" id="halfL" class="obj art"></div>
+        <div data-hf-id="hf-qiyp" id="halfR" class="obj art"></div>
+        <div data-hf-id="hf-3t83" id="section" class="obj art"></div>
       </div>
-      <div id="masks" class="layer" style="z-index: 2"></div>
-      <div id="backP" class="layer" style="z-index: 3"></div>
-      <div id="shadow" class="obj" style="z-index: 4"></div>
-      <div id="hero" class="obj art" style="z-index: 5"></div>
-      <div id="frontP" class="layer" style="z-index: 6"></div>
-      <div id="s6" class="layer" style="z-index: 7">
-        <div id="s6vig" class="layer"></div>
-        <div id="bigword">딸기</div>
+      <div data-hf-id="hf-86om" id="masks" class="layer" data-layout-allow-overflow="" style="z-index: 2"></div>
+      <div data-hf-id="hf-5uon" id="backP" class="layer" data-layout-allow-overflow="" style="z-index: 3"></div>
+      <div data-hf-id="hf-3usm" id="shadow" class="obj" style="z-index: 4"></div>
+      <div data-hf-id="hf-d7oi" id="hero" class="obj art" style="z-index: 5"></div>
+      <div data-hf-id="hf-n2we" id="frontP" class="layer" data-layout-allow-overflow="" style="z-index: 6"></div>
+      <div data-hf-id="hf-yw2c" id="cutLight" class="obj" style="z-index: 6"></div>
+      <div data-hf-id="hf-jttw" id="s6" class="layer" style="z-index: 7">
+        <div data-hf-id="hf-9ceg" id="s6vig" class="layer"></div>
+        <div data-hf-id="hf-yvoh" id="bigword">딸기</div>
       </div>
-      <div id="p6" class="layer" style="z-index: 8"></div>
-      <div id="lens" class="obj" style="z-index: 9"></div>
+      <div data-hf-id="hf-aa6f" id="p6" class="layer" data-layout-allow-overflow="" style="z-index: 8"></div>
+      <div data-hf-id="hf-x1ez" id="lens" class="obj" style="z-index: 9"></div>
 
       <!-- typography clips -->
-      <section id="t1" class="clip" data-start="1.6" data-duration="1.3" data-track-index="1" style="z-index: 10">
-        <div class="txt">딸기</div>
+      <section data-hf-id="hf-25f7" id="t1" class="clip" data-start="1.6" data-duration="1.3" data-track-index="1" style="z-index: 10">
+        <div data-hf-id="hf-3fbs" class="txt">딸기</div>
       </section>
-      <section id="t2" class="clip" data-start="2.9" data-duration="2.9" data-track-index="1" style="z-index: 10">
-        <div class="txt">선명한 붉음</div>
+      <section data-hf-id="hf-fhyd" id="t2" class="clip" data-start="2.9" data-duration="2.9" data-track-index="1" style="z-index: 10">
+        <div data-hf-id="hf-9dha" class="txt">선명한 붉음</div>
       </section>
-      <section id="t4" class="clip" data-start="11.7" data-duration="2.3" data-track-index="1" style="z-index: 10">
-        <div class="txt">한 알을<br />더 가까이</div>
+      <section data-hf-id="hf-l5i5" id="t4" class="clip" data-start="11.7" data-duration="2.3" data-track-index="1" style="z-index: 10">
+        <div data-hf-id="hf-q2dk" class="txt">한 알을<br data-hf-id="hf-x5px">더 가까이</div>
       </section>
-      <section id="t7" class="clip" data-start="24.2" data-duration="3.8" data-track-index="1" style="z-index: 10">
-        <div class="txt ttl">딸기</div>
-        <div class="txt sub">한 알, 선명한 순간.</div>
+      <section data-hf-id="hf-w46v" id="t7" class="clip" data-start="24.2" data-duration="3.8" data-track-index="1" style="z-index: 10">
+        <div data-hf-id="hf-xtks" class="txt ttl">딸기</div>
+        <div data-hf-id="hf-r2np" class="txt sub">한 알, 선명한 순간.</div>
       </section>
 
-      <audio id="soundtrack" src="assets/audio/soundtrack.m4a" data-start="0" data-duration="28" data-track-index="4" data-volume="1"></audio>
+      <audio data-hf-id="hf-qvct" id="soundtrack" src="assets/audio/soundtrack.m4a" data-start="0" data-duration="28" data-track-index="4" data-volume="1"></audio>
     </div>
 
     <script>
@@ -242,13 +242,18 @@
             `<use href="#berryArt" clip-path="url(#${c})"/><path d="${A.BODY}" fill="url(#fleshBand)" clip-path="url(#${b})"/>` +
               `<g clip-path="url(#bodyClip)"><rect x="${edgeX}" y="150" width="2" height="650" fill="#fff6f0" opacity="0.9"/></g>`,
           );
-        $("halfL").innerHTML = half("halfL", "bandL", 298);
-        $("halfR").innerHTML = half("halfR", "bandR", 300);
+        $("halfL").innerHTML = half("cutL", "bandL", 298);
+        $("halfR").innerHTML = half("cutR", "bandR", 300);
         $("section").innerHTML = SVG("0 0 600 800", A.section());
 
-        const MASK_COLORS = ["#ff6d75", "#e3283f", "#fff3e8", "#17090f"];
+        // the section outline with the calyx notch smoothed away (reads as fruit, not as a heart)
+        const MASK_SHAPE = A.BODY.replace("M300 176 C350 162", "M300 160 C350 156").replace("C164 166 250 162 300 176 Z", "C164 160 250 156 300 160 Z");
+        const MASK_COLORS = [["#ff9096", "#ff6d75"], ["#f2475a", "#e3283f"], ["#fffaf6", "#ffeadf"], ["#2b0f18", "#17090f"]];
         $("masks").innerHTML = MASK_COLORS.map(
-          (c, i) => `<svg class="layer mask-layer" viewBox="0 0 1920 1080"><path id="m${i}" d="${A.BODY}" fill="${c}"/></svg>`,
+          (c, i) =>
+            `<svg class="layer mask-layer" viewBox="0 0 1920 1080"><radialGradient id="mg${i}" cx="0.42" cy="0.4" r="0.7">` +
+            `<stop offset="0" stop-color="${c[0]}"/><stop offset="1" stop-color="${c[1]}"/></radialGradient>` +
+            `<path id="m${i}" d="${MASK_SHAPE}" fill="url(#mg${i})"/></svg>`,
         ).join("");
 
         // seeded PRNG for every particle decision
@@ -284,21 +289,22 @@
           { el: particle($("frontP"), "dropB", 124), x: 330, x2: 268, y: 936, dy: -24, blur: 0.8 },
         ];
 
-        // scene 5: 15 drops + 4 pieces along one asymmetric ribbon
+        // scene 5: 18 drops + 4 pieces along one asymmetric ribbon
         const R = prng(1505);
         const s5 = [];
-        for (let i = 0; i < 19; i++) {
-          const piece = i >= 15;
+        for (let i = 0; i < 22; i++) {
+          const piece = i >= 18;
           const front = piece ? i % 2 === 0 : i % 2 === 1;
-          const size = piece ? 78 + R() * 50 : front ? 34 + R() * 84 : 22 + R() * 46;
-          const sym = piece ? "piece" + (i - 15) : DROPS[i % 3];
-          let lane = (R() - 0.5) * 2 * 290;
-          if (front && Math.abs(lane) < 130) lane = Math.sign(lane || 1) * (130 + R() * 60);
+          const size = piece ? 96 + R() * 56 : front ? 70 + R() * 110 : 40 + R() * 60;
+          const sym = piece ? "piece" + (i - 18) : DROPS[i % 3];
+          let lane = (R() - 0.5) * 2 * 240;
+          const minLane = piece ? 260 : 120;
+          if (front && Math.abs(lane) < minLane) lane = Math.sign(lane || 1) * (minLane + R() * 70);
           s5.push({
             el: particle($(front ? "frontP" : "backP"), sym, Math.round(size), piece),
             piece,
             front,
-            u0: 0.06 + (i / 19) * 0.64 + (R() - 0.5) * 0.05,
+            u0: -0.06 + ((i * 7) % 22) / 22 * 0.86 + (R() - 0.5) * 0.04,
             k: 0.7 + R() * 0.6,
             lane,
             depth: front ? 1.55 : 0.45,
@@ -397,23 +403,23 @@
             const s0 = lerp(7.6, 7.2, seg(t, 0, 0.35)), s1 = 0.92;
             const e = t < 0.35 ? 0 : t < 1.05 ? 0.58 * ease("power2.in")((t - 0.35) / 0.7) : 0.58 + 0.42 * ease("power2.out")((t - 1.05) / 0.55);
             s = Math.exp(Math.log(s0) + (Math.log(s1) - Math.log(s0)) * e);
-            const fx = -78 * (1 - e), fy = -40 * (1 - e);
+            const fx = -52 * (1 - e), fy = 18 * (1 - e);
             x = lerp(960, 800, e) - s * fx;
             y = lerp(540, 548, e) - s * fy;
           } else if (t < 6.5) {
-            x = kf(t, [[1.6, 800], [2.6, 800], [5.3, 1150, "sine.inOut"], [5.4, 1150], [6.0, 960, "power2.inOut"]]);
+            x = kf(t, [[1.6, 800], [2.55, 800], [5.4, 1190, "power3.out"], [6.0, 960, "power2.inOut"]]);
             y = kf(t, [[1.6, 548], [1.9, 539, "sine.out"], [2.4, 548, "sine.inOut"], [2.6, 548], [5.3, 530, "sine.inOut"], [5.4, 530], [6.0, 525, "power2.inOut"]]);
             s = kf(t, [[2.6, 0.92], [5.3, 0.9, "sine.inOut"], [5.4, 0.9], [6.0, 0.88, "power2.inOut"]]);
-            r = kf(t, [[2.6, 0], [5.3, 6, "sine.inOut"], [5.4, 6], [6.0, 0, "power2.inOut"]]);
+            r = kf(t, [[2.55, 0], [5.4, 6, "sine.inOut"], [6.0, 0, "power2.inOut"]]);
           } else if (t < 18.55) {
             x = kf(t, [[11.45, 960], [12.35, 690, "power3.out"], [13.75, 700, "sine.inOut"], [14.4, 960, "power2.inOut"]]);
             y = kf(t, [[6.0, 525], [11.45, 587], [12.35, 560, "power3.out"], [13.75, 556], [14.4, 540, "power2.inOut"]]);
             s = kf(t, [[6.0, 0.88], [11.45, 0.3], [12.35, 1.15, "power3.out"], [13.75, 1.12], [14.4, 0.86, "power2.inOut"]]);
             r = kf(t, [[11.45, -22], [12.35, -8, "power3.out"], [13.75, -8], [14.4, -3, "power2.inOut"], [18.4, 2, "sine.inOut"]]);
           } else {
-            x = kf(t, [[18.6, -380], [20.5, 960, "power3.out"], [21.4, 984, "sine.out"], [22.5, 960, "power2.inOut"], [23.4, 960], [24.6, 960, "power3.inOut"]]);
-            y = kf(t, [[18.6, 640], [20.5, 560, "power3.out"], [21.4, 556, "sine.out"], [22.5, 838, "power2.inOut"], [23.4, 838], [24.6, 420, "power3.inOut"]]);
-            s = kf(t, [[18.6, 0.62], [21.4, 0.62], [22.5, 0.42, "power2.inOut"], [23.4, 0.42], [24.6, 0.74, "power3.inOut"]]);
+            x = kf(t, [[18.6, -380], [20.5, 940, "power3.out"], [21.3, 962, "sine.out"], [22.4, 1160, "power2.inOut"], [23.35, 1160], [24.6, 960, "power3.inOut"]]);
+            y = kf(t, [[18.6, 600], [20.5, 500, "power3.out"], [21.3, 494, "sine.out"], [22.4, 790, "power2.inOut"], [23.35, 790], [24.6, 420, "power3.inOut"]]);
+            s = kf(t, [[18.6, 0.66], [21.3, 0.66], [22.4, 0.55, "power2.inOut"], [23.35, 0.55], [24.6, 0.74, "power3.inOut"]]);
             r = kf(t, [[18.6, -18], [20.5, 0, "power3.out"], [21.4, 2, "sine.out"], [22.5, 0, "power2.inOut"]]);
           }
           // slow float, kept out of the swap, the zoom and the big moves
@@ -445,23 +451,24 @@
         }
 
         function render(t) {
-          const cream = seg(t, 2.9, 3.7, "sine.inOut") * (t < 11.88 ? 1 : 0);
+          const cream = seg(t, 2.9, 3.7, "sine.inOut") * (t < 12.22 ? 1 : 0);
           el.bg.style.backgroundColor = mix("#17090f", "#fff3e8", cream);
           el.creamVig.style.opacity = cream;
 
           // scene 2 light spread from the upper-left key light
           show(el.light, t > 2.45 && t < 3.8);
-          place(el.light, 360, 230, kf(t, [[2.45, 0.05], [3.75, 9, "power2.inOut"]]));
-          el.light.style.opacity = seg(t, 2.45, 2.7);
+          place(el.light, 360, 230, kf(t, [[2.45, 0.6], [3.75, 9, "power2.inOut"]]));
+          el.light.style.opacity = seg(t, 2.5, 3.0, "sine.in");
 
           // hero
           const h = heroState(t);
           const camOn = t > 14 && t < 18.6;
           const hx = h.x + (camOn ? camX(t) * 0.8 : 0), hy = h.y + (camOn ? camY(t) * 0.8 : 0);
           const heroOn = t < 6.5 || t >= 11.45;
-          show(el.hero, heroOn);
+          el.hero.style.visibility = heroOn ? "visible" : "hidden";
           place(el.hero, hx, hy, h.s, h.r);
-          el.hero.style.opacity = t < 11.45 || t > 12 ? 1 : seg(t, 11.45, 11.7);
+          // opacity too: the grain filter (feTurbulence) still paints under visibility:hidden
+          el.hero.style.opacity = !heroOn ? 0 : t < 11.45 || t > 12 ? 1 : seg(t, 11.45, 11.7);
           const late = t >= 18.55;
           el.hero.style.zIndex = late ? 8 : 5;
           el.shadow.style.zIndex = late ? 8 : 4;
@@ -469,13 +476,13 @@
           show(el.macro, t < 1.15);
           show(el.sweep, t < 1.0);
           el.sweep.style.opacity = 1 - seg(t, 0.75, 1.0);
-          el.sweepR.setAttribute("transform", `translate(${lerp(110, 310, seg(t, 0.05, 0.85, "power1.inOut")).toFixed(2)} 340) rotate(24)`);
+          el.sweepR.setAttribute("transform", `translate(${lerp(130, 370, seg(t, 0.05, 0.85, "power1.inOut")).toFixed(2)} 420) rotate(24)`);
           el.heroDrop.setAttribute("opacity", seg(t, 24.6, 25.0).toFixed(3));
           el.hdSweep.setAttribute("x", lerp(392, 446, seg(t, 26.0, 26.9, "sine.inOut")).toFixed(2));
 
           // ground shadow + backglow follow the hero
           const shOp =
-            t < 6.5 ? lerp(seg(t, 1.2, 1.8) * 0.45, 0.6, cream) : t < 11.45 ? 0 : t < 18.55 ? 0.3 * seg(t, 11.8, 12.4) : t < 23.4 ? 0.55 * seg(t, 18.6, 19.0) : lerp(0.55, 0.32, seg(t, 23.4, 24.2));
+            t < 6.6 ? lerp(seg(t, 1.2, 1.8) * 0.45, 0.6, cream) * (1 - seg(t, 6.3, 6.6)) : t < 11.45 ? 0 : t < 18.55 ? 0.3 * seg(t, 11.8, 12.4) : t < 23.4 ? 0.55 * seg(t, 18.6, 19.0) : lerp(0.55, 0.32, seg(t, 23.4, 24.2));
           el.shadow.style.opacity = shOp.toFixed(3);
           place(el.shadow, hx + 8 * h.s, (late ? Math.max(h.y, 0) : hy) + 420 * h.s, h.s * 1.02);
           const glowOp = Math.max(
@@ -487,7 +494,7 @@
           place(el.glow, hx, hy + 40 * h.s, h.s * 1.1);
 
           // ---------- scene 3-4: exhibit (halves + section) ----------
-          const exOn = t >= 5.9 && t < 11.9;
+          const exOn = t >= 5.9 && t < 12.24;
           show(el.exhibit, exOn);
           if (exOn) {
             const open = seg(t, 6.55, 7.7, "power3.inOut");
@@ -516,23 +523,24 @@
             el.section.style.clipPath = rev >= 1 ? "none" : `inset(0 ${(50 * (1 - rev)).toFixed(2)}% 0 ${(50 * (1 - rev)).toFixed(2)}%)`;
             el.section.style.filter = `drop-shadow(0 ${(10 + 26 * near).toFixed(1)}px ${(18 + 22 * near).toFixed(1)}px rgba(90, 14, 30, ${(0.18 + 0.16 * near).toFixed(3)}))`;
             el.secLine.setAttribute("stroke-dashoffset", (1 - seg(t, 10.12, 10.68, "power2.inOut")).toFixed(4));
-            // vertical light that becomes the cut
-            show(el.cutLight, t < 7.05);
-            place(el.cutLight, 960, 525 + 0.88 * 72, 1, 0, ` scaleX(${(1 + 5 * seg(t, 6.42, 6.6, "power2.out")).toFixed(3)}) scaleY(${seg(t, 5.95, 6.4, "power2.out").toFixed(3)})`);
-            el.cutLight.style.opacity = (seg(t, 5.95, 6.1) * (1 - seg(t, 6.6, 7.05, "power2.in"))).toFixed(3);
           }
 
+          // vertical light that becomes the cut (above the hero)
+          show(el.cutLight, t >= 5.95 && t < 6.9);
+          place(el.cutLight, 960, 525 + 0.88 * 72, 1, 0, ` scaleX(${(1 + 2.5 * seg(t, 6.42, 6.6, "power2.out")).toFixed(3)}) scaleY(${seg(t, 5.95, 6.4, "power2.out").toFixed(3)})`);
+          el.cutLight.style.opacity = (seg(t, 5.95, 6.1) * (1 - seg(t, 6.55, 6.85, "power2.in"))).toFixed(3);
+
           // ---------- scene 4: organic masks grow from the section outline ----------
-          const mOn = t >= 10.6 && t < 11.9;
+          const mOn = t >= 10.6 && t < 12.24;
           show(el.masks, mOn);
           if (mOn) {
             const C = [960, 525 + 0.88 * 70];
             maskEls.forEach((m, i) => {
-              const t0 = 10.62 + i * 0.16;
-              const p = seg(t, t0, t0 + 0.78, "power3.inOut");
+              const t0 = 10.62 + i * 0.2;
+              const p = seg(t, t0, t0 + 1.0, "power2.inOut");
               show(maskLayers[i], t >= t0);
-              const s = lerp(0.88 * 1.9 * 0.985, 9.6, p);
-              const rr = [4, -5, 6, -3][i] * p;
+              const s = lerp(i === 0 ? 0.88 * 1.9 * 0.985 : 0.12, 9.6, p);
+              const rr = [9, -11, 12, -6][i] * p;
               const cx = lerp(C[0], 960 + [30, -40, 20, 0][i], p), cy = lerp(C[1], 540 + [-30, 20, 10, 0][i], p);
               m.setAttribute("transform", `translate(${cx.toFixed(2)} ${cy.toFixed(2)}) rotate(${rr.toFixed(3)}) scale(${s.toFixed(4)}) translate(-300 -470)`);
             });
@@ -559,7 +567,7 @@
           s5.forEach((d) => {
             show(d.el, s5On);
             if (!s5On) return;
-            const u = d.u0 + d.k * 0.16 * P;
+            const u = d.u0 + d.k * 0.15 * P;
             const [rx, ry, ang] = ribbon(u, d.lane);
             const spread = seg(t, 14.2 + d.lag, 14.95 + d.lag, "power3.out");
             const x = lerp(h.x, rx, spread) + cx * d.depth;
@@ -591,22 +599,27 @@
           }
 
           // ---------- scene 6: the name becomes the set ----------
-          const s6On = t >= 17.85 && t < 24.15;
+          const s6On = t >= 17.85 && t < 24.2;
           show(el.s6, s6On);
           el.s6.style.clipPath = t < 18.6 ? `circle(${LR.toFixed(1)}px at ${LX.toFixed(1)}px ${LY.toFixed(1)}px)` : "none";
-          el.s6.style.opacity = (1 - seg(t, 23.4, 24.1, "sine.inOut")).toFixed(3);
-          el.bigword.style.transform = `scale(${(lerp(1.03, 1, seg(t, 18.0, 21.0, "power2.out")) - 0.03 * seg(t, 23.4, 24.1)).toFixed(4)})`;
+          const iris = kf(t, [[23.35, 0], [24.2, 2300, "power2.in"]]);
+          const irisMask = iris > 0 ? `radial-gradient(circle ${iris.toFixed(1)}px at ${hx.toFixed(1)}px ${hy.toFixed(1)}px, transparent 98%, #000 100%)` : "none";
+          el.s6.style.maskImage = irisMask;
+          el.s6.style.webkitMaskImage = irisMask;
+          const wIn = seg(t, 18.62, 19.5, "power3.out");
+          el.bigword.style.opacity = wIn.toFixed(3);
+          el.bigword.style.transform = `translateY(${((1 - wIn) * 40).toFixed(2)}px) scale(${lerp(1.06, 1, wIn).toFixed(4)})`;
           s6p.forEach((d) => {
             const on = t > 18.5 && t < 24.2;
             show(d.el, on);
             if (!on) return;
-            d.el.style.opacity = (seg(t, 18.9 + d.i * 0.12, 19.5 + d.i * 0.12) * (1 - seg(t, 23.3, 23.8))).toFixed(3);
+            d.el.style.opacity = (seg(t, 18.9 + d.i * 0.12, 19.5 + d.i * 0.12) * (1 - seg(t, 23.35, 23.7))).toFixed(3);
             place(d.el, d.x + 10 * Math.sin(t * 0.7 + d.i), d.y - 34 * seg(t, 18.6, 23.4), 1, 0);
           });
 
           // ---------- typography ----------
           textIn(T.t1, t, 1.7, 2.5, 15);
-          textIn(T.t2, t, 3.0, 5.35, 15);
+          textIn(T.t2, t, 3.2, 5.4, 15);
           textIn(T.t4, t, 11.8, 13.55, 15);
           textIn(T.t7a, t, 24.35, 0, 16);
           textIn(T.t7b, t, 24.9, 0, 14);

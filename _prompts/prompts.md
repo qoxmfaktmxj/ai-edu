@@ -5,21 +5,16 @@
 - [대괄호]는 수강생이 자기 내용으로 바꿔 넣는 자리입니다.
 - 가운뎃점, em dash, en dash는 반영할 때 자동으로 쉼표와 하이픈으로 바뀝니다.
 
-## 01 무엇을, 왜 배우나
+## 02 설치와 GitHub 준비, Claude Code 설치
 
-### 처음 인사와 부탁 방식 정하기
+### GitHub CLI 설치 부탁
 ```text
-안녕하세요. 저는 코딩 경험이 없는 [내 직무] 담당자입니다.
-앞으로 [내 주제]를 소개하는 웹사이트를 함께 만들 거예요.
-아래 약속을 지켜 주세요.
-1. 전문 용어는 쉬운 말로 풀어서 설명해 주세요.
-2. 무언가를 실행하기 전에, 무엇을 하려는지 한 문장으로 먼저 알려 주세요.
-3. 비밀번호나 개인정보가 필요한 단계는 제가 직접 입력할 테니, 어디에 입력하면 되는지만 알려 주세요.
-4. 한 번에 한 단계씩 진행하고, 제가 이해했는지 확인해 주세요.
-이해했다면 "준비됐습니다"라고만 답해 주세요.
+GitHub CLI(gh)를 설치해줘.
+1) 먼저 git --version 으로 Git이 설치되어 있는지 확인하고, 없으면 winget install --id Git.Git -e 로 설치해줘.
+2) 그다음 winget install --id GitHub.cli 로 GitHub CLI를 설치해줘.
+3) 설치가 끝나면 gh --version 결과를 보여줘.
+로그인은 내가 직접 할 거라서 gh auth login 은 실행하지 마. 내 허락이 필요한 단계가 나오면 무엇을 허락하는 건지 먼저 설명해줘.
 ```
-
-## 02 Claude 앱과 Claude Code 설치
 
 ### Claude Code 설치와 PATH 부탁
 ```text
@@ -34,22 +29,20 @@ Claude Code를 터미널(PowerShell 또는 Mac 터미널)에서도 쓸 수 있�
 5. 각 단계를 하기 전에 무엇을 할지 한 줄로 알려주고, 마지막에는 어디에 무엇을 설치했고 PATH를 어떻게 바꿨는지 초보자도 이해할 수 있게 쉬운 한국어로 정리해줘.
 ```
 
-### Node.js와 Git for Windows 설치 (Windows)
+### Node.js 설치 (Windows)
 ```text
-내 Windows PC에 Node.js와 Git for Windows가 설치되어 있는지 확인해줘.
-- node --version 과 git --version 으로 확인하고, 결과를 쉬운 말로 알려줘.
+내 Windows PC에 Node.js가 설치되어 있는지 확인해줘.
+- node --version 으로 확인하고, 결과를 쉬운 말로 알려줘.
 - Node.js는 22 이상이어야 하고 LTS 버전이면 좋아. 없거나 22 미만이면 winget 으로 설치해줘. 패키지 이름은 OpenJS.NodeJS.LTS 야.
-- Git for Windows 가 없으면 winget 으로 설치해줘. 패키지 이름은 Git.Git 이야.
 - 설치하기 전에 무엇을 설치할지 먼저 알려주고, 설치한 뒤에는 새 터미널을 열어야 반영된다는 점도 알려줘.
 - 이미 충분한 버전이 있으면 아무것도 설치하지 말고 "이미 준비되어 있습니다"라고만 알려줘.
 ```
 
-### Node.js와 Git 확인 및 설치 (Mac)
+### Node.js 확인 및 설치 (Mac)
 ```text
-내 Mac에 Node.js와 Git이 설치되어 있는지 확인해줘.
-- node --version 과 git --version 으로 확인하고, 결과를 쉬운 말로 알려줘.
+내 Mac에 Node.js가 설치되어 있는지 확인해줘.
+- node --version 으로 확인하고, 결과를 쉬운 말로 알려줘.
 - Node.js는 22 이상이어야 하고 LTS 버전이면 좋아. 없거나 낮으면 nodejs.org 의 LTS 설치 파일을 내가 직접 내려받아 설치하는 방법을 화면 순서대로 알려줘.
-- Git 이 없으면 Mac이 안내하는 명령줄 개발자 도구 설치 방법을 알려줘.
 - 이미 충분한 버전이 있으면 아무것도 설치하지 말고 "이미 준비되어 있습니다"라고만 알려줘.
 - 내 허락 없이 Homebrew 같은 새 도구를 설치하지는 마.
 ```
@@ -63,7 +56,7 @@ Claude Code 설치 위치와 PATH 설정을 점검하고 고쳐줘.
 - 다 끝나면 내가 새 터미널을 열어 확인하는 방법을 알려줘.
 ```
 
-## 03 GitHub 가입과 연결
+## 03 GitHub가 하는 일과 연결 확인
 
 ### GitHub 연결 확인 부탁
 ```text
@@ -71,15 +64,6 @@ Claude Code 설치 위치와 PATH 설정을 점검하고 고쳐줘.
 - git remote -v 로 연결된 주소를 보여주고, git ls-remote origin 이 오류 없이 끝나는지 확인해줘.
 - 파일은 아무것도 바꾸거나 올리지 마.
 - 결과를 쉬운 말로 한두 줄로 알려줘.
-```
-
-### GitHub CLI 설치 부탁
-```text
-GitHub CLI(gh)를 설치해줘.
-1) 먼저 git --version 으로 Git이 설치되어 있는지 확인하고, 없으면 winget install --id Git.Git -e 로 설치해줘.
-2) 그다음 winget install --id GitHub.cli 로 GitHub CLI를 설치해줘.
-3) 설치가 끝나면 gh --version 결과를 보여줘.
-로그인은 내가 직접 할 거라서 gh auth login 은 실행하지 마. 내 허락이 필요한 단계가 나오면 무엇을 허락하는 건지 먼저 설명해줘.
 ```
 
 ## 04 Vercel 가입과 첫 배포

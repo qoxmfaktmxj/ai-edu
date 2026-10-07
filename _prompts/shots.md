@@ -12,7 +12,7 @@
 | 필요 | `01-copy-button.png` | 그림 설명: 프롬프트 카드 오른쪽 위에 있는 "복사" 버튼입니다. 누르면 "복사됨"으로 바뀌고 약 1~2초 뒤 원래대로 돌아옵니다. |
 | 완료 | `02-claude-download.png` | 그림 설명: claude.com/download 페이지(한국어 화면)입니다. 큰 제목 "Claude 다운로드" 아래에 내 컴퓨터용 다운로드 버튼이 있습니다. Windows에서 열면 "Windows용 다운로드" 버튼이 보이고, Windows ARM 컴퓨터용 "Windows(arm64)" 링크와 Microsoft Store 배지도 함께 보입니다. Mac에서 열면 Mac용 버튼이 먼저 보입니다. 화면 구성과 문구는 업데이트로 조금 다를 수 있습니다. |
 | 필요 | `02-code-tab.png` | 그림 설명: 앱 위쪽 가운데 Chat, Cowork, Code 세 탭이 나란히 있고, 그중 Code 탭이 선택된 모습입니다. 아래쪽에 입력창이 보이고, 입력창 근처에 Local 선택과 Select folder 버튼이 있습니다. |
-| 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-setup 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-setup 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
+| 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-site 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-site 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
 | 필요 | `02-permission-dialog.png` | 그림 설명: Manual 모드에서 Claude가 실행하려는 명령(예: claude.ai의 공식 설치 명령)이나 바꾸려는 파일 내용을 보여 주며 허용을 묻는 화면입니다. 내용을 읽은 뒤 Accept(허용) 또는 Reject(거절) 버튼을 누릅니다. 입력창 옆에는 현재 권한 모드(Manual)를 보여 주는 선택기가 보입니다. 버튼 이름은 업데이트로 조금 다를 수 있습니다. |
 | 필요 | `02-claude-version.png` | 그림 설명: 새로 연 PowerShell 창입니다. 첫 줄 맨 앞에 PS가 보이고, claude --version 입력 아래에 "2.1.xxx (Claude Code)" 형태의 버전 줄이 나온 모습입니다. 이 줄이 보이면 설치와 PATH 등록이 모두 성공한 것입니다. |
 | 필요 | `03-github-signup.png` | 그림 설명: github.com/signup 첫 화면. 이메일 입력 칸과 Continue 버튼이 보입니다. 한 칸을 채우고 Continue를 누르면 다음 칸(비밀번호, 사용자 이름)이 차례로 나타납니다. |
