@@ -82,33 +82,31 @@
       <p>카드 오른쪽 위의 "복사" 버튼을 누른 뒤 Claude 입력창에 붙여넣으세요. <code>Ctrl+V</code>(Mac은 <code>Cmd+V</code>)로 붙여넣습니다. 출처 이름이 이미 정확히 들어 있으므로 고치지 말고 그대로 보내세요.</p>
       <figure class="prompt" data-title="디자인, 모션 스킬 4가지 한 번에 설치">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-        <pre>Claude Code와 Codex 둘 다에서 쓸 수 있게 아래 4가지를 내 PC 전체(전역, 사용자 범위)에 설치해줘.
+        <pre>Claude Code에서 쓸 수 있게 아래 4가지를 내 PC 전체(전역, 사용자 범위)에 설치해줘.
 출처는 아래에 적은 곳만 쓰고, 이름이 비슷한 다른 저장소는 설치하지 마.
 
 1) design-taste-frontend 스킬
    - 출처: GitHub Leonxlnx/taste-skill 안의 design-taste-frontend (이 저장소의 다른 스킬은 설치하지 마)
-   - npx skills add 로 설치하고, 대상은 claude-code 와 codex 둘 다
+   - npx skills add 로 설치하고, 대상은 claude-code
 
 2) impeccable 스킬
    - 출처: GitHub pbakaus/impeccable
-   - npx skills add 로 설치하고, 대상은 claude-code 와 codex 둘 다
+   - npx skills add 로 설치하고, 대상은 claude-code
    - 이 방법이 안 되면 저장소 설명서의 설치 방법을 알려줘
 
 3) ui-ux-pro-max 플러그인
-   - Claude Code: 플러그인 마켓플레이스 nextlevelbuilder/ui-ux-pro-max-skill 을 등록한 뒤 ui-ux-pro-max 플러그인 설치
-   - Codex: 저장소 설명서의 설치 도구 ui-ux-pro-max-cli 를 npx 로 실행해서 내 PC 전체(전역)에 설치 (npx ui-ux-pro-max-cli init --ai universal --global, Codex가 읽는 ~/.agents/skills 폴더에 들어감). 이 방법이 안 되면 저장소 설명서의 방법을 알려줘
+   - 플러그인 마켓플레이스 nextlevelbuilder/ui-ux-pro-max-skill 을 등록한 뒤 ui-ux-pro-max 플러그인 설치
 
 4) hyperframes
    - 출처: GitHub heygen-com/hyperframes
-   - Claude Code: 플러그인 마켓플레이스 heygen-com/hyperframes 를 등록한 뒤 hyperframes 플러그인 설치
-   - Codex: 선택창 없이 핵심 스킬 묶음만 전역 설치 (npx hyperframes skills update). 이 방법이 안 되면 방법만 알려줘
+   - 플러그인 마켓플레이스 heygen-com/hyperframes 를 등록한 뒤 hyperframes 플러그인 설치
 
 진행 방법:
 - 먼저 node 와 npx 가 있는지 확인하고, 없으면 설치하지 말고 나한테 알려줘.
 - 명령을 실행하기 전에 무엇을 하는 명령인지 한 줄로 먼저 설명해줘.
 - 확인 질문이나 선택창 때문에 멈추는 명령은 확인을 건너뛰는 옵션(-y)을 붙여서 실행해줘.
 - 하나 설치할 때마다 성공했는지 확인하고, 실패하면 오류 문구를 그대로 보여줘.
-- 마지막에 4가지 각각 "어느 프로그램의 어느 폴더에 설치됐는지"와 "부르는 이름"을 표로 정리해줘.
+- 마지막에 4가지 각각 "어느 폴더에 설치됐는지"와 "부르는 이름"을 표로 정리해줘.
 - 설치가 끝나면 새 세션을 시작해야 하는지도 알려줘.</pre>
       </figure>
       <p class="prompt-note">Claude가 명령을 하나씩 실행하며 설치합니다. 중간중간 허락 창이 뜹니다.</p>
@@ -119,7 +117,7 @@
     </li>
     <li class="step">
       <h4>허락 창이 뜨면 읽고 "Yes"를 누릅니다</h4>
-      <p>Claude는 명령을 하나 실행할 때마다 "이 명령을 실행해도 되나요?"라고 묻습니다. 명령 전체와 출처 이름을 눈으로 확인한 뒤 허용하세요. 무엇을 어떻게 확인하는지는 바로 아래 "허락 창에서 무엇을 확인하나요"에 자세히 적었습니다. 4가지를 설치하는 동안 허락 창이 여러 번 나올 수 있고, 그것이 정상입니다.</p>
+      <p>Claude는 명령을 하나 실행할 때마다 "이 명령을 실행해도 되나요?"라고 묻습니다. 명령 전체와 출처 이름을 눈으로 확인한 뒤 허용하세요. 4가지를 설치하는 동안 허락 창이 여러 번 나올 수 있고, 그것이 정상입니다.</p>
       <figure class="shot" data-shot="05-permission">
         <img src="/assets/shots/05-permission.png" alt="Claude가 npx skills add 명령을 실행해도 되는지 묻는 허락 화면" loading="lazy">
         <figcaption>그림 설명: 실행할 명령(예: npx skills add 로 시작하는 줄)과 출처 이름(owner/repo)이 보이고, 그 아래에 "Do you want to proceed?"와 함께 Yes, No 선택지가 있는 화면입니다. 명령 속 출처가 프롬프트에 적은 것과 같은지 먼저 봅니다.</figcaption>
@@ -141,102 +139,6 @@
       </figure>
     </li>
   </ol>
-
-  <h3>허락 창에서 무엇을 확인하나요</h3>
-  <p>Claude는 내 PC에서 명령을 실행하기 전에 허락을 구합니다. 이 창은 번거로운 절차가 아니라 AI를 안전하게 쓰는 가장 중요한 습관입니다. "Claude가 아니라 내가 마지막 확인을 한다"는 느낌으로 읽어 보세요.</p>
-
-  <h4>화면은 이렇게 생겼습니다</h4>
-  <p>터미널의 Claude Code에서는 제목에 "Bash command" 같은 명령 종류가 보이고, 그 아래에 실행할 명령이 나옵니다. 이어서 <code>Do you want to proceed?</code> 라는 질문과 함께 선택지가 나옵니다. 데스크톱 앱에서는 같은 내용이 카드 모양으로 나오고 허용, 거절 버튼이 있습니다. 버튼 이름과 위치는 버전에 따라 조금 다를 수 있습니다.</p>
-  <div class="table-wrap"><table>
-    <thead><tr><th>선택지</th><th>뜻</th><th>이 교육에서는</th></tr></thead>
-    <tbody>
-      <tr><td>Yes</td><td>이번 한 번만 허용합니다.</td><td>기본으로 이것을 고르세요.</td></tr>
-      <tr><td>Yes, and don't ask again for ...</td><td>같은 종류의 명령을 앞으로 묻지 않고 허용하며, 그 규칙이 저장됩니다.</td><td>지금은 고르지 마세요. 어떤 명령이 오가는지 눈에 익은 뒤에 고려합니다.</td></tr>
-      <tr><td>No</td><td>거절합니다. 왜 거절했는지 말해 주면 Claude가 다른 방법을 찾습니다.</td><td>조금이라도 이상하면 망설이지 말고 고르세요.</td></tr>
-    </tbody>
-  </table></div>
-  <p>어떤 화면에는 "Yes, and switch to auto mode" 같은 선택지가 더 있을 수 있습니다. 이 선택지는 이후 확인 창이 거의 나오지 않는 모드로 바꾸는 것이므로 처음에는 고르지 않는 것이 좋습니다. 선택지 위에서 <kbd>Tab</kbd> 키를 누르면 Claude에게 한마디 덧붙이는 칸이 열립니다. "No, 이 출처는 내가 말한 것과 다릅니다"처럼 이유를 적을 수 있습니다.</p>
-
-  <h4>눈으로 확인할 4가지</h4>
-  <ol>
-    <li><strong>명령의 첫 단어</strong>를 봅니다. 이번에는 <code>npx skills add</code>, <code>claude plugin marketplace add</code>, <code>claude plugin install</code>, <code>node -v</code> 같은 "설치, 확인" 성격의 명령이 나오는 것이 정상입니다.</li>
-    <li><strong>출처 이름의 철자</strong>를 프롬프트와 대조합니다. <code>Leonxlnx/taste-skill</code>, <code>pbakaus/impeccable</code>, <code>nextlevelbuilder/ui-ux-pro-max-skill</code>, <code>heygen-com/hyperframes</code> 가 정확히 맞는지 보세요. 글자 하나만 달라도 전혀 다른 사람이 만든 저장소입니다.</li>
-    <li><strong>이번 설치에 필요 없는 동작</strong>이 끼어 있지 않은지 봅니다. 인터넷의 프로그램을 내려받자마자 실행하는 명령(<code>curl ... | sh</code>, <code>irm ... | iex</code> 같은 모양), 파일 삭제(<code>rm</code>, <code>del</code>), 비밀번호나 토큰을 요구하는 동작이 대표적입니다.</li>
-    <li><strong>설치 위치</strong>가 내 사용자 폴더 안쪽(<code>.claude</code>, <code>.agents</code> 같은 폴더)인지 봅니다.</li>
-  </ol>
-  <p>중간에 npx가 "필요한 패키지를 내려받아도 되는지" 묻는 문구가 나올 수 있습니다. 설치 도구 자체를 임시로 받아 오는 확인이며, 보통 Claude가 알아서 처리합니다. 화면 문구는 업데이트로 조금 다를 수 있습니다.</p>
-
-  <div class="callout warn">
-    <i class="ph ph-warning"></i>
-    <strong>스킬은 Claude의 권한으로 움직입니다. 믿을 수 있는 출처만 설치하세요.</strong>
-    <div>
-      <p>스킬은 Claude가 읽고 따르는 설명서이고, 설명서 안에 "이 명령을 실행하라"는 내용이나 작은 프로그램이 들어 있을 수 있습니다. 플러그인은 자동 실행 장치(hook)나 외부 서비스 연결(MCP 서버)까지 포함할 수 있습니다. 공식 문서도 "플러그인은 hook과 MCP 서버를 실행할 수 있으니 설치 전에 내용을 읽어 보라"고 안내합니다. 설치하는 순간부터 Claude는 그 내용을 내 PC에서 내 권한으로 실행할 수 있다는 뜻입니다.</p>
-      <ul>
-        <li>이 교재에 적힌 출처, 또는 회사가 안내한 출처만 설치합니다.</li>
-        <li>인터넷에서 "좋다더라" 하고 본 스킬은 설치 전에 강사나 IT 담당자에게 먼저 물어보세요.</li>
-        <li>출처가 개인 계정인지 회사 계정인지, 설명서가 있는지, 최근에 관리되고 있는지를 저장소 첫 화면에서 확인하는 습관을 들이세요.</li>
-        <li>업무용 PC에는 회사 보안 정책이 우선합니다.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="callout danger">
-    <i class="ph ph-prohibit"></i>
-    <strong>설치 도중 비밀번호, 토큰, 카드 정보를 입력하라는 요구가 나오면 입력하지 마세요</strong>
-    <div><p>이 4가지 설치에는 어떤 비밀번호도 필요하지 않습니다. 그런 요구가 나오면 "No"를 누르고 강사나 담당자에게 알려 주세요.</p></div>
-  </div>
-
-  <h3>직접 하고 싶다면: Claude가 실행하는 명령 (참고용)</h3>
-  <p>위 프롬프트를 보내면 Claude는 대략 아래 명령들을 차례로 실행합니다. 외울 필요는 없습니다. 허락 창에서 같은 모양의 명령이 나오는지 비교해 보는 용도입니다. 직접 하고 싶다면 터미널(PowerShell)에 한 줄씩 입력해도 됩니다. 옵션은 도구 버전에 따라 달라질 수 있으니, 막히면 Claude에게 맡기는 편이 안전합니다.</p>
-
-  <figure class="cmd">
-    <figcaption><i class="ph ph-terminal-window"></i>Claude Code용 플러그인 2개 (터미널)</figcaption>
-    <pre><code><span class="c"># ui-ux-pro-max: 마켓플레이스를 먼저 등록하고, 그 안의 플러그인을 설치</span>
-claude plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill
-claude plugin install ui-ux-pro-max@ui-ux-pro-max-skill
-
-<span class="c"># hyperframes: 마켓플레이스를 먼저 등록하고, 그 안의 플러그인을 설치</span>
-claude plugin marketplace add heygen-com/hyperframes
-claude plugin install hyperframes@hyperframes</code></pre>
-  </figure>
-
-  <figure class="cmd">
-    <figcaption><i class="ph ph-terminal-window"></i>디자인 스킬 2개 (Claude Code와 Codex 양쪽)</figcaption>
-    <pre><code><span class="c"># design-taste-frontend: taste-skill 저장소에서 이 스킬만 선택</span>
-npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -g -a claude-code -a codex
-
-<span class="c"># impeccable</span>
-npx skills add pbakaus/impeccable -g -a claude-code -a codex</code></pre>
-  </figure>
-
-  <ul>
-    <li><code>npx skills add</code>: 스킬 설치 도구에게 "이 저장소의 스킬을 받아서 설치하라"고 시키는 명령입니다.</li>
-    <li><code>-g</code>: 내 PC 사용자 전체(전역)에 설치합니다. 빼면 지금 폴더 안에만 설치됩니다.</li>
-    <li><code>-a claude-code -a codex</code>: 설치 대상 프로그램입니다. 둘 다 적으면 한 번에 양쪽에 설치됩니다.</li>
-    <li><code>--skill 이름</code>: 저장소 안에 스킬이 여러 개일 때 이 스킬만 고릅니다.</li>
-    <li><code>-y</code>: 확인 질문을 건너뜁니다. Claude가 대신 실행할 때 질문 때문에 멈추지 않도록 붙이기도 합니다.</li>
-  </ul>
-  <p>impeccable은 제작자가 만든 전용 설치 도구(<code>npx impeccable install</code>)도 있습니다. 위 명령이 막히면 이 도구를 쓰고, 설치 범위를 묻는 질문에서 전역(global)을 고르세요. 전용 도구는 자동 점검용 부가 설정(hook)까지 함께 설치할 수 있으니 허락 창에서 무엇을 설치하는지 읽어 보세요.</p>
-
-  <figure class="cmd">
-    <figcaption><i class="ph ph-terminal-window"></i>Codex용 추가 설치 (Codex를 쓰는 경우)</figcaption>
-    <pre><code><span class="c"># hyperframes 스킬을 Codex에 설치 (직접 할 때는 선택창이 나옵니다. "Core Skills" 그룹만 고르면 됩니다)</span>
-npx skills add heygen-com/hyperframes -g -a codex
-
-<span class="c"># AI가 대신 설치할 때는 선택창 없이 핵심 묶음만 설치하는 이 명령이 맞습니다</span>
-npx hyperframes skills update
-
-<span class="c"># ui-ux-pro-max를 내 PC 전체(전역)의 Codex 스킬 폴더(~/.agents/skills)에 설치</span>
-<span class="c"># (저장소 설명서에 적힌 방식이며 버전에 따라 다를 수 있습니다)</span>
-npx ui-ux-pro-max-cli init --ai universal --global</code></pre>
-  </figure>
-  <p>Claude Code 대화창 안에서는 <code>/plugin marketplace add heygen-com/hyperframes</code> 다음에 <code>/plugin install hyperframes@hyperframes</code> 순서로 입력하는 방법도 있습니다. 대화창에서는 설치 명령을 넣으면 바로 설치되지 않고 플러그인 상세 화면이 열려서, 내용을 읽고 설치 범위(나만, 이 프로젝트 등)를 고르게 됩니다. 이 교육에서는 모든 프로젝트에서 쓸 수 있도록 "나만, 모든 프로젝트(user 범위)"를 고르세요. 터미널에서 <code>claude plugin install</code> 로 입력하면 따로 정하지 않아도 이 범위로 설치됩니다.</p>
-
-  <div class="callout why">
-    <i class="ph ph-question"></i>
-    <strong>설치 명령이 왜 두 종류인가요?</strong>
-    <div><p>플러그인(꾸러미)은 Claude Code가 직접 관리하므로 <code>claude plugin ...</code> 명령을 쓰고, 스킬(설명서 한 장)은 여러 AI 프로그램이 함께 쓰는 설치 도구 <code>npx skills ...</code> 로 설치합니다. 그래서 Claude 하나로 부탁하면 Claude가 두 가지 명령을 알아서 나눠서 실행합니다.</p></div>
-  </div>
 
   <h3>설치 끝, 반드시 새 세션을 시작하세요</h3>
   <p>설치를 마쳤다고 지금 열려 있는 대화에서 바로 보이지는 않을 수 있습니다. 이미 열린 대화는 시작할 때의 "쓸 수 있는 스킬 목록"을 그대로 쓰는 경우가 있기 때문입니다. 가장 확실한 방법은 <strong>새 세션</strong>을 여는 것입니다.</p>
@@ -331,31 +233,6 @@ npx ui-ux-pro-max-cli init --ai universal --global</code></pre>
 [내 주제]를 소개하는 10초짜리 영상을 만들려고 해. 아직 만들지 말고, 어떤 종류의 영상 스킬로 진행하면 좋을지 알려주고 먼저 필요한 정보를 질문해줘.</pre>
   </figure>
   <p class="prompt-note">hyperframes:hyperframes 는 안내 데스크처럼 "어떤 영상이냐에 따라 어느 스킬로 갈지"를 정해 줍니다. 실제로 영상을 만드는 것은 7장에서 합니다.</p>
-
-  <h3>Codex를 쓰는 분을 위한 안내</h3>
-  <p>Codex를 쓰지 않으신다면 이 부분은 건너뛰어도 됩니다. Codex도 같은 형식의 스킬 폴더(SKILL.md 파일이 들어 있는 폴더)를 읽을 수 있어서, 위에서 설치한 스킬을 그대로 쓸 수 있습니다. 차이는 "어디서 읽고, 어떻게 부르느냐"입니다.</p>
-  <div class="table-wrap"><table>
-    <thead><tr><th>항목</th><th>Claude Code</th><th>Codex</th></tr></thead>
-    <tbody>
-      <tr><td>스킬 부르는 법</td><td>입력창에 <code>/스킬이름</code></td><td>입력창에 <code>$</code> 를 치고 목록에서 스킬 선택 (예: <code>$design-taste-frontend</code>)</td></tr>
-      <tr><td>목록 보기</td><td><code>/</code> 입력 또는 <code>/skills</code></td><td><code>/skills</code> 입력, 또는 <code>$</code> 입력</td></tr>
-      <tr><td>내 PC 전체 스킬 폴더</td><td><code>~/.claude/skills</code></td><td><code>~/.agents/skills</code> (공식 문서 기준)</td></tr>
-      <tr><td>설치 후 반영</td><td>새 세션 시작</td><td>보통 자동으로 감지합니다. 안 보이면 Codex를 껐다 켭니다.</td></tr>
-    </tbody>
-  </table></div>
-  <p><code>~</code> 는 내 사용자 폴더(Windows에서는 <code>C:\Users\[내 계정]</code>)를 뜻합니다. 플러그인 방식 이름(<code>ui-ux-pro-max:ui-ux-pro-max</code> 같은 콜론 표기)은 Claude Code의 표기법입니다. Codex에서는 <code>$</code> 목록에 보이는 이름을 그대로 고르세요. 이름이 조금 다르게 보여도 정상입니다.</p>
-  <figure class="prompt" data-title="Codex에서 스킬 이름으로 부르기">
-    <figcaption><i class="ph ph-chat-circle-text"></i>Codex 입력창에서</figcaption>
-    <pre>$design-taste-frontend
-[내 주제] 소개 사이트의 디자인 방향을 서로 다른 3가지로 제안해줘. 코드는 아직 만들지 마.</pre>
-  </figure>
-  <p class="prompt-note"><code>$</code> 목록에서 이름이 선택되지 않으면, 그냥 "design-taste-frontend 스킬을 사용해서 ..." 하고 스킬 이름을 말로 언급해도 됩니다.</p>
-
-  <div class="callout warn">
-    <i class="ph ph-warning"></i>
-    <strong>설치 도구 버전에 따라 폴더가 다를 수 있습니다</strong>
-    <div><p>Codex 공식 문서는 사용자 전체 스킬 폴더를 <code>~/.agents/skills</code> 라고 안내합니다. 그런데 설치 도구의 버전에 따라 <code>~/.codex/skills</code> 같은 다른 위치에 넣는 경우도 있습니다. 그래서 설치 후에는 Codex에서 <code>/skills</code> 나 <code>$</code> 를 눌러 실제로 보이는지 확인하세요. 안 보이면 Codex에게 "스킬이 어느 폴더에 설치됐는지 찾아서 알려줘"라고 부탁하세요.</p></div>
-  </div>
 
   <h3>막히면 Claude에게 그대로 전달하세요</h3>
   <p>이 장에서 오류가 나거나 화면이 안내와 다르면, 직접 원인을 찾지 말고 <strong>나온 문구를 그대로 Claude에게 전달</strong>하세요. 앱도 Git도 이미 설치했으므로 Code 탭의 <code>ai-site</code> 폴더에서 물어보면 Claude가 내 PC 상태를 직접 확인하고 원인을 찾아 줍니다. 오류 문구를 복사하기 어려우면 화면을 캡처해서 붙여도 됩니다.</p>

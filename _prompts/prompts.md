@@ -108,33 +108,31 @@ ai-site 폴더의 index.html 위치와 GitHub main 브랜치 반영 상태를 �
 
 ### 디자인, 모션 스킬 4가지 한 번에 설치
 ```text
-Claude Code와 Codex 둘 다에서 쓸 수 있게 아래 4가지를 내 PC 전체(전역, 사용자 범위)에 설치해줘.
+Claude Code에서 쓸 수 있게 아래 4가지를 내 PC 전체(전역, 사용자 범위)에 설치해줘.
 출처는 아래에 적은 곳만 쓰고, 이름이 비슷한 다른 저장소는 설치하지 마.
 
 1) design-taste-frontend 스킬
    - 출처: GitHub Leonxlnx/taste-skill 안의 design-taste-frontend (이 저장소의 다른 스킬은 설치하지 마)
-   - npx skills add 로 설치하고, 대상은 claude-code 와 codex 둘 다
+   - npx skills add 로 설치하고, 대상은 claude-code
 
 2) impeccable 스킬
    - 출처: GitHub pbakaus/impeccable
-   - npx skills add 로 설치하고, 대상은 claude-code 와 codex 둘 다
+   - npx skills add 로 설치하고, 대상은 claude-code
    - 이 방법이 안 되면 저장소 설명서의 설치 방법을 알려줘
 
 3) ui-ux-pro-max 플러그인
-   - Claude Code: 플러그인 마켓플레이스 nextlevelbuilder/ui-ux-pro-max-skill 을 등록한 뒤 ui-ux-pro-max 플러그인 설치
-   - Codex: 저장소 설명서의 설치 도구 ui-ux-pro-max-cli 를 npx 로 실행해서 내 PC 전체(전역)에 설치 (npx ui-ux-pro-max-cli init --ai universal --global, Codex가 읽는 ~/.agents/skills 폴더에 들어감). 이 방법이 안 되면 저장소 설명서의 방법을 알려줘
+   - 플러그인 마켓플레이스 nextlevelbuilder/ui-ux-pro-max-skill 을 등록한 뒤 ui-ux-pro-max 플러그인 설치
 
 4) hyperframes
    - 출처: GitHub heygen-com/hyperframes
-   - Claude Code: 플러그인 마켓플레이스 heygen-com/hyperframes 를 등록한 뒤 hyperframes 플러그인 설치
-   - Codex: 선택창 없이 핵심 스킬 묶음만 전역 설치 (npx hyperframes skills update). 이 방법이 안 되면 방법만 알려줘
+   - 플러그인 마켓플레이스 heygen-com/hyperframes 를 등록한 뒤 hyperframes 플러그인 설치
 
 진행 방법:
 - 먼저 node 와 npx 가 있는지 확인하고, 없으면 설치하지 말고 나한테 알려줘.
 - 명령을 실행하기 전에 무엇을 하는 명령인지 한 줄로 먼저 설명해줘.
 - 확인 질문이나 선택창 때문에 멈추는 명령은 확인을 건너뛰는 옵션(-y)을 붙여서 실행해줘.
 - 하나 설치할 때마다 성공했는지 확인하고, 실패하면 오류 문구를 그대로 보여줘.
-- 마지막에 4가지 각각 "어느 프로그램의 어느 폴더에 설치됐는지"와 "부르는 이름"을 표로 정리해줘.
+- 마지막에 4가지 각각 "어느 폴더에 설치됐는지"와 "부르는 이름"을 표로 정리해줘.
 - 설치가 끝나면 새 세션을 시작해야 하는지도 알려줘.
 ```
 
@@ -171,12 +169,6 @@ Claude Code와 Codex 둘 다에서 쓸 수 있게 아래 4가지를 내 PC 전�
 ```text
 /hyperframes:hyperframes
 [내 주제]를 소개하는 10초짜리 영상을 만들려고 해. 아직 만들지 말고, 어떤 종류의 영상 스킬로 진행하면 좋을지 알려주고 먼저 필요한 정보를 질문해줘.
-```
-
-### Codex에서 스킬 이름으로 부르기
-```text
-$design-taste-frontend
-[내 주제] 소개 사이트의 디자인 방향을 서로 다른 3가지로 제안해줘. 코드는 아직 만들지 마.
 ```
 
 ### 막혔을 때 원인 찾기 (4장)
