@@ -221,6 +221,15 @@ git config --global user.email "[GitHub 가입 이메일]"</code></pre>
     <li class="step">
       <h4>모델과 권한 모드 확인하기</h4>
       <p>입력창의 전송 버튼 옆에 모델을 고르는 목록과 권한 모드를 고르는 선택기가 있습니다. 모델은 기본값 그대로 두세요. 권한 모드는 다음 절에서 설명하는 <strong>Accept edits</strong>(파일 수정은 자동 승인)로 바꿉니다.</p>
+      <div class="callout warn">
+        <i class="ph ph-warning"></i>
+        <strong>대화 도중에 모델을 바꾸지 마세요</strong>
+        <div><p>지금 대화는 현재 모델 기준으로 캐시(빠르게 다시 쓰려고 임시로 저장해 둔 것)되어 있습니다. 대화 도중에 모델을 바꾸면 다음 메시지를 보낼 때 Claude가 지금까지의 대화 전체를 처음부터 다시 읽어야 해서, 사용 한도가 더 많이 소모됩니다. 아래처럼 확인 창이 뜨면 모델이 바뀌는 것이므로 <strong>취소</strong>를 누르세요. 모델을 바꾸고 싶다면 새 대화를 시작할 때 고르는 편이 한도를 아낍니다.</p></div>
+      </div>
+      <figure class="shot" data-shot="02-model-change">
+        <img src="/assets/shots/02-model-change.png" alt="모델을 변경하시겠습니까 확인 창. 현재 세션은 기존 모델 기준으로 캐시되어 있고 다른 모델로 전환하면 전체 세션을 다시 읽어 한도를 더 사용한다는 안내" loading="lazy">
+        <figcaption>그림 설명: 대화 도중에 모델을 바꾸려 할 때 뜨는 확인 창입니다. 현재 세션이 지금 모델 기준으로 캐시되어 있어, 바꾸면 Claude가 전체 세션을 다시 읽으며 한도를 더 많이 사용한다고 알려 줍니다. 모델 이름은 업데이트로 다를 수 있습니다.</figcaption>
+      </figure>
     </li>
   </ol>
 

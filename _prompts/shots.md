@@ -15,6 +15,7 @@
 | 필요 | `03-gcm-signin.png` | 그림 설명: git clone을 입력하면 뜨는 GitHub 로그인 창입니다. Sign in with your browser 버튼의 위치를 표시하세요. |
 | 필요 | `03-gcm-authorize.png` | 그림 설명: 브라우저에 열린 GitHub 승인 화면입니다. Authorize 버튼의 위치를 표시하세요. |
 | 필요 | `03-clone-done.png` | 그림 설명: clone이 끝난 cmd 창입니다. Cloning into 'ai-site' 줄과 빈 저장소 안내 줄이 보입니다. |
+| 완료 | `02-model-change.png` | 그림 설명: 대화 도중에 모델을 바꾸려 할 때 뜨는 확인 창입니다. 현재 세션이 지금 모델 기준으로 캐시되어 있어, 바꾸면 Claude가 전체 세션을 다시 읽으며 한도를 더 많이 사용한다고 알려 줍니다. 모델 이름은 업데이트로 다를 수 있습니다. |
 | 완료 | `02-code-tab.png` | 그림 설명: 앱 위쪽에 채팅 및 Cowork 탭과 Code 탭이 나란히 있고, 그중 Code 탭이 선택된 모습입니다. 아래쪽에 입력창이 보이고, 입력창 근처에 Local 선택과 Select folder 버튼이 있습니다. |
 | 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-site 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-site 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
 | 필요 | `02-permission-dialog.png` | 그림 설명: Accept edits 모드에서 Claude가 실행하려는 명령(예: claude.ai의 공식 설치 명령)이나 바꾸려는 파일 내용을 보여 주며 허용을 묻는 화면입니다. 내용을 읽은 뒤 Accept(허용) 또는 Reject(거절) 버튼을 누릅니다. 입력창 옆에는 현재 권한 모드(Accept edits)를 보여 주는 선택기가 보입니다. 버튼 이름은 업데이트로 조금 다를 수 있습니다. |
