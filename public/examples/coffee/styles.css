@@ -1,5 +1,4 @@
-/* ONE CUP - 한 잔이 되기까지.
-   Color and wording live here and in index.html; step timing lives in js/data.js. */
+/* ONE CUP - 한 잔이 되기까지. Photographs carry the look; small overlays (steam, drops, bubbles) bring them to life. */
 
 @font-face {
   font-family: "Pretendard Sub";
@@ -9,143 +8,174 @@
 }
 
 :root {
-  --ink: #241813;       /* coffee, text 15:1 on cream */
-  --cream: #F7F0E4;
-  --copper: #C78550;    /* drawings only, 2.7:1 is too low for text */
-  --green: #536A5E;     /* UI accent, 5.2:1 both ways with cream */
-  --muted: #6B5A4E;     /* body, 5.8:1 */
-  --line: #E2D5C1;
-
+  --espresso: #140D09;
+  --cream: #F4EAD9;
+  --soft: #CDBBA6;
+  --copper: #E7B07A;
   --font: "Pretendard Sub", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
-  --gutter: clamp(16px, 4vw, 64px);
+  --gutter: clamp(16px, 5vw, 72px);
   --vh: 100vh;
-  --stage-h: 100vh;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
 }
 @supports (height: 100dvh) { :root { --vh: 100dvh; } }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; background: var(--espresso); }
 body {
-  margin: 0; background: var(--cream); color: var(--ink);
-  font-family: var(--font); font-size: 1rem; line-height: 1.65;
-  word-break: keep-all; overflow-wrap: break-word;
+  margin: 0; background: var(--espresso); color: var(--cream);
+  font-family: var(--font); font-size: 1rem; line-height: 1.65; word-break: keep-all; overflow-wrap: break-word; overflow-x: clip;
 }
-/* Faint paper grain on a fixed layer so it never repaints with scroll. */
-body::before {
-  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-h1, h2, p { margin: 0; }
-button { font: inherit; }
-a { color: var(--green); }
-:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
-.step:focus { outline: none; }
-
+h1, h2, p, ul { margin: 0; }
+img { display: block; }
+button { font: inherit; color: inherit; }
+a { color: var(--copper); }
+::selection { background: rgba(231, 176, 122, 0.35); }
+:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+.opening:focus, .scene:focus { outline: none; }
 .skip {
-  position: absolute; left: 16px; top: -100px; z-index: 10; padding: 12px 18px;
-  border-radius: 999px; background: var(--ink); color: var(--cream); font-weight: 700; text-decoration: none;
+  position: absolute; left: 16px; top: -100px; z-index: 20; padding: 12px 18px; border-radius: 999px;
+  background: var(--cream); color: var(--espresso); font-weight: 700; text-decoration: none;
 }
 .skip:focus { top: 16px; }
-
-/* ---------- layout ---------- */
-.journey {
-  position: relative; z-index: 1;
-  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-}
-.stage-col { grid-column: 2; grid-row: 1 / span 6; }
-.stage {
-  position: sticky; top: 0; height: var(--vh);
-  display: grid; place-items: center; padding: 24px var(--gutter) 24px 0;
-}
-.scene { display: block; width: 100%; height: 100%; max-height: calc(var(--vh) - 48px); }
-.step { grid-column: 1; min-height: 140vh; padding: 0 var(--gutter); }
-.step:first-of-type { min-height: 110vh; }
-.step-long { min-height: 240vh; }
-.step-end { min-height: 110vh; padding-bottom: 120px; }
-.card { position: sticky; top: 32vh; max-width: 28rem; padding-bottom: 40px; }
-/* With JavaScript, only the step being drawn shows its text, so two steps never read at once. */
-html.js .step .card { opacity: 0; visibility: hidden; transition: opacity 180ms ease-out, visibility 0s linear 180ms; }
-html.js .step.is-active .card { opacity: 1; visibility: visible; transition: opacity 260ms cubic-bezier(0.2, 0, 0, 1); }
-
-/* ---------- type ---------- */
 .brand {
-  position: absolute; top: 24px; left: var(--gutter); z-index: 3;
-  font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.2em; color: var(--green);
-}
-::selection { background: rgba(199, 133, 80, 0.35); color: var(--ink); }
-h1, .end-title {
-  margin-top: 0; font-size: clamp(2.5rem, 1.3rem + 4vw, 4.5rem);
-  line-height: 1.12; font-weight: 800; letter-spacing: -0.04em;
-}
-.lead { margin-top: 18px; font-size: 1.125rem; color: var(--muted); }
-h2 { margin-top: 0; font-size: clamp(1.875rem, 1.2rem + 2vw, 2.75rem); line-height: 1.2; font-weight: 800; letter-spacing: -0.03em; }
-.card h2 + p { margin-top: 14px; font-size: 1.1875rem; line-height: 1.6; color: var(--muted); }
-
-.btn {
-  margin-top: 28px; display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px;
-  border: 0; border-radius: 999px; background: var(--green); color: var(--cream);
-  font-weight: 700; font-size: 1.0625rem; cursor: pointer;
-  transition: background-color 160ms, transform 160ms;
-}
-.btn:hover { background: #445A4F; }
-.btn:active { transform: translateY(1px); }
-
-.info { margin-top: 36px; border-top: 1px solid var(--line); padding-top: 8px; }
-.info summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 600; color: var(--green); }
-.info p, .info li { font-size: 0.9375rem; color: var(--muted); }
-.info p + p { margin-top: 8px; }
-.info ul { margin: 10px 0 0; padding-left: 1.2em; display: grid; gap: 6px; }
-
-/* ---------- drawing ---------- */
-.table { stroke: #D9C8AE; stroke-width: 3; stroke-linecap: round; }
-
-/* ---------- step shortcuts ---------- */
-.steps-nav {
-  position: fixed; left: var(--gutter); bottom: 20px; z-index: 3;
-}
-.steps-nav ol {
-  list-style: none; margin: 0; padding: 6px; display: flex; gap: 4px;
-  border-radius: 999px; background: rgba(247, 240, 228, 0.92); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -18px rgba(36, 24, 19, 0.5);
-}
-.steps-nav a {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px;
-  color: var(--ink); text-decoration: none; font-size: 0.875rem; font-weight: 600; white-space: nowrap;
-}
-.steps-nav a:hover { background: rgba(83, 106, 94, 0.12); }
-.steps-nav a[aria-current="step"] { background: var(--green); color: var(--cream); }
-
-/* ---------- phones and narrow windows ---------- */
-@media (max-width: 899px) {
-  :root { --stage-h: 58vh; }
-  @supports (height: 58svh) { :root { --stage-h: 58svh; } }
-  .journey { display: block; }
-  /* The whole set of tools stays in view (viewBox meet, never cover); text scrolls beneath. */
-  .stage-col { position: sticky; top: 0; z-index: 2; height: var(--stage-h); background: var(--cream); box-shadow: 0 1px 0 var(--line); }
-  .stage { position: static; height: 100%; padding: 8px 12px; }
-  .scene { max-height: none; }
-  .step { min-height: 110vh; }
-  .step:first-of-type { min-height: 90vh; }
-  .step-long { min-height: 190vh; }
-  .step-end { min-height: 100vh; padding-bottom: 120px; }
-  .card { top: calc(var(--stage-h) + 20px); padding-top: 8px; }
-  h1, .end-title { font-size: clamp(2rem, 1.2rem + 4vw, 2.75rem); }
-  .brand { top: 12px; left: 14px; }
-  .lead { margin-top: 10px; font-size: 1.0625rem; }
-  h2 { font-size: 1.75rem; }
-  .card h2 + p { font-size: 1.0625rem; }
-  .steps-nav { left: 0; right: 0; bottom: 0; }
-  .steps-nav ol {
-    border-radius: 0; padding: 6px 8px max(6px, env(safe-area-inset-bottom));
-    justify-content: space-between; box-shadow: 0 -1px 0 var(--line);
-  }
-  .steps-nav li { flex: 1; }
-  .steps-nav a { width: 100%; justify-content: center; min-height: 44px; padding: 0 4px; font-size: 0.8125rem; }
+  position: fixed; top: 16px; left: var(--gutter); z-index: 10; padding: 8px 12px; border-radius: 12px;
+  background: rgba(20, 13, 9, 0.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.24em;
 }
 
+/* ---------- buttons ---------- */
+.btn, .btn-line, .act, .op-skip {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px;
+  border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 1rem; text-decoration: none; white-space: nowrap;
+  transition: background-color 160ms, border-color 160ms, color 160ms, transform 160ms;
+  -webkit-user-select: none; user-select: none; touch-action: manipulation;
+}
+.btn { border: 0; background: var(--copper); color: var(--espresso); }
+.btn:hover { background: #F0C495; }
+.btn-line, .act, .op-skip { border: 1.5px solid rgba(244, 234, 217, 0.55); background: rgba(20, 13, 9, 0.5); color: var(--cream); }
+.btn-line:hover, .act:hover, .op-skip:hover { border-color: var(--cream); background: rgba(20, 13, 9, 0.75); }
+.act.is-on { background: var(--copper); border-color: var(--copper); color: var(--espresso); transform: scale(0.97); }
+
+/* ---------- photo frames: sized and placed by app.js so every overlay stays on its spot in the photo ---------- */
+.frame { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: var(--fx, 50%) var(--fy, 50%); }
+.frame > img { width: 100%; height: 100%; }
+.frame > :not(img) { position: absolute; }
+
+/* ---------- opening ---------- */
+.opening { position: relative; height: var(--vh); min-height: 560px; overflow: hidden; background: #0B0705; }
+.op-stage { position: absolute; inset: 0; overflow: hidden; }
+.op-shot { opacity: 0; }
+.op-shade { position: absolute; inset: 0; background: #0B0705; opacity: 0; }
+.opening::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(11, 7, 5, 0.82) 0%, rgba(11, 7, 5, 0.45) 40%, rgba(11, 7, 5, 0) 65%),
+              linear-gradient(to bottom, rgba(11, 7, 5, 0) 60%, var(--espresso));
+}
+.op-copy { position: absolute; z-index: 3; left: var(--gutter); right: var(--gutter); bottom: clamp(80px, 16vh, 160px); display: grid; gap: 18px; max-width: 36rem; }
+.op-copy h1 { font-size: clamp(3rem, 1.4rem + 6vw, 6.25rem); line-height: 1.04; font-weight: 800; letter-spacing: -0.04em; }
+.op-copy h1 span { display: inline-block; }
+.op-lead { font-size: 1.125rem; color: var(--soft); }
+.op-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.op-skip { position: absolute; z-index: 4; right: var(--gutter); bottom: 88px; }
+.op-skip[hidden] { display: none; }
+
+/* ---------- scenes ---------- */
+.scene { position: relative; min-height: 220vh; }
+.scene-long { min-height: 300vh; }
+.scene-end { min-height: 160vh; }
+.sticky { position: sticky; top: 0; height: var(--vh); overflow: hidden; }
+.sticky::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(20, 13, 9, 0.78), rgba(20, 13, 9, 0.2) 45%, rgba(20, 13, 9, 0) 60%);
+}
+#bean .sticky::after { background: linear-gradient(270deg, rgba(20, 13, 9, 0.85), rgba(20, 13, 9, 0.2) 45%, rgba(20, 13, 9, 0) 60%); }
+/* Slow push-in tied to scroll; the frame scales as a whole so overlays stay aligned. */
+.scene .frame { transform: scale(calc(1.08 - 0.08 * var(--p, 0))); }
+.copy {
+  position: absolute; z-index: 3; left: var(--gutter); bottom: clamp(96px, 16vh, 170px);
+  max-width: 28rem; display: grid; gap: 12px; text-shadow: 0 1px 14px rgba(0, 0, 0, 0.6);
+}
+.copy-right { left: auto; right: var(--gutter); }
+.step-label { font-size: 0.875rem; font-weight: 700; letter-spacing: 0.06em; color: var(--copper); }
+.copy h2 { font-size: clamp(1.875rem, 1.1rem + 2.6vw, 3.25rem); line-height: 1.15; font-weight: 800; letter-spacing: -0.035em; }
+.copy > p:not(.step-label):not(.status) { font-size: 1.0625rem; }
+.actions { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 8px; text-shadow: none; }
+.status { font-size: 0.9375rem; color: var(--soft); min-height: 1.6em; }
+
+/* overlays */
+.wisps path, .steam path { fill: none; stroke: rgba(255, 240, 222, 0.55); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-dasharray: 18 14; opacity: 0; }
+.ring { overflow: visible; transform: rotate(-90deg); opacity: 0; transition: opacity 240ms; }
+.ring.is-on { opacity: 1; }
+.ring-track, .ring-fill { fill: none; stroke-width: 3; vector-effect: non-scaling-stroke; }
+.ring-track { stroke: rgba(244, 234, 217, 0.22); }
+.ring-fill { stroke: var(--copper); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 276.5; stroke-dashoffset: 276.5; }
+.grounds span { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #6B4026; }
+.sheen { border-radius: 50%; overflow: hidden; opacity: 0; }
+.sheen::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%); background-size: 250% 100%; }
+.drops span { position: absolute; left: -3px; top: 0; width: 6px; height: 9px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; opacity: 0; }
+[data-setup-drops] span { background: rgba(225, 238, 242, 0.9); }
+[data-pour-drops] span { background: #3B2213; box-shadow: 0 0 0 1px rgba(255, 210, 160, 0.25); }
+.stream { width: 4px; margin-left: -2px; border-radius: 2px; opacity: 0.45; transform-origin: 50% 0;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0) 0 10px, rgba(255, 255, 255, 0.85) 10px 16px); background-size: 100% 26px; }
+.wave { border-radius: 50%; border: 1.5px solid rgba(255, 214, 170, 0.6); opacity: 0; }
+.bubbles span { position: absolute; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255, 238, 210, 0.9), rgba(200, 140, 80, 0.55) 45%, rgba(90, 50, 25, 0.3) 70%); opacity: 0; transform: scale(0); }
+
+/* ---------- idle and triggered motion ---------- */
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
+  .is-live .steam path { animation: rise 4.6s ease-in-out infinite; }
+  .is-live .steam path:nth-child(2) { animation-delay: 1.4s; }
+  .is-live .steam path:nth-child(3) { animation-delay: 2.7s; }
+  .wisps.is-on path { animation: rise 3.4s ease-out 1 both; }
+  .wisps.is-on path:nth-child(2) { animation-delay: 0.5s; }
+  .wisps.is-on path:nth-child(3) { animation-delay: 1s; }
+  .is-live .stream { animation: flow 0.6s linear infinite; }
+  .is-live .drops-idle span { animation: fall 1.5s cubic-bezier(0.5, 0, 1, 1) infinite; }
+  .is-live .drops-idle span:nth-child(2) { animation-delay: 0.5s; }
+  .is-live .drops-idle span:nth-child(3) { animation-delay: 1s; }
+  .is-live .wave { animation: ripple 1.5s ease-out infinite 0.9s; }
+  .is-pouring .stream { opacity: 0.9; width: 6px; animation-duration: 0.35s; }
+  .is-pouring .drops-idle span { animation-duration: 0.7s; }
+  .is-pouring .wave { animation-duration: 0.7s; }
+  .frame.is-jitter { animation: jitter 90ms steps(2) infinite; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html.js .step .card, html.js .step.is-active .card { transition: none; }
+  .steam path { opacity: 0.35; stroke-dasharray: none; }
+  .stream { opacity: 0.6; }
+}
+@keyframes rise { 0% { opacity: 0; stroke-dashoffset: 0; transform: translateY(8%); } 30% { opacity: 0.75; } 100% { opacity: 0; stroke-dashoffset: -64; transform: translateY(-14%); } }
+@keyframes flow { to { background-position: 0 26px; } }
+@keyframes fall { 0% { opacity: 0; transform: translateY(0); } 10% { opacity: 1; } 92% { opacity: 1; } 100% { opacity: 0; transform: translateY(var(--fall, 100px)); } }
+@keyframes ripple { 0% { opacity: 0.7; transform: scale(0.25); } 100% { opacity: 0; transform: scale(1.3); } }
+@keyframes jitter { 0% { translate: 0.6px 0; } 100% { translate: -0.6px 0.4px; } }
+
+/* ---------- step shortcuts ---------- */
+.steps-nav { position: fixed; left: 50%; bottom: 18px; z-index: 10; transform: translateX(-50%); }
+.steps-nav ol {
+  list-style: none; margin: 0; padding: 6px; display: flex; gap: 4px; border-radius: 999px;
+  background: rgba(20, 13, 9, 0.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(244, 234, 217, 0.14);
+}
+.steps-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: var(--cream); text-decoration: none; font-size: 0.875rem; font-weight: 600; white-space: nowrap; }
+.steps-nav a:hover { background: rgba(244, 234, 217, 0.1); }
+.steps-nav a[aria-current="step"] { background: var(--copper); color: var(--espresso); }
+
+.info { margin-top: 10px; border-top: 1px solid rgba(244, 234, 217, 0.2); padding-top: 6px; text-shadow: none; }
+.info summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--copper); font-weight: 600; }
+.info p, .info li { font-size: 0.9375rem; color: var(--soft); }
+.info p + p { margin-top: 8px; }
+.info ul { margin-top: 8px; padding-left: 1.2em; display: grid; gap: 6px; }
+
+/* ---------- phones ---------- */
+@media (max-width: 767px) {
+  .sticky::after, #bean .sticky::after { background: linear-gradient(to bottom, rgba(20, 13, 9, 0) 46%, var(--espresso) 64%); }
+  .opening::after { background: linear-gradient(to bottom, rgba(11, 7, 5, 0) 46%, var(--espresso) 64%); }
+  .copy, .copy-right { left: 16px; right: 16px; bottom: 84px; max-width: none; gap: 8px; }
+  .copy > p:not(.step-label):not(.status) { font-size: 1rem; }
+  .op-copy { bottom: 96px; }
+  .op-skip { bottom: auto; top: 16px; }
+  .steps-nav { left: 0; right: 0; bottom: 0; transform: none; }
+  .steps-nav ol { border-radius: 0; justify-content: space-between; padding: 6px 6px max(6px, env(safe-area-inset-bottom)); }
+  .steps-nav li { flex: 1; }
+  .steps-nav a { width: 100%; justify-content: center; padding: 0 2px; font-size: 0.8125rem; }
 }

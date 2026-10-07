@@ -14,15 +14,14 @@
   <div class="examples">
     <a class="example" href="/examples/city/"><img src="/assets/img/ex-city.jpg" alt="도시의 하루 완성 예시 사이트의 화면" loading="lazy"><span>도시의 하루 <i class="ph ph-arrow-up-right"></i></span></a>
     <a class="example" href="/examples/coffee/"><img src="/assets/img/ex-coffee.jpg" alt="커피 한 잔의 여정 완성 예시 사이트의 화면" loading="lazy"><span>커피 한 잔의 여정 <i class="ph ph-arrow-up-right"></i></span></a>
-    <a class="example" href="/examples/deep-sea/"><img src="/assets/img/ex-deep-sea.jpg" alt="심해 탐험 완성 예시 사이트의 화면" loading="lazy"><span>심해 탐험 <i class="ph ph-arrow-up-right"></i></span></a>
+    <a class="example" href="/examples/deep-sea-ai/"><img src="/assets/img/ex-deep-sea.jpg" alt="심해 탐험 완성 예시 사이트의 화면" loading="lazy"><span>심해 탐험 <i class="ph ph-arrow-up-right"></i></span></a>
   </div>
 
-  <h4>세 가지 주제, 이 장에서 하는 일</h4>
+  <h4>두 가지 주제, 이 장에서 하는 일</h4>
   <div class="table-wrap"><table>
     <thead><tr><th>주제</th><th>사용자가 하는 행동</th><th>이 장에서 완성하는 것</th></tr></thead>
     <tbody>
       <tr><td>도시의 하루 (공통 실습)</td><td>화면 아래의 시간 슬라이더를 움직입니다</td><td>낮에서 저녁, 밤으로 하늘 색이 바뀌고, 밤이 되면 창문에 불이 켜지고, 도로 위를 자동차가 지나갑니다</td></tr>
-      <tr><td>과일 소개 사이트</td><td>스크롤하고, 과일을 클릭합니다</td><td>둥실 떠 있는 과일, 스크롤할 때마다 나타나는 글, 클릭하면 단면으로 바뀌는 전환</td></tr>
       <tr><td>심해 탐험</td><td>스크롤하며 바닷속으로 내려갑니다</td><td>깊이에 따라 어두워지는 배경, 구간 이름, 생물을 누르면 열리는 소개 카드</td></tr>
     </tbody>
   </table></div>
@@ -30,7 +29,7 @@
   <div class="callout tip">
     <i class="ph ph-lightbulb"></i>
     <strong>어떤 주제로 할지 고민된다면</strong>
-    <div><p>처음이라면 <strong>도시의 하루</strong>를 그대로 따라 하세요. 이 장의 설명과 확인 방법이 이 주제를 기준으로 쓰여 있어서 가장 덜 헷갈립니다. 5장에서 이미 다른 주제를 골랐다면 그 주제로 하셔도 됩니다. 각 단계에 과일 소개와 심해 탐험용 프롬프트가 접혀 있으니 펼쳐서 쓰세요. 커피, 우주여행처럼 다른 주제도 5단계 흐름은 똑같습니다. 가장 비슷한 프롬프트를 골라 소재만 바꿔 넣으면 됩니다.</p></div>
+    <div><p>처음이라면 <strong>도시의 하루</strong>를 그대로 따라 하세요. 이 장의 설명과 확인 방법이 이 주제를 기준으로 쓰여 있어서 가장 덜 헷갈립니다. 5장에서 이미 다른 주제를 골랐다면 그 주제로 하셔도 됩니다. 각 단계에 심해 탐험용 프롬프트가 접혀 있으니 펼쳐서 쓰세요. 커피, 태양계 여행처럼 다른 주제도 5단계 흐름은 똑같습니다. 가장 비슷한 프롬프트를 골라 소재만 바꿔 넣으면 됩니다.</p></div>
   </div>
 
   <h4>5단계 한눈에 보기</h4>
@@ -118,12 +117,12 @@
       <h4>기획 메모 만들기</h4>
       <p>AI는 시키는 일을 아주 잘하지만, <strong>무엇을 만들지는 대신 정해 주지 않습니다</strong>. 만들기 전에 아래 네 가지만 정해 두면 결과의 품질이 크게 달라집니다. 부담 갖지 마세요. 정하는 것도 Claude가 질문하며 도와줍니다.</p>
       <div class="table-wrap"><table>
-        <thead><tr><th>정할 것</th><th>도시의 하루</th><th>과일 소개</th><th>심해 탐험</th></tr></thead>
+        <thead><tr><th>정할 것</th><th>도시의 하루</th><th>심해 탐험</th></tr></thead>
         <tbody>
-          <tr><td>주제 한 줄</td><td>시간을 움직이면 낮에서 밤으로 바뀌는 도시</td><td>딸기를 광고처럼 소개하는 사이트</td><td>스크롤하면 바닷속으로 내려가는 사이트</td></tr>
-          <tr><td>분위기 단어 3개</td><td>따뜻한, 반짝이는, 조용한</td><td>상큼한, 고급스러운, 선명한</td><td>신비로운, 고요한, 깊은</td></tr>
-          <tr><td>장면 목록</td><td>낮의 도시, 저녁의 도시, 밤의 도시</td><td>첫 화면, 소개, 좋아하는 이유와 먹는 방법</td><td>수면, 바닷속, 심해</td></tr>
-          <tr><td>사용자가 하는 행동</td><td>슬라이더 움직이기</td><td>스크롤, 과일 클릭</td><td>스크롤, 생물 클릭</td></tr>
+          <tr><td>주제 한 줄</td><td>시간을 움직이면 낮에서 밤으로 바뀌는 도시</td><td>스크롤하면 바닷속으로 내려가는 사이트</td></tr>
+          <tr><td>분위기 단어 3개</td><td>따뜻한, 반짝이는, 조용한</td><td>신비로운, 고요한, 깊은</td></tr>
+          <tr><td>장면 목록</td><td>낮의 도시, 저녁의 도시, 밤의 도시</td><td>수면, 바닷속, 심해</td></tr>
+          <tr><td>사용자가 하는 행동</td><td>슬라이더 움직이기</td><td>스크롤, 생물 클릭</td></tr>
         </tbody>
       </table></div>
       <figure class="prompt" data-title="기획 메모 만들기">
@@ -131,7 +130,7 @@
         <pre>인터랙티브 웹사이트를 하나 만들려고 합니다. 아직 코드는 쓰지 말고, 기획부터 저와 같이 정리해 주세요.
 
 저는 코딩을 모르는 사무직입니다. 쉬운 말로 질문해 주세요.
-후보 주제는 "도시의 하루", "과일 소개", "심해 탐험"입니다. (제 주제가 따로 있다면: [내 주제])
+후보 주제는 "도시의 하루", "심해 탐험"입니다. (제 주제가 따로 있다면: [내 주제])
 
 아래 4가지를 질문 하나씩 차례로 물어봐 주세요. 질문마다 보기를 2~3개 같이 주세요.
 1. 주제 한 줄
@@ -357,41 +356,6 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
   <p>도시 대신 다른 주제로 하는 분은 아래에서 내 주제를 펼쳐 쓰세요. 내용은 같고 소재만 다릅니다.</p>
 
   <details class="detail">
-    <summary>과일 소개 사이트 (1단계 프롬프트)</summary>
-    <div class="detail-body">
-      <figure class="prompt" data-title="1단계 과일 화면 구성">
-        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-        <pre>/design-taste-frontend
-[내 과일 이름, 예: 딸기] 소개 웹사이트의 첫 화면을 만들어 주세요. 이번에는 정지된 화면만 만듭니다.
-
-[먼저 할 일]
-이 폴더의 README.md에 있는 "기획 메모"를 읽고, 적혀 있는 분위기 단어 3개를 디자인에 반영해 주세요.
-
-[화면 구성]
-- 첫 화면: 가운데에 [내 과일 이름] 하나가 크게 보이고, 옆에 제목 "[내 과일 이름]"과 한 줄 소개 문구
-- 그 아래로 이어지는 장면 3개: "소개", "내가 좋아하는 이유", "이렇게 먹어요" (제목과 두세 줄 설명을 채워 주세요)
-- 맨 아래: 마무리 문구 한 줄
-- 움직임과 클릭 기능은 아직 넣지 마세요.
-
-[조건]
-- index.html, style.css, script.js 세 파일로 만드는 정적 사이트입니다. 빌드 도구, npm, 프레임워크는 쓰지 말고, Vercel에 폴더 그대로 배포할 수 있어야 합니다.
-- index.html을 더블클릭해서 열어도 동작해야 합니다. (type="module"이나 fetch로 파일을 불러오는 방식은 쓰지 마세요.)
-- 데이터베이스, 로그인, 서버 코드는 없습니다.
-- 휴대폰 화면(가로 360px)부터 PC 화면까지 깨지지 않게 만들어 주세요.
-- 화면에 보이는 모든 문구는 한국어로 써 주세요.
-- 과일 그림은 사진 파일 없이 CSS와 SVG로 단순하게 그려 주세요. 나중에 제 사진으로 바꿀 수 있도록, 어디를 바꾸면 되는지도 알려 주세요.
-
-다 만든 뒤에 만든 파일 목록과, 화면을 여는 방법을 쉬운 말로 알려 주세요.</pre>
-      </figure>
-      <div class="callout warn">
-        <i class="ph ph-warning"></i>
-        <strong>내 사진을 쓸 때 주의하세요</strong>
-        <div><p>직접 찍은 사진이나 사용을 허락받은 이미지만 쓰세요. 인터넷에서 찾은 이미지를 그대로 쓰면 저작권 문제가 생길 수 있습니다. 이 사이트는 누구나 열 수 있는 주소로 공개되므로, 사람 얼굴이나 회사 정보가 찍힌 사진도 넣지 마세요.</p></div>
-      </div>
-    </div>
-  </details>
-
-  <details class="detail">
     <summary>심해 탐험 (1단계 프롬프트)</summary>
     <div class="detail-body">
       <figure class="prompt" data-title="1단계 심해 화면 구성">
@@ -507,25 +471,6 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
 
   <h4>내 주제로 바꾸기</h4>
   <details class="detail">
-    <summary>과일 소개 사이트 (2단계 프롬프트)</summary>
-    <div class="detail-body">
-      <figure class="prompt" data-title="2단계 과일 모션">
-        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-        <pre>[내 과일 이름] 소개 화면에 가벼운 움직임을 넣어 주세요. 이번에는 움직임(모션)만 다룹니다. 클릭 기능은 아직 넣지 마세요.
-
-- 과일 그림: 첫 화면에서 둥실 떠 있듯이 위아래로 움직입니다. (4초에 한 번, 위아래 12픽셀 정도, 계속 반복) 과일 아래 그림자는 과일이 올라가면 작아지고 내려오면 커집니다.
-- 제목: 글자가 한 글자씩 차례로 나타납니다. (한 글자당 0.05초 간격)
-- 아래 장면 3개: 스크롤해서 화면에 들어올 때마다 글이 아래에서 위로 부드럽게 나타납니다. (0.8초 동안)
-- 배경색: 장면이 바뀔 때마다 [첫 번째 색, 예: 연한 분홍]에서 [두 번째 색, 예: 연한 노랑]으로 2초에 걸쳐 서서히 바뀝니다.
-
-[조건]
-- 가능하면 CSS로 만들고, 스크롤에 맞춘 등장 효과만 최소한의 JavaScript를 쓰세요. 기존 색과 배치는 바꾸지 마세요.
-- 중요: 운영체제에서 "움직임 줄이기"(prefers-reduced-motion) 설정을 켠 사람에게는 위의 움직임을 모두 끄고, 완성된 모습 그대로 정지해서 보여 주세요.
-- 바꾼 부분을 목록으로 알려 주세요.</pre>
-      </figure>
-    </div>
-  </details>
-  <details class="detail">
     <summary>심해 탐험 (2단계 프롬프트)</summary>
     <div class="detail-body">
       <figure class="prompt" data-title="2단계 심해 모션">
@@ -590,7 +535,6 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
     <thead><tr><th>주제</th><th>사용자의 행동</th><th>화면의 대답</th></tr></thead>
     <tbody>
       <tr><td>도시의 하루</td><td>시간 슬라이더를 움직인다</td><td>하늘 색, 해와 달, 창문 불빛, 자동차 불빛이 시각에 맞게 바뀐다</td></tr>
-      <tr><td>과일 소개</td><td>과일을 클릭한다</td><td>과일이 반으로 갈라진 단면 그림으로 바뀐다</td></tr>
       <tr><td>심해 탐험</td><td>아래로 스크롤하고, 생물을 클릭한다</td><td>깊이에 따라 구간과 색이 바뀌고, 생물 소개 카드가 열린다</td></tr>
     </tbody>
   </table></div>
@@ -669,28 +613,6 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
 
   <h4>내 주제로 바꾸기</h4>
   <details class="detail">
-    <summary>과일 소개 사이트 (3단계 프롬프트: 클릭하면 단면으로)</summary>
-    <div class="detail-body">
-      <figure class="prompt" data-title="3단계 과일 단면 전환">
-        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-        <pre>[내 과일 이름] 화면에 "누르면 단면이 보이는" 기능을 넣어 주세요.
-
-- 첫 화면의 [내 과일 이름] 그림을 누르면(터치 포함) 반으로 갈라진 단면 그림으로 부드럽게 바뀝니다. (0.6초 동안, 살짝 커지면서 바뀝니다)
-- 단면 그림 옆에 짧은 설명 두 줄이 나타납니다. (단면에서 보이는 특징 위주로, 예: [씨앗의 모양, 과육의 색])
-- 한 번 더 누르면 원래 모습으로 돌아갑니다.
-- 처음 열었을 때 "[내 과일 이름]을 눌러 보세요"라는 작은 안내 글을 보여 주고, 한 번 누른 뒤에는 사라지게 해 주세요. 마우스를 올리면 손가락 모양 커서가 나오게 해 주세요.
-- 키보드로도 누를 수 있어야 합니다. (Tab 키로 이동한 뒤 Enter 키)
-- 단면 그림은 사진 파일 없이 CSS와 SVG로 그려 주세요.
-- 기존 움직임과 "움직임 줄이기" 배려는 그대로 유지해 주세요.</pre>
-      </figure>
-      <div class="callout check">
-        <i class="ph ph-check-circle"></i>
-        <strong>이렇게 되면 성공입니다</strong>
-        <div><p>과일을 누르면 단면으로 바뀌면서 설명 두 줄이 나타나고, 다시 누르면 처음 모습으로 돌아갑니다. 휴대폰에서도 손가락으로 눌러 똑같이 되어야 합니다.</p></div>
-      </div>
-    </div>
-  </details>
-  <details class="detail">
     <summary>심해 탐험 (3단계 프롬프트: 스크롤 깊이와 생물 클릭, 두 번에 나눠서)</summary>
     <div class="detail-body">
       <h4>3-1. 스크롤하면 깊이와 구간이 바뀐다</h4>
@@ -735,7 +657,7 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
   </details>
 
   <h4>결과 확인하기</h4>
-  <p>이번에는 눈으로 보는 것에 더해 <strong>직접 만져 보는 것</strong>이 확인입니다. 미리보기 창에서 슬라이더를 끌어 보고, 과일이나 생물을 눌러 보고, 스크롤을 내려 보세요. 가능하면 내 휴대폰에서도 열어 손가락으로 해 보는 것이 가장 정확합니다(휴대폰에서 여는 방법은 4단계에서 다룹니다). 기능 하나가 끝날 때마다 "지금 상태 저장(커밋)"을 부탁하는 것도 잊지 마세요.</p>
+  <p>이번에는 눈으로 보는 것에 더해 <strong>직접 만져 보는 것</strong>이 확인입니다. 미리보기 창에서 슬라이더를 끌어 보고, 생물을 눌러 보고, 스크롤을 내려 보세요. 가능하면 내 휴대폰에서도 열어 손가락으로 해 보는 것이 가장 정확합니다(휴대폰에서 여는 방법은 4단계에서 다룹니다). 기능 하나가 끝날 때마다 "지금 상태 저장(커밋)"을 부탁하는 것도 잊지 마세요.</p>
 
   <!-- ============ 4단계 ============ -->
   <h3>4단계. 배포: 내 주소로 공개하고 휴대폰으로 확인하기</h3>
@@ -772,18 +694,6 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
   <p class="prompt-note">2번은 미리보기를 켜기 위한 작업용 설정 파일이 GitHub와 내 사이트에 그대로 올라가지 않게 하는 조치입니다. 폴더가 없으면 Claude가 알아서 넘어갑니다.</p>
 
   <h4>내 주제로 바꾸기</h4>
-  <details class="detail">
-    <summary>과일 소개 사이트 (4단계 프롬프트)</summary>
-    <div class="detail-body">
-      <figure class="prompt" data-title="4단계 과일 GitHub에 올리기">
-        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-        <pre>지금까지 만든 내용을 GitHub에 올려 주세요. 순서는 바뀐 파일 목록 확인, 저장(커밋), 푸시입니다.
-비밀번호, 인증 키, 개인정보, 회사 자료로 보이는 파일이 있으면 올리지 말고 먼저 알려 주세요. 미리보기용 작업 설정 폴더(.claude)는 .gitignore에 넣어 주세요.
-커밋 메시지는 "[내 과일 이름] 소개 사이트: 둥실 모션과 단면 전환 추가"로 해 주세요.
-끝나면 GitHub 저장소 주소와, Vercel에서 어디를 보면 되는지 알려 주세요.</pre>
-      </figure>
-    </div>
-  </details>
   <details class="detail">
     <summary>심해 탐험 (4단계 프롬프트)</summary>
     <div class="detail-body">
@@ -1000,35 +910,6 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
 
   <h4>내 주제로 바꾸기</h4>
   <p>5-1(비평)과 5-2(다듬기)는 어떤 주제든 같은 프롬프트를 씁니다. 대괄호 안의 사이트 이름만 바꾸세요. 5-3(색과 글꼴)과 5-4(분위기 비교)는 주제에 맞춰 아래 프롬프트를 쓰세요.</p>
-  <details class="detail">
-    <summary>과일 소개 사이트 (5단계 프롬프트: 색과 글꼴, 분위기 비교)</summary>
-    <div class="detail-body">
-      <figure class="prompt" data-title="5단계 과일 색과 글꼴 후보 받기">
-        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-        <pre>/ui-ux-pro-max:ui-ux-pro-max
-[내 과일 이름] 소개 사이트의 색과 글꼴을 바꿔 보려고 합니다. 분위기 후보 두 가지를 제안해 주세요.
-
-- 후보 A: [내 과일 이름]의 실제 색을 살린 선명하고 신선한 팔레트
-- 후보 B: 부드러운 파스텔 팔레트
-
-후보마다 색 5개(배경, 글자, 포인트 2개, 강조)와 쓰임새, 한글이 잘 보이는 무료 글꼴 조합(제목용, 본문용)과 고른 이유, 글자와 배경의 대비가 충분한지 확인한 결과를 알려 주세요.
-아직 적용하지 말고, 제가 후보를 고르면 그때 style.css의 색과 글꼴만 바꿔 주세요. 기능과 배치는 바꾸지 마세요.</pre>
-      </figure>
-      <figure class="prompt" data-title="5단계 과일 분위기 두 버전 비교">
-        <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-        <pre>지금 index.html은 그대로 두고, 같은 내용으로 분위기만 다른 두 버전을 만들어 주세요. 과일 클릭으로 단면이 바뀌는 기능과 둥실 떠 있는 움직임은 두 버전 모두 똑같이 동작해야 합니다.
-
-- 버전 A (compare/premium/ 폴더): "고급 식품 광고처럼". 색 수는 적고 톤은 낮게, 여백은 넓게, 글씨는 가늘고 크게, 움직임은 느리고 은은하게, 과일 그림을 광고 사진처럼 크게 보여 주고, 문구는 담백하고 품격 있게 해 주세요.
-- 버전 B (compare/cute/ 폴더): "귀엽고 장난스럽게". 밝은 색, 둥근 모서리, 통통 튀는 움직임, 말랑하고 둥근 글씨체, 말투는 친근하게 ("짠! 반으로 갈라 볼까요?" 같은 식) 해 주세요.
-
-[조건]
-- 각 폴더 안에서 index.html을 열면 바로 동작하게 해 주세요. (정적 파일만 사용, 빌드 도구 없음)
-- "움직임 줄이기" 배려와 휴대폰 대응은 두 버전 모두 유지해 주세요.
-- 기존 파일은 지우지 마세요.
-- 끝나면 두 버전을 미리보기에서 여는 방법을 알려 주세요.</pre>
-      </figure>
-    </div>
-  </details>
   <details class="detail">
     <summary>심해 탐험 (5단계 프롬프트: 색과 글꼴, 분위기 비교)</summary>
     <div class="detail-body">
