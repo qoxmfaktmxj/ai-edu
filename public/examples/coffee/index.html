@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>한 잔이 되기까지. | ONE CUP</title>
+<meta name="description" content="스크롤로 핸드드립 한 잔의 과정을 따라가는 이야기. 원두, 분쇄, 준비, 뜸들이기, 추출, 완성의 여섯 단계.">
+<meta name="theme-color" content="#F7F0E4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cellipse cx='16' cy='16' rx='9' ry='12' fill='%23241813'/%3E%3Cpath d='M17 5c-4 5 4 17-1 22' stroke='%23C78550' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<link rel="preload" href="./assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./styles.css">
+<script>document.documentElement.classList.add('js')</script>
+<script type="module" src="./js/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#steps-nav">단계 바로가기로 건너뛰기</a>
+
+<header class="brand">ONE CUP</header>
+
+<main class="journey">
+  <div class="stage-col">
+    <div class="stage">
+      <!-- Drawn by js/scene.js renderCoffee(progress). Layer order follows the brief:
+           cup back > liquid > drops > cup front, dripper back/filter > coffee and water > stream > dripper front. -->
+      <svg class="scene" viewBox="-40 0 840 860" aria-hidden="true" data-scene>
+        <defs>
+          <radialGradient id="beanFill" cx="38%" cy="32%" r="75%">
+            <stop offset="0" stop-color="#8A5A3C"/><stop offset=".6" stop-color="#5A3524"/><stop offset="1" stop-color="#3A2014"/>
+          </radialGradient>
+          <linearGradient id="copper" x1="0" x2="1">
+            <stop offset="0" stop-color="#A9693C"/><stop offset=".45" stop-color="#D9995F"/><stop offset="1" stop-color="#9C5E33"/>
+          </linearGradient>
+          <linearGradient id="wood" x1="0" x2="1">
+            <stop offset="0" stop-color="#4A3122"/><stop offset=".5" stop-color="#6E4B34"/><stop offset="1" stop-color="#432C1F"/>
+          </linearGradient>
+          <symbol id="bean-shape" viewBox="-40 -50 80 100" overflow="visible">
+            <ellipse rx="34" ry="46" fill="url(#beanFill)"/>
+            <path d="M3 -42C-17 -14 17 14 -3 42" fill="none" stroke="#24120A" stroke-width="5" stroke-linecap="round"/>
+            <path d="M-20 -26C-24 -12 -22 4 -16 14" fill="none" stroke="#C99A72" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>
+          </symbol>
+          <!-- Beans are clipped above the hopper rim only while they sink into it. -->
+          <clipPath id="aboveHopper"><rect x="-40" y="-400" width="880" height="782"/></clipPath>
+          <clipPath id="filterIn"><path d="M278 354H522L402 534H398Z"/></clipPath>
+          <clipPath id="cupIn"><path d="M296 563 315 798Q317 806 326 806H474Q483 806 485 798L504 563Z"/></clipPath>
+        </defs>
+
+        <path class="table" d="M40 820H760"/>
+
+        <!-- Grinder: hopper inside, body, crank. Ground particles fall from the outlet into a dish. -->
+        <g data-grinder>
+          <ellipse cx="400" cy="382" rx="58" ry="11" fill="#1D120C"/>
+          <path fill="url(#wood)" d="M342 382H458L452 636Q450 646 440 646H360Q350 646 348 636Z"/>
+          <rect x="340" y="420" width="120" height="10" fill="#C78550"/>
+          <rect x="344" y="600" width="112" height="10" fill="#C78550"/>
+          <path d="M342 382A58 11 0 0 0 458 382" fill="none" stroke="#2C1C12" stroke-width="4"/>
+          <rect x="390" y="646" width="20" height="14" rx="3" fill="#2C1C12"/>
+          <g data-crank>
+            <rect x="396" y="338" width="8" height="40" fill="#2C1C12"/>
+            <path d="M400 342H478" stroke="#2C1C12" stroke-width="7" stroke-linecap="round"/>
+            <rect x="470" y="318" width="16" height="30" rx="8" fill="#6E4B34"/>
+          </g>
+          <ellipse cx="400" cy="786" rx="74" ry="12" fill="#E6D9C4"/>
+          <path d="M326 786Q330 806 400 808T474 786" fill="#D9C8AE"/>
+          <ellipse cx="400" cy="784" rx="52" ry="14" fill="#6A4430" data-pile/>
+          <g fill="#5A3524" data-grounds>
+            <circle r="2.2"/><circle r="1.8"/><circle r="2.4"/><circle r="1.6"/><circle r="2"/><circle r="2.2"/><circle r="1.7"/>
+            <circle r="2.1"/><circle r="1.9"/><circle r="2.3"/><circle r="1.6"/><circle r="2"/><circle r="1.8"/><circle r="2.2"/>
+          </g>
+        </g>
+
+        <g data-beans>
+          <g data-bean><use href="#bean-shape" width="80" height="100" x="-40" y="-50"/></g>
+          <g data-bean><use href="#bean-shape" width="80" height="100" x="-40" y="-50"/></g>
+          <g data-bean><use href="#bean-shape" width="80" height="100" x="-40" y="-50"/></g>
+          <g data-bean><use href="#bean-shape" width="80" height="100" x="-40" y="-50"/></g>
+          <g data-bean><use href="#bean-shape" width="80" height="100" x="-40" y="-50"/></g>
+        </g>
+
+        <!-- Saucer the dripper is moved onto at the end. -->
+        <g data-saucer>
+          <ellipse cx="150" cy="814" rx="104" ry="10" fill="#E6D9C4"/>
+          <path d="M46 814Q52 826 150 828T254 814" fill="#D9C8AE"/>
+        </g>
+
+        <!-- Cup: back > liquid > drops > front. -->
+        <g data-cup>
+          <ellipse cx="400" cy="812" rx="104" ry="7" fill="#241813" fill-opacity=".1"/>
+          <path d="M290 560 310 800Q312 812 324 812H476Q488 812 490 800L510 560Z" fill="#FFFFFF" fill-opacity=".35"/>
+          <path d="M290 560A110 12 0 0 1 510 560" fill="none" stroke="#B7A897" stroke-width="2"/>
+          <g clip-path="url(#cupIn)">
+            <rect x="280" y="806" width="240" height="0" fill="#3A2214" data-liquid/>
+            <ellipse cx="400" cy="806" rx="0" ry="5" fill="#5A3622" data-surface/>
+            <g data-ripples fill="none" stroke="#8A5A3C">
+              <ellipse cx="400" rx="0" ry="0"/><ellipse cx="400" rx="0" ry="0"/><ellipse cx="400" rx="0" ry="0"/>
+              <ellipse cx="400" rx="0" ry="0"/><ellipse cx="400" rx="0" ry="0"/><ellipse cx="400" rx="0" ry="0"/>
+            </g>
+          </g>
+          <g fill="#3A2214" data-drops>
+            <ellipse rx="2.6" ry="4"/><ellipse rx="2.6" ry="4"/><ellipse rx="2.6" ry="4"/>
+            <ellipse rx="2.6" ry="4"/><ellipse rx="2.6" ry="4"/><ellipse rx="2.6" ry="4"/>
+          </g>
+          <path d="M290 560 310 800Q312 812 324 812H476Q488 812 490 800L510 560" fill="none" stroke="#A8998A" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M290 560A110 12 0 0 0 510 560" fill="none" stroke="#A8998A" stroke-width="3"/>
+          <path d="M306 592 320 782" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="5" stroke-linecap="round"/>
+          <path d="M494 600 486 700" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>
+        </g>
+
+        <!-- Dripper back and filter, then coffee bed and pooled water inside the filter mask. -->
+        <g data-dripper-inner>
+          <path d="M250 362H550L428 548H372Z" fill="#3E5148"/>
+          <g data-filter>
+            <path d="M266 350H534L404 538H396Z" fill="#F3EADB"/>
+            <path d="M400 352V536" stroke="#E0D3BE" stroke-width="2"/>
+            <path d="M266 350H534" stroke="#FFFDF6" stroke-width="5" stroke-linecap="round"/>
+          </g>
+          <g clip-path="url(#filterIn)">
+            <g data-bed>
+              <rect x="260" y="452" width="280" height="100" fill="#7B5236" data-bed-fill/>
+              <path d="M330 452Q400 444 470 452" fill="none" stroke="#24120A" stroke-opacity=".25" stroke-width="2"/>
+            </g>
+            <rect x="260" y="452" width="280" height="0" fill="#8A5634" fill-opacity=".6" data-pool/>
+            <g fill="#E8D7BF" data-bubbles>
+              <circle cx="364" cy="451" r="3"/><circle cx="381" cy="449" r="2"/><circle cx="398" cy="452" r="3.4"/>
+              <circle cx="412" cy="448" r="2.2"/><circle cx="426" cy="451" r="2.8"/><circle cx="440" cy="449" r="1.8"/><circle cx="372" cy="447" r="1.6"/>
+            </g>
+          </g>
+        </g>
+
+        <!-- Water stream from the kettle spout to the coffee surface. Own layer, drawn before the dripper front. -->
+        <line stroke="#8FB0BC" stroke-width="5" stroke-linecap="round" data-stream/>
+
+        <g data-dripper-front>
+          <path d="M250 362H550L428 548H372Z" fill="#536A5E" fill-opacity=".26" stroke="#3E5148" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M300 380 384 540M500 380 416 540" stroke="#3E5148" stroke-opacity=".35" stroke-width="2"/>
+          <rect x="244" y="354" width="312" height="11" rx="5.5" fill="#536A5E"/>
+          <rect x="300" y="548" width="200" height="12" rx="4" fill="#536A5E"/>
+          <rect x="391" y="560" width="18" height="8" rx="2" fill="#3E5148"/>
+        </g>
+
+        <!-- Gooseneck kettle. Rotates around its body; the spout tip position is computed from the same angle. -->
+        <g data-kettle>
+          <g data-kettle-tilt>
+            <path d="M560 372C530 380 518 360 512 320 506 280 498 250 484 236Q477 239 475 247" fill="none" stroke="url(#copper)" stroke-width="11" stroke-linecap="round"/>
+            <path d="M720 270C760 270 770 300 762 340 756 366 740 380 724 382" fill="none" stroke="#3A2A20" stroke-width="11" stroke-linecap="round"/>
+            <path d="M560 300C560 250 600 236 640 236S720 250 720 300L726 380Q726 404 700 404H580Q554 404 554 380Z" fill="url(#copper)"/>
+            <ellipse cx="640" cy="238" rx="42" ry="8" fill="#9C5E33"/>
+            <circle cx="640" cy="224" r="8" fill="#3A2A20"/>
+            <path d="M574 300 570 384" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <g fill="none" stroke="#8C7B6C" stroke-width="2" stroke-linecap="round" data-steam>
+          <path d="M370 540C356 512 384 492 370 462 360 442 372 428 368 414"/>
+          <path d="M402 536C390 504 416 486 402 452 394 430 404 418 400 402"/>
+          <path d="M432 540C420 512 446 494 432 464 424 446 434 432 430 418"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <section tabindex="-1" class="step" id="bean" data-step="bean" aria-labelledby="t-bean">
+    <div class="card">
+      <h1 id="t-bean">한 잔이 되기까지.</h1>
+      <p class="lead">스크롤로 커피의 여정을 따라가 보세요.</p>
+    </div>
+  </section>
+
+  <section tabindex="-1" class="step" id="grind" data-step="grind" aria-labelledby="t-grind">
+    <div class="card">
+      <h2 id="t-grind">분쇄</h2>
+      <p>작게 나뉜 원두가, 다음 과정을 준비합니다.</p>
+    </div>
+  </section>
+
+  <section tabindex="-1" class="step" id="setup" data-step="setup" aria-labelledby="t-setup">
+    <div class="card">
+      <h2 id="t-setup">필터와 드리퍼</h2>
+      <p>미리 적시고 물을 버린 필터를 준비했습니다.</p>
+    </div>
+  </section>
+
+  <section tabindex="-1" class="step" id="bloom" data-step="bloom" aria-labelledby="t-bloom">
+    <div class="card">
+      <h2 id="t-bloom">뜸들이기</h2>
+      <p>첫 물을 머금고, 잠시 준비하는 시간.</p>
+    </div>
+  </section>
+
+  <section tabindex="-1" class="step step-long" id="pour" data-step="pour" aria-labelledby="t-pour">
+    <div class="card">
+      <h2 id="t-pour">붓기와 추출</h2>
+      <p>한 방울씩, 한 잔의 모습이 됩니다.</p>
+    </div>
+  </section>
+
+  <section tabindex="-1" class="step step-end" id="cup" data-step="cup" aria-labelledby="t-cup">
+    <div class="card">
+      <h2 id="t-cup" class="end-title">한 잔이 되기까지.</h2>
+      <button type="button" class="btn" data-restart>처음부터 다시</button>
+      <details class="info">
+        <summary>이 이야기에 대하여</summary>
+        <p>핸드드립의 흐름을 시각적으로 표현한 이야기입니다. 스크롤 길이와 진행률은 실제 추출 시간이나 물의 양을 뜻하지 않습니다.</p>
+        <p>원두량, 분쇄도, 물 온도, 추출 시간은 원두와 도구, 취향에 따라 달라서 정답 수치를 적지 않았습니다.</p>
+        <ul>
+          <li>순서 참고: <a href="https://www.hario-europe.com/blogs/hario-community/v60-ambassadors-ibrahim-h-al-mallouhi">HARIO Europe, V60 hand drip</a></li>
+          <li>원두, 그라인더, 필터, 드리퍼, 주전자, 컵 그림은 이 페이지를 위해 SVG로 직접 그렸습니다.</li>
+          <li>글꼴: <a href="https://github.com/orioncactus/pretendard">Pretendard</a>, 길형진, <a href="https://openfontlicense.org/">SIL Open Font License 1.1</a>. 이 페이지에 쓰인 글자만 남겨 줄였습니다.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+</main>
+
+<nav class="steps-nav" id="steps-nav" aria-label="단계 바로가기">
+  <ol>
+    <li><a href="#bean" data-go="bean">원두</a></li>
+    <li><a href="#grind" data-go="grind">분쇄</a></li>
+    <li><a href="#setup" data-go="setup">준비</a></li>
+    <li><a href="#bloom" data-go="bloom">뜸들이기</a></li>
+    <li><a href="#pour" data-go="pour">추출</a></li>
+    <li><a href="#cup" data-go="cup">완성</a></li>
+  </ol>
+</nav>
+</body>
+</html>
