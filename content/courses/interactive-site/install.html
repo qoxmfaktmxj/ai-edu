@@ -8,7 +8,7 @@
 
   <h3>이 장에서 하는 일</h3>
   <p>이 교육의 핵심은 "Claude에게 말로 부탁하면 Claude가 내 PC에서 직접 일한다"는 경험입니다. 그래서 이 장은 설치 방법을 외우는 시간이 아니라, 설치조차 Claude에게 맡겨 보는 시간입니다. 순서는 아래와 같습니다.</p>
-  <ol class="path"><li>앱 설치</li><li>Git 설치</li><li>GitHub 저장소 만들기</li><li>ai-site 내려받기</li><li>Code 탭에서 폴더 열기</li><li>권한 모드 이해</li><li>Claude에게 Claude Code와 Node.js 설치 부탁</li><li>새 터미널에서 확인</li></ol>
+  <ol class="path"><li>앱 설치</li><li>Git 설치</li><li>GitHub 저장소 만들기</li><li>ai-site 내려받기</li><li>Code 탭에서 폴더 열기</li><li>GitHub 연결 확인</li><li>권한 모드 이해</li><li>Claude에게 Claude Code와 Node.js 설치 부탁</li><li>새 터미널에서 확인</li></ol>
 
   <div class="callout why">
     <i class="ph ph-question"></i>
@@ -235,6 +235,17 @@ git config --global user.email "[GitHub 가입 이메일]"</code></pre>
     <img src="/assets/shots/02-folder-select.png" alt="Select folder로 ai-site 폴더를 고른 뒤 화면에 폴더 이름이 표시된 모습" loading="lazy">
     <figcaption>그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-site 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-site 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다.</figcaption>
   </figure>
+
+  <h3>GitHub 연결 확인하기</h3>
+  <p>가입, 저장소 만들기, 내려받기를 마쳤습니다. 방금 연 <code>ai-site</code> 폴더에서 Claude에게 아래처럼 부탁해 GitHub와 잘 연결되어 있는지 확인합니다. 이 폴더는 이후 장에서 계속 쓰는 작업 폴더입니다.</p>
+  <figure class="prompt" data-title="GitHub 연결 확인 부탁">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>이 폴더가 GitHub 저장소와 연결되어 있는지 확인해줘.
+- git remote -v 로 연결된 주소를 보여주고, git ls-remote origin 이 오류 없이 끝나는지 확인해줘.
+- 파일은 아무것도 바꾸거나 올리지 마.
+- 결과를 쉬운 말로 한두 줄로 알려줘.</pre>
+  </figure>
+  <p class="prompt-note">주소가 <code>https://github.com/[내 사용자 이름]/ai-site.git</code>으로 보이고 오류가 없으면 연결 완료입니다. 오류가 나면 이 장 끝의 "자주 막히는 곳"을 확인하세요.</p>
 
   <h3>권한(허용) 질문 읽는 법</h3>
   <p>Claude Code는 내 PC에서 파일을 만들고 명령을 실행합니다. 그래서 "어디까지 알아서 해도 되는지"를 정하는 장치가 있습니다. 이것이 권한 모드입니다.</p>
@@ -506,6 +517,19 @@ brew install --cask claude-code</code></pre>
         <p>새로 설치한 도구는 이미 켜져 있던 앱에는 보이지 않습니다. Claude 앱을 완전히 종료했다가 다시 열고, 새 터미널에서 <code>node --version</code>과 <code>git --version</code>을 다시 입력해 보세요. 그래도 안 되면 위의 "claude를 인식하지 못하는" 항목처럼 PATH 문제일 수 있으니, Claude에게 해당 도구의 설치 위치와 PATH를 점검해 달라고 부탁하세요.</p>
       </div>
     </details>
+
+    <details class="detail">
+      <summary>회사 PC에서 연결이 막히거나 인증서 오류가 납니다</summary>
+      <div class="detail-body">
+        <p>회사 네트워크의 보안 장비(프록시, 방화벽)가 GitHub 접속이나 SSH 통신을 막는 경우가 있습니다. 오류 문구를 메모해 두고 사내 IT 담당자에게 "github.com 접속과 gh 로그인이 필요한 교육 실습인데 막히는 것 같다"고 문의하세요. 이런 경우 개인 PC나 집 네트워크에서 먼저 진행해 보는 것도 방법입니다.</p>
+      </div>
+    </details>
+    <details class="detail">
+      <summary>올리기가 "Permission denied" 또는 403 오류로 실패합니다</summary>
+      <div class="detail-body">
+        <p>PowerShell에서 <code>gh auth status</code>를 입력해 로그인 상태를 먼저 확인하세요. 로그인이 풀려 있으면 <code>gh auth login</code>을 다시 하면 됩니다. 저장소 이름이 이미 다른 곳에서 쓰이고 있다면 <code>ai-site-2</code>처럼 다른 이름을 Claude에게 알려 주세요.</p>
+      </div>
+    </details>
   </div>
 
   <h3>이 장 끝 체크리스트</h3>
@@ -516,6 +540,7 @@ brew install --cask claude-code</code></pre>
     <li><label><input type="checkbox" id="chk-github-6"><span>cmd에서 <code>git clone</code>으로 내려받아 문서 아래 <code>ai-site</code> 폴더가 생겼고, 브라우저 승인으로 GitHub 연결을 마쳤습니다</span></label></li>
     <li><label><input type="checkbox" id="chk-github-5"><span>git 사용자 이름과 이메일을 설정했습니다</span></label></li>
     <li><label><input type="checkbox" id="chk-install-2"><span>Code 탭에서 Local과 <code>ai-site</code> 폴더를 고르고, 권한 모드를 Accept edits로 바꿨습니다</span></label></li>
+    <li><label><input type="checkbox" id="chk-github-7"><span>Claude에게 부탁해 <code>ai-site</code> 폴더의 GitHub 연결을 확인했습니다</span></label></li>
     <li><label><input type="checkbox" id="chk-install-3"><span>Claude에게 부탁해 Claude Code를 설치했고, 새 터미널에서 <code>claude --version</code>이 나옵니다</span></label></li>
     <li><label><input type="checkbox" id="chk-install-4"><span>Node.js 22 이상이 설치되어 있습니다</span></label></li>
   </ul>
@@ -523,6 +548,6 @@ brew install --cask claude-code</code></pre>
   <div class="callout check">
     <i class="ph ph-check-circle"></i>
     <strong>여기까지 왔다면 준비 끝</strong>
-    <div><p>앱과 Claude Code가 설치되었고, ai-site 폴더가 내 GitHub 저장소와 연결되었습니다. 3장에서는 GitHub가 무엇을 해 주는지 알아보고, 연결을 확인합니다.</p></div>
+    <div><p>앱과 Claude Code가 설치되었고, ai-site 폴더가 내 GitHub 저장소와 연결되었습니다. 다음 장에서는 Vercel에 가입하고 내 사이트 주소를 만듭니다.</p></div>
   </div>
 </section>

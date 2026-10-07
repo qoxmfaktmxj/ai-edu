@@ -9,19 +9,16 @@
 | 상태 | 파일 | 무엇을 찍나 |
 |---|---|---|
 | 필요 | `01-final-site-address.png` | 그림 설명: 맨 위 주소창에 .vercel.app으로 끝나는 내 주소가 보이고, 아래에 완성된 사이트가 열려 있습니다. 교육이 끝났을 때 이 모습이 목표입니다. |
-| 필요 | `01-copy-button.png` | 그림 설명: 프롬프트 카드 오른쪽 위에 있는 "복사" 버튼입니다. 누르면 "복사됨"으로 바뀌고 약 1~2초 뒤 원래대로 돌아옵니다. |
 | 완료 | `02-claude-download.png` | 그림 설명: claude.com/download 페이지(한국어 화면)입니다. 큰 제목 "Claude 다운로드" 아래에 내 컴퓨터용 다운로드 버튼이 있습니다. Windows에서 열면 "Windows용 다운로드" 버튼이 보이고, Windows ARM 컴퓨터용 "Windows(arm64)" 링크와 Microsoft Store 배지도 함께 보입니다. Mac에서 열면 Mac용 버튼이 먼저 보입니다. 화면 구성과 문구는 업데이트로 조금 다를 수 있습니다. |
-| 필요 | `02-code-tab.png` | 그림 설명: 앱 위쪽 가운데 Chat, Cowork, Code 세 탭이 나란히 있고, 그중 Code 탭이 선택된 모습입니다. 아래쪽에 입력창이 보이고, 입력창 근처에 Local 선택과 Select folder 버튼이 있습니다. |
-| 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-site 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-site 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
-| 필요 | `02-permission-dialog.png` | 그림 설명: Manual 모드에서 Claude가 실행하려는 명령(예: claude.ai의 공식 설치 명령)이나 바꾸려는 파일 내용을 보여 주며 허용을 묻는 화면입니다. 내용을 읽은 뒤 Accept(허용) 또는 Reject(거절) 버튼을 누릅니다. 입력창 옆에는 현재 권한 모드(Manual)를 보여 주는 선택기가 보입니다. 버튼 이름은 업데이트로 조금 다를 수 있습니다. |
-| 필요 | `02-claude-version.png` | 그림 설명: 새로 연 PowerShell 창입니다. 첫 줄 맨 앞에 PS가 보이고, claude --version 입력 아래에 "2.1.xxx (Claude Code)" 형태의 버전 줄이 나온 모습입니다. 이 줄이 보이면 설치와 PATH 등록이 모두 성공한 것입니다. |
-| 필요 | `03-github-signup.png` | 그림 설명: github.com/signup 첫 화면. 이메일 입력 칸과 Continue 버튼이 보입니다. 한 칸을 채우고 Continue를 누르면 다음 칸(비밀번호, 사용자 이름)이 차례로 나타납니다. |
-| 필요 | `03-github-verify.png` | 그림 설명: 이메일로 받은 인증 코드를 입력하는 화면. 입력 칸에 코드를 넣으면 자동으로 다음 화면으로 넘어갑니다. (개인 이메일 주소는 가려서 캡처하세요.) |
 | 필요 | `03-new-repo.png` | 그림 설명: Repository name에 ai-site, 공개 범위는 Private, README 추가는 꺼진 상태에서 Create repository 버튼을 누르는 위치를 표시하세요. |
 | 필요 | `03-repo-quick-setup.png` | 그림 설명: 빈 저장소를 만든 직후의 Quick setup 화면입니다. HTTPS 버튼과 저장소 주소, 그 오른쪽 복사 버튼의 위치를 표시하세요. |
 | 필요 | `03-gcm-signin.png` | 그림 설명: git clone을 입력하면 뜨는 GitHub 로그인 창입니다. Sign in with your browser 버튼의 위치를 표시하세요. |
 | 필요 | `03-gcm-authorize.png` | 그림 설명: 브라우저에 열린 GitHub 승인 화면입니다. Authorize 버튼의 위치를 표시하세요. |
 | 필요 | `03-clone-done.png` | 그림 설명: clone이 끝난 cmd 창입니다. Cloning into 'ai-site' 줄과 빈 저장소 안내 줄이 보입니다. |
+| 완료 | `02-code-tab.png` | 그림 설명: 앱 위쪽에 채팅 및 Cowork 탭과 Code 탭이 나란히 있고, 그중 Code 탭이 선택된 모습입니다. 아래쪽에 입력창이 보이고, 입력창 근처에 Local 선택과 Select folder 버튼이 있습니다. |
+| 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-site 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-site 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
+| 필요 | `02-permission-dialog.png` | 그림 설명: Accept edits 모드에서 Claude가 실행하려는 명령(예: claude.ai의 공식 설치 명령)이나 바꾸려는 파일 내용을 보여 주며 허용을 묻는 화면입니다. 내용을 읽은 뒤 Accept(허용) 또는 Reject(거절) 버튼을 누릅니다. 입력창 옆에는 현재 권한 모드(Accept edits)를 보여 주는 선택기가 보입니다. 버튼 이름은 업데이트로 조금 다를 수 있습니다. |
+| 필요 | `02-claude-version.png` | 그림 설명: 새로 연 PowerShell 창입니다. 첫 줄 맨 앞에 PS가 보이고, claude --version 입력 아래에 "2.1.xxx (Claude Code)" 형태의 버전 줄이 나온 모습입니다. 이 줄이 보이면 설치와 PATH 등록이 모두 성공한 것입니다. |
 | 완료 | `04-vercel-signup.png` | 그림 설명: vercel.com/signup 화면. "Continue with GitHub" 버튼 위치를 표시하세요. 이 버튼이 이 교재에서 누를 버튼입니다. |
 | 필요 | `04-vercel-plan.png` | 그림 설명: Hobby(개인, 무료)와 Pro가 나란히 보이는 화면. Hobby 쪽을 고르는 위치를 표시하세요. 이런 화면이 나오지 않는 계정도 있습니다. |
 | 필요 | `04-vercel-github-app.png` | 그림 설명: GitHub의 Vercel 앱 설치 화면. Repository access에서 Only select repositories를 선택하고, ai-site를 고른 뒤 Install 버튼을 누르는 위치를 표시하세요. |
@@ -31,7 +28,7 @@
 | 필요 | `04-vercel-domains.png` | 그림 설명: 프로젝트 화면의 Domains 항목. https://[프로젝트이름].vercel.app 링크와 Production Deployment의 Ready 표시를 가리키세요. 이 주소가 내 사이트 주소입니다. |
 | 필요 | `04-site-live.png` | 그림 설명: 주소창에 https://[프로젝트이름].vercel.app이 보이고, 본문에 내가 만든 첫 페이지가 나온 화면. 주소창 부분을 강조해 캡처하세요. |
 | 필요 | `04-auto-redeploy.png` | 그림 설명: Deployments 목록의 맨 위 줄에 "제목 변경" 메시지와 main 브랜치, 상태(Building 또는 Ready)가 보이는 화면. 새 줄과 상태 표시를 강조하세요. |
-| 필요 | `05-skills-install.png` | 그림 설명: Claude 앱 Code 탭에서 설치 프롬프트를 보낸 직후의 화면입니다. 가운데 대화창에 Claude가 "먼저 node와 npx를 확인하겠습니다" 같은 설명과 함께 확인 명령을 실행하는 모습, 아래쪽 입력창 옆에 권한 모드 선택기(Manual)가 보입니다. |
+| 필요 | `05-skills-install.png` | 그림 설명: Claude 앱 Code 탭에서 설치 프롬프트를 보낸 직후의 화면입니다. 가운데 대화창에 Claude가 "먼저 node와 npx를 확인하겠습니다" 같은 설명과 함께 확인 명령을 실행하는 모습, 아래쪽 입력창 옆에 권한 모드 선택기(Accept edits)가 보입니다. |
 | 필요 | `05-permission.png` | 그림 설명: 실행할 명령(예: npx skills add 로 시작하는 줄)과 출처 이름(owner/repo)이 보이고, 그 아래에 "Do you want to proceed?"와 함께 Yes, No 선택지가 있는 화면입니다. 명령 속 출처가 프롬프트에 적은 것과 같은지 먼저 봅니다. |
 | 필요 | `05-new-session.png` | 그림 설명: 왼쪽 사이드바 위쪽의 "+ New session" 버튼(누를 곳)과, 눌러서 새로 열린 빈 대화 화면입니다. 이전 세션이 사이드바 목록에 남아 있는 것도 확인하세요. |
 | 필요 | `05-slash-menu.png` | 그림 설명: 입력창에 / 를 입력하자 입력창 위로 목록이 펼쳐진 화면입니다. design-taste-frontend, impeccable, ui-ux-pro-max:ui-ux-pro-max, hyperframes:hyperframes 가 각각 한 줄씩 보이고 오른쪽에 짧은 설명이 붙어 있습니다. |

@@ -1,6 +1,6 @@
 <section class="chapter" id="trouble">
   <header class="chapter-head">
-    <span class="chapter-num">10</span>
+    <span class="chapter-num">09</span>
     <h2>막혔을 때</h2>
     <p class="chapter-lead">막히는 것은 실패가 아니라 누구나 거치는 과정입니다. 에러 메시지는 "무엇이 빠졌는지" 적어 둔 쪽지이니, 증상별로 찾아 따라 하거나 Claude에게 그대로 물어보세요.</p>
     <div class="chapter-meta"><span><i class="ph ph-clock"></i>막힐 때마다 찾아보기</span><span><i class="ph ph-gauge"></i>난이도 쉬움</span><span><i class="ph ph-lifebuoy"></i>증상별 30개</span></div>
@@ -53,7 +53,7 @@
   <div class="table-wrap"><table>
     <thead><tr><th>보낼 정보</th><th>예시</th><th>왜 필요한가요</th></tr></thead>
     <tbody>
-      <tr><td>하려던 일과 막힌 단계</td><td>"4장 Vercel 첫 배포에서 Deploy를 눌렀더니 빨간 Error가 나왔어요"</td><td>같은 에러도 단계에 따라 원인이 다릅니다.</td></tr>
+      <tr><td>하려던 일과 막힌 단계</td><td>"3장 Vercel 첫 배포에서 Deploy를 눌렀더니 빨간 Error가 나왔어요"</td><td>같은 에러도 단계에 따라 원인이 다릅니다.</td></tr>
       <tr><td>메시지 전체</td><td>복사한 글자 또는 화면 캡처 (맨 위 줄부터 맨 아래 줄까지)</td><td>글자 하나만 달라도 원인이 달라집니다.</td></tr>
       <tr><td>쓰는 환경</td><td>Windows 10 또는 11, 회사 PC 여부, Claude 데스크톱 앱 Code 탭인지 터미널인지</td><td>회사 PC는 보안 설정 때문에 해결 방법이 달라집니다.</td></tr>
       <tr><td>이미 해 본 것</td><td>"새 터미널을 열어 봤고, 설치 명령을 한 번 더 실행했어요"</td><td>같은 방법을 반복하지 않게 해 줍니다.</td></tr>
@@ -208,7 +208,7 @@ $currentPath = [Environment]::GetEnvironmentVariable('PATH', 'User')
       <div class="detail-body">
         <dl>
           <dt>증상</dt>
-          <dd><code>npx</code>, <code>npm</code>, <code>claude</code> 같은 명령을 PowerShell에서 실행하면 <code>File C:\Program Files\nodejs\npx.ps1 cannot be loaded because running scripts is disabled on this system.</code>이라는 빨간 글씨와 <code>PSSecurityException</code>이 나옵니다. 8장 hyperframes의 <code>npx hyperframes ...</code>를 실행할 때 특히 자주 만납니다.</dd>
+          <dd><code>npx</code>, <code>npm</code>, <code>claude</code> 같은 명령을 PowerShell에서 실행하면 <code>File C:\Program Files\nodejs\npx.ps1 cannot be loaded because running scripts is disabled on this system.</code>이라는 빨간 글씨와 <code>PSSecurityException</code>이 나옵니다. 7장 hyperframes의 <code>npx hyperframes ...</code>를 실행할 때 특히 자주 만납니다.</dd>
           <dt>원인</dt>
           <dd>PowerShell의 "실행 정책(Execution Policy)"이 <code>.ps1</code> 스크립트 파일 실행을 막고 있습니다. npm, npx는 이런 스크립트 파일을 통해 실행되기 때문입니다. 참고로 <code>irm https://claude.ai/install.ps1 | iex</code> 설치 명령은 이 정책의 영향을 받지 않습니다.</dd>
         </dl>
@@ -261,7 +261,7 @@ npx.cmd hyperframes --help</code></pre>
         <div class="callout check">
           <i class="ph ph-check-circle"></i>
           <strong>winget이 없어도 이 교육은 계속할 수 있습니다</strong>
-          <div><p>Claude Code 설치 자체는 <code>irm ... | iex</code> 명령으로 하므로 winget이 필요 없습니다. Git, GitHub CLI, Node.js는 각 공식 사이트(git-scm.com, cli.github.com, nodejs.org)에서 설치 파일을 받아 설치해도 됩니다. 설치 후에는 새 터미널을 열어 <code>--version</code>으로 확인하세요. FFmpeg는 설치 파일이 아니라 압축 파일로 배포되어 직접 설치가 번거로우니, 8장에서 영상을 만들 때 Claude에게 도움을 요청하세요.</p></div>
+          <div><p>Claude Code 설치 자체는 <code>irm ... | iex</code> 명령으로 하므로 winget이 필요 없습니다. Git, GitHub CLI, Node.js는 각 공식 사이트(git-scm.com, cli.github.com, nodejs.org)에서 설치 파일을 받아 설치해도 됩니다. 설치 후에는 새 터미널을 열어 <code>--version</code>으로 확인하세요. FFmpeg는 설치 파일이 아니라 압축 파일로 배포되어 직접 설치가 번거로우니, 7장에서 영상을 만들 때 Claude에게 도움을 요청하세요.</p></div>
         </div>
       </div>
     </details>
@@ -1009,7 +1009,7 @@ video 태그에 autoplay, muted, loop, playsinline 속성이 모두 있는지 �
           <li>대화창에 <code>/skills</code>를 입력하면 설치된 스킬 목록이 나옵니다. 이름을 입력해 걸러 볼 수 있고, 꺼져 있는(off) 스킬이 있으면 다시 켭니다.</li>
           <li>플러그인 설치 상태는 터미널에서 <code>claude plugin list</code>로 확인합니다. <code>hyperframes</code>가 Status 줄과 함께 보여야 합니다.</li>
           <li>스킬 파일이 실제로 있는지 아래 명령으로 확인합니다. 스킬은 <code>.claude\skills</code>나 <code>.agents\skills</code> 폴더 아래에 스킬 이름의 폴더로 설치됩니다.</li>
-          <li><code>npx skills add</code>로 설치했는데 안 보인다면 설치 대상 에이전트를 잘못 골랐을 수 있습니다. Claude Code용인지(<code>-a claude-code</code>) 확인하고, 다시 설치할 때는 <a href="/courses/interactive-site/skills">5장</a>의 방법을 따르세요.</li>
+          <li><code>npx skills add</code>로 설치했는데 안 보인다면 설치 대상 에이전트를 잘못 골랐을 수 있습니다. Claude Code용인지(<code>-a claude-code</code>) 확인하고, 다시 설치할 때는 <a href="/courses/interactive-site/skills">4장</a>의 방법을 따르세요.</li>
           <li>세션을 연 뒤에 스킬 파일을 직접 넣거나 바꿨다면 <code>/reload-skills</code>를 입력해 다시 읽게 할 수 있습니다.</li>
         </ol>
         <figure class="cmd">
@@ -1060,7 +1060,7 @@ claude plugin list</code></pre>
             <tr><td>Claude 데스크톱 앱 Code 탭</td><td>+ 버튼, Plugins, Add plugin 에서 선택 (슬래시 명령 대신 버튼)</td></tr>
           </tbody>
         </table></div>
-        <p>hyperframes와 디자인 스킬을 한꺼번에 설치하는 전체 과정은 <a href="/courses/interactive-site/skills">5장</a>과 <a href="/courses/interactive-site/motion">8장</a>에 있습니다.</p>
+        <p>hyperframes와 디자인 스킬을 한꺼번에 설치하는 전체 과정은 <a href="/courses/interactive-site/skills">4장</a>과 <a href="/courses/interactive-site/motion">7장</a>에 있습니다.</p>
       </div>
     </details>
 

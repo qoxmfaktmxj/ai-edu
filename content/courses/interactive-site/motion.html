@@ -1,6 +1,6 @@
 <section class="chapter" id="motion">
   <header class="chapter-head">
-    <span class="chapter-num">08</span>
+    <span class="chapter-num">07</span>
     <h2>hyperframes로 모션 영상 만들기</h2>
     <p class="chapter-lead">말로 부탁하면 HTML로 장면이 만들어지고, 그것이 MP4 영상 파일이 됩니다. 이 사이트 맨 위의 소개 영상도 같은 방법으로 만들었고, 이 장에서 여러분의 영상을 만들어 사이트에 넣습니다.</p>
     <div class="chapter-meta"><span><i class="ph ph-clock"></i>약 40분</span><span><i class="ph ph-gauge"></i>난이도 보통</span></div>
@@ -45,7 +45,7 @@
   </div>
 
   <h3>사이트 안 모션과 무엇이 다른가요</h3>
-  <p>7장에서 만든 "스크롤하면 바뀌고, 누르면 반응하는" 모션과 hyperframes 영상은 둘 다 "움직이는 화면"이지만 성격이 다릅니다.</p>
+  <p>6장에서 만든 "스크롤하면 바뀌고, 누르면 반응하는" 모션과 hyperframes 영상은 둘 다 "움직이는 화면"이지만 성격이 다릅니다.</p>
   <div class="compare">
     <div>
       <h4>사이트 안 모션 (CSS/JS)</h4>
@@ -73,7 +73,7 @@
   </div>
 
   <h3>먼저 준비물 확인하기</h3>
-  <p>영상을 뽑으려면 내 PC에 아래 준비물이 필요합니다. 5장에서 hyperframes 플러그인은 이미 설치했습니다. 여기서는 영상을 실제로 뽑는 데 필요한 프로그램을 확인합니다.</p>
+  <p>영상을 뽑으려면 내 PC에 아래 준비물이 필요합니다. 4장에서 hyperframes 플러그인은 이미 설치했습니다. 여기서는 영상을 실제로 뽑는 데 필요한 프로그램을 확인합니다.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>준비물</th><th>하는 일</th><th>확인 방법</th><th>정상일 때</th></tr></thead>
     <tbody>
@@ -92,7 +92,7 @@
 3) 설치 후 새 터미널에서도 두 명령이 잘 잡히는지(PATH) 확인하고, 마지막에 npx hyperframes doctor 결과를 쉬운 말로 설명
 설치는 한 단계씩 진행하고, 명령을 실행하기 전에 무엇을 하는 명령인지 먼저 말해줘.</pre>
   </figure>
-  <p class="prompt-note">설치 명령이 나오면 5장에서 배운 대로 명령과 출처를 읽고 "Yes"를 누르세요.</p>
+  <p class="prompt-note">설치 명령이 나오면 4장에서 배운 대로 명령과 출처를 읽고 "Yes"를 누르세요.</p>
   <div class="callout check">
     <i class="ph ph-check-circle"></i>
     <strong>확인 포인트</strong>
@@ -124,7 +124,7 @@
     </li>
     <li class="step">
       <h4>프롬프트로 만듭니다</h4>
-      <p>5장에서 설치한 영상 스킬을 맨 앞에 부르고 기획을 적습니다. 10초 안팎의 짧은 모션그래픽에는 <code>/hyperframes:motion-graphics</code> 가 맞습니다. 어느 스킬을 쓸지 잘 모르겠으면 <code>/hyperframes:hyperframes</code> 로 시작하세요. 안내 데스크처럼 알맞은 스킬로 연결해 줍니다.</p>
+      <p>4장에서 설치한 영상 스킬을 맨 앞에 부르고 기획을 적습니다. 10초 안팎의 짧은 모션그래픽에는 <code>/hyperframes:motion-graphics</code> 가 맞습니다. 어느 스킬을 쓸지 잘 모르겠으면 <code>/hyperframes:hyperframes</code> 로 시작하세요. 안내 데스크처럼 알맞은 스킬로 연결해 줍니다.</p>
       <figure class="prompt" data-title="10초 소개 영상 만들기 (motion-graphics)">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
         <pre>/hyperframes:motion-graphics
@@ -333,7 +333,7 @@ ffmpeg -i my-video/renders/intro.mp4 -vf "scale=1280:-2" -c:v libx264 -crf 28 -p
     </li>
     <li class="step">
       <h4>배포합니다</h4>
-      <p>3장과 4장에서 GitHub와 Vercel을 연결해 두었다면 변경 사항을 GitHub에 올리는 것만으로 Vercel이 새로 배포합니다. 아래 프롬프트로 올리기와 확인을 부탁하세요.</p>
+      <p>2장과 3장에서 GitHub와 Vercel을 연결해 두었다면 변경 사항을 GitHub에 올리는 것만으로 Vercel이 새로 배포합니다. 아래 프롬프트로 올리기와 확인을 부탁하세요.</p>
       <figure class="prompt" data-title="영상 포함해서 GitHub에 올리고 배포">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
         <pre>영상이 들어간 변경 사항을 GitHub에 올려서 Vercel에 배포해줘.
@@ -413,7 +413,7 @@ npx hyperframes catalog</code></pre>
   </div>
 
   <h4>딸기: 새콤달콤한 설렘, 한 입의 행복 (28초 모션 영상)</h4>
-  <p>딸기 한 알을 주인공으로 한 28초짜리 식품 광고풍 모션 영상입니다. 극접사에서 한 알로 빠지는 공개, 반으로 펼쳐지는 단면 전시, 과즙이 순간 멈추는 설렘, 마지막의 한 입이 핵심입니다. 렌더한 영상은 웹용으로 압축해 내 사이트 첫 화면에 넣는 단계까지 들어 있습니다. 스크롤로 넘기는 인터랙티브 버전은 <a href="/courses/interactive-site/topics">6장의 강사 프롬프트</a>에 있습니다.</p>
+  <p>딸기 한 알을 주인공으로 한 28초짜리 식품 광고풍 모션 영상입니다. 극접사에서 한 알로 빠지는 공개, 반으로 펼쳐지는 단면 전시, 과즙이 순간 멈추는 설렘, 마지막의 한 입이 핵심입니다. 렌더한 영상은 웹용으로 압축해 내 사이트 첫 화면에 넣는 단계까지 들어 있습니다. 스크롤로 넘기는 인터랙티브 버전은 <a href="/courses/interactive-site/topics">5장의 강사 프롬프트</a>에 있습니다.</p>
   <figure class="prompt is-fold" data-title="심화: 딸기 28초 모션 영상">
     <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
     <pre># HyperFrames 제작 요청: 딸기, 새콤달콤한 설렘과 한 입의 행복
@@ -1329,7 +1329,7 @@ prefers-reduced-motion에서는 긴 비행, 별빛 늘어짐, 카메라 롤을 �
   <p class="prompt-note">빌드 결과는 정적 파일이라 Vercel에 그대로 올릴 수 있습니다. 따로 배포한다면 Import 화면의 Framework Preset이 Vite로 잡히는지 확인하세요.</p>
 
   <h3>Codex를 쓰는 분을 위한 안내</h3>
-  <p>5장에서 hyperframes 스킬을 Codex에도 설치했다면 같은 방식으로 영상을 만들 수 있습니다. 영상 만들기 자체(기획, 미리보기, 렌더, 사이트에 넣기)는 도구가 같아서 동일합니다. 다른 점은 스킬을 부르는 방법뿐입니다. Codex에서는 <code>/스킬이름</code> 대신 입력창에 <code>$</code> 를 치고 목록에서 hyperframes를 고르거나, "hyperframes 스킬을 사용해서 10초 소개 영상을 만들어줘"처럼 스킬 이름을 말로 언급하세요. 목록에서 이름이 보이지 않으면 5장의 Codex 안내를 다시 확인하세요.</p>
+  <p>4장에서 hyperframes 스킬을 Codex에도 설치했다면 같은 방식으로 영상을 만들 수 있습니다. 영상 만들기 자체(기획, 미리보기, 렌더, 사이트에 넣기)는 도구가 같아서 동일합니다. 다른 점은 스킬을 부르는 방법뿐입니다. Codex에서는 <code>/스킬이름</code> 대신 입력창에 <code>$</code> 를 치고 목록에서 hyperframes를 고르거나, "hyperframes 스킬을 사용해서 10초 소개 영상을 만들어줘"처럼 스킬 이름을 말로 언급하세요. 목록에서 이름이 보이지 않으면 4장의 Codex 안내를 다시 확인하세요.</p>
 
   <h3>자주 막히는 곳</h3>
   <div class="faq">

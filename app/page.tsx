@@ -27,7 +27,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <HeroVideo note="이 소개 영상도 HTML로 만들었습니다. 1편 8장에서 같은 방법으로 직접 만들어 봅니다." />
+        <HeroVideo note="이 소개 영상도 HTML로 만들었습니다. 1편 7장에서 같은 방법으로 직접 만들어 봅니다." />
       </section>
 
       <div className="home">

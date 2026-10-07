@@ -6,7 +6,6 @@
   "chapters": [
     "goal",
     "install",
-    "github",
     "vercel",
     "skills",
     "topics",
@@ -27,19 +26,19 @@
     "to": "topics",
     "label": "주제 먼저 보기"
   },
-  "videoNote": "이 소개 영상도 HTML로 만들었습니다. 8장에서 같은 방법으로 직접 만들어 봅니다.",
+  "videoNote": "이 소개 영상도 HTML로 만들었습니다. 7장에서 같은 방법으로 직접 만들어 봅니다.",
   "roadmap": [
     {
       "to": "install",
       "icon": "ph-download-simple",
       "title": "설치하기",
-      "text": "Claude 앱과 Claude Code를 내 PC에 준비"
+      "text": "Claude 앱, Git, GitHub 저장소를 내 PC에 준비"
     },
     {
-      "to": "github",
+      "to": "vercel",
       "icon": "ph-plugs-connected",
       "title": "연결하기",
-      "text": "GitHub와 Vercel 가입, 계정 연동"
+      "text": "Vercel 가입, GitHub 저장소를 연결해 내 주소 만들기"
     },
     {
       "to": "skills",

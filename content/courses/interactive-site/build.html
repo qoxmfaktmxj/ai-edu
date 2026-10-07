@@ -1,6 +1,6 @@
 <section class="chapter" id="build">
   <header class="chapter-head">
-    <span class="chapter-num">07</span>
+    <span class="chapter-num">06</span>
     <h2>프롬프트로 만들기</h2>
     <p class="chapter-lead">이 교육의 핵심 실습입니다. Claude에게 말로 부탁해서 화면을 만들고, 움직이게 하고, 클릭과 스크롤에 반응하게 만든 뒤 배포하고 다듬습니다. 코드는 한 줄도 직접 쓰지 않습니다.</p>
     <div class="chapter-meta"><span><i class="ph ph-clock"></i>약 2~3시간 (나눠서 해도 됩니다)</span><span><i class="ph ph-gauge"></i>난이도 보통</span></div>
@@ -30,7 +30,7 @@
   <div class="callout tip">
     <i class="ph ph-lightbulb"></i>
     <strong>어떤 주제로 할지 고민된다면</strong>
-    <div><p>처음이라면 <strong>도시의 하루</strong>를 그대로 따라 하세요. 이 장의 설명과 확인 방법이 이 주제를 기준으로 쓰여 있어서 가장 덜 헷갈립니다. 6장에서 이미 다른 주제를 골랐다면 그 주제로 하셔도 됩니다. 각 단계에 과일 소개와 심해 탐험용 프롬프트가 접혀 있으니 펼쳐서 쓰세요. 커피, 우주여행처럼 다른 주제도 5단계 흐름은 똑같습니다. 가장 비슷한 프롬프트를 골라 소재만 바꿔 넣으면 됩니다.</p></div>
+    <div><p>처음이라면 <strong>도시의 하루</strong>를 그대로 따라 하세요. 이 장의 설명과 확인 방법이 이 주제를 기준으로 쓰여 있어서 가장 덜 헷갈립니다. 5장에서 이미 다른 주제를 골랐다면 그 주제로 하셔도 됩니다. 각 단계에 과일 소개와 심해 탐험용 프롬프트가 접혀 있으니 펼쳐서 쓰세요. 커피, 우주여행처럼 다른 주제도 5단계 흐름은 똑같습니다. 가장 비슷한 프롬프트를 골라 소재만 바꿔 넣으면 됩니다.</p></div>
   </div>
 
   <h4>5단계 한눈에 보기</h4>
@@ -50,8 +50,8 @@
 
   <div class="callout check">
     <i class="ph ph-check-circle"></i>
-    <strong>6장에서 브리프를 깎았다면, 브리프부터 읽게 하세요</strong>
-    <div><p>아래 단계의 프롬프트는 브리프가 없을 때도 쓸 수 있게 만든 예시입니다. <a href="/courses/interactive-site/topics">6장의 프롬프트 깎기</a>로 <code>brief-v2.md</code>를 만들었다면, 각 단계를 시작할 때 Claude가 브리프를 기준으로 만들도록 먼저 아래처럼 부탁하세요.</p></div>
+    <strong>5장에서 브리프를 깎았다면, 브리프부터 읽게 하세요</strong>
+    <div><p>아래 단계의 프롬프트는 브리프가 없을 때도 쓸 수 있게 만든 예시입니다. <a href="/courses/interactive-site/topics">5장의 프롬프트 깎기</a>로 <code>brief-v2.md</code>를 만들었다면, 각 단계를 시작할 때 Claude가 브리프를 기준으로 만들도록 먼저 아래처럼 부탁하세요.</p></div>
   </div>
   <figure class="prompt" data-title="브리프로 1단계 시작">
     <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
@@ -64,7 +64,7 @@
   <ol class="steps">
     <li class="step">
       <h4>스킬 설치 후 새 세션을 시작했는지 확인하기</h4>
-      <p>5장에서 스킬(디자인과 모션 실력을 더해 주는 추가 기능)을 설치했다면, 그 뒤에 <strong>새 세션</strong>을 시작해야 목록에 나타납니다. 설치하기 전에 열어 둔 대화창에서는 보이지 않습니다. 지금 보고 있는 대화창이 설치 전부터 열려 있던 것이라면, 새 세션을 시작한 뒤 이 장을 따라 하세요.</p>
+      <p>4장에서 스킬(디자인과 모션 실력을 더해 주는 추가 기능)을 설치했다면, 그 뒤에 <strong>새 세션</strong>을 시작해야 목록에 나타납니다. 설치하기 전에 열어 둔 대화창에서는 보이지 않습니다. 지금 보고 있는 대화창이 설치 전부터 열려 있던 것이라면, 새 세션을 시작한 뒤 이 장을 따라 하세요.</p>
       <p>확인 방법은 간단합니다. Claude 데스크톱 앱의 <strong>Code</strong> 탭에서 입력창에 <kbd>/</kbd> 글자를 입력해 보세요. 사용할 수 있는 명령과 스킬의 목록이 위로 펼쳐집니다. 입력창 옆의 <strong>+</strong> 버튼을 누르고 <strong>Slash commands</strong>를 골라도 같은 목록이 나옵니다. 터미널에서 <code>claude</code>를 실행해 쓰는 분도 같은 방법으로 <kbd>/</kbd>를 입력하면 됩니다.</p>
       <ol class="path"><li>Code 탭</li><li>입력창에 / 입력</li><li>목록에서 스킬 이름 찾기</li></ol>
       <p>목록에서 아래 세 가지를 찾아보세요. 글자를 더 입력하면 목록이 좁혀지므로, <kbd>/design</kbd>, <kbd>/imp</kbd>, <kbd>/ui</kbd>처럼 앞부분만 쳐 보면 편합니다.</p>
@@ -85,7 +85,7 @@
       <div class="callout warn">
         <i class="ph ph-warning"></i>
         <strong>목록에 없다면</strong>
-        <div><p>먼저 앱이나 터미널의 Claude를 완전히 종료했다가 다시 열어 새 세션을 시작해 보세요. 그래도 없으면 5장으로 돌아가 설치가 끝까지 되었는지 확인해야 합니다. 아래 프롬프트로 Claude에게 확인을 부탁할 수도 있습니다. 다만 최종 판단은 항상 위의 목록 화면이 가장 정확합니다.</p></div>
+        <div><p>먼저 앱이나 터미널의 Claude를 완전히 종료했다가 다시 열어 새 세션을 시작해 보세요. 그래도 없으면 4장으로 돌아가 설치가 끝까지 되었는지 확인해야 합니다. 아래 프롬프트로 Claude에게 확인을 부탁할 수도 있습니다. 다만 최종 판단은 항상 위의 목록 화면이 가장 정확합니다.</p></div>
       </div>
       <figure class="prompt" data-title="스킬 설치 확인">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
@@ -98,8 +98,8 @@
       <h4>작업 폴더 정하기</h4>
       <p>Claude는 "폴더"를 단위로 일합니다. 사이트를 만들 폴더를 하나 정해서 Claude에게 열어 주어야 합니다. 두 가지 방법이 있습니다.</p>
       <div class="compare">
-        <div class="is-pick"><h4>방법 A <span class="tag">추천</span></h4><ul><li>4장에서 첫 배포까지 해 본 저장소 폴더를 그대로 씁니다</li><li>GitHub와 Vercel에 이미 연결되어 있어서, 4단계 배포가 "올리기 한 번"으로 끝납니다</li><li>4장의 연습용 파일은 새 화면으로 바뀌어도 괜찮습니다</li></ul></div>
-        <div><h4>방법 B</h4><ul><li>새 폴더를 하나 만들어 시작합니다</li><li>이 경우 4단계에서 GitHub 저장소를 새로 만들고 Vercel에 다시 연결해야 합니다. 3장, 4장의 순서를 한 번 더 해야 하므로 처음에는 권하지 않습니다</li></ul></div>
+        <div class="is-pick"><h4>방법 A <span class="tag">추천</span></h4><ul><li>3장에서 첫 배포까지 해 본 저장소 폴더를 그대로 씁니다</li><li>GitHub와 Vercel에 이미 연결되어 있어서, 4단계 배포가 "올리기 한 번"으로 끝납니다</li><li>3장의 연습용 파일은 새 화면으로 바뀌어도 괜찮습니다</li></ul></div>
+        <div><h4>방법 B</h4><ul><li>새 폴더를 하나 만들어 시작합니다</li><li>이 경우 4단계에서 GitHub 저장소를 새로 만들고 Vercel에 다시 연결해야 합니다. 2장, 3장의 순서를 한 번 더 해야 하므로 처음에는 권하지 않습니다</li></ul></div>
       </div>
       <p>폴더를 여는 방법입니다. 앱을 처음 열었거나 새 세션을 시작하면 입력창 주변에 환경과 폴더를 고르는 부분이 나옵니다.</p>
       <ol class="path"><li>Code 탭</li><li>Local</li><li>Select folder</li><li>작업 폴더 선택</li></ol>
@@ -161,7 +161,7 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
   </ol>
 
   <h3>프롬프트 잘 쓰는 원칙 8가지</h3>
-  <p>이 장 전체에서 가장 중요한 부분입니다. 코딩을 몰라도 결과를 좌우하는 것은 <strong>부탁하는 방식</strong>입니다. 이 원칙은 사이트 만들기뿐 아니라 보고서 초안, 메일 정리 같은 업무에서도 똑같이 통합니다(11장에서 다시 만납니다). 단계를 따라 하면서 틈틈이 이 부분으로 돌아오세요.</p>
+  <p>이 장 전체에서 가장 중요한 부분입니다. 코딩을 몰라도 결과를 좌우하는 것은 <strong>부탁하는 방식</strong>입니다. 이 원칙은 사이트 만들기뿐 아니라 보고서 초안, 메일 정리 같은 업무에서도 똑같이 통합니다(10장에서 다시 만납니다). 단계를 따라 하면서 틈틈이 이 부분으로 돌아오세요.</p>
 
   <div class="callout tip">
     <i class="ph ph-lightbulb"></i>
@@ -229,7 +229,7 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
         <li><strong>저장해 둔 지점으로 돌아가기</strong>: 여러 번 고치다 꼬였을 때 씁니다. 4번 원칙대로 커밋해 두었다면 가장 확실합니다.</li>
         <li><strong>대화 기록 되돌리기</strong>: 터미널의 Claude Code에서는 입력창이 빈 상태에서 <kbd>Esc</kbd>를 두 번 누르거나 <code>/rewind</code>를 입력하면 이전 부탁 시점으로 코드와 대화를 돌리는 메뉴가 열립니다. 데스크톱 앱에서는 메뉴 이름이 다를 수 있으니, 1번이나 2번처럼 말로 부탁하는 방법이 가장 확실합니다.</li>
       </ol>
-      <figure class="prompt" data-title="7장 방금 변경 되돌리기">
+      <figure class="prompt" data-title="6장 방금 변경 되돌리기">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
         <pre>방금 한 변경을 되돌려 주세요. 되돌리기 전에 어떤 파일의 무엇이 원래대로 돌아가는지 먼저 알려 주세요.</pre>
       </figure>
@@ -296,7 +296,7 @@ README.md가 이미 있으면 기존 내용은 지우지 말고 아래에 덧붙
   <div class="callout tip">
     <i class="ph ph-lightbulb"></i>
     <strong>프롬프트가 /로 시작하는 이유</strong>
-    <div><p>이 장의 일부 프롬프트는 첫 줄이 <code>/design-taste-frontend</code>처럼 <kbd>/</kbd>로 시작합니다. 5장에서 설치한 스킬을 직접 불러내는 방법입니다. 입력창에 붙여넣었을 때 스킬 이름 목록이 뜨면 같은 이름을 골라서 이어 보내세요. 만약 이 방법이 잘 안 되면, 문장 안에 "design-taste-frontend 스킬을 사용해서 ..."라고 이름을 적어 말해도 Claude가 그 스킬을 찾아 씁니다. 화면 문구와 동작은 업데이트로 조금 다를 수 있습니다.</p></div>
+    <div><p>이 장의 일부 프롬프트는 첫 줄이 <code>/design-taste-frontend</code>처럼 <kbd>/</kbd>로 시작합니다. 4장에서 설치한 스킬을 직접 불러내는 방법입니다. 입력창에 붙여넣었을 때 스킬 이름 목록이 뜨면 같은 이름을 골라서 이어 보내세요. 만약 이 방법이 잘 안 되면, 문장 안에 "design-taste-frontend 스킬을 사용해서 ..."라고 이름을 적어 말해도 Claude가 그 스킬을 찾아 씁니다. 화면 문구와 동작은 업데이트로 조금 다를 수 있습니다.</p></div>
   </div>
 
   <h4>따라 하기: 도시의 하루 (공통 실습)</h4>
@@ -907,11 +907,11 @@ index.html에서 style.css와 script.js가 제대로 연결되어 있는지도 �
   <h3>4단계. 배포: 내 주소로 공개하고 휴대폰으로 확인하기</h3>
 
   <h4>이 단계의 목표</h4>
-  <p>지금까지 내 PC 안에서만 보이던 사이트를 <strong>인터넷 주소</strong>로 공개합니다. 4장에서 이미 연습한 흐름이라 어렵지 않습니다. 이제는 Claude에게 한 번만 부탁하면 됩니다.</p>
+  <p>지금까지 내 PC 안에서만 보이던 사이트를 <strong>인터넷 주소</strong>로 공개합니다. 3장에서 이미 연습한 흐름이라 어렵지 않습니다. 이제는 Claude에게 한 번만 부탁하면 됩니다.</p>
   <div class="callout why">
     <i class="ph ph-question"></i>
     <strong>어떻게 공개되나요?</strong>
-    <div><p>흐름은 세 줄입니다. (1) Claude가 내 PC의 변경 내용을 GitHub 저장소에 올립니다(푸시). (2) GitHub에 새 내용이 올라온 것을 Vercel이 알아챕니다. (3) Vercel이 자동으로 사이트를 새로 만들어 내 주소에 반영합니다. 4장에서 GitHub와 Vercel을 연결해 두었기 때문에, 내가 Vercel에서 따로 할 일은 결과를 확인하는 것뿐입니다. 이후 사이트를 고칠 때마다 같은 방식으로 "올려 주세요" 한마디면 사이트가 갱신됩니다.</p></div>
+    <div><p>흐름은 세 줄입니다. (1) Claude가 내 PC의 변경 내용을 GitHub 저장소에 올립니다(푸시). (2) GitHub에 새 내용이 올라온 것을 Vercel이 알아챕니다. (3) Vercel이 자동으로 사이트를 새로 만들어 내 주소에 반영합니다. 3장에서 GitHub와 Vercel을 연결해 두었기 때문에, 내가 Vercel에서 따로 할 일은 결과를 확인하는 것뿐입니다. 이후 사이트를 고칠 때마다 같은 방식으로 "올려 주세요" 한마디면 사이트가 갱신됩니다.</p></div>
   </div>
   <div class="callout word">
     <i class="ph ph-book-open"></i>
@@ -932,7 +932,7 @@ index.html에서 style.css와 script.js가 제대로 연결되어 있는지도 �
 1. 올리기 전에, 바뀐 파일 목록을 쉬운 말로 알려 주세요. 비밀번호, 인증 키, 개인정보, 회사 자료로 보이는 파일이 있으면 올리지 말고 먼저 알려 주세요.
 2. 미리보기용 작업 설정 폴더(.claude)는 올라가지 않도록 .gitignore에 넣어 주세요.
 3. 커밋 메시지는 "도시의 하루: 시간 슬라이더, 창문 불빛, 자동차 추가"로 해서 저장(커밋)해 주세요.
-4. 4장에서 연결한 저장소의 기본 브랜치(보통 main)에 올려 주세요(푸시).
+4. 3장에서 연결한 저장소의 기본 브랜치(보통 main)에 올려 주세요(푸시).
 5. 끝나면 GitHub 저장소 주소와, Vercel에서 어디를 보면 되는지 알려 주세요.</pre>
   </figure>
   <p class="prompt-note">2번은 미리보기를 켜기 위한 작업용 설정 파일이 GitHub와 내 사이트에 그대로 올라가지 않게 하는 조치입니다. 폴더가 없으면 Claude가 알아서 넘어갑니다.</p>
@@ -1031,7 +1031,7 @@ index.html에서 style.css와 script.js가 제대로 연결되어 있는지도 �
     <details class="detail">
       <summary>GitHub에 올리다가 오류가 났어요</summary>
       <div class="detail-body">
-        <p>가장 흔한 원인은 GitHub 로그인(인증)이 풀렸거나 처음부터 연결되지 않은 경우입니다. 3장의 연결 방법을 한 번 더 확인하세요. 오류 문구는 요약하지 말고 6번 원칙대로 그대로 붙여넣으세요.</p>
+        <p>가장 흔한 원인은 GitHub 로그인(인증)이 풀렸거나 처음부터 연결되지 않은 경우입니다. 2장의 연결 방법을 한 번 더 확인하세요. 오류 문구는 요약하지 말고 6번 원칙대로 그대로 붙여넣으세요.</p>
         <figure class="prompt" data-title="고침 GitHub 올리기 오류">
           <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
           <pre>GitHub에 올리는 중에 오류가 났습니다. 오류 문구는 아래에 그대로 붙여넣습니다.
@@ -1369,7 +1369,7 @@ index.html에서 style.css와 script.js가 제대로 연결되어 있는지도 �
 
   <!-- ============ 마무리 ============ -->
   <h3>이 장을 마치며: 전체 체크리스트</h3>
-  <p>아래를 모두 체크했다면 이 장의 목표를 이룬 것입니다. 한두 개가 비어 있어도 괜찮습니다. 9장의 완성 기준과 발표 준비에서 한 번 더 점검하게 됩니다.</p>
+  <p>아래를 모두 체크했다면 이 장의 목표를 이룬 것입니다. 한두 개가 비어 있어도 괜찮습니다. 8장의 완성 기준과 발표 준비에서 한 번 더 점검하게 됩니다.</p>
   <ul class="checklist">
     <li><label><input type="checkbox" id="chk-build-25"><span>스킬 세 가지가 보이는 새 세션에서 작업 폴더를 열고, 기획 메모를 README에 남겼다</span></label></li>
     <li><label><input type="checkbox" id="chk-build-26"><span>코드를 직접 쓰지 않고, 말로 부탁해서 화면을 만들었다 (1단계)</span></label></li>
@@ -1383,8 +1383,8 @@ index.html에서 style.css와 script.js가 제대로 연결되어 있는지도 �
   <div class="callout why">
     <i class="ph ph-question"></i>
     <strong>이 장에서 가져가는 것</strong>
-    <div><p>사이트 자체보다 중요한 것은 일하는 방식입니다. 한 번에 하나씩 부탁하고, 눈으로 확인하고, 구체적으로 고쳐 달라고 말하고, 잘 된 곳에서 저장하고, 망가지면 되돌리는 것입니다. 이 방식은 보고서 초안, 메일 정리, 자료 요약처럼 평소 업무에서도 똑같이 통합니다. 11장에서 이 방식을 업무에 옮겨 봅니다.</p></div>
+    <div><p>사이트 자체보다 중요한 것은 일하는 방식입니다. 한 번에 하나씩 부탁하고, 눈으로 확인하고, 구체적으로 고쳐 달라고 말하고, 잘 된 곳에서 저장하고, 망가지면 되돌리는 것입니다. 이 방식은 보고서 초안, 메일 정리, 자료 요약처럼 평소 업무에서도 똑같이 통합니다. 10장에서 이 방식을 업무에 옮겨 봅니다.</p></div>
   </div>
 
-  <p>다음 장에서는 <a href="/courses/interactive-site/motion">8장 hyperframes로 모션 영상</a>으로 사이트와는 다른 종류의 움직임인 짧은 모션 영상을 만들어 봅니다. 완성도를 점검하고 발표를 준비하는 방법은 <a href="/courses/interactive-site/finish">9장 완성 기준과 발표</a>에 있습니다. 중간에 막혔다면 <a href="/courses/interactive-site/trouble">10장 막혔을 때</a>를 먼저 펼쳐 보세요.</p>
+  <p>다음 장에서는 <a href="/courses/interactive-site/motion">7장 hyperframes로 모션 영상</a>으로 사이트와는 다른 종류의 움직임인 짧은 모션 영상을 만들어 봅니다. 완성도를 점검하고 발표를 준비하는 방법은 <a href="/courses/interactive-site/finish">8장 완성 기준과 발표</a>에 있습니다. 중간에 막혔다면 <a href="/courses/interactive-site/trouble">9장 막혔을 때</a>를 먼저 펼쳐 보세요.</p>
 </section>
