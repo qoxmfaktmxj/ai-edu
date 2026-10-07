@@ -44,92 +44,160 @@
     <span style="--x:80%;--w:15vw;--r:15deg;--o:.42"></span>
   </div>
 
-  <div class="creature fish" data-fish>
-    <svg viewBox="0 0 220 90">
-      <defs><path id="f" d="M0 6C6 0 16 0 22 6 16 12 6 12 0 6ZM21 6 29 1V11Z"/></defs>
-      <g fill="#0A3F66">
-        <use href="#f" x="10" y="30"/><use href="#f" x="44" y="14"/><use href="#f" x="50" y="48"/>
-        <use href="#f" x="84" y="28"/><use href="#f" x="96" y="62"/><use href="#f" x="122" y="10"/>
-        <use href="#f" x="134" y="40"/><use href="#f" x="168" y="24"/><use href="#f" x="176" y="58"/>
+  <!-- 0 - 200m: sardine school, far and low contrast. -->
+  <div class="creature sardine" data-k="f">
+    <svg viewBox="0 0 250 100">
+      <defs><path id="sd" d="M0 7C8 1 24 0 34 6 24 12 8 13 0 7ZM33 6 42 1 39 7 42 13Z"/></defs>
+      <g fill="#08355A">
+        <use href="#sd" x="8" y="34"/><use href="#sd" x="46" y="14"/><use href="#sd" x="52" y="52"/>
+        <use href="#sd" x="90" y="30"/><use href="#sd" x="100" y="68"/><use href="#sd" x="130" y="8"/>
+        <use href="#sd" x="140" y="44"/><use href="#sd" x="178" y="24"/><use href="#sd" x="184" y="62"/><use href="#sd" x="212" y="40"/>
       </g>
+    </svg>
+  </div>
+
+  <!-- 200 - 1,000m: lanternfish with photophores. -->
+  <div class="creature lantern" data-k="n">
+    <svg viewBox="0 0 280 150">
+      <defs>
+        <g id="lf">
+          <path fill="#0A1E3C" d="M0 12C6 3 22 0 36 6 44 9 44 15 36 18 22 23 6 21 0 12Z"/>
+          <path fill="#0A1E3C" d="M38 9 50 2 47 12 50 22 38 15Z"/>
+          <circle cx="9" cy="10" r="3.6" fill="#13325C"/>
+          <g fill="#83E7EA"><circle cx="12" cy="18" r="1.1"/><circle cx="17" cy="19" r="1.1"/><circle cx="22" cy="19" r="1.1"/><circle cx="27" cy="18" r="1.1"/><circle cx="32" cy="17" r="1.1"/><circle cx="20" cy="14" r="1"/></g>
+        </g>
+      </defs>
+      <use href="#lf" transform="translate(20 30) scale(1.3)"/>
+      <use href="#lf" transform="translate(120 12) scale(1.1)"/>
+      <use href="#lf" transform="translate(96 84) scale(1.45)"/>
+      <use href="#lf" transform="translate(200 60) scale(1.05)"/>
     </svg>
   </div>
 
   <canvas class="particles" data-particles></canvas>
 
   <!-- Base silhouettes: what the eye sees without the lamp. -->
-  <div class="creature jelly" data-jelly>
-    <svg viewBox="0 0 300 520">
+  <!-- 1,000 - 2,200m: Atolla. Red reads almost black at depth; the blue ring is its own light. -->
+  <div class="creature jelly" data-k="j">
+    <svg viewBox="0 0 300 380">
       <defs>
-        <radialGradient id="jbell" cx="50%" cy="30%" r="70%">
-          <stop offset="0" stop-color="#83E7EA" stop-opacity=".2"/>
-          <stop offset=".75" stop-color="#2D6E96" stop-opacity=".09"/>
-          <stop offset="1" stop-color="#83E7EA" stop-opacity=".04"/>
-        </radialGradient>
-        <radialGradient id="glow"><stop offset="0" stop-color="#83E7EA" stop-opacity=".7"/><stop offset="1" stop-color="#83E7EA" stop-opacity="0"/></radialGradient>
+        <radialGradient id="glow"><stop offset="0" stop-color="#83E7EA" stop-opacity=".75"/><stop offset="1" stop-color="#83E7EA" stop-opacity="0"/></radialGradient>
       </defs>
-      <g fill="none" stroke="#83E7EA" stroke-linecap="round">
-        <path stroke-opacity=".07" d="M46 154C40 260 62 360 50 512M78 160C74 280 92 380 84 500M222 160C228 270 210 380 218 504M254 154C262 250 244 370 252 512"/>
-        <path stroke-opacity=".1" stroke-width="7" d="M132 162C118 224 148 262 130 322 116 374 142 404 128 456M168 162C182 230 154 270 172 330 186 382 160 410 174 470"/>
+      <g fill="none" stroke="#24070D" stroke-linecap="round" stroke-width="2.4" stroke-opacity=".85">
+        <path d="M46 132C40 160 46 176 40 196M74 140C70 166 76 182 70 204M104 144C102 170 108 186 104 206M196 144C198 170 192 186 196 206M226 140C230 166 224 182 230 204M254 132C260 160 254 176 260 196"/>
+        <path stroke-width="3" d="M150 150C160 210 128 250 146 300 160 340 136 360 150 378"/>
       </g>
-      <path fill="url(#jbell)" stroke="#83E7EA" stroke-opacity=".16" d="M40 150C40 60 100 18 150 18S260 60 260 150C248 160 236 150 224 158 212 166 200 152 188 160 176 168 164 154 150 162 136 154 124 168 112 160 100 152 88 166 76 158 64 150 52 160 40 150Z"/>
-      <g fill="url(#glow)"><circle cx="64" cy="154" r="9"/><circle cx="150" cy="160" r="11"/><circle cx="236" cy="154" r="9"/></g>
-      <g fill="#83E7EA"><circle cx="64" cy="154" r="2"/><circle cx="150" cy="160" r="2.6"/><circle cx="236" cy="154" r="2"/></g>
-    </svg>
-  </div>
-  <div class="creature serpent" data-serpent>
-    <svg viewBox="0 0 900 360">
-      <defs><radialGradient id="glow2"><stop offset="0" stop-color="#83E7EA" stop-opacity=".65"/><stop offset="1" stop-color="#83E7EA" stop-opacity="0"/></radialGradient></defs>
-      <g fill="none" stroke-linecap="round">
-        <path stroke="#081631" stroke-width="14" d="M0 262C80 302 160 282 220 242"/>
-        <path stroke="#081631" stroke-width="30" d="M200 252C260 200 330 180 420 190"/>
-        <path stroke="#081631" stroke-width="48" d="M410 189C580 220 660 90 900 110"/>
-        <path stroke="#0C2142" stroke-width="20" d="M410 182C580 213 660 83 900 103"/>
-      </g>
-      <g fill="url(#glow2)"><circle cx="520" cy="204" r="8"/><circle cx="640" cy="170" r="8"/><circle cx="760" cy="126" r="8"/></g>
-      <g fill="#83E7EA"><circle cx="520" cy="204" r="2"/><circle cx="640" cy="170" r="2"/><circle cx="760" cy="126" r="2"/></g>
+      <path fill="#1C060B" fill-opacity=".85" d="M30 120C30 70 90 40 150 40S270 70 270 120C270 132 250 140 230 136 214 146 196 138 180 146 164 140 150 150 136 140 120 146 104 138 86 146 70 136 50 140 30 132Z"/>
+      <g fill="url(#glow)"><circle cx="40" cy="128" r="10"/><circle cx="84" cy="140" r="10"/><circle cx="128" cy="144" r="10"/><circle cx="172" cy="144" r="10"/><circle cx="216" cy="140" r="10"/><circle cx="260" cy="128" r="10"/></g>
+      <g fill="#83E7EA"><circle cx="40" cy="128" r="2"/><circle cx="84" cy="140" r="2"/><circle cx="128" cy="144" r="2"/><circle cx="172" cy="144" r="2"/><circle cx="216" cy="140" r="2"/><circle cx="260" cy="128" r="2"/></g>
     </svg>
   </div>
 
-  <!-- Detail layer: only visible inside the lamp circle (mask), never shown as bioluminescence. -->
+  <!-- 1,000 - 2,200m: deep-sea anglerfish. Only the lure shows in the dark. -->
+  <div class="creature angler" data-k="a">
+    <svg viewBox="0 0 260 200">
+      <path fill="#050D1C" d="M48 110C48 62 96 44 146 54 194 64 214 98 206 128 196 162 148 178 106 172 66 166 48 150 48 110ZM52 104 14 78 24 110 12 142 52 122Z"/>
+      <path fill="none" stroke="#0B1A33" stroke-width="2" d="M150 56C160 22 194 10 214 26"/>
+      <circle cx="216" cy="30" r="14" fill="url(#glow)"/><circle cx="216" cy="30" r="3.4" fill="#BFF4F5"/>
+    </svg>
+  </div>
+
+  <!-- 2,200 - 3,500m: pelican (gulper) eel, head out of frame to the right; light organ at the tail tip. -->
+  <div class="creature serpent" data-k="p">
+    <svg viewBox="0 0 900 360">
+      <defs><radialGradient id="tailglow"><stop offset="0" stop-color="#BFF4F5" stop-opacity=".8"/><stop offset="1" stop-color="#BFF4F5" stop-opacity="0"/></radialGradient></defs>
+      <g fill="none" stroke-linecap="round">
+        <path stroke="#081631" stroke-width="6" d="M0 262C80 302 160 282 220 242"/>
+        <path stroke="#081631" stroke-width="18" d="M200 252C260 200 330 180 420 190"/>
+        <path stroke="#081631" stroke-width="36" d="M410 189C580 220 660 90 900 110"/>
+        <path stroke="#0C2142" stroke-width="14" d="M410 183C580 214 660 84 900 104"/>
+      </g>
+      <circle cx="0" cy="262" r="16" fill="url(#tailglow)"/><circle cx="0" cy="262" r="3" fill="#E8F4F6"/>
+    </svg>
+  </div>
+
+  <!-- 3,500 - 4,000m: dumbo octopus in the last observation window. -->
+  <div class="creature dumbo" data-k="u">
+    <svg viewBox="0 0 220 220">
+      <path fill="#4A3A4E" fill-opacity=".55" d="M110 26C144 26 164 50 164 80 164 96 160 106 166 120 176 140 190 156 188 172 176 168 170 176 160 172 152 180 140 176 132 182 124 188 116 182 110 188 104 182 96 188 88 182 80 176 68 180 60 172 50 176 44 168 32 172 30 156 44 140 54 120 60 106 56 96 56 80 56 50 76 26 110 26ZM58 66C40 46 22 54 26 72 30 86 46 86 57 80ZM162 66C180 46 198 54 194 72 190 86 174 86 163 80Z"/>
+    </svg>
+  </div>
+
+  <!-- Detail layer: only visible inside the lamp circle (mask). Artificial light, not bioluminescence. -->
   <div class="detail" data-detail>
-    <div class="creature jelly" data-jelly-detail>
-      <svg viewBox="0 0 300 520">
+    <div class="creature lantern">
+      <svg viewBox="0 0 280 150">
+        <defs>
+          <g id="lfd" fill="none" stroke="#BFF4F5" stroke-linecap="round">
+            <path stroke-opacity=".75" d="M0 12C6 3 22 0 36 6 44 9 44 15 36 18 22 23 6 21 0 12ZM38 9 50 2 47 12 50 22 38 15Z"/>
+            <circle cx="9" cy="10" r="3.6" stroke-opacity=".8"/><circle cx="8.4" cy="9.2" r="1" fill="#BFF4F5" stroke="none"/>
+            <path stroke-opacity=".4" d="M18 6C20 10 20 14 18 18M28 5C30 10 30 15 28 19"/>
+          </g>
+        </defs>
+        <use href="#lfd" transform="translate(20 30) scale(1.3)"/>
+        <use href="#lfd" transform="translate(120 12) scale(1.1)"/>
+        <use href="#lfd" transform="translate(96 84) scale(1.45)"/>
+        <use href="#lfd" transform="translate(200 60) scale(1.05)"/>
+      </svg>
+    </div>
+    <div class="creature jelly">
+      <svg viewBox="0 0 300 380">
+        <g fill="none" stroke="#D2485A" stroke-linecap="round" stroke-width="2.4" stroke-opacity=".85">
+          <path d="M46 132C40 160 46 176 40 196M74 140C70 166 76 182 70 204M104 144C102 170 108 186 104 206M196 144C198 170 192 186 196 206M226 140C230 166 224 182 230 204M254 132C260 160 254 176 260 196"/>
+          <path stroke-width="3" d="M150 150C160 210 128 250 146 300 160 340 136 360 150 378"/>
+        </g>
+        <path fill="#9B1D2B" fill-opacity=".72" stroke="#F3A0AA" stroke-opacity=".7" stroke-width="1.4" d="M30 120C30 70 90 40 150 40S270 70 270 120C270 132 250 140 230 136 214 146 196 138 180 146 164 140 150 150 136 140 120 146 104 138 86 146 70 136 50 140 30 132Z"/>
+        <ellipse cx="150" cy="104" rx="104" ry="22" fill="none" stroke="#F3A0AA" stroke-opacity=".55"/>
+        <path fill="#5E0F1A" d="M108 96C108 70 128 56 150 56S192 70 192 96C180 104 120 104 108 96Z"/>
+        <path fill="none" stroke="#F3A0AA" stroke-opacity=".35" d="M58 112 46 128M86 118 80 138M118 122 116 142M182 122 184 142M214 118 220 138M242 112 254 128"/>
+      </svg>
+    </div>
+    <div class="creature angler">
+      <svg viewBox="0 0 260 200">
         <g fill="none" stroke="#BFF4F5" stroke-linecap="round">
-          <path stroke-opacity=".75" stroke-width="1.6" d="M40 150C40 60 100 18 150 18S260 60 260 150C248 160 236 150 224 158 212 166 200 152 188 160 176 168 164 154 150 162 136 154 124 168 112 160 100 152 88 166 76 158 64 150 52 160 40 150Z"/>
-          <path stroke-opacity=".45" d="M64 140C70 82 110 50 150 50S230 82 236 140"/>
-          <path stroke-opacity=".3" d="M150 30V158M150 30 72 152M150 30 228 152M150 30 108 158M150 30 192 158"/>
-          <path stroke-opacity=".6" stroke-width="2" d="M118 98a16 13 0 1 1 18 16M182 98a16 13 0 1 0-18 16M128 74a12 10 0 1 1 22 0M150 74a12 10 0 1 1 22 0"/>
-          <path stroke-opacity=".5" stroke-width="1.2" stroke-dasharray="3 5" d="M126 162C112 224 142 262 124 322 110 374 136 404 122 456M138 162C124 224 154 262 136 322 122 374 148 404 134 456M162 162C176 230 148 270 166 330 180 382 154 410 168 470M174 162C188 230 160 270 178 330 192 382 166 410 180 470"/>
-          <path stroke-opacity=".32" d="M46 154C40 260 62 360 50 512M78 160C74 280 92 380 84 500M222 160C228 270 210 380 218 504M254 154C262 250 244 370 252 512"/>
+          <path stroke-opacity=".75" stroke-width="1.6" d="M48 110C48 62 96 44 146 54 194 64 214 98 206 128 196 162 148 178 106 172 66 166 48 150 48 110ZM52 104 14 78 24 110 12 142 52 122Z"/>
+          <path stroke-opacity=".7" d="M206 118C180 132 154 138 128 134"/>
+          <path stroke-opacity=".8" d="M200 120 196 108M192 124 189 111M184 127 182 115M176 129 175 118M168 131 168 121M160 132 161 123"/>
+          <path stroke-opacity=".6" d="M150 56C160 22 194 10 214 26"/>
+          <circle cx="172" cy="94" r="5" stroke-opacity=".8"/>
+          <path stroke-opacity=".25" stroke-dasharray="1 7" stroke-width="3" d="M70 100C90 80 120 76 150 84M74 130C100 120 130 122 160 136"/>
         </g>
       </svg>
     </div>
-    <div class="creature serpent" data-serpent-detail>
+    <div class="creature serpent">
       <svg viewBox="0 0 900 360">
-        <defs>
-          <pattern id="scales" width="16" height="11" patternUnits="userSpaceOnUse">
-            <path d="M0 11Q8 0 16 11" fill="none" stroke="#BFF4F5" stroke-opacity=".38"/>
-          </pattern>
-        </defs>
         <g fill="none" stroke-linecap="round">
-          <path stroke="#BFF4F5" stroke-opacity=".6" stroke-width="16" d="M0 262C80 302 160 282 220 242"/>
-          <path stroke="#0A1A36" stroke-width="12" d="M0 262C80 302 160 282 220 242"/>
-          <path stroke="#BFF4F5" stroke-opacity=".6" stroke-width="32" d="M200 252C260 200 330 180 420 190"/>
-          <path stroke="#0A1A36" stroke-width="28" d="M200 252C260 200 330 180 420 190"/>
-          <path stroke="#BFF4F5" stroke-opacity=".6" stroke-width="50" d="M410 189C580 220 660 90 900 110"/>
-          <path stroke="#0A1A36" stroke-width="46" d="M410 189C580 220 660 90 900 110"/>
-          <path stroke="url(#scales)" stroke-width="42" d="M410 189C580 220 660 90 900 110"/>
-          <path stroke="url(#scales)" stroke-width="24" d="M200 252C260 200 330 180 420 190"/>
-          <path stroke="#BFF4F5" stroke-opacity=".3" stroke-width="44" stroke-dasharray="1.5 34" d="M410 189C580 220 660 90 900 110"/>
-          <path stroke="#BFF4F5" stroke-opacity=".45" stroke-width="1.4" d="M430 160C590 190 650 60 900 78"/>
-          <path stroke="#BFF4F5" stroke-opacity=".22" stroke-width="14" stroke-linecap="butt" stroke-dasharray="1.2 8" d="M430 150C590 180 650 50 900 68"/>
+          <path stroke="#BFF4F5" stroke-opacity=".6" stroke-width="8" d="M0 262C80 302 160 282 220 242"/>
+          <path stroke="#0A1A36" stroke-width="5" d="M0 262C80 302 160 282 220 242"/>
+          <path stroke="#BFF4F5" stroke-opacity=".6" stroke-width="20" d="M200 252C260 200 330 180 420 190"/>
+          <path stroke="#0A1A36" stroke-width="16" d="M200 252C260 200 330 180 420 190"/>
+          <path stroke="#BFF4F5" stroke-opacity=".6" stroke-width="38" d="M410 189C580 220 660 90 900 110"/>
+          <path stroke="#0A1A36" stroke-width="34" d="M410 189C580 220 660 90 900 110"/>
+          <path stroke="#BFF4F5" stroke-opacity=".22" stroke-width="1.2" d="M410 196C580 227 660 97 900 117M410 180C580 211 660 81 900 101M220 248C270 206 330 188 420 196"/>
+          <path stroke="#BFF4F5" stroke-opacity=".28" stroke-width="10" stroke-linecap="butt" stroke-dasharray="1.2 7" d="M260 206C330 182 380 168 430 166C590 196 650 66 900 86"/>
         </g>
+      </svg>
+    </div>
+    <div class="creature dumbo">
+      <svg viewBox="0 0 220 220">
+        <path fill="#E8B9C8" fill-opacity=".6" stroke="#FBE3EA" stroke-opacity=".85" stroke-width="1.4" d="M110 26C144 26 164 50 164 80 164 96 160 106 166 120 176 140 190 156 188 172 176 168 170 176 160 172 152 180 140 176 132 182 124 188 116 182 110 188 104 182 96 188 88 182 80 176 68 180 60 172 50 176 44 168 32 172 30 156 44 140 54 120 60 106 56 96 56 80 56 50 76 26 110 26ZM58 66C40 46 22 54 26 72 30 86 46 86 57 80ZM162 66C180 46 198 54 194 72 190 86 174 86 163 80Z"/>
+        <g fill="#3B1E2A"><circle cx="82" cy="94" r="6"/><circle cx="138" cy="94" r="6"/></g>
+        <path fill="none" stroke="#FBE3EA" stroke-opacity=".5" stroke-dasharray="2 5" d="M96 128C88 146 72 160 62 170M110 130V184M124 128C132 146 148 160 158 170M84 122C72 138 54 150 40 164M136 122C148 138 166 150 180 164"/>
       </svg>
     </div>
   </div>
   <div class="lamp" data-lamp></div>
   <div class="narrow" data-narrow></div>
+</div>
+
+<!-- Field guide marks. Positioned from the same depth state as the drawings; hidden while a creature is out of view. -->
+<div class="marks" data-marks>
+  <button type="button" class="mark" data-spec="sardine" data-k="f" hidden><span class="mark-dot" aria-hidden="true"></span><span data-mark-name></span></button>
+  <button type="button" class="mark" data-spec="lanternfish" data-k="n" hidden><span class="mark-dot" aria-hidden="true"></span><span data-mark-name></span></button>
+  <button type="button" class="mark" data-spec="atolla" data-k="j" hidden><span class="mark-dot" aria-hidden="true"></span><span data-mark-name></span></button>
+  <button type="button" class="mark" data-spec="anglerfish" data-k="a" hidden><span class="mark-dot" aria-hidden="true"></span><span data-mark-name></span></button>
+  <button type="button" class="mark" data-spec="gulper" data-k="p" hidden><span class="mark-dot" aria-hidden="true"></span><span data-mark-name></span></button>
+  <button type="button" class="mark" data-spec="dumbo" data-k="u" hidden><span class="mark-dot" aria-hidden="true"></span><span data-mark-name></span></button>
 </div>
 
   <section class="hero" id="top" aria-labelledby="hero-title" tabindex="-1">
@@ -142,6 +210,10 @@
       <p class="range">0 - 200m</p>
       <h2 id="s1-title">빛이 머무는 바다</h2>
       <p>아래로 내려갈수록, 물속의 빛은 약해집니다.</p>
+      <div class="spec-list" data-spec-list>
+        <p class="spec-head">이 구간의 생물</p>
+        <div class="spec-chips"><button type="button" class="spec-chip" data-spec="sardine"></button></div>
+      </div>
     </div>
   </section>
 
@@ -150,6 +222,10 @@
       <p class="range">200 - 1,000m</p>
       <h2 id="s2-title">마지막 푸른빛</h2>
       <p>희미한 빛을 지나, 태양빛이 닿지 않는 깊이로.</p>
+      <div class="spec-list" data-spec-list>
+        <p class="spec-head">이 구간의 생물</p>
+        <div class="spec-chips"><button type="button" class="spec-chip" data-spec="lanternfish"></button></div>
+      </div>
     </div>
   </section>
 
@@ -159,6 +235,10 @@
       <h2 id="s3-title">스스로 빛나는 세계</h2>
       <p>어둠 속에서도, 빛을 만드는 생명이 있습니다.</p>
       <p class="note">지금부터 화면 아래의 관측등을 켤 수 있습니다.</p>
+      <div class="spec-list" data-spec-list>
+        <p class="spec-head">이 구간의 생물</p>
+        <div class="spec-chips"><button type="button" class="spec-chip" data-spec="atolla"></button><button type="button" class="spec-chip" data-spec="anglerfish"></button></div>
+      </div>
     </div>
   </section>
 
@@ -167,6 +247,10 @@
       <p class="range">2,200 - 3,500m</p>
       <h2 id="s4-title">어둠을 관찰하는 빛</h2>
       <p>관측등을 켜고, 눈앞의 형상을 살펴보세요.</p>
+      <div class="spec-list" data-spec-list>
+        <p class="spec-head">이 구간의 생물</p>
+        <div class="spec-chips"><button type="button" class="spec-chip" data-spec="gulper"></button></div>
+      </div>
     </div>
   </section>
 
@@ -180,12 +264,16 @@
         <li><strong>박명층</strong><span>대략 200 - 1,000m. 빛이 점점 희미해지는 층.</span></li>
         <li><strong>빛이 닿지 않는 영역</strong><span>1,000m보다 깊은 곳. 태양빛이 닿지 않습니다. 실제 빛이 닿는 깊이는 바다의 상태에 따라 다릅니다.</span></li>
       </ul>
+      <div class="spec-list" data-spec-list>
+        <p class="spec-head">이번 탐험에서 만난 생물</p>
+        <div class="spec-chips"><button type="button" class="spec-chip" data-spec="sardine"></button><button type="button" class="spec-chip" data-spec="lanternfish"></button><button type="button" class="spec-chip" data-spec="atolla"></button><button type="button" class="spec-chip" data-spec="anglerfish"></button><button type="button" class="spec-chip" data-spec="gulper"></button><button type="button" class="spec-chip" data-spec="dumbo"></button></div>
+      </div>
       <button type="button" class="btn" data-return>수면으로 돌아가기 <span aria-hidden="true">↑</span></button>
 
       <details class="info">
         <summary>이 탐험에 대하여, 자료 출처</summary>
         <p>수심에 따른 빛의 변화를 참고한 가상 탐험입니다. 장면의 거리, 이동 속도, 생물의 배치와 크기는 설명을 위해 조정했습니다.</p>
-        <p>화면 속 생물은 심해 생물의 형태를 참고한 일러스트이며, 특정 종이나 그 종이 사는 수심을 나타내지 않습니다. 생물발광은 수면 근처부터 깊은 바다까지 나타날 수 있고, 모든 심해 생물이 빛을 내지는 않습니다.</p>
+        <p>화면 속 생물은 실제 생물을 참고한 일러스트입니다. 화면에 나타나는 수심과 위치, 크기는 연출이며, 실제로 알려진 서식 깊이와 특징은 각 생물의 도감 카드와 출처를 보세요. 생물발광은 수면 근처부터 깊은 바다까지 나타날 수 있고, 모든 심해 생물이 빛을 내지는 않습니다.</p>
         <p>떠다니는 작은 입자는 해양설(위층에서 가라앉는 유기물 등의 입자)을 표현했습니다. 입자가 화면 위로 올라가 보이는 것은 우리가 내려가고 있기 때문이며, 실제 해양설은 아래로 천천히 가라앉습니다.</p>
         <ul>
           <li><a href="https://oceanservice.noaa.gov/facts/light_travel.html">NOAA, How far does light travel in the ocean?</a></li>
@@ -199,6 +287,24 @@
     </div>
   </section>
 </main>
+
+<!-- Field guide card. Filled from js/data.js SPECIES. -->
+<dialog class="guide" data-guide aria-labelledby="guide-name">
+  <div class="guide-art" data-guide-art aria-hidden="true"></div>
+  <div class="guide-body">
+    <p class="guide-no"><span data-guide-no></span><span data-guide-group></span></p>
+    <h2 id="guide-name" data-guide-name tabindex="-1"></h2>
+    <p class="guide-sci"><i lang="la" data-guide-sci></i><span data-guide-en></span></p>
+    <dl class="guide-meta">
+      <div><dt>알려진 서식 깊이</dt><dd data-guide-depth></dd></div>
+      <div><dt>크기</dt><dd data-guide-size></dd></div>
+    </dl>
+    <ul class="guide-facts" data-guide-facts></ul>
+    <p class="guide-note">화면 속 수심과 크기는 연출입니다. 위 정보는 아래 출처를 기준으로 했습니다.</p>
+    <ul class="guide-src" data-guide-src></ul>
+  </div>
+  <form method="dialog"><button class="guide-close">닫기</button></form>
+</dialog>
 
 <button type="button" class="lamp-btn" data-lamp-btn aria-pressed="false" hidden>
   <span class="lamp-dot" aria-hidden="true"></span><span data-lamp-label>관측등 켜기</span>

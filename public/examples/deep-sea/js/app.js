@@ -1,5 +1,5 @@
 // Turns real scroll, buttons and pointer into state, then renders once per frame.
-import { SCENES, MAX_DEPTH, LAMP_FROM } from './data.js';
+import { SCENES, MAX_DEPTH, LAMP_FROM, SPECIES } from './data.js';
 import { initDeepSea, renderDeepSea, lampTarget } from './scene.js';
 
 const stage = document.querySelector('[data-stage]');
@@ -78,7 +78,8 @@ function render() {
   depthEl.textContent = shown.toLocaleString('ko-KR');
   zoneEl.textContent = shown >= MAX_DEPTH ? '이번 탐험의 마지막 관측 지점' : zoneFor(shown);
 
-  renderDeepSea(state);
+  const present = renderDeepSea(state);
+  updateMarks(present);
 }
 
 // ---------- lamp ----------
@@ -99,6 +100,67 @@ addEventListener('pointermove', (e) => {
   state.lampY = (e.clientY - r.top) / r.height;
   schedule();
 }, { passive: true });
+
+// ---------- field guide ----------
+const byId = Object.fromEntries(SPECIES.map((sp) => [sp.id, sp]));
+const marks = [...document.querySelectorAll('.mark')];
+const guide = document.querySelector('[data-guide]');
+const g = (name) => guide.querySelector(`[data-guide-${name}]`);
+let opener = null;
+
+marks.forEach((m) => {
+  const sp = byId[m.dataset.spec];
+  m.querySelector('[data-mark-name]').textContent = sp.nameKo;
+  m.setAttribute('aria-label', `${sp.nameKo} 도감 카드 열기`);
+});
+document.querySelectorAll('.spec-chip').forEach((c) => {
+  const sp = byId[c.dataset.spec];
+  c.textContent = sp.nameKo;
+  c.setAttribute('aria-haspopup', 'dialog');
+});
+
+// A mark shows only while its creature is clearly in view. hidden is touched only when it changes.
+function updateMarks(present) {
+  for (const m of marks) {
+    const show = present[m.dataset.k] > 0.45;
+    if (m.hidden === show) m.hidden = !show;
+  }
+}
+
+function el(tag, text, attrs = {}) {
+  const e = document.createElement(tag);
+  if (text) e.textContent = text;
+  Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+  return e;
+}
+
+function openGuide(id, from) {
+  const sp = byId[id];
+  opener = from;
+  g('no').textContent = `No. ${sp.no}`;
+  g('group').textContent = sp.group;
+  g('name').textContent = sp.nameKo;
+  g('sci').textContent = sp.sci;
+  g('en').textContent = sp.nameEn;
+  g('depth').textContent = sp.depth;
+  g('size').textContent = sp.size;
+  g('facts').replaceChildren(...sp.facts.map((f) => el('li', f)));
+  g('src').replaceChildren(...sp.sources.map((s) => {
+    const li = el('li'); li.append(el('a', s.label, { href: s.url, target: '_blank', rel: 'noopener' })); return li;
+  }));
+  // Card picture: the same drawing as on stage, silhouette plus the lit detail.
+  const art = el('div', '', { class: `art-stack art-${sp.art}` });
+  document.querySelectorAll(`.stage > .creature.${sp.art} svg, .detail .creature.${sp.art} svg`)
+    .forEach((svg) => art.append(svg.cloneNode(true)));
+  g('art').replaceChildren(art);
+  guide.showModal();
+  g('name').focus();
+}
+guide.addEventListener('close', () => { opener?.focus({ preventScroll: true }); opener = null; });
+// Click on the dimmed backdrop closes the card.
+guide.addEventListener('click', (e) => { if (e.target === guide) guide.close(); });
+document.querySelectorAll('[data-spec]').forEach((b) =>
+  b.addEventListener('click', () => openGuide(b.dataset.spec, b)));
 
 // ---------- return to surface ----------
 document.querySelector('[data-return]').addEventListener('click', () => {

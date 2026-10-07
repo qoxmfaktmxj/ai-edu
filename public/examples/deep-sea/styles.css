@@ -67,12 +67,11 @@ a { color: var(--glow); }
 .depth-zone { display: block; margin-top: 2px; font-size: 0.8125rem; color: var(--text-soft); }
 
 /* ---------- stage (decorative) ---------- */
-.descent { position: relative; }
+.descent { position: relative; --w0: #39CED0; --w1: #0A6AA0; --w2: #07457A; }
 .stage {
   position: sticky; top: 0; z-index: 0;
   height: var(--vh); margin-bottom: calc(-1 * var(--vh));
   overflow: hidden; pointer-events: none;
-  --w0: #39CED0; --w1: #0A6AA0; --w2: #07457A;
 }
 .stage > * { position: absolute; }
 .water { inset: 0; background: linear-gradient(to bottom, var(--w0), var(--w1) 55%, var(--w2)); }
@@ -101,15 +100,24 @@ a { color: var(--glow); }
 
 .particles { inset: 0; width: 100%; height: 100%; }
 
-.creature { position: absolute; transform:translate(-50%, -50%) scale(var(--s, 1)); }
+/* Each creature reads its own --{k}x/y/s/o/p from scene.js: x, y (0..1 of the stage), scale, base opacity, presence. */
+.creature {
+  position: absolute; width: var(--cw);
+  left: calc(var(--cx, 0.5) * 100%); top: calc(var(--cy, 0.5) * 100%);
+  transform: translate(-50%, -50%) scale(var(--cs, 1));
+}
 .creature svg { display: block; width: 100%; height: auto; overflow: visible; }
-.fish { left: calc(var(--fx, 0.7) * 100%); top: calc(var(--fy, 0.6) * 100%); width: clamp(140px, 18vw, 280px); opacity: var(--fo, 0); }
-.jelly { left: calc(var(--jx, 0.62) * 100%); top: calc(var(--jy, 0.6) * 100%); width: var(--jw, 40vmin); --s: var(--js, 1); }
-.serpent { left: calc(var(--px, 0.7) * 100%); top: calc(var(--py, 0.55) * 100%); width: var(--pw, 120vmin); --s: var(--ps, 1); }
-.stage > .jelly { opacity: var(--jo, 0); }
-.stage > .serpent { opacity: var(--po, 0); }
-.detail .jelly { opacity: var(--jp, 0); }
-.detail .serpent { opacity: var(--pp, 0); }
+.stage > .creature { opacity: var(--co, 0); }
+.detail .creature { opacity: var(--cp, 0); }
+.sardine { --cx: var(--fx); --cy: var(--fy); --cs: var(--fs); --co: var(--fo); --cp: var(--fp); --cw: clamp(150px, 19vw, 300px); }
+.lantern { --cx: var(--nx); --cy: var(--ny); --cs: var(--ns); --co: var(--no); --cp: var(--np); --cw: clamp(180px, 24vw, 340px); }
+.jelly   { --cx: var(--jx); --cy: var(--jy); --cs: var(--js); --co: var(--jo); --cp: var(--jp); --cw: 40vmin; }
+.angler  { --cx: var(--ax); --cy: var(--ay); --cs: var(--as); --co: var(--ao); --cp: var(--ap); --cw: 26vmin; }
+.serpent { --cx: var(--px); --cy: var(--py); --cs: var(--ps); --co: var(--po); --cp: var(--pp); --cw: 120vmin; }
+.dumbo   { --cx: var(--ux); --cy: var(--uy); --cs: var(--us); --co: var(--uo); --cp: var(--up); --cw: 24vmin; }
+@media (max-width: 767px) {
+  .jelly { --cw: 62vw; } .angler { --cw: 42vw; } .serpent { --cw: 150vw; } .dumbo { --cw: 40vw; }
+}
 
 /* Lamp: artificial light. The mask touches only these stage layers, never the text above. */
 .detail, .lamp { inset: 0; opacity: 0; transition: opacity 280ms cubic-bezier(0.2, 0, 0, 1); }
@@ -126,7 +134,7 @@ a { color: var(--glow); }
 .no-mask .lamp { background: rgba(131, 231, 234, 0.06); }
 
 .narrow {
-  inset: 0; opacity: var(--no, 0);
+  inset: 0; opacity: var(--vig, 0);
   background: radial-gradient(ellipse 40% 36% at 55% 50%, transparent 35%, rgba(1, 3, 9, 0.92) 100%);
 }
 
@@ -170,6 +178,84 @@ a { color: var(--glow); }
 .info p, .info li { color: var(--text-soft); font-size: 0.9375rem; }
 .info p + p { margin-top: 10px; }
 .info ul { margin-top: 12px; padding-left: 1.2em; display: grid; gap: 6px; }
+
+/* ---------- field guide marks (fixed, above scene text) ---------- */
+.marks { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+.mark {
+  position: absolute; pointer-events: auto;
+  left: calc(var(--mx) * 100% + var(--ox, 0px)); top: calc(var(--my) * 100% + var(--oy, 0px));
+  transform: translate(-50%, -50%);
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 16px 0 12px; border-radius: 999px;
+  border: 1px solid rgba(131, 231, 234, 0.5); background: rgba(3, 8, 22, 0.66);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  color: var(--text); font: inherit; font-size: 0.875rem; font-weight: 600; white-space: nowrap; cursor: pointer;
+  transition: background-color 160ms, border-color 160ms;
+}
+.mark:hover { background: rgba(10, 40, 70, 0.85); border-color: var(--glow); }
+.mark[hidden] { display: none; }
+.mark-dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--glow); box-shadow: 0 0 0 3px rgba(131, 231, 234, 0.15); }
+.mark[data-k="f"] { --mx: var(--fx); --my: var(--fy); --oy: 9vmin; }
+.mark[data-k="n"] { --mx: var(--nx); --my: var(--ny); --oy: 12vmin; }
+.mark[data-k="j"] { --mx: var(--jx); --my: var(--jy); --oy: -30vmin; }
+.mark[data-k="a"] { --mx: var(--ax); --my: var(--ay); --oy: -15vmin; }
+.mark[data-k="p"] { --mx: var(--px); --my: var(--py); --ox: -14vmin; --oy: -14vmin; }
+.mark[data-k="u"] { --mx: var(--ux); --my: var(--uy); --oy: -16vmin; }
+/* Phones: scene text spans the full width, so floating marks would cover it. The species buttons in each scene card do the same job. */
+@media (max-width: 767px) { .marks { display: none; } }
+
+/* ---------- species chips in scene text ---------- */
+.spec-list { margin-top: 24px; text-shadow: none; }
+.spec-head { font-size: 0.8125rem; font-weight: 600; color: var(--text-soft); }
+.spec-chips { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; }
+.spec-chip {
+  min-height: 44px; padding: 0 16px; border-radius: 999px;
+  border: 1px solid rgba(131, 231, 234, 0.5); background: rgba(3, 8, 22, 0.5);
+  color: var(--text); font-weight: 600; font-size: 0.9375rem; cursor: pointer;
+}
+.spec-chip:hover { background: rgba(131, 231, 234, 0.16); }
+html:not(.js) .spec-list, html:not(.js) .marks { display: none; }
+
+/* ---------- field guide card ---------- */
+html:has(dialog[open]) { overflow: hidden; }
+.guide {
+  width: min(560px, calc(100% - 32px)); max-height: min(88vh, 860px);
+  padding: 0; border: 1px solid rgba(131, 231, 234, 0.35); border-radius: 20px;
+  background: #06102A; color: var(--text); overflow: auto;
+}
+.guide::backdrop { background: rgba(1, 3, 9, 0.72); }
+.guide-art {
+  height: 210px; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(circle at 50% 55%, rgba(131, 231, 234, 0.14), transparent 65%), #030A1C;
+}
+.art-stack { position: relative; width: 62%; max-height: 180px; }
+.art-stack svg { display: block; width: 100%; height: auto; max-height: 180px; }
+.art-stack svg + svg { position: absolute; inset: 0; }
+.art-sardine, .art-lantern { width: 70%; }
+.art-serpent { width: 160%; transform: translateX(-12%); }
+.art-jelly { width: 34%; }
+.art-dumbo { width: 40%; }
+.guide-body { padding: 20px 24px 8px; }
+.guide-no { display: flex; gap: 10px; font-size: 0.8125rem; font-weight: 700; color: var(--glow); font-variant-numeric: tabular-nums; }
+.guide-no span + span { color: var(--text-soft); font-weight: 600; }
+.guide h2 { margin-top: 4px; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+.guide-sci { margin-top: 2px; color: var(--text-soft); font-size: 0.9375rem; }
+.guide-sci span { margin-left: 8px; }
+.guide-meta { margin: 18px 0 0; display: grid; gap: 8px; }
+.guide-meta div { padding: 10px 14px; border-radius: 12px; background: rgba(131, 231, 234, 0.07); }
+.guide-meta dt { font-size: 0.75rem; font-weight: 600; color: var(--glow); }
+.guide-meta dd { margin: 2px 0 0; font-size: 0.9375rem; }
+.guide-facts { margin-top: 16px; padding-left: 1.1em; display: grid; gap: 6px; }
+.guide-note { margin-top: 16px; font-size: 0.8125rem; color: var(--text-soft); }
+.guide-src { margin-top: 6px; padding-left: 1.1em; font-size: 0.8125rem; display: grid; gap: 4px; }
+.guide form { position: sticky; bottom: 0; padding: 12px 24px 20px; background: linear-gradient(to bottom, rgba(6, 16, 42, 0), #06102A 40%); }
+.guide-close {
+  width: 100%; min-height: 48px; border: 0; border-radius: 999px;
+  background: var(--glow); color: var(--abyss); font-weight: 700; font-size: 1rem; cursor: pointer;
+}
+@media (max-width: 767px) {
+  .guide { width: 100%; max-width: 100%; margin: auto 0 0; border-radius: 20px 20px 0 0; max-height: 88vh; }
+}
 
 /* ---------- lamp button ---------- */
 .lamp-btn {

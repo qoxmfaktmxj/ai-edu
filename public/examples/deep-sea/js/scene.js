@@ -36,18 +36,28 @@ const PARTICLES = Array.from({ length: 40 }, () => {
   return { x: rand(), y: rand(), z, phase: rand() * 6.28 };
 });
 
-// Creature placement in stage fractions. Lamp targets use the same numbers, so light and body stay aligned on resize.
-export function jellyPose(d, compact) {
-  const t = smooth(1000, 2200, d);
-  return { x: compact ? 0.6 : 0.64, y: lerp(0.86, 0.34, t), scale: lerp(0.86, 1, t) };
-}
-export function serpentPose(d, compact) {
-  const t = smooth(2200, 3500, d);
-  return { x: compact ? 0.62 : 0.7, y: lerp(0.78, 0.46, t), scale: lerp(0.94, 1, t) };
-}
-// Where the lamp points when it is not following a mouse.
+// Creature placement in stage fractions, keyed by the CSS variable prefix each drawing reads.
+// Lamp targets and field-guide marks use the same numbers, so light, label and body stay aligned on resize.
+// d -> { x, y, scale, present (0..1), base (opacity of the unlit silhouette) }
+const CREATURES = {
+  // sardine school, 0 - 200m scene
+  f: (d, c, r) => ({ x: r ? 0.66 : lerp(0.82, 0.5, smooth(0, 300, d)), y: 0.62, scale: 1, present: band(10, 70, 170, 300, d), base: 0.6 }),
+  // lanternfish, 200 - 1,000m scene
+  n: (d, c) => { const t = smooth(200, 1000, d); return { x: lerp(c ? 0.7 : 0.76, c ? 0.62 : 0.6, t), y: lerp(0.86, 0.3, t), scale: 1, present: band(220, 380, 820, 1000, d), base: 0.95 }; },
+  // Atolla, 1,000 - 2,200m scene
+  j: (d, c) => { const t = smooth(1000, 2200, d); return { x: c ? 0.6 : 0.64, y: lerp(0.86, 0.34, t), scale: lerp(0.86, 1, t), present: band(850, 1250, 1950, 2250, d), base: 0.95 }; },
+  // anglerfish, late in the 1,000 - 2,200m scene
+  a: (d, c) => { const t = smooth(1550, 2300, d); return { x: c ? 0.32 : 0.42, y: lerp(0.92, 0.56, t), scale: 1, present: band(1550, 1800, 2150, 2350, d), base: 1 }; },
+  // gulper eel, 2,200 - 3,500m scene
+  p: (d, c) => { const t = smooth(2200, 3500, d); return { x: c ? 0.62 : 0.7, y: lerp(0.78, 0.46, t), scale: lerp(0.94, 1, t), present: band(2150, 2550, 3300, 3600, d), base: 0.85 }; },
+  // dumbo octopus, last observation point
+  u: (d, c) => { const t = smooth(3400, 3950, d); return { x: c ? 0.56 : 0.58, y: lerp(0.86, 0.52, t), scale: 1, present: smooth(3400, 3750, d), base: 0.9 }; },
+};
+
+// Where the lamp points when it is not following a mouse: the subject of the current part of the descent.
 export function lampTarget(d, compact) {
-  return d < 2250 ? jellyPose(d, compact) : serpentPose(d, compact);
+  const k = d < 1950 ? 'j' : d < 2250 ? 'a' : d < 3450 ? 'p' : 'u';
+  return CREATURES[k](d, compact, false);
 }
 
 export function initDeepSea(stage) {
@@ -97,17 +107,19 @@ export function initDeepSea(stage) {
 
   resize();
   stageEl = stage;
+  rootEl = stage.parentElement; // variables live on <main> so the field-guide marks can read them too
   api = { resize, drawParticles, lampRadius };
   return api;
 }
 
 let stageEl = null;
+let rootEl = null;
 let api = null;
 
 export function renderDeepSea(s) {
   const stage = stageEl;
   const d = clamp(s.depth, 0, MAX_DEPTH);
-  const set = (k, v) => stage.style.setProperty(k, v);
+  const set = (k, v) => rootEl.style.setProperty(k, v);
 
   const [w0, w1, w2] = waterAt(d);
   set('--w0', w0); set('--w1', w1); set('--w2', w2);
@@ -120,27 +132,18 @@ export function renderDeepSea(s) {
   set('--ro', (lerp(1, 0.55, smooth(0, 200, d)) * (1 - smooth(450, 1000, d))).toFixed(3));
   set('--rs', lerp(1, 0.45, smooth(150, 1000, d)).toFixed(3));
 
-  // A distant school of fish in the bright layer, low contrast.
-  set('--fo', (band(10, 70, 160, 300, d) * 0.6).toFixed(3));
-  set('--fx', (s.reduced ? 0.66 : lerp(0.82, 0.5, smooth(0, 300, d))).toFixed(3));
-  set('--fy', '0.62');
-
-  // Scene 3 subject: translucent bell form.
-  const j = jellyPose(d, s.compact);
-  const jPresent = band(850, 1250, 2050, 2350, d);
-  set('--jx', j.x.toFixed(3)); set('--jy', j.y.toFixed(3)); set('--js', (s.reduced ? 1 : j.scale).toFixed(3));
-  set('--jw', s.compact ? '62vw' : '40vmin');
-  set('--jo', (jPresent * 0.9).toFixed(3)); set('--jp', jPresent.toFixed(3));
-
-  // Scene 4 subject: long body, only partly in frame. Base is barely visible without the lamp.
-  const p = serpentPose(d, s.compact);
-  const pPresent = band(2150, 2550, 3450, 3750, d);
-  set('--px', p.x.toFixed(3)); set('--py', p.y.toFixed(3)); set('--ps', (s.reduced ? 1 : p.scale).toFixed(3));
-  set('--pw', s.compact ? '150vw' : '120vmin');
-  set('--po', (pPresent * 0.85).toFixed(3)); set('--pp', pPresent.toFixed(3));
+  // Creatures. Returns how present each one is, for the field-guide marks.
+  const present = {};
+  for (const [k, pose] of Object.entries(CREATURES)) {
+    const c = pose(d, s.compact, s.reduced);
+    present[k] = c.present;
+    set(`--${k}x`, c.x.toFixed(3)); set(`--${k}y`, c.y.toFixed(3));
+    set(`--${k}s`, (s.reduced ? 1 : c.scale).toFixed(3));
+    set(`--${k}o`, (c.present * c.base).toFixed(3)); set(`--${k}p`, c.present.toFixed(3));
+  }
 
   // Scene 5: a narrow observation window.
-  set('--no', smooth(3350, 3950, d).toFixed(3));
+  set('--vig', smooth(3350, 3950, d).toFixed(3));
 
   // Lamp.
   const lampOn = s.lampOn && d >= 900;
@@ -150,4 +153,5 @@ export function renderDeepSea(s) {
   set('--lr', `${Math.round(api.lampRadius(s))}px`);
 
   api.drawParticles({ ...s, depth: d });
+  return present;
 }
