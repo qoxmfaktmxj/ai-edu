@@ -56,15 +56,6 @@
 | 필요 | `09-devtools-device-toolbar.png` | F12를 눌러 연 개발자 도구에서 왼쪽 위의 휴대폰 모양 기기 아이콘과, 사이트 화면 위쪽의 Dimensions 목록 위치를 표시한 그림입니다. 이 목록에서 기기를 고르면 휴대폰 폭으로 바뀝니다. |
 | 필요 | `09-impeccable-critique.png` | /impeccable critique를 실행한 뒤의 대화창입니다. "잘 된 점" 아래에 P0부터 P3 등급이 붙은 문제 목록이 나오고, 마지막에 어느 부분을 먼저 고칠지 묻는 질문이 보입니다. 이 목록에서 하나만 고르면 됩니다. |
 | 필요 | `09-vercel-deployments-ready.png` | Vercel의 Deployments 목록입니다. 가장 위에 방금 올린 변경으로 만든 새 배포가 있고, 상태가 Ready로 바뀌었으면 배포가 끝난 것입니다. 옆에 Production 표시가 있는지 확인하세요. |
-| 필요 | `09-qr-code-made.png` | Claude가 만들어 준 qr.png를 열어 본 모습입니다. 흰 배경에 검은 무늬가 크게 보이면 됩니다. 발표 화면에 띄우거나 인쇄해서 쓰세요. |
-| 필요 | `10-powershell-claude-version.png` | 그림 설명: 새로 연 PowerShell 창입니다. 줄 맨 앞이 PS C:\Users\...>로 시작하고, claude --version을 입력하면 아래 줄에 버전 번호와 "(Claude Code)"가 나오면 성공입니다. |
-| 필요 | `10-gh-auth-status.png` | 그림 설명: gh auth status를 입력한 터미널입니다. Logged in to github.com account 뒤에 내 사용자 이름이 보이고, Active account 표시가 있으면 로그인이 된 것입니다. |
-| 필요 | `10-vercel-build-settings.png` | 그림 설명: Settings 왼쪽 메뉴의 Build and Deployment 화면입니다. Framework Preset에 Other가 보이고, Build Command의 Override 스위치가 켜져 있으며 입력 칸이 비어 있어야 합니다. 맨 아래 Save 버튼을 눌러야 저장됩니다. |
-| 필요 | `10-vercel-deployments-status.png` | 그림 설명: 프로젝트의 Deployments 목록입니다. 맨 위 줄이 가장 최근 배포이고, 상태(Ready 또는 Error 또는 Building)와 환경(Production 또는 Preview), 방금 한 커밋 메시지가 함께 보입니다. 오른쪽 점 세 개 메뉴에 Redeploy가 있습니다. |
-| 필요 | `10-browser-console-404.png` | 그림 설명: 배포된 사이트에서 F12를 눌렀을 때 아래쪽에 열리는 개발자 도구입니다. Console 탭에 빨간 줄로 404 오류가 나오고, 그 줄에 안 보이는 이미지의 파일 이름이 적혀 있습니다. |
-| 필요 | `10-vercel-deployment-protection.png` | 그림 설명: Settings 왼쪽 메뉴의 Deployment Protection 화면입니다. Vercel Authentication 스위치가 있고, 보호할 범위(Standard Protection 또는 All Deployments)를 고른 뒤 Save를 누릅니다. |
-| 필요 | `10-claude-rewind-menu.png` | 그림 설명: Esc를 두 번 눌렀을 때 나오는 되돌리기 메뉴입니다. 내가 보낸 메시지 목록에서 돌아갈 지점을 고르면 "Restore code and conversation", "Restore code" 같은 선택지가 나옵니다. |
-| 필요 | `10-claude-skills-list.png` | 그림 설명: 대화 입력창에 /만 입력하면 사용 가능한 명령과 스킬이 목록으로 나타납니다. 새로 설치한 스킬 이름(예: hyperframes:hyperframes)이 보이면 성공입니다. |
 | 필요 | `11-code-tab-folder.png` | 그림 설명: Code 탭의 시작 화면입니다. 환경은 Local로 두고, Select folder 버튼으로 새로 만든 빈 연습 폴더를 고릅니다. 폴더 이름이 화면에 표시되면 준비가 끝난 것입니다. 입력창 옆에 권한 모드를 고르는 메뉴도 보입니다. |
 | 필요 | `11-dashboard-result.png` | 그림 설명: 가짜 데이터로 만든 대시보드의 완성 모습입니다. 맨 위에 큰 숫자 카드 3개, 가운데에 월별 막대그래프, 맨 아래에 표가 보이면 성공입니다. |
 | 필요 | `11-dry-run-list.png` | 그림 설명: 스크립트를 처음 실행한 화면입니다. "이렇게 바꿀 예정입니다"라는 목록만 줄줄이 나오고, 폴더의 실제 파일은 그대로입니다. 이 목록을 눈으로 확인한 뒤에만 확인용 옵션을 붙여 다시 실행합니다. |

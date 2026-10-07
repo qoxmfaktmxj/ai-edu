@@ -177,7 +177,7 @@
     </li>
     <li class="step">
       <h4>ai-site 옆의 Import 누르기</h4>
-      <p>설치가 끝나면 Vercel Import 화면으로 돌아오고, 저장소 목록에 <code>ai-site</code>가 한 줄로 나타납니다. 그 줄 오른쪽 끝에 있는 <strong>Import</strong> 버튼을 누릅니다. 목록에 없으면 페이지를 새로고침해 보세요. 그래도 없으면 아래 "막혔을 때"를 확인하세요.</p>
+      <p>설치가 끝나면 Vercel Import 화면으로 돌아오고, 저장소 목록에 <code>ai-site</code>가 한 줄로 나타납니다. 그 줄 오른쪽 끝에 있는 <strong>Import</strong> 버튼을 누릅니다. 목록에 없으면 페이지를 새로고침해 보세요. 그래도 없으면 이 장 끝의 "막히면 Claude에게 그대로 전달하세요"를 따라 하세요.</p>
       <figure class="shot" data-shot="04-vercel-import">
         <img src="/assets/shots/04-vercel-import.png" alt="Vercel에서 GitHub 저장소 목록 중 ai-site를 Import 하는 화면" loading="lazy">
         <figcaption>그림 설명: "Import Git Repository" 목록에서 ai-site 줄 오른쪽의 Import 버튼을 누르는 위치를 표시하세요.</figcaption>
@@ -384,82 +384,39 @@ main 브랜치에는 합치지 말고, 올린 뒤 브랜치 이름을 알려줘.
     </li>
   </ol>
 
-  <h3>막혔을 때</h3>
-  <div class="faq">
-    <details class="detail">
-      <summary>Import 목록에 ai-site가 안 보입니다</summary>
-      <div class="detail-body">
-        <p>가장 흔한 원인은 Vercel GitHub App 설정에서 이 저장소를 허용 목록에 넣지 않은 경우입니다(Only select repositories를 골랐을 때). GitHub에서 프로필 그림 &gt; Settings &gt; Applications를 열어 Vercel의 Configure를 누르고, Repository access에서 <code>ai-site</code>를 추가한 뒤 Save 하세요. 그다음 Vercel Import 화면을 새로고침합니다. Vercel 공식 문서에 따르면 개인 계정의 저장소는 그 저장소의 Owner(소유자)여야 가져올 수 있습니다. 또 Hobby 플랜은 GitHub 조직(회사 등) 소유의 비공개 저장소를 배포할 수 없고, 개인 계정의 비공개 저장소는 가능합니다.</p>
-      </div>
-    </details>
-    <details class="detail">
-      <summary>Deploy가 빨간색 Error로 끝났습니다</summary>
-      <div class="detail-body">
-        <p>Deployments 탭에서 Error가 붙은 줄을 누르면 상세 화면이 열리고, <strong>Build Logs</strong>(빌드 로그)에 빨간 글씨로 이유가 적혀 있습니다. 로그를 드래그해 복사한 뒤 Claude에게 아래처럼 부탁하세요. 로그에 비밀번호나 키 같은 값이 섞여 있지 않은지 먼저 눈으로 확인하고 붙여넣습니다.</p>
-        <figure class="prompt" data-title="배포 오류 원인 풀이 부탁">
-          <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-          <pre>Vercel 배포가 Error로 끝났어. 아래 빌드 로그를 읽고 원인을 쉬운 말로 설명해줘. 그리고 ai-site 폴더에서 고칠 수 있는 것이면 고쳐서 GitHub 에 다시 올려줘.
+  <h3>막히면 Claude에게 그대로 전달하세요</h3>
+  <p>이 장에서 오류가 나거나 화면이 안내와 다르면, 직접 원인을 찾지 말고 <strong>나온 문구를 그대로 Claude에게 전달</strong>하세요. 앱도 Git도 이미 설치했으므로 Code 탭의 <code>ai-site</code> 폴더에서 물어보면 Claude가 파일, GitHub 반영 상태, 배포 주소를 직접 확인하고 원인을 찾아 줍니다. Vercel 화면의 오류(빨간 Error, Build Logs)는 문구를 복사하거나 화면을 캡처해서 붙이세요. 로그에 비밀번호나 키 같은 값이 섞여 있지 않은지 먼저 눈으로 확인하고 붙여넣습니다.</p>
 
-[여기에 빌드 로그를 붙여넣기]</pre>
-        </figure>
-      </div>
-    </details>
-    <details class="detail">
-      <summary>주소를 열었더니 404 (NOT_FOUND)가 뜹니다</summary>
-      <div class="detail-body">
-        <p>Vercel이 시작 페이지(<code>index.html</code>)를 못 찾은 것입니다. GitHub 저장소 화면에서 <code>index.html</code>이 파일 목록 맨 위(폴더 안이 아니라 바로 보이는 위치)에 있는지 확인하세요. 폴더 안에 들어 있다면 Claude에게 "index.html을 저장소 맨 위로 옮기고 올려줘"라고 부탁하거나, 프로젝트 Settings &gt; General의 Root Directory를 그 폴더로 지정합니다. 파일 이름의 대문자, 소문자도 확인하세요(<code>Index.html</code>이 아니라 <code>index.html</code>).</p>
-      </div>
-    </details>
-    <details class="detail">
-      <summary>내 주소를 열었더니 Vercel 로그인 화면이 나옵니다</summary>
-      <div class="detail-body">
-        <p>열려는 주소가 미리보기 주소이거나 배포마다 붙는 긴 주소일 가능성이 큽니다. Domains 항목에 적힌 짧은 주소(<code>https://[프로젝트이름].vercel.app</code>)를 쓰세요. 그 주소에서도 로그인 화면이 나온다면 Settings &gt; Deployment Protection에서 보호 범위가 "모든 배포(All Deployments)"로 되어 있는지 확인합니다. 공식 문서는 Standard Protection이 Production 도메인을 제외한 주소를 보호하고, All Deployments는 Production 도메인까지 보호한다고 설명합니다.</p>
-      </div>
-    </details>
-    <details class="detail">
-      <summary>고쳐서 올렸는데 사이트가 그대로입니다</summary>
-      <div class="detail-body">
-        <p>아래를 순서대로 확인하세요.</p>
-        <ol>
-          <li>GitHub 저장소 화면을 새로고침해서 방금 올린 내용이 정말 올라갔는지 봅니다.</li>
-          <li>올린 브랜치가 <code>main</code>인지 봅니다. 다른 브랜치에 올렸다면 미리보기만 생기고 진짜 주소는 바뀌지 않습니다.</li>
-          <li>Vercel Deployments 탭에서 맨 위 줄 상태가 Ready인지 봅니다. Building이면 기다리고, Error면 위 항목대로 로그를 확인합니다.</li>
-          <li>사이트 탭에서 Ctrl+F5, 또는 시크릿 창에서 주소를 열어 봅니다.</li>
-        </ol>
-        <p>그래도 새 줄이 생기지 않으면 프로젝트 Settings &gt; Git에서 연결된 저장소와 Production Branch가 <code>main</code>인지 확인하세요. 공식 문서 기준 Hobby 플랜은 하루 배포 횟수에 한도(100회)가 있으니, 하루에 매우 많이 올렸다면 시간이 지난 뒤 다시 시도합니다.</p>
-      </div>
-    </details>
-    <details class="detail">
-      <summary>가입 때 쓴 GitHub 계정이 아닌 다른 계정으로 바꾸고 싶습니다</summary>
-      <div class="detail-body">
-        <p>GitHub에서 현재 계정을 로그아웃한 뒤 Vercel 가입을 다시 시작하세요. Hobby 계정은 서비스마다 로그인 연결을 하나씩만 가질 수 있어서(예: GitHub 계정 하나), 여러 GitHub 계정을 쓰려면 Vercel Hobby 계정을 따로 만들어야 합니다.</p>
-      </div>
-    </details>
-    <details class="detail">
-      <summary>회사 일에도 이 방법을 써도 되나요?</summary>
-      <div class="detail-body">
-        <p>회사 업무용, 영업용, 광고가 붙은 사이트는 Hobby 플랜(개인, 비영리 전용) 범위를 벗어날 수 있습니다. 또 회사 자료를 외부 서비스에 올리려면 사내 정보보안 정책과 승인 절차가 먼저입니다. 이 교육은 연습용 사이트를 대상으로 합니다. 업무 활용은 10장(업무로 가져가기)을 참고하세요.</p>
-      </div>
-    </details>
-  </div>
+  <figure class="prompt" data-title="막혔을 때 원인 찾기 (3장)">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>[몇 번째 단계, 예: Import 목록에 ai-site가 안 보임 / Deploy가 Error / 주소가 404 / 고쳤는데 사이트가 그대로]에서 막혔어요.
+나온 오류 문구나 화면은 아래와 같아요.
+[오류 문구나 Build Logs를 그대로 붙여넣기]
+ai-site 폴더의 index.html 위치와 GitHub main 브랜치 반영 상태를 먼저 확인해서 원인을 쉬운 말로 설명해줘. 해결 방법은 한 단계씩 알려주고, 파일을 바꾸거나 GitHub에 올리는 작업은 하기 전에 무엇을 할지 먼저 알려줘.</pre>
+  </figure>
 
-  <h3>이 장 끝 체크리스트</h3>
-  <ul class="checklist">
-    <li><label><input type="checkbox" id="chk-vercel-1"><span>Claude가 만든 index.html이 GitHub 저장소에 올라가 있습니다</span></label></li>
-    <li><label><input type="checkbox" id="chk-vercel-2"><span>Hobby 플랜(개인, 비영리, 무료)으로 Vercel에 가입했고 사용 조건을 이해했습니다</span></label></li>
-    <li><label><input type="checkbox" id="chk-vercel-3"><span>Vercel GitHub App을 설치하고 접근 범위(Only select repositories 권장)를 정했습니다</span></label></li>
-    <li><label><input type="checkbox" id="chk-vercel-4"><span>Import, Configure Project, Deploy를 거쳐 축하 화면을 봤습니다</span></label></li>
-    <li><label><input type="checkbox" id="chk-vercel-5"><span>Domains의 https://[프로젝트이름].vercel.app 을 눌러 내 사이트가 뜨는 것을 확인했습니다</span></label></li>
-    <li><label><input type="checkbox" id="chk-vercel-6"><span>휴대폰에서도 내 주소를 열어 봤습니다</span></label></li>
-    <li><label><input type="checkbox" id="chk-vercel-7"><span>Claude에게 제목을 바꿔 올리게 하고, Deployments의 Building에서 Ready까지 보고, 새로고침해서 바뀐 제목을 확인했습니다</span></label></li>
+  <ul>
+    <li>Vercel 화면 설정(GitHub App의 저장소 접근 범위, Deployment Protection, 프로젝트 Settings)이 원인이면 Claude가 안내하는 위치를 보고 내가 직접 바꿉니다. Hobby 플랜은 GitHub 조직(회사 등) 소유의 비공개 저장소를 배포할 수 없고 개인 계정 저장소만 가능합니다. 계정, 플랜, 회사 보안 정책 문제는 Claude가 풀 수 없으니 계정 설정이나 해당 담당자에게 문의하세요.</li>
+    <li>회사 업무용, 영업용, 광고가 붙은 사이트는 Hobby 범위를 벗어날 수 있고, 회사 자료를 외부 서비스에 올리려면 사내 정보보안 정책과 승인 절차가 먼저입니다. 업무 활용은 9장(업무로 가져가기)을 참고하세요.</li>
+    <li>창을 열어 둔 채 설치나 로그인을 했는데 안 된다면 창을 닫고 새로 열거나 앱을 다시 켜 보세요. 가입 때 쓴 GitHub 계정을 바꾸려면 GitHub에서 로그아웃한 뒤 Vercel 가입을 다시 시작합니다.</li>
   </ul>
+
+  <h3>이 장을 마치며: Claude에게 확인받기</h3>
+  <p>이 장의 결과물이 제대로 되어 있는지는 Claude가 확인합니다. 아래 부탁을 <code>ai-site</code> 폴더의 Code 탭에 붙여넣고, 내 Vercel 사이트 주소를 알려 주세요. 결과가 모두 O로 나오면 이 장은 완료입니다.</p>
+
+  <figure class="prompt" data-title="3장 완료 확인">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>내 Vercel 사이트 주소는 [https://프로젝트이름.vercel.app] 이야. 3장 결과물을 확인해줘. 파일은 아무것도 바꾸거나 올리지 말고 확인만 해줘.
+1. ai-site 폴더에 index.html 이 있는지
+2. index.html 이 GitHub 저장소 ai-site 의 main 브랜치에 올라가 있고, 로컬과 같은 내용인지 (git status, git ls-remote origin 등)
+3. 내가 알려준 Vercel 주소가 열리는지 (curl 로 응답 코드 200 과 내용 확인)
+4. 저장소가 Vercel 프로젝트에 연결되어 main 에 올리면 자동으로 재배포되는 구조인지 (확인할 수 있는 범위에서, 어려우면 내가 Vercel 화면에서 볼 위치를 알려줘)
+각 항목을 O 또는 X로 표로 정리해줘. X가 있으면 원인과 해결 방법을 알려주고, 모두 O이면 "완료"라고 답해줘.</pre>
+  </figure>
 
   <div class="callout check">
     <i class="ph ph-check-circle"></i>
     <strong>여기까지 왔다면 내 주소가 생긴 것입니다</strong>
-    <div>
-      <p>이제 나만의 사이트 주소 <code>https://[프로젝트이름].vercel.app</code>이 있고, 파일을 고쳐 GitHub에 올리면 이 주소의 내용이 저절로 새로워집니다. 앞으로 만드는 모든 사이트가 같은 흐름으로 배포됩니다.</p>
-      <p>다음 장에서는 Claude에게 디자인과 모션 실력을 더해 주는 스킬을 설치합니다.</p>
-    </div>
+    <div><p>Claude가 "완료"라고 답했다면 이 장은 끝입니다. 이제 나만의 사이트 주소 <code>https://[프로젝트이름].vercel.app</code>이 있고, 파일을 고쳐 GitHub에 올리면 이 주소의 내용이 저절로 새로워집니다. 다음 장에서는 Claude에게 디자인과 모션 실력을 더해 주는 스킬을 설치합니다.</p></div>
   </div>
 </section>
