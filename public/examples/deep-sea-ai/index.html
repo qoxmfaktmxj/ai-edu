@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빛을 만드는 바다. | LUMEN</title>
+<meta name="description" content="수면에서 4,000m까지 내려가며 빛을 만드는 바다 생물 여섯을 만나는 심해 탐험. 오프닝 영상처럼 시작해 깊이마다 직접 해 보는 연출이 있습니다.">
+<meta name="theme-color" content="#02060F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2302060F'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%2383E7EA'/%3E%3C/svg%3E">
+<link rel="preload" href="./assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./styles.css">
+<script>document.documentElement.classList.add('js')</script>
+<script type="module" src="./js/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#s1">탐험 시작으로 건너뛰기</a>
+
+<div class="hud">
+  <p class="brand">LUMEN</p>
+  <p class="depth-readout"><span class="sr-only">현재 가상 수심</span><span class="depth-num" data-depth>0</span><span class="depth-unit">m</span><span class="depth-zone" data-zone>수면</span></p>
+</div>
+
+<!-- Marine snow. Sinks slowly on its own and slides up as we descend. -->
+<canvas class="snow" data-snow aria-hidden="true"></canvas>
+
+<main>
+  <!-- Opening: plays once on load, about 12 seconds. Without JS or with reduced motion it rests on its last frame. -->
+  <section class="opening" id="top" aria-labelledby="title" tabindex="-1">
+    <div class="op-stage" aria-hidden="true">
+      <img class="op-surface" src="./assets/img/surface.webp" alt="" fetchpriority="high">
+      <div class="op-rays"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="op-shade"></div>
+      <figure class="op-glimpse" data-glimpse="dumbo"><img alt=""><figcaption></figcaption></figure>
+      <figure class="op-glimpse" data-glimpse="gulper"><img alt=""><figcaption></figcaption></figure>
+      <figure class="op-glimpse" data-glimpse="anglerfish"><img alt=""><figcaption></figcaption></figure>
+      <figure class="op-glimpse" data-glimpse="atolla"><img alt=""><figcaption></figcaption></figure>
+      <figure class="op-glimpse" data-glimpse="lanternfish"><img alt=""><figcaption></figcaption></figure>
+      <div class="op-bubbles"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="op-copy">
+      <h1 id="title"><span class="t1">빛을 만드는</span> <span class="t2">바다.</span></h1>
+      <p class="op-lead">수면에서 4,000m까지, 여섯 생명을 만나러 내려갑니다.</p>
+      <div class="op-actions">
+        <a class="btn" href="#s1">내려가기 <span aria-hidden="true">↓</span></a>
+        <button type="button" class="btn-line" data-replay>오프닝 다시 보기</button>
+      </div>
+    </div>
+    <button type="button" class="op-skip" data-skip hidden>건너뛰기</button>
+  </section>
+
+  <!-- 1. Sunlit zone -->
+  <section class="scene" id="s1" data-scene="s1" aria-labelledby="s1-t">
+    <div class="sticky" data-ripple-area>
+      <div class="bg"><img data-asset="s1" alt=""></div>
+      <div class="ripples" data-ripples aria-hidden="true"></div>
+      <div class="copy">
+        <p class="range">햇빛층, 0 - 200m</p>
+        <h2 id="s1-t">빛이 가득한 바다</h2>
+        <p>햇빛이 충분히 닿는 층입니다. 플랑크톤을 먹는 정어리가 수면 가까이에서 크고 촘촘한 무리를 지어 삽니다.</p>
+        <div class="actions">
+          <button type="button" class="act" data-ripple-btn>물결 일으키기</button>
+          <button type="button" class="guide-btn" data-spec="sardine">정어리 도감</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Twilight zone: day / night migration -->
+  <section class="scene" id="s2" data-scene="s2" data-time="day" aria-labelledby="s2-t">
+    <div class="sticky">
+      <div class="bg bg-twilight"><img data-asset="s2" alt="" hidden></div>
+      <div class="creature lantern"><div class="idle"><img data-asset="lanternfish" alt=""></div></div>
+      <div class="copy">
+        <p class="range">박명층, 200 - 1,000m</p>
+        <h2 id="s2-t">밤마다 올라오는 물고기</h2>
+        <p>샛비늘치는 낮에는 400 - 1,000m 깊이에 머물다가 먹이가 많은 위쪽 200m까지 올라옵니다. 몸 옆에는 빛을 내는 기관이 줄지어 있습니다.</p>
+        <div class="actions" role="group" aria-label="시간 바꾸기">
+          <button type="button" class="act" data-time-btn="day" aria-pressed="true">낮</button>
+          <button type="button" class="act" data-time-btn="night" aria-pressed="false">밤</button>
+          <button type="button" class="guide-btn" data-spec="lanternfish">샛비늘치 도감</button>
+        </div>
+        <p class="status" data-time-status aria-live="polite">낮: 깊은 곳에 머무는 시간</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Atolla: tap for the "burglar alarm" light -->
+  <section class="scene" id="s3" data-scene="s3" aria-labelledby="s3-t">
+    <div class="sticky">
+      <div class="bg bg-dark"></div>
+      <div class="creature atolla">
+        <div class="idle"><button type="button" class="touch" data-alarm-btn aria-label="아톨라해파리 건드려 보기"><img data-asset="atolla" alt=""></button></div>
+        <span class="alarm" data-alarm aria-hidden="true"></span>
+      </div>
+      <div class="copy">
+        <p class="range">빛이 닿지 않는 바다, 1,000 - 1,600m</p>
+        <h2 id="s3-t">경보를 울리는 해파리</h2>
+        <p>아톨라해파리는 위협을 받으면 파란 빛이 몸 둘레를 바퀴처럼 돌게 합니다. 더 큰 포식자를 불러들이는 도둑 경보기에 비유됩니다.</p>
+        <div class="actions">
+          <button type="button" class="act" data-alarm-btn>건드려 보기</button>
+          <button type="button" class="guide-btn" data-spec="atolla">아톨라해파리 도감</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Anglerfish: only the lure is visible until the lamp is on -->
+  <section class="scene" id="s4" data-scene="s4" data-lamp="off" aria-labelledby="s4-t">
+    <div class="sticky" data-lamp-area>
+      <div class="bg bg-dark"></div>
+      <div class="creature angler" data-angler>
+        <div class="idle"><img data-asset="anglerfish" alt=""><span class="lure" data-lure aria-hidden="true"></span></div>
+      </div>
+      <div class="dark" aria-hidden="true"></div>
+      <div class="lure-top" data-lure-top aria-hidden="true"></div>
+      <div class="copy">
+        <p class="range">빛이 닿지 않는 바다, 1,600 - 2,200m</p>
+        <h2 id="s4-t">어둠 속의 작은 등불</h2>
+        <p>초롱아귀류는 등지느러미가 변한 낚싯대 끝에 미끼를 달고 있습니다. 미끼 속 발광세균이 빛을 내 먹이를 끌어들입니다.</p>
+        <div class="actions">
+          <button type="button" class="act" data-lamp-btn aria-pressed="false">관측등 켜기</button>
+          <button type="button" class="guide-btn" data-spec="anglerfish">초롱아귀류 도감</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Pelican eel: passes across the screen with scroll -->
+  <section class="scene scene-long" id="s5" data-scene="s5" aria-labelledby="s5-t">
+    <div class="sticky">
+      <div class="bg bg-dark"></div>
+      <div class="creature gulper"><div class="idle"><img data-asset="gulper" alt=""><span class="tail" data-tail aria-hidden="true"></span></div></div>
+      <div class="copy">
+        <p class="range">빛이 닿지 않는 바다, 2,200 - 3,000m</p>
+        <h2 id="s5-t">몸보다 큰 입</h2>
+        <p>펠리칸장어는 몸에 비해 아주 큰 턱을 가진 심해 장어입니다. 꼬리 끝에는 빛을 내는 기관이 있습니다.</p>
+        <p class="hint">천천히 스크롤하면 긴 몸이 앞을 지나갑니다.</p>
+        <div class="actions"><button type="button" class="guide-btn" data-spec="gulper">펠리칸장어 도감</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Dumbo octopus and the end -->
+  <section class="scene scene-end" id="s6" data-scene="s6" aria-labelledby="s6-t">
+    <div class="sticky">
+      <div class="bg bg-abyss"></div>
+      <div class="creature dumbo"><div class="idle"><img data-asset="dumbo" alt=""></div></div>
+      <div class="narrow" aria-hidden="true"></div>
+      <div class="copy">
+        <p class="range">마지막 관측 지점, 3,000 - 4,000m</p>
+        <h2 id="s6-t">귀를 펄럭이는 문어</h2>
+        <p>덤보문어는 머리 옆의 귀 같은 지느러미로 헤엄칩니다. 가장 깊은 곳에 사는 문어류 중 하나입니다.</p>
+        <div class="actions"><button type="button" class="guide-btn" data-spec="dumbo">덤보문어 도감</button></div>
+      </div>
+    </div>
+    <div class="end">
+      <h2>4,000m. 이번 탐험은 여기까지입니다.</h2>
+      <p>내려오는 동안 만난 생물입니다. 눌러서 도감을 열어 보세요.</p>
+      <ul class="dex" data-dex></ul>
+      <button type="button" class="btn" data-return>수면으로 돌아가기 <span aria-hidden="true">↑</span></button>
+      <details class="info">
+        <summary>이 탐험에 대하여, 자료 출처</summary>
+        <p>수심에 따른 빛의 변화와 실제 심해 생물을 참고한 가상 탐험입니다. 화면 속 수심, 생물의 위치와 크기, 움직임은 연출입니다. 실제로 알려진 서식 깊이와 특징은 도감 카드와 출처를 보세요.</p>
+        <p>떠다니는 작은 입자는 해양설(위에서 천천히 가라앉는 유기물 등의 입자)입니다.</p>
+        <p class="version" data-version></p>
+        <h3>이미지</h3>
+        <ul data-credits><li>이미지 출처는 JavaScript를 켜면 보입니다.</li></ul>
+        <h3>정보</h3>
+        <ul>
+          <li><a href="https://oceanservice.noaa.gov/facts/light_travel.html">NOAA, How far does light travel in the ocean?</a></li>
+          <li><a href="https://oceanservice.noaa.gov/facts/biolum.html">NOAA, What is bioluminescence?</a></li>
+          <li><a href="https://oceanservice.noaa.gov/facts/marinesnow.html">NOAA, What is marine snow?</a></li>
+          <li>생물별 출처는 각 도감 카드에 있습니다.</li>
+          <li>글꼴: <a href="https://github.com/orioncactus/pretendard">Pretendard</a>, 길형진, <a href="https://openfontlicense.org/">SIL Open Font License 1.1</a>. 이 페이지에 쓰인 글자만 남겨 줄였습니다.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+</main>
+
+<dialog class="guide" data-guide aria-labelledby="guide-name">
+  <div class="guide-art" data-guide-art aria-hidden="true"></div>
+  <div class="guide-body">
+    <p class="guide-no"><span data-guide-no></span><span data-guide-group></span></p>
+    <h2 id="guide-name" data-guide-name tabindex="-1"></h2>
+    <p class="guide-sci"><i lang="la" data-guide-sci></i><span data-guide-en></span></p>
+    <dl class="guide-meta">
+      <div><dt>알려진 서식 깊이</dt><dd data-guide-depth></dd></div>
+      <div><dt>크기</dt><dd data-guide-size></dd></div>
+    </dl>
+    <ul class="guide-facts" data-guide-facts></ul>
+    <p class="guide-note">화면 속 수심과 크기는 연출입니다. 위 정보는 아래 출처를 기준으로 했습니다.</p>
+    <ul class="guide-src" data-guide-src></ul>
+  </div>
+  <form method="dialog"><button class="guide-close">닫기</button></form>
+</dialog>
+</body>
+</html>
