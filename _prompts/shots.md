@@ -60,3 +60,9 @@
 | 필요 | `11-code-tab-folder.png` | 그림 설명: Code 탭의 시작 화면입니다. 환경은 Local로 두고, Select folder 버튼으로 새로 만든 빈 연습 폴더를 고릅니다. 폴더 이름이 화면에 표시되면 준비가 끝난 것입니다. 입력창 옆에 권한 모드를 고르는 메뉴도 보입니다. |
 | 필요 | `11-dashboard-result.png` | 그림 설명: 가짜 데이터로 만든 대시보드의 완성 모습입니다. 맨 위에 큰 숫자 카드 3개, 가운데에 월별 막대그래프, 맨 아래에 표가 보이면 성공입니다. |
 | 필요 | `11-dry-run-list.png` | 그림 설명: 스크립트를 처음 실행한 화면입니다. "이렇게 바꿀 예정입니다"라는 목록만 줄줄이 나오고, 폴더의 실제 파일은 그대로입니다. 이 목록을 눈으로 확인한 뒤에만 확인용 옵션을 붙여 다시 실행합니다. |
+| 필요 | `c-copilot-model.png` | 그림 설명: Copilot 오른쪽 위 모델 이름을 누르면 모드(자동, 빠른 응답, 깊이 생각하기)와 Claude, GPT 모델 목록이 열립니다. |
+| 필요 | `c-copilot-download.png` | 그림 설명: Copilot 답변 안에 index.html 파일 링크가 보입니다. 이 링크를 누르면 파일이 내려받아집니다. |
+| 완료 | `c-vercel-drop.png` | 그림 설명: vercel.com/drop 화면입니다. 위쪽 가운데에 "Drop to Deploy", 화면 가운데에 "Drop It. It's Live." 제목과 "Drag and drop a file, a folder, or .zip to deploy." 안내가 보입니다. 이어지는 "Or choose a file or a folder." 안의 파란 file 글자를 누르면 파일을 직접 고를 수 있습니다. |
+| 필요 | `c-vercel-drop-deploy.png` | 그림 설명: 파일을 놓으면 나오는 화면입니다. 팀 선택, 프로젝트 이름 칸, Deploy 버튼 위치를 확인하세요. |
+| 필요 | `c-vercel-drop-done.png` | 그림 설명: 배포가 끝난 화면입니다. vercel.app으로 끝나는 내 주소가 보입니다. |
+| 필요 | `c-vercel-redeploy.png` | 그림 설명: 대시보드의 내 프로젝트 화면에 폴더를 끌어다 놓는 모습입니다. vercel.com/drop이 아니라 이 화면이라는 점이 중요합니다. |
