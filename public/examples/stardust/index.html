@@ -40,10 +40,10 @@ canvas{position:fixed;left:0;top:0;display:block}
 
 input,button{font:inherit;color:var(--ink)}
 .row{display:flex;gap:8px}
-input{flex:1;min-width:0;height:46px;padding:0 18px;font-size:16px;border-radius:23px;border:1px solid var(--line);
+input{flex:1;min-width:0;height:46px;padding:0 18px;font-size:16px;border-radius:12px;border:1px solid var(--line);
   background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-user-select:text;user-select:text}
 input::placeholder{color:rgba(190,205,240,.5)}
-button{min-height:44px;padding:0 16px;border-radius:23px;border:1px solid var(--line);background:var(--glass);
+button{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--glass);
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;font-size:15px;white-space:nowrap;
   transition:background .2s,border-color .2s,box-shadow .2s,transform .1s}
 button:hover{background:rgba(60,80,150,.45);border-color:rgba(180,205,255,.6)}
@@ -71,11 +71,10 @@ button:active{transform:scale(.97)}
 <p id="skip">화면을 누르면 오프닝을 건너뜁니다</p>
 
 <div class="ui" id="ui" role="region" aria-label="별 조작">
-  <p class="sub">손을 대면 흩어지고, 놓으면 다시 모입니다.</p>
   <p class="hint">누르면 다음 문장, 길게 누르면 블랙홀</p>
   <form class="row" id="form" autocomplete="off">
     <input id="msg" type="text" maxlength="20" placeholder="예: 우리 팀 화이팅" aria-label="내 문장 (최대 20자)" enterkeyhint="done" spellcheck="false">
-    <button class="go" type="submit">별로 만들기</button>
+    <button class="go" type="submit">만들기</button>
   </form>
   <div class="shapes" role="group" aria-label="모양 바꾸기">
     <button type="button" data-shape="text" aria-pressed="true">문장</button>
@@ -162,7 +161,7 @@ const anchor = { x: 0, y: 0 };
 const intro = { on: true, t: 0, stage: 0 };   // stage 0 빛, 1 폭발, 2 소용돌이, 3 모임(라이브)
 const bh = { on: false, x: 0, y: 0, t0: 0 };
 const ptr = { x: -999, y: -999, in: false, down: false, t0: 0, skipped: false };
-const shocks = [], rings = [], flashes = [];
+const shocks = [], bursts = [], sparks = [], flashes = [];
 let flashT0 = -9, flashS = 0;
 
 // ---------- 배경 (정적) ----------
@@ -447,13 +446,23 @@ function introStep(dt) {
 // ---------- 조작 효과 ----------
 function shockwave(px, py) {
   shocks.push({ x: px, y: py, R: 0, prev: 0, pw: 1 });
-  rings.push({ x: px, y: py, t: 0, pw: 1, rgb: '190,215,255' });
+  burst(px, py, 1, false);
   tryFlash(px, py, 0.8);
   const { wt, st } = P;
   if (shape !== 'fire') {
     if (shape === 'text') idx = (idx + 1) % list.length;
     updateLive(); buildTargets();
     for (let i = 0; i < N; i++) { wt[i] = 1.2 + rnd() * 0.3; st[i] = 0; }   // 1.2초 뒤 모임
+  }
+}
+// 별 가루가 퍼지고 십자 빛이 잠깐 반짝인다
+function burst(px, py, pw, gold) {
+  bursts.push({ x: px, y: py, t: 0, pw, gold });
+  const n = Math.round((coarse.matches ? 44 : 84) * Math.min(2, pw)), sc = Math.hypot(W, H) / 1700;
+  for (let i = 0; i < n; i++) {
+    const a = rnd() * TAU, v = (220 + 760 * Math.pow(rnd(), 1.6)) * sc * (0.8 + 0.4 * pw), life = 0.8 + rnd() * 0.8;
+    sparks.push({ x: px, y: py, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life, max: life, s: 0.8 + rnd() * 1.3,
+      c: gold ? (rnd() < 0.7 ? 2 : 0) : (rnd() < 0.65 ? 0 : 1), ph: rnd() * TAU });
   }
 }
 function startBH() { bh.on = true; bh.x = ptr.x; bh.y = ptr.y; bh.t0 = T; }
@@ -468,7 +477,7 @@ function supernova(held) {
     if (shape !== 'fire') { wt[i] = 1.1 + 0.5 * pw + rnd() * 0.3; st[i] = 0; }
   }
   shocks.push({ x: bh.x, y: bh.y, R: 0, prev: 0, pw: 0.25 });
-  rings.push({ x: bh.x, y: bh.y, t: 0, pw: 1 + pw, rgb: '255,222,160' });
+  burst(bh.x, bh.y, 1 + pw, true);
   tryFlash(bh.x, bh.y, 1);
 }
 
@@ -521,8 +530,11 @@ function liveStep(dt) {
     x[i] = px; y[i] = py; vx[i] = vxi; vy[i] = vyi;
     if (heat[i] > 0) heat[i] = Math.max(0, heat[i] - dt * 0.7);
   }
-  for (const r of rings) r.t += dt;
-  for (let k = rings.length - 1; k >= 0; k--) if (rings[k].t > 0.8) rings.splice(k, 1);
+  for (const b of bursts) b.t += dt;
+  for (let k = bursts.length - 1; k >= 0; k--) if (bursts[k].t > 0.9) bursts.splice(k, 1);
+  const sd = Math.exp(-1.9 * dt);
+  for (const s of sparks) { s.x += s.vx * dt; s.y += s.vy * dt; s.vx *= sd; s.vy = s.vy * sd + 40 * dt; s.life -= dt; }
+  for (let k = sparks.length - 1; k >= 0; k--) if (sparks[k].life <= 0) sparks.splice(k, 1);
 }
 
 // ---------- 그리기 ----------
@@ -558,10 +570,19 @@ function draw() {
     const g = Math.min(1, (T - bh.t0) / 1.2);
     glow(bh.x, bh.y, 40 + 150 * g, 0.55 * g); glow(bh.x, bh.y, 22 + 30 * g, 0.9 * g);
   }
-  for (const r of rings) {
-    const age = r.t, fade = Math.max(0, 1 - age / 0.8);
-    c.globalAlpha = 0.5 * fade; c.strokeStyle = 'rgb(' + r.rgb + ')'; c.lineWidth = 1.5 + 5 * fade * r.pw;
-    c.beginPath(); c.arc(r.x, r.y, age * SHOCK_V * 0.9, 0, TAU); c.stroke();
+  for (const b of bursts) {                      // 부드러운 빛 번짐과 십자 반짝임
+    const u = b.t / 0.9, f = 1 - u, sp = sprites[b.gold ? 2 : 0];
+    glow(b.x, b.y, 120 + 520 * u * b.pw, 0.14 * f * f);
+    const L = (90 + 160 * b.pw) * (0.35 + 0.65 * Math.sin(Math.min(1, u * 2.2) * Math.PI / 2));
+    c.globalAlpha = Math.min(1, 0.85 * f * f * f * gain);
+    c.drawImage(sp, b.x - L, b.y - 2.2, L * 2, 4.4);
+    c.drawImage(sp, b.x - 2.2, b.y - L * 0.75, 4.4, L * 1.5);
+    c.drawImage(sp, b.x - 9, b.y - 9, 18, 18);
+  }
+  for (const s of sparks) {                      // 퍼지는 별 가루 (잔상이 꼬리가 된다)
+    const k = s.life / s.max, D = s.s * 7 * (0.6 + 0.4 * k);
+    c.globalAlpha = Math.min(1, 1.25 * Math.pow(k, 1.2) * (0.6 + 0.4 * Math.sin(T * 30 + s.ph)));
+    c.drawImage(sprites[s.c], s.x - D / 2, s.y - D / 2, D, D);
   }
 
   if (intro.stage >= 1) {
@@ -692,7 +713,7 @@ copyBtn.addEventListener('click', async () => {
 document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
 const onMotion = e => {
   reduced = e.matches; document.body.classList.toggle('reduced', reduced);
-  if (reduced) { stop(); intro.on = false; intro.stage = 3; document.body.classList.add('ready'); bgc.style.opacity = 1; shocks.length = rings.length = 0; bh.on = false; snapStill(); }
+  if (reduced) { stop(); intro.on = false; intro.stage = 3; document.body.classList.add('ready'); bgc.style.opacity = 1; shocks.length = bursts.length = sparks.length = 0; bh.on = false; snapStill(); }
   else { regather(0.3, 0); start(); }
 };
 if (mq.addEventListener) mq.addEventListener('change', onMotion); else if (mq.addListener) mq.addListener(onMotion);
