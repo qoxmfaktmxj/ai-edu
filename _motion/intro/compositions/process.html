@@ -1,0 +1,84 @@
+<template>
+<style>
+#process{position:absolute;inset:0;overflow:hidden;background:#080e18;color:#f1f5ff}
+#process-browser{position:absolute;left:0;top:0;width:1280px;height:768px;overflow:hidden;transform-origin:left top;background:#040610;box-shadow:0 28px 90px rgba(0,0,0,.45)}
+#process-chrome{position:absolute;left:0;top:0;width:1280px;height:48px;background:#1a2638;display:flex;align-items:center;padding:0 24px;gap:12px;z-index:4}
+#process-window-mark{width:18px;height:18px;border:2px solid #a3b7d5;border-radius:3px}
+#process-address{color:#d1dff4;font-size:23px;letter-spacing:.02em}
+#process-media{position:absolute;left:0;top:48px;width:1280px;height:720px}
+#process-steps,.process-heading,.process-card,#process-review-note,#process-curtain,#process-button,#process-cursor{opacity:0}
+#process-curtain{position:absolute;left:0;right:0;top:48px;bottom:0;background:#090f1c;display:flex;align-items:center;justify-content:center;color:#b5cbe8;font-size:38px;z-index:2}
+#process-button{position:absolute;left:588px;top:572px;width:104px;height:104px;display:flex;align-items:center;justify-content:center;background:#c8dcff;color:#10213a;font-size:30px;font-weight:750;border-radius:52px;z-index:3}
+#process-cursor{position:absolute;left:0;top:0;width:44px;height:54px;z-index:5;filter:drop-shadow(2px 3px 3px #000)}
+#process-hook{position:absolute;left:120px;bottom:116px;font-size:88px;line-height:1.15;letter-spacing:-.03em;font-weight:780;z-index:6;text-shadow:0 4px 30px #02040a}
+#process-hook span{display:block}
+#process-steps{position:absolute;left:120px;top:196px;display:flex;gap:14px}
+.process-step{display:flex;align-items:center;gap:16px;font-size:30px;font-weight:650;color:#aebed6}
+.process-step b{width:60px;height:60px;display:flex;align-items:center;justify-content:center;border:2px solid #617795;border-radius:6px;font-size:27px;font-weight:650;background:#101d30}
+.process-step span{padding-right:22px}
+.process-heading{position:absolute;left:120px;top:326px;width:590px;font-size:79px;line-height:1.2;letter-spacing:-.035em;font-weight:750}
+.process-heading span{display:block}
+.process-card{position:absolute;left:120px;top:560px;width:550px;height:224px;border:2px solid #536d8d;border-radius:16px;background:#142237;padding:28px 30px;font-size:34px;line-height:1.55;color:#f1f5ff}
+.process-card p{font-size:23px;color:#b4c8e3;margin-bottom:16px;font-weight:500}
+.process-card .typed{display:inline}
+.process-send{position:absolute;right:24px;top:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#334b68;color:#f1f5ff}
+#process-review-note{position:absolute;left:120px;top:569px;width:540px;font-size:34px;line-height:1.5;color:#bcd1ed}
+</style>
+<div id="process" data-composition-id="process" data-duration="13" data-width="1920" data-height="1080">
+<div id="process-browser" data-layout-allow-overflow>
+<div id="process-chrome"><i id="process-window-mark"></i><p id="process-address">내 사이트 / 미리보기</p></div>
+<video id="process-media" class="clip" src="../assets/process.mp4" muted playsinline data-start="0" data-duration="13" data-track-index="0"></video>
+<div id="process-curtain">미리보기</div>
+<div id="process-button">시작</div>
+<svg id="process-cursor" viewBox="0 0 44 54"><path d="M4 3L5 43L15 33L24 51L32 47L23 29L38 27Z" fill="#f6f9ff" stroke="#172337" stroke-width="3"/></svg>
+</div>
+<h1 id="process-hook"><span>이런 사이트도,</span><span>말로 만듭니다.</span></h1>
+<div id="process-steps"><div id="step-explain" class="process-step"><b>1</b><span>설명</span></div><div id="step-review" class="process-step"><b>2</b><span>확인</span></div><div id="step-refine" class="process-step"><b>3</b><span>완성</span></div></div>
+<h2 id="heading-explain" class="process-heading"><span>원하는 것을</span><span>설명하고</span></h2>
+<h2 id="heading-review" class="process-heading"><span>결과를</span><span>확인하며</span></h2>
+<h2 id="heading-refine" class="process-heading"><span>내 생각대로</span><span>완성합니다.</span></h2>
+<div id="request-create" class="process-card"><p>이렇게 만들어줘</p><i id="send-create" class="process-send"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 12H20M13 5L20 12L13 19" stroke="currentColor" stroke-width="2" fill="none"/></svg></i><span class="typed">별이 모여 문장이 되는 사이트를 만들어줘.</span></div>
+<p id="process-review-note">커서를 움직이면 별이 반응합니다.</p>
+<div id="request-refine" class="process-card"><p>이 부분을 바꿔줘</p><i id="send-refine" class="process-send"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 12H20M13 5L20 12L13 19" stroke="currentColor" stroke-width="2" fill="none"/></svg></i><span class="typed">동그란 버튼을 네모로 바꿔줘.</span></div>
+</div>
+<script>
+(()=>{
+const tl=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
+const type=(selector,start)=>{const el=document.querySelector(selector),words=el.textContent.split(/(\s+)/);el.textContent='';let i=0;words.forEach(word=>{if(!word.trim()){el.appendChild(document.createTextNode(word));i+=word.length;return;}const group=document.createElement('span');group.style.whiteSpace='nowrap';el.appendChild(group);[...word].forEach(c=>{const letter=document.createElement('span');letter.textContent=c;group.appendChild(letter);tl.fromTo(letter,{opacity:0},{opacity:1,duration:.01},start+i++*.034);});});};
+gsap.set('#process-browser',{x:0,y:-72,scale:1.5,borderRadius:0});
+tl.fromTo('#process-hook',{opacity:0,y:22},{opacity:1,y:0,duration:.4},.15);
+tl.to('#process-hook',{opacity:0,y:-20,duration:.25},1.7);
+tl.to('#process-browser',{x:720,y:244,scale:.84,borderRadius:18,duration:.7,ease:'power3.inOut'},1.9);
+tl.to('#process-curtain',{opacity:1,duration:.25},2.05);
+tl.fromTo('#process-steps',{opacity:0,y:15},{opacity:1,y:0,duration:.4},2.2);
+[['explain',2.3,4.8],['review',5.0,7.8],['refine',8.0,10.8]].forEach(([name,a,b])=>{
+tl.fromTo('#heading-'+name,{opacity:0,y:28},{opacity:1,y:0,duration:.4},a);
+tl.to('#heading-'+name,{opacity:0,y:-16,duration:.2,ease:'power2.in'},b);
+tl.to('#step-'+name+' b',{backgroundColor:'#bad4ff',borderColor:'#bad4ff',color:'#10213a',duration:.25},a);
+tl.to('#step-'+name+' span',{color:'#f1f5ff',duration:.25},a);
+if(name!=='explain'){const prev=name==='review'?'explain':'review';tl.to('#step-'+prev+' b',{backgroundColor:'#101d30',borderColor:'#617795',color:'#aebed6',duration:.25},a);tl.to('#step-'+prev+' span',{color:'#aebed6',duration:.25},a);}
+});
+tl.fromTo('#request-create',{opacity:0,y:18},{opacity:1,y:0,duration:.3},2.45);type('#request-create .typed',2.65);
+tl.set('#process-curtain',{textContent:'요청한 화면을 만드는 중'},4.15);
+tl.to('#send-create',{backgroundColor:'#688abd',duration:.2},4.05);
+tl.fromTo('#send-create',{scale:1},{scale:.85,duration:.12,repeat:1,yoyo:true},4.15);
+tl.to('#request-create',{opacity:0,y:-12,duration:.2},4.65);
+tl.to('#process-curtain',{opacity:0,duration:.4},4.85);
+tl.to('#process-button',{opacity:1,duration:.3},5.15);
+tl.fromTo('#process-review-note',{opacity:0,y:16},{opacity:1,y:0,duration:.35},5.3);
+tl.fromTo('#process-cursor',{x:440,y:328,opacity:0},{opacity:1,duration:.25},5.7);
+tl.to('#process-cursor',{x:872,y:328,duration:1.2,ease:'none'},6);
+tl.to('#process-cursor',{x:1030,y:600,opacity:0,duration:.3},7.25);
+tl.to('#process-review-note',{opacity:0,duration:.2},7.7);
+tl.fromTo('#request-refine',{opacity:0,y:18},{opacity:1,y:0,duration:.3},8.25);type('#request-refine .typed',8.45);
+tl.to('#send-refine',{backgroundColor:'#688abd',duration:.2},9.25);
+tl.fromTo('#send-refine',{scale:1},{scale:.85,duration:.12,repeat:1,yoyo:true},9.4);
+tl.to('#process-button',{borderRadius:12,duration:.7,ease:'power3.inOut'},9.55);
+tl.fromTo('#process-button',{scale:1},{scale:1.08,duration:.18,repeat:1,yoyo:true,ease:'sine.inOut',immediateRender:false},10.25);
+tl.to(['#request-refine','#process-steps'],{opacity:0,y:-16,duration:.25},10.75);
+tl.to('#process-button',{opacity:0,duration:.18},10.9);
+tl.to('#process-browser',{x:0,y:-72,scale:1.5,borderRadius:0,duration:.55,ease:'power3.inOut'},11);
+tl.to('#process-browser',{clipPath:'circle(2% at 42% 50%)',duration:.22,ease:'power2.in'},12.78);
+window.__timelines=window.__timelines||{};window.__timelines.process=tl;
+})();
+</script></template>

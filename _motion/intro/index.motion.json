@@ -1,24 +1,46 @@
 {
-  "duration": 14,
+  "duration": 20,
   "assertions": [
     {
       "kind": "appearsBy",
-      "selector": "#opening-content",
-      "bySec": 1.5
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#stardust-caption",
-      "bySec": 4
+      "selector": "#process-hook",
+      "bySec": 1
     },
     {
       "kind": "staysInFrame",
-      "selector": "#stardust-caption"
+      "selector": "#process-hook"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#heading-explain",
+      "bySec": 3
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#heading-explain"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#heading-review",
+      "bySec": 6
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#heading-review"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#heading-refine",
+      "bySec": 9
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#heading-refine"
     },
     {
       "kind": "appearsBy",
       "selector": "#deep-sea-caption",
-      "bySec": 7
+      "bySec": 14
     },
     {
       "kind": "staysInFrame",
@@ -27,7 +49,7 @@
     {
       "kind": "appearsBy",
       "selector": "#solar-caption",
-      "bySec": 10
+      "bySec": 16
     },
     {
       "kind": "staysInFrame",
@@ -35,20 +57,12 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#closing-content",
-      "bySec": 12.6
+      "selector": "#closing-copy",
+      "bySec": 18.4
     },
     {
       "kind": "staysInFrame",
-      "selector": ".closing-line:nth-of-type(1)"
-    },
-    {
-      "kind": "staysInFrame",
-      "selector": ".closing-line:nth-of-type(2)"
-    },
-    {
-      "kind": "staysInFrame",
-      "selector": ".closing-line:nth-of-type(3)"
+      "selector": "#closing-copy"
     }
   ]
 }

@@ -1,33 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko" data-resolution="landscape">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=1920, height=1080">
-<title>AI 사이트 교실 소개</title>
-<script src="assets/gsap.min.js"></script>
+<head><meta charset="utf-8"><meta name="viewport" content="width=1920, height=1080">
+<title>말로 시작해, 내 사이트로</title><script src="assets/gsap.min.js"></script>
 <style>
 @font-face{font-family:"Pretendard Variable";src:url("assets/PretendardVariable.woff2") format("woff2");font-weight:100 900;font-display:block}
-*{box-sizing:border-box;margin:0}
-html,body{width:100%;height:100%;overflow:hidden;background:#070911;color:#f0f3ff;font-family:"Pretendard Variable",sans-serif}
-#root{position:relative;width:100%;height:100%;overflow:hidden;background:#070911}
-.clip{position:absolute;inset:0}
-#film-brand{position:absolute;left:144px;top:72px;font-size:30px;font-weight:600;letter-spacing:0.02em;color:#dce5ff;z-index:10;text-shadow:0 2px 8px #000}
-</style>
-</head>
-<body>
-<div data-hf-id="hf-qi9d" id="root" data-composition-id="main" data-duration="14" data-width="1920" data-height="1080">
-<div data-hf-id="hf-p3hi" id="opening" class="clip" data-composition-id="opening" data-composition-src="compositions/opening.html" data-start="0" data-duration="2.5" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
-<div data-hf-id="hf-kiez" id="stardust" class="clip" data-composition-id="stardust" data-composition-src="compositions/stardust.html" data-start="2.5" data-duration="3" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
-<div data-hf-id="hf-mj0w" id="deep-sea" class="clip" data-composition-id="deep-sea" data-composition-src="compositions/deep-sea.html" data-start="5.5" data-duration="3" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
-<div data-hf-id="hf-xhde" id="solar" class="clip" data-composition-id="solar" data-composition-src="compositions/solar.html" data-start="8.5" data-duration="3" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
-<div data-hf-id="hf-mtzi" id="closing" class="clip" data-composition-id="closing" data-composition-src="compositions/closing.html" data-start="11.5" data-duration="2.5" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
-<p data-hf-id="hf-419c" id="film-brand">AI 사이트 교실</p>
-</div>
-<script>
-const tl=gsap.timeline({paused:true});
-tl.fromTo('#film-brand',{opacity:1},{opacity:0.8,duration:14,ease:'none'},0);
-window.__timelines=window.__timelines||{};
-window.__timelines.main=tl;
-</script>
-</body>
-</html>
+*{box-sizing:border-box;margin:0}html,body{width:100%;height:100%;overflow:hidden;background:#080e18;color:#f1f5ff;font-family:"Pretendard Variable",sans-serif}
+#root{position:relative;width:100%;height:100%;overflow:hidden}.clip{position:absolute;inset:0}
+#film-brand{position:absolute;left:120px;top:64px;font-size:30px;font-weight:600;color:#dce7fb;z-index:10;text-shadow:0 2px 8px #02040a}
+</style></head><body>
+<div id="root" data-composition-id="main" data-duration="20" data-width="1920" data-height="1080">
+<div id="process" class="clip" data-composition-id="process" data-composition-src="compositions/process.html" data-start="0" data-duration="13" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
+<div id="deep-sea" class="clip" data-composition-id="deep-sea" data-composition-src="compositions/deep-sea.html" data-start="13" data-duration="2" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
+<div id="solar" class="clip" data-composition-id="solar" data-composition-src="compositions/solar.html" data-start="15" data-duration="2" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
+<div id="closing" class="clip" data-composition-id="closing" data-composition-src="compositions/closing.html" data-start="17" data-duration="3" data-width="1920" data-height="1080" data-track-index="0" data-track-kind="graphics"></div>
+<p id="film-brand">AI 사이트 교실</p></div>
+<script>const tl=gsap.timeline({paused:true});tl.fromTo('#film-brand',{opacity:0.9},{opacity:1,duration:20,ease:'none'},0);window.__timelines=window.__timelines||{};window.__timelines.main=tl;</script>
+</body></html>
