@@ -8,6 +8,13 @@
 
 | 상태 | 파일 | 무엇을 찍나 |
 |---|---|---|
+| 필요 | `ag-try-report.png` | 그림 설명: 받은 보고서 HTML을 Edge로 연 화면입니다. 맨 위에 로고와 색 띠, 그 아래 제목과 결론 한 문장, 작성 정보, 1. 현황부터 번호가 붙은 항목이 이어집니다. |
+| 필요 | `ag-try-pdf.png` | 그림 설명: Edge 인쇄 창입니다. 왼쪽 대상에서 PDF로 저장을 고르면 오른쪽 미리 보기에 로고와 띠가 함께 보입니다. |
+| 필요 | `ag-try-eli5.png` | 그림 설명: 그림 설명 HTML입니다. 장면마다 아이콘으로 그린 그림과 두세 줄 설명이 있습니다. |
+| 필요 | `ag-inside-skill-zip.png` | 그림 설명: 보고서 기술 ZIP을 연 모습입니다. 맨 위에 SKILL.md, 그 옆에 scripts(스크립트)와 templates(양식) 폴더가 있습니다. |
+| 필요 | `ag-inside-config.png` | 그림 설명: 구성 탭입니다. 위에서부터 이름, 설명, 안내, 지식, 기능, 기술, 추천 프롬프트 칸이 이어집니다. |
+| 필요 | `ag-build-new.png` | 그림 설명: 에이전트 빌더 화면입니다. 왼쪽 위에 설명 탭과 구성 탭이 있고, 오른쪽은 미리 보기 창입니다. |
+| 필요 | `ag-build-configure.png` | 그림 설명: 구성 탭의 안내 칸입니다. # 역할, # 결과 형식, # 꼭 지킬 것 제목으로 나뉜 안내가 보입니다. |
 | 필요 | `01-final-site-address.png` | 그림 설명: 맨 위 주소창에 .vercel.app으로 끝나는 내 주소가 보이고, 아래에 완성된 사이트가 열려 있습니다. 교육이 끝났을 때 이 모습이 목표입니다. |
 | 완료 | `02-claude-download.png` | 그림 설명: claude.com/download 페이지(한국어 화면)입니다. 큰 제목 "Claude 다운로드" 아래에 내 컴퓨터용 다운로드 버튼이 있습니다. Windows에서 열면 "Windows용 다운로드" 버튼이 보이고, Windows ARM 컴퓨터용 "Windows(arm64)" 링크와 Microsoft Store 배지도 함께 보입니다. Mac에서 열면 Mac용 버튼이 먼저 보입니다. 화면 구성과 문구는 업데이트로 조금 다를 수 있습니다. |
 | 필요 | `03-new-repo.png` | 그림 설명: Repository name에 ai-site, 공개 범위는 Private, README 추가는 꺼진 상태에서 Create repository 버튼을 누르는 위치를 표시하세요. |

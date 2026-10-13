@@ -37,7 +37,7 @@ export default async function ChapterPage({ params }: { params: Params }) {
       <nav className="toc" id="toc" aria-label="목차">
         <p>
           <Link href={base}>
-            {course.no}편 {course.title}
+            {course.no}회차 {course.title}
           </Link>
         </p>
         <ol>

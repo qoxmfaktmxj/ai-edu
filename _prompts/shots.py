@@ -5,20 +5,21 @@ import pathlib
 import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-COURSE = ROOT / "content" / "courses" / "interactive-site"
+COURSES = ROOT / "content" / "courses"
 SHOTS = ROOT / "public" / "assets" / "shots"
 
 rows = []
-for cid in json.loads((COURSE / "course.json").read_text(encoding="utf-8"))["chapters"]:
-    f = COURSE / f"{cid}.html"
-    if not f.exists():
-        continue
-    for m in re.finditer(r'<figure class="shot" data-shot="([^"]+)">(.*?)</figure>', f.read_text(encoding="utf-8"), re.S):
-        name, body = m.group(1), m.group(2)
-        cap = re.search(r"<figcaption>(.*?)</figcaption>", body, re.S) or re.search(r'alt="([^"]*)"', body)
-        desc = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", cap.group(1) if cap else "")).strip()
-        done = "완료" if (SHOTS / f"{name}.png").exists() else "필요"
-        rows.append(f"| {done} | `{name}.png` | {html.unescape(desc)} |")
+for course in sorted(COURSES.glob("*/course.json"), key=lambda c: json.loads(c.read_text(encoding="utf-8"))["no"]):
+    for cid in json.loads(course.read_text(encoding="utf-8"))["chapters"]:
+        f = course.parent / f"{cid}.html"
+        if not f.exists():
+            continue
+        for m in re.finditer(r'<figure class="shot" data-shot="([^"]+)">(.*?)</figure>', f.read_text(encoding="utf-8"), re.S):
+            name, body = m.group(1), m.group(2)
+            cap = re.search(r"<figcaption>(.*?)</figcaption>", body, re.S) or re.search(r'alt="([^"]*)"', body)
+            desc = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", cap.group(1) if cap else "")).strip()
+            done = "완료" if (SHOTS / f"{name}.png").exists() else "필요"
+            rows.append(f"| {done} | `{name}.png` | {html.unescape(desc)} |")
 
 (ROOT / "_prompts" / "shots.md").write_text(
     "# 스크린샷 촬영 목록\n\n"

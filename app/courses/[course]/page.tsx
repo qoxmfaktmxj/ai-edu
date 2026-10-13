@@ -13,7 +13,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ course: string }> }): Promise<Metadata> {
   const course = getCourse((await params).course);
   if (!course) return {};
-  const title = `${course.no}편 ${course.title}`;
+  const title = `${course.no}회차 ${course.title}`;
   return { title, description: course.summary, openGraph: { title, images: ["/assets/video/intro-poster.jpg"] } };
 }
 
