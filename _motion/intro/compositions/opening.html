@@ -1,0 +1,21 @@
+<template>
+<style>
+#opening{position:absolute;inset:0;background:#070911;color:#f0f3ff}
+#opening-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 144px;gap:12px}
+.opening-line{display:block;font-size:132px;font-weight:800;letter-spacing:-0.035em;line-height:1.18}
+.opening-line:nth-of-type(3){color:#94b9ff}
+#opening-rule{width:168px;height:6px;background:#94b9ff;margin-top:40px;transform-origin:left center}
+</style>
+<div data-hf-id="hf-1b4c" id="opening" data-composition-id="opening" data-width="1920" data-height="1080" data-duration="2.5">
+<div data-hf-id="hf-rotb" id="opening-content"><span data-hf-id="hf-r5zk" class="opening-line">AI와 함께,</span>
+<span data-hf-id="hf-mk24" class="opening-line">직접 만지는</span>
+<span data-hf-id="hf-84ge" class="opening-line">내 사이트</span><div data-hf-id="hf-ezsa" id="opening-rule"></div></div>
+</div>
+<script>
+(()=>{const tl=gsap.timeline({paused:true});
+tl.fromTo('.opening-line',{y:36,opacity:0},{y:0,opacity:1,duration:0.55,stagger:0.1,ease:'power3.out'},0.04);
+tl.fromTo('#opening-rule',{scaleX:0},{scaleX:1,duration:0.6,ease:'power3.out'},0.35);
+tl.to('#opening-content',{opacity:0,y:-16,duration:0.2,ease:'power2.in'},2.3);
+window.__timelines=window.__timelines||{};window.__timelines['opening']=tl;})();
+</script>
+</template>

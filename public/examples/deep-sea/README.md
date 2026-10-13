@@ -66,7 +66,7 @@ python -m http.server 8000
 pyftsubset PretendardVariable.woff2 --text-file=chars.txt --flavor=woff2 --layout-features=* --output-file=assets/fonts/pretendard-subset.woff2
 ```
 
-`chars.txt` 에는 index.html과 js 파일에 쓰인 글자를 넣습니다. 원본 글꼴은 `ai-site-class/_motion/strawberry-film/assets/PretendardVariable.woff2` 에 있습니다.
+`chars.txt` 에는 index.html과 js 파일에 쓰인 글자를 넣습니다. 원본 글꼴은 `_motion/intro/assets/PretendardVariable.woff2` 에 있습니다.
 
 ## 확인한 것 (로컬, Chromium 헤드리스와 앱 내 브라우저)
 

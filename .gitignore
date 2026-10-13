@@ -6,6 +6,8 @@ _motion/**/output/
 Thumbs.db
 .vercel
 _motion/**/snapshots/
+_motion/**/.hyperframes/
+_motion/**/.thumbnails/
 .claude/
 node_modules/
 .next/

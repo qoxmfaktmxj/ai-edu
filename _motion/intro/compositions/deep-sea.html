@@ -1,0 +1,22 @@
+<template>
+<style>
+#deep-sea{position:absolute;inset:0;overflow:hidden;background:#02040a;color:#f0f3ff}
+#deep-sea-visual{position:absolute;inset:0;overflow:hidden}
+#deep-sea-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#deep-sea-shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(2,4,10,0.96),rgba(2,4,10,0.65) 17%,transparent 42%);pointer-events:none}
+#deep-sea-caption{position:absolute;left:144px;right:144px;bottom:120px}
+#deep-sea-caption h2{font-size:88px;line-height:1.15;letter-spacing:-0.03em;font-weight:750}
+#deep-sea-caption p{font-size:34px;line-height:1.5;color:#d6e5f4;margin-top:16px}
+</style>
+<div data-hf-id="hf-17uc" id="deep-sea" data-composition-id="deep-sea" data-duration="3" data-width="1920" data-height="1080">
+<div data-hf-id="hf-ozhe" id="deep-sea-visual"><video data-hf-id="hf-wp9k" id="deep-sea-media" class="clip" src="../assets/deep-sea.mp4" data-start="0" data-duration="3" data-track-index="0" muted playsinline></video><div data-hf-id="hf-pq75" id="deep-sea-shade"></div></div>
+<div data-hf-id="hf-31pw" id="deep-sea-caption"><h2 data-hf-id="hf-48ut">심해 탐험</h2><p data-hf-id="hf-0krv">어둠을 비추고, 생명을 발견하다</p></div>
+</div>
+<script>
+(()=>{const tl=gsap.timeline({paused:true});
+tl.fromTo('#deep-sea-visual',{opacity:0},{opacity:1,duration:0.18,ease:'none'},0);
+tl.fromTo('#deep-sea-caption',{y:24,opacity:0},{y:0,opacity:1,duration:0.4,ease:'power3.out'},0.18);
+tl.to('#deep-sea-caption',{y:-12,opacity:0,duration:0.18,ease:'power2.in'},2.82);
+window.__timelines=window.__timelines||{};window.__timelines['deep-sea']=tl;})();
+</script>
+</template>

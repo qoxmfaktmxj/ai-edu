@@ -1,0 +1,21 @@
+<template>
+<style>
+#closing{position:absolute;inset:0;background:#070911;color:#f0f3ff}
+#closing-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 144px;gap:12px}
+.closing-line{display:block;font-size:114px;font-weight:800;letter-spacing:-0.035em;line-height:1.18}
+.closing-line:nth-of-type(3){color:#94b9ff}
+#closing-rule{width:168px;height:6px;background:#94b9ff;margin-top:40px;transform-origin:left center}
+</style>
+<div data-hf-id="hf-y8bc" id="closing" data-composition-id="closing" data-width="1920" data-height="1080" data-duration="2.5">
+<div data-hf-id="hf-2ce2" id="closing-content"><span data-hf-id="hf-q4q8" class="closing-line">말로 부탁하고,</span>
+<span data-hf-id="hf-qmds" class="closing-line">눈으로 확인하고,</span>
+<span data-hf-id="hf-w5jo" class="closing-line">직접 고칩니다.</span><div data-hf-id="hf-1mal" id="closing-rule"></div></div>
+</div>
+<script>
+(()=>{const tl=gsap.timeline({paused:true});
+tl.fromTo('.closing-line',{y:36,opacity:0},{y:0,opacity:1,duration:0.55,stagger:0.1,ease:'power3.out'},0.04);
+tl.fromTo('#closing-rule',{scaleX:0},{scaleX:1,duration:0.6,ease:'power3.out'},0.35);
+tl.to('#closing-content',{opacity:0,y:-16,duration:0.2,ease:'power2.in'},2.3);
+window.__timelines=window.__timelines||{};window.__timelines['closing']=tl;})();
+</script>
+</template>

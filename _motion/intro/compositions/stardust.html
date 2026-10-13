@@ -1,0 +1,22 @@
+<template>
+<style>
+#stardust{position:absolute;inset:0;overflow:hidden;background:#02040a;color:#f0f3ff}
+#stardust-visual{position:absolute;inset:0;overflow:hidden}
+#stardust-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#stardust-shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(2,4,10,0.96),rgba(2,4,10,0.65) 17%,transparent 42%);pointer-events:none}
+#stardust-caption{position:absolute;left:144px;right:144px;bottom:120px}
+#stardust-caption h2{font-size:88px;line-height:1.15;letter-spacing:-0.03em;font-weight:750}
+#stardust-caption p{font-size:34px;line-height:1.5;color:#d6e5f4;margin-top:16px}
+</style>
+<div data-hf-id="hf-9mh0" id="stardust" data-composition-id="stardust" data-duration="3" data-width="1920" data-height="1080">
+<div data-hf-id="hf-zkti" id="stardust-visual"><video data-hf-id="hf-elk8" id="stardust-media" class="clip" src="../assets/stardust.mp4" data-start="0" data-duration="3" data-track-index="0" muted playsinline></video><div data-hf-id="hf-pqfp" id="stardust-shade"></div></div>
+<div data-hf-id="hf-6274" id="stardust-caption"><h2 data-hf-id="hf-yt4i">별이 된 문장</h2><p data-hf-id="hf-0vmb">내 문장으로 움직이는 밤하늘</p></div>
+</div>
+<script>
+(()=>{const tl=gsap.timeline({paused:true});
+tl.fromTo('#stardust-visual',{opacity:0},{opacity:1,duration:0.18,ease:'none'},0);
+tl.fromTo('#stardust-caption',{y:24,opacity:0},{y:0,opacity:1,duration:0.4,ease:'power3.out'},0.18);
+tl.to('#stardust-caption',{y:-12,opacity:0,duration:0.18,ease:'power2.in'},2.82);
+window.__timelines=window.__timelines||{};window.__timelines['stardust']=tl;})();
+</script>
+</template>

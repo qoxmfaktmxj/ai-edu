@@ -650,7 +650,9 @@ function drawSnow() {
     const st = Math.min(150, Math.abs(sp) * L.par * streakK);
     for (const p of snow) {
       if (p.l !== l) continue;
-      ctx.rect(p.x, sp > 0 ? p.y : p.y - st, p.s, p.s + st);
+      const y = sp > 0 ? p.y + st * 0.5 : p.y - st * 0.5;
+      ctx.moveTo(p.x + p.s * 0.5, y);
+      ctx.ellipse(p.x, y, p.s * 0.5, (p.s + st) * 0.5, 0, 0, 6.283);
     }
     ctx.fill();
   }
@@ -813,40 +815,74 @@ function drawWalls(layerB) {
 function drawDumbo(e) {
   const p = dumboPos(e);
   if (p.y < -140 || p.y > H + 140) return;
-  const T = ST.T, s = 50 * U;
+  const T = ST.T, s = 58 * U;
   ctx.save();
   ctx.translate(p.x, p.y);
-  ctx.rotate(Math.sin(T * 0.4 + e.ph) * 0.08);
-  const flap = Math.sin(T * 2.4 + e.ph) * 0.3;
-  const pink = 'rgba(240,172,198,0.94)';
-  // 귀 모양 지느러미
+  ctx.rotate(-0.22 + Math.sin(T * 0.4 + e.ph) * 0.09);
+  const breath = Math.sin(T * 1.1 + e.ph);
+  // 얇은 지느러미가 서로 조금 다른 박자로 물을 민다.
   for (const sd of [-1, 1]) {
     ctx.save();
-    ctx.translate(sd * 0.86 * s, -0.34 * s);
-    ctx.rotate(sd * (0.55 + flap));
-    ctx.fillStyle = 'rgba(246,190,212,0.92)';
-    ctx.beginPath(); ctx.ellipse(sd * 0.28 * s, 0, 0.62 * s, 0.27 * s, 0, 0, 6.283); ctx.fill();
+    ctx.translate(sd * 0.51 * s, -0.43 * s);
+    ctx.scale(sd, 1);
+    ctx.rotate(-0.35 + Math.sin(T * 1.35 + e.ph + sd * 0.45) * 0.3);
+    const fin = ctx.createLinearGradient(0, 0, s, -s * 0.5);
+    fin.addColorStop(0, 'rgba(130,67,76,0.85)');
+    fin.addColorStop(0.55, 'rgba(222,150,142,0.75)');
+    fin.addColorStop(1, 'rgba(244,195,178,0.2)');
+    ctx.fillStyle = fin;
+    ctx.beginPath(); ctx.moveTo(0, 0.25 * s);
+    ctx.bezierCurveTo(0.2 * s, -0.42 * s, 0.78 * s, -0.67 * s, 1.03 * s, -0.48 * s);
+    ctx.bezierCurveTo(1.17 * s, -0.2 * s, 0.55 * s, 0.37 * s, 0, 0.25 * s);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(246,199,176,0.2)'; ctx.lineWidth = 0.7 * U;
+    for (let i = 0; i < 4; i++) {
+      ctx.beginPath(); ctx.moveTo(0.05 * s, 0.15 * s);
+      ctx.quadraticCurveTo(0.44 * s, -i * 0.065 * s, (0.64 + i * 0.1) * s, (-0.08 - i * 0.12) * s); ctx.stroke();
+    }
     ctx.restore();
   }
-  // 물갈퀴 치마
-  ctx.fillStyle = pink;
-  ctx.beginPath();
-  ctx.moveTo(-0.8 * s, 0.1 * s); ctx.lineTo(-0.8 * s, 0.75 * s);
-  const n = 8;
-  for (let i = 0; i < n; i++) {
-    const x0 = -0.8 * s + i * (1.6 * s / n), x1 = x0 + 1.6 * s / n;
-    ctx.quadraticCurveTo((x0 + x1) / 2 + Math.sin(T * 1.1 + i) * 0.05 * s, (1.3 + 0.12 * Math.sin(T * 1.6 + i + e.ph)) * s, x1, 0.75 * s);
+  // 팔 사이의 막. 아래 가장자리를 비대칭으로 접어 깊이를 만든다.
+  const web = ctx.createLinearGradient(-s, 0, s * 0.4, s * 1.2);
+  web.addColorStop(0, 'rgba(201,124,115,0.9)');
+  web.addColorStop(0.45, 'rgba(150,77,86,0.8)');
+  web.addColorStop(1, 'rgba(56,39,55,0.5)');
+  ctx.fillStyle = web;
+  ctx.beginPath(); ctx.moveTo(-0.57 * s, 0.05 * s);
+  ctx.bezierCurveTo(-0.73 * s, 0.5 * s, -1.04 * s, 0.71 * s, -0.9 * s, 0.92 * s);
+  ctx.bezierCurveTo(-0.56 * s, 0.64 * s, -0.48 * s, 1.27 * s, -0.23 * s, 1.05 * s);
+  ctx.bezierCurveTo(0.03 * s, (0.86 + breath * 0.06) * s, 0.22 * s, 1.32 * s, 0.42 * s, 1.02 * s);
+  ctx.bezierCurveTo(0.69 * s, 0.75 * s, 0.85 * s, 1.08 * s, 0.78 * s, 0.57 * s);
+  ctx.lineTo(0.53 * s, 0.08 * s); ctx.closePath(); ctx.fill();
+  // 몇 개의 팔만 앞쪽에 드러나고 나머지는 막 아래 어둠에 묻힌다.
+  ctx.lineCap = 'round';
+  for (let i = 0; i < 5; i++) {
+    const x = (-0.49 + i * 0.25) * s;
+    const tip = (0.92 + 0.13 * Math.sin(T * 1.1 + e.ph + i * 1.7)) * s;
+    ctx.strokeStyle = rgba(224 - i * 20, 156 - i * 15, 145 - i * 10, 0.55);
+    ctx.lineWidth = (3.2 - i * 0.32) * U;
+    ctx.beginPath(); ctx.moveTo(x * 0.7, 0.26 * s);
+    ctx.bezierCurveTo(x, 0.55 * s, x * 1.65, tip + 0.18 * s, x * 1.65 + 0.1 * s, tip); ctx.stroke();
   }
-  ctx.lineTo(0.8 * s, 0.1 * s);
-  ctx.closePath(); ctx.fill();
-  // 몸통
-  const g = ctx.createRadialGradient(0, -0.3 * s, 0.1 * s, 0, -0.05 * s, 0.9 * s);
-  g.addColorStop(0, 'rgba(255,224,234,0.97)'); g.addColorStop(1, 'rgba(232,150,182,0.95)');
+  // 한쪽으로 빛을 받는 외투막. 정면의 둥근 얼굴처럼 보이지 않게 한다.
+  const g = ctx.createRadialGradient(-0.29 * s, -0.53 * s, 0.03 * s, -0.08 * s, -0.28 * s, s);
+  g.addColorStop(0, '#efd1b7'); g.addColorStop(0.3, '#cf9986');
+  g.addColorStop(0.67, '#975967'); g.addColorStop(1, '#352c40');
   ctx.fillStyle = g;
-  ctx.beginPath(); ctx.ellipse(0, -0.05 * s, 0.82 * s, 0.76 * s, 0, 0, 6.283); ctx.fill();
-  // 눈
-  ctx.fillStyle = 'rgba(70,30,50,0.9)';
-  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 0.3 * s, 0.02 * s, 0.075 * s, 0, 6.283); ctx.fill(); }
+  ctx.beginPath(); ctx.moveTo(-0.55 * s, 0.38 * s);
+  ctx.bezierCurveTo(-0.67 * s, -0.04 * s, -0.72 * s, -0.78 * s, -0.19 * s, -0.94 * s);
+  ctx.bezierCurveTo(0.5 * s, -1.06 * s, 0.71 * s, -0.2 * s, 0.49 * s, 0.38 * s);
+  ctx.bezierCurveTo(0.27 * s, 0.56 * s, -0.28 * s, 0.5 * s, -0.55 * s, 0.38 * s); ctx.fill();
+  ctx.fillStyle = 'rgba(241,193,162,0.1)';
+  for (let i = 0; i < 30; i++) {
+    const x = (hash(i + 70) - 0.5) * 0.85 * s, y = (-0.65 + hash(i + 120) * 0.9) * s;
+    ctx.beginPath(); ctx.ellipse(x, y, 0.7 * U, 1.2 * U, -0.3, 0, 6.283); ctx.fill();
+  }
+  // 사선 구도에서 보이는 작은 눈과 희미한 반사광.
+  ctx.fillStyle = '#342b35';
+  ctx.beginPath(); ctx.ellipse(-0.48 * s, 0.1 * s, 0.063 * s, 0.075 * s, -0.25, 0, 6.283); ctx.fill();
+  ctx.fillStyle = 'rgba(225,232,214,0.55)';
+  ctx.beginPath(); ctx.arc(-0.495 * s, 0.074 * s, 0.016 * s, 0, 6.283); ctx.fill();
   ctx.restore();
 }
 
@@ -875,8 +911,8 @@ function drawAtollaBody(a) {
 function drawLampHaze() {
   const R = lampRadius();
   const g = ctx.createRadialGradient(lamp.x, lamp.y, 0, lamp.x, lamp.y, R * 0.95);
-  g.addColorStop(0, 'rgba(130,205,230,0.42)');
-  g.addColorStop(0.5, 'rgba(70,140,180,0.12)');
+  g.addColorStop(0, 'rgba(130,205,230,0.18)');
+  g.addColorStop(0.5, 'rgba(70,140,180,0.07)');
   g.addColorStop(1, 'rgba(40,100,140,0)');
   ctx.globalCompositeOperation = 'lighter';
   ctx.fillStyle = g;
@@ -1139,8 +1175,8 @@ function drawMouth(a, alpha, scale) {
   ctx.fillStyle = hg;
   ctx.beginPath(); ctx.ellipse(cx, cy - h * 0.1, w * 0.66, h * 1.5, 0, 0, 6.283); ctx.fill();
   // 입 안
-  const up = (t) => [lerp(cx - w / 2, cx + w / 2, t), cy - Math.sin(t * Math.PI) * h];
-  const lo = (t) => [lerp(cx - w / 2, cx + w / 2, t), cy + Math.sin(t * Math.PI) * h * 0.85];
+  const up = (t) => [lerp(cx - w / 2, cx + w / 2, t), cy - Math.sin(t * Math.PI) * h * (0.96 + 0.05 * Math.sin(t * 17))];
+  const lo = (t) => [lerp(cx - w / 2, cx + w / 2, t), cy + Math.sin(t * Math.PI) * h * (0.82 + 0.04 * Math.sin(t * 21 + 1))];
   ctx.beginPath();
   for (let i = 0; i <= 40; i++) { const q = up(i / 40); if (i === 0) ctx.moveTo(q[0], q[1]); else ctx.lineTo(q[0], q[1]); }
   for (let i = 40; i >= 0; i--) { const q = lo(i / 40); ctx.lineTo(q[0], q[1]); }
@@ -1148,19 +1184,21 @@ function drawMouth(a, alpha, scale) {
   const mg = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.5);
   mg.addColorStop(0, rgba(58, 6, 12, alpha)); mg.addColorStop(1, rgba(0, 0, 0, alpha));
   ctx.fillStyle = mg; ctx.fill();
-  ctx.lineWidth = 4; ctx.strokeStyle = rgba(150, 195, 225, 0.8 * alpha); ctx.stroke();
+  ctx.lineWidth = 2 * U; ctx.strokeStyle = rgba(114, 151, 165, 0.4 * alpha); ctx.stroke();
+  ctx.save(); ctx.clip();
   // 이빨: 휘어진 송곳니와 작은 이빨
   const teeth = (fn, dirSign, count, seed) => {
     for (let i = 0; i < count; i++) {
-      const t = 0.04 + 0.92 * (i + 0.5) / count;
+      const t = 0.04 + 0.92 * (i + 0.25 + hash(i + seed * 3) * 0.5) / count;
       const q = fn(t), mid = 1 - Math.abs(t - 0.5) * 1.5;
-      const big = i % 2 === 0;
-      const len = h * (0.15 + 0.28 * hash(i + seed)) * (0.55 + mid * 0.75) * (big ? 1 : 0.5);
-      const bw = w * (big ? 0.016 : 0.009);
-      const lean = (cx - q[0]) * 0.06;
+      const len = h * (0.18 + 0.52 * hash(i + seed)) * (0.55 + mid * 0.65);
+      const bw = w * (0.0015 + hash(i + seed + 60) * 0.0025);
+      const lean = (cx - q[0]) * 0.1 + (hash(i + seed + 90) - 0.5) * w * 0.018;
       const tipx = q[0] + lean, tipy = q[1] + dirSign * len;
       const g = ctx.createLinearGradient(0, q[1], 0, tipy);
-      g.addColorStop(0, rgba(238, 244, 248, 0.97 * alpha)); g.addColorStop(1, rgba(150, 190, 215, 0.95 * alpha));
+      g.addColorStop(0, rgba(117, 144, 149, 0.65 * alpha));
+      g.addColorStop(0.38, rgba(215, 226, 214, 0.9 * alpha));
+      g.addColorStop(1, rgba(161, 185, 185, 0.65 * alpha));
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.moveTo(q[0] - bw, q[1]);
@@ -1169,11 +1207,12 @@ function drawMouth(a, alpha, scale) {
       ctx.closePath(); ctx.fill();
     }
   };
-  teeth(up, 1, 26, 7);
-  teeth(lo, -1, 22, 31);
+  teeth(up, 1, 34, 7);
+  teeth(lo, -1, 29, 31);
+  ctx.restore();
   // 눈
-  glow(SP.ice, cx - w * 0.32, cy - h * 1.2, 22 * U, 0.55 * alpha);
-  glow(SP.ice, cx + w * 0.32, cy - h * 1.2, 22 * U, 0.55 * alpha);
+  glow(SP.ice, cx - w * 0.32, cy - h * 1.2, 10 * U, 0.24 * alpha);
+  glow(SP.ice, cx + w * 0.32, cy - h * 1.2, 8 * U, 0.14 * alpha);
   ctx.globalAlpha = 1;
   ctx.restore();
 }
@@ -1292,10 +1331,10 @@ function renderScene() {
     drawWalls(false);
     drawSnow();
     drawBubblesAmbient();
+    if (d >= 850) drawLampHaze();
     if (d < 340) drawFishSchools();
     if (d > 3900 && d < 6300) for (const e of dumbos) { const p = dumboPos(e); if (p.y > -140 && p.y < H + 140) { drawDumbo(e); if (Math.hypot(lamp.x - p.x, lamp.y - p.y) < lampRadius() * 0.9) offer('덤보문어 - 귀처럼 생긴 지느러미로 천천히 떠다닙니다.', p.y); } }
     if (d > 900) for (const a of atollas) drawAtollaBody(a);
-    if (d >= 850) drawLampHaze();
 
     // 어둠 (관측등 둘레만 밝다)
     const dk = smooth(880, 1000, d);

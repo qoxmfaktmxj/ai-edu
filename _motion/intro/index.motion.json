@@ -1,0 +1,54 @@
+{
+  "duration": 14,
+  "assertions": [
+    {
+      "kind": "appearsBy",
+      "selector": "#opening-content",
+      "bySec": 1.5
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#stardust-caption",
+      "bySec": 4
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#stardust-caption"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#deep-sea-caption",
+      "bySec": 7
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#deep-sea-caption"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#solar-caption",
+      "bySec": 10
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#solar-caption"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#closing-content",
+      "bySec": 12.6
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": ".closing-line:nth-of-type(1)"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": ".closing-line:nth-of-type(2)"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": ".closing-line:nth-of-type(3)"
+    }
+  ]
+}
