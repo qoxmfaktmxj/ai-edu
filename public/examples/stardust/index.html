@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05060f">
+<meta name="description" content="수천 개의 별이 내 문장으로 모이는 밤하늘. 손을 대면 흩어지고, 놓으면 다시 모입니다.">
+<title>별이 된 문장.</title>
+<style>
+:root{--ink:#eaf0ff;--dim:rgba(190,205,240,.72);--line:rgba(160,190,255,.3);--glass:rgba(10,14,34,.62)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:var(--ink);overflow:hidden;
+  font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+canvas{position:fixed;left:0;top:0;display:block}
+#bgc{opacity:0}
+#sky{touch-action:none;-webkit-touch-callout:none}
+#flash{position:fixed;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  background:radial-gradient(circle at var(--fx,50%) var(--fy,50%),rgba(255,255,255,.7),rgba(150,180,255,.28) 55%,rgba(110,140,255,.12))}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+#skip{position:fixed;left:0;right:0;bottom:calc(22px + env(safe-area-inset-bottom));margin:0;text-align:center;
+  font-size:13px;color:rgba(190,205,240,.5);letter-spacing:.04em;pointer-events:none;z-index:3;transition:opacity .6s}
+.ready #skip,.reduced #skip{opacity:0}
+
+.ui{position:fixed;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:0 16px calc(16px + env(safe-area-inset-bottom));pointer-events:none}
+.ui>*{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.16,.84,.3,1)}
+.ready .ui>*{opacity:1;transform:none}
+.ready .ui>:nth-child(2){transition-delay:.1s}
+.ready .ui>:nth-child(3){transition-delay:.2s}
+.ready .ui>:nth-child(4){transition-delay:.3s}
+.ready .ui>:nth-child(5){transition-delay:.4s}
+.reduced .ui>*,.reduced button{transition:none}
+
+.sub{margin:0;font-size:clamp(15px,1.3vw + 9px,20px);letter-spacing:.02em;text-align:center;
+  text-shadow:0 0 18px rgba(130,170,255,.6),0 0 2px rgba(0,0,0,.8)}
+.hint{margin:0;font-size:13px;color:var(--dim);text-align:center;text-shadow:0 0 2px rgba(0,0,0,.9)}
+.row,.shapes,.linkrow{width:min(560px,100%);pointer-events:auto}
+
+input,button{font:inherit;color:var(--ink)}
+.row{display:flex;gap:8px}
+input{flex:1;min-width:0;height:46px;padding:0 18px;font-size:16px;border-radius:23px;border:1px solid var(--line);
+  background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-user-select:text;user-select:text}
+input::placeholder{color:rgba(190,205,240,.5)}
+button{min-height:44px;padding:0 16px;border-radius:23px;border:1px solid var(--line);background:var(--glass);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;font-size:15px;white-space:nowrap;
+  transition:background .2s,border-color .2s,box-shadow .2s,transform .1s}
+button:hover{background:rgba(60,80,150,.45);border-color:rgba(180,205,255,.6)}
+button:active{transform:scale(.97)}
+.go{height:46px;padding:0 20px;font-weight:700;color:#1a1405;border-color:transparent;
+  background:linear-gradient(135deg,#ffeab3,#ffc86b)}
+.go:hover{background:linear-gradient(135deg,#fff0c8,#ffd488);border-color:transparent}
+.shapes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.shapes button{padding:0 6px}
+.shapes button[aria-pressed=true]{background:rgba(110,150,255,.3);border-color:rgba(180,208,255,.85);
+  box-shadow:0 0 18px rgba(120,160,255,.4)}
+.linkrow{display:flex;align-items:center;justify-content:center;gap:12px}
+.note{margin:0;font-size:11.5px;line-height:1.4;color:var(--dim);text-align:left;text-shadow:0 0 2px rgba(0,0,0,.9)}
+:focus-visible{outline:2px solid #9bbcff;outline-offset:2px}
+@media (max-height:620px){.hint{display:none}}
+</style>
+</head>
+<body>
+<canvas id="bgc" aria-hidden="true"></canvas>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div id="flash" aria-hidden="true"></div>
+
+<h1 class="sr">별이 된 문장.</h1>
+<p id="live" class="sr" role="status" aria-live="polite"></p>
+<p id="skip">화면을 누르면 오프닝을 건너뜁니다</p>
+
+<div class="ui" id="ui" role="region" aria-label="별 조작">
+  <p class="sub">손을 대면 흩어지고, 놓으면 다시 모입니다.</p>
+  <p class="hint">누르면 다음 문장, 길게 누르면 블랙홀</p>
+  <form class="row" id="form" autocomplete="off">
+    <input id="msg" type="text" maxlength="20" placeholder="예: 우리 팀 화이팅" aria-label="내 문장 (최대 20자)" enterkeyhint="done" spellcheck="false">
+    <button class="go" type="submit">별로 만들기</button>
+  </form>
+  <div class="shapes" role="group" aria-label="모양 바꾸기">
+    <button type="button" data-shape="text" aria-pressed="true">문장</button>
+    <button type="button" data-shape="heart" aria-pressed="false">하트</button>
+    <button type="button" data-shape="galaxy" aria-pressed="false">은하</button>
+    <button type="button" data-shape="fire" aria-pressed="false">불꽃</button>
+  </div>
+  <div class="linkrow">
+    <button type="button" id="copy">링크 복사</button>
+    <p class="note">링크에는 문장이 그대로 들어갑니다. 개인정보는 넣지 마세요.</p>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+const TITLE = '별이 된 문장.';
+const FONT = '"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+const MAX_LEN = 20;
+const SHAPE_NAME = { text: '문장', heart: '하트', galaxy: '은하', fire: '불꽃' };
+const HOLD = 0.35;          // 길게 누르기 기준(초)
+const MAX_FLASH = 2;        // 1초 안에 섬광 최대 횟수 (규칙: 3회 초과 금지)
+const SHOCK_V = 1800;       // 충격파 속도(px/초)
+const K_BASE = 50;          // 스프링 강성
+const KBH = 14;             // 블랙홀 강성
+const RAMP = 3.2;           // 스프링이 서서히 붙는 속도
+
+const $ = id => document.getElementById(id);
+const sky = $('sky'), bgc = $('bgc'), ctx = sky.getContext('2d');
+const flashEl = $('flash'), ui = $('ui'), live = $('live');
+const form = $('form'), input = $('msg'), copyBtn = $('copy');
+const mq = matchMedia('(prefers-reduced-motion: reduce)');
+const coarse = matchMedia('(pointer: coarse)');
+const rnd = Math.random;
+const TAU = Math.PI * 2;
+
+let reduced = mq.matches;
+let W = 0, H = 0, dpr = 1, uiH = 0;
+let T = 0, last = 0, raf = 0, running = false;
+
+// ---------- 스프라이트 (둥근 점 6색) ----------
+const COLORS = [[236,243,255],[150,205,255],[255,214,140],[255,200,110],[255,140,60],[255,92,52]];
+const sprites = COLORS.map(c => {
+  const s = document.createElement('canvas'); s.width = s.height = 32;
+  const g = s.getContext('2d'), rgb = c.join(',');
+  const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+  gr.addColorStop(0, 'rgba(' + rgb + ',1)');
+  gr.addColorStop(0.28, 'rgba(' + rgb + ',0.9)');
+  gr.addColorStop(0.5, 'rgba(' + rgb + ',0.36)');
+  gr.addColorStop(1, 'rgba(' + rgb + ',0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 32, 32);
+  return s;
+});
+
+// ---------- 입자 ----------
+const KEYS = ['x','y','vx','vy','tx','ty','bx','by','ga','gr','gw','oR','oA','sz','ph','sp','al','kk','cz','ro','rf','wt','st','heat'];
+let N = 0, P = {}, col = new Uint8Array(0);
+
+function initParticles(n) {
+  N = n; P = {};
+  for (const k of KEYS) P[k] = new Float32Array(n);
+  col = new Uint8Array(n);
+  const { x, y, sz, ph, sp, al, kk, cz, ro, rf } = P;
+  for (let i = 0; i < n; i++) {
+    x[i] = W / 2; y[i] = H / 2;
+    sz[i] = 0.6 + (W <= 600 ? 1.1 : 1.6) * Math.pow(rnd(), 2.3);   // 0.6 - 2.2px (휴대폰은 1.7px까지)
+    ph[i] = rnd() * TAU;
+    sp[i] = 0.8 + rnd() * 2.6;                          // 반짝임 주기
+    al[i] = 0.65 + 0.35 * rnd();
+    const r = rnd(); col[i] = r < 0.72 ? 0 : r < 0.9 ? 1 : 2;
+    kk[i] = K_BASE * (0.75 + 0.5 * rnd());
+    cz[i] = 2 * (0.5 + 0.3 * rnd()) * Math.sqrt(kk[i]); // 감쇠비 0.5 - 0.8: 살짝 지나쳤다 자리 잡음
+    const u = rnd(); ro[i] = 2 + 30 * u * u;            // 블랙홀 궤도 반지름
+    rf[i] = rnd();
+  }
+}
+
+// ---------- 상태 ----------
+let shape = 'text';
+const list = [TITLE, '오늘도 수고했어요.'];
+let idx = 0;
+const anchor = { x: 0, y: 0 };
+const intro = { on: true, t: 0, stage: 0 };   // stage 0 빛, 1 폭발, 2 소용돌이, 3 모임(라이브)
+const bh = { on: false, x: 0, y: 0, t0: 0 };
+const ptr = { x: -999, y: -999, in: false, down: false, t0: 0, skipped: false };
+const shocks = [], rings = [], flashes = [];
+let flashT0 = -9, flashS = 0;
+
+// ---------- 배경 (정적) ----------
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+function drawBg() {
+  const g = bgc.getContext('2d');
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const diag = Math.hypot(W, H);
+  const base = g.createRadialGradient(W / 2, H * 0.45, 0, W / 2, H * 0.5, diag * 0.62);
+  base.addColorStop(0, '#0a0e25'); base.addColorStop(0.45, '#05060f'); base.addColorStop(1, '#010207');
+  g.fillStyle = base; g.fillRect(0, 0, W, H);
+  // 성운 3덩어리
+  const neb = [[0.2, 0.28, 0.5, '90,62,210', 0.15, -0.5], [0.82, 0.64, 0.46, '40,120,225', 0.12, 0.4], [0.52, 0.88, 0.4, '175,70,150', 0.075, 0]];
+  g.globalCompositeOperation = 'lighter';
+  for (const [nx, ny, nr, rgb, a, rot] of neb) {
+    const R = Math.max(W, H) * nr;
+    g.save(); g.translate(W * nx, H * ny); g.rotate(rot); g.scale(1, 0.58);
+    const gr = g.createRadialGradient(0, 0, 0, 0, 0, R);
+    gr.addColorStop(0, 'rgba(' + rgb + ',' + a + ')'); gr.addColorStop(0.5, 'rgba(' + rgb + ',' + (a * 0.38) + ')'); gr.addColorStop(1, 'rgba(' + rgb + ',0)');
+    g.fillStyle = gr; g.fillRect(-R, -R, R * 2, R * 2); g.restore();
+  }
+  // 움직이지 않는 배경 별 (고정 시드)
+  const r = mulberry(20261013), count = W <= 600 ? 260 : 440;
+  for (let i = 0; i < count; i++) {
+    const px = r() * W, py = r() * H, s = 0.25 + r() * 0.65, a = 0.15 + r() * 0.5, k = r();
+    g.fillStyle = k < 0.7 ? 'rgba(235,242,255,' + a + ')' : k < 0.88 ? 'rgba(160,205,255,' + a + ')' : 'rgba(255,220,160,' + a + ')';
+    g.beginPath(); g.arc(px, py, s, 0, TAU); g.fill();
+  }
+  // 가장자리 비네트
+  g.globalCompositeOperation = 'source-over';
+  const vg = g.createRadialGradient(W / 2, H / 2, diag * 0.28, W / 2, H / 2, diag * 0.62);
+  vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.5)');
+  g.fillStyle = vg; g.fillRect(0, 0, W, H);
+}
+
+// ---------- 문장 -> 목표 위치 ----------
+function region() {
+  const top = 18, bot = Math.max(top + 140, H - uiH - 14);
+  return { top, bot, cy: top + (bot - top) * 0.54, h: bot - top };
+}
+const mctx = document.createElement('canvas').getContext('2d');
+const measure = s => { mctx.font = 'bold 100px ' + FONT; return mctx.measureText(s).width; };
+
+function bestSplit(t) {
+  const ch = Array.from(t); if (ch.length < 2) return null;
+  const mid = ch.length / 2; let best = -1, bd = 1e9;
+  ch.forEach((c, i) => { if (c === ' ' && Math.abs(i - mid) < bd) { bd = Math.abs(i - mid); best = i; } });
+  if (best > 0 && best < ch.length - 1) return [ch.slice(0, best).join('').trim(), ch.slice(best + 1).join('').trim()];
+  const h = Math.ceil(ch.length / 2);
+  return [ch.slice(0, h).join(''), ch.slice(h).join('')];
+}
+
+function layoutText(txt) {
+  const r = region();
+  const maxF = Math.min(r.h * 0.3, 200), availW = W * 0.8, availH = r.h * 0.86;
+  const fit = ls => Math.min(maxF, availW / (Math.max(...ls.map(measure)) / 100), availH / (ls.length * 1.22));
+  let lines = [txt], f = fit(lines);
+  if (f < maxF * 0.62) {                       // 길면 두 줄
+    const sp = bestSplit(txt);
+    if (sp) { const f2 = fit(sp); if (f2 > f * 1.15) { lines = sp; f = f2; } }
+  }
+  return { lines, f };
+}
+
+const tcv = document.createElement('canvas');
+const tctx = tcv.getContext('2d', { willReadFrequently: true });
+
+function buildText() {
+  const r = region(), { lines, f } = layoutText(list[idx]);
+  dotT = Math.max(0.5, Math.min(1, f / 100));      // 글자가 작으면 점도 작게: 획이 뭉개지지 않게
+  tcv.width = W; tcv.height = H;
+  const c = tctx; c.clearRect(0, 0, W, H);
+  c.font = 'bold ' + f + 'px ' + FONT; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillStyle = '#fff'; c.strokeStyle = '#fff'; c.lineWidth = f * 0.025; c.lineJoin = 'round';
+  const lh = f * 1.22, y0 = r.cy - (lines.length - 1) * lh / 2;
+  lines.forEach((s, k) => { c.strokeText(s, W / 2, y0 + k * lh); c.fillText(s, W / 2, y0 + k * lh); });
+  const d = c.getImageData(0, 0, W, H).data;
+  let L = 0;
+  for (let j = 3; j < d.length; j += 4) if (d[j] > 110) L++;
+  const g = Math.max(1.15, Math.sqrt(Math.max(L, 1) / N));
+  const pts = [];
+  for (let yy = g * 0.5; yy < H; yy += g) for (let xx = g * 0.5; xx < W; xx += g) {
+    if (d[((yy | 0) * W + (xx | 0)) * 4 + 3] > 110) pts.push(xx + (rnd() - 0.5) * g * 0.7, yy + (rnd() - 0.5) * g * 0.7);
+  }
+  let M = pts.length / 2;
+  if (M < 1) { pts.push(W / 2, r.cy); M = 1; }
+  for (let i = M - 1; i > 0; i--) {             // 섞어서 모이는 길이 제각각이 되게
+    const j = (rnd() * (i + 1)) | 0, a = pts[2 * i], b = pts[2 * i + 1];
+    pts[2 * i] = pts[2 * j]; pts[2 * i + 1] = pts[2 * j + 1]; pts[2 * j] = a; pts[2 * j + 1] = b;
+  }
+  const { bx, by } = P;
+  for (let i = 0; i < N; i++) {
+    const s = i < M ? i : (rnd() * M) | 0, j = i < M ? 0 : g * 0.9;
+    bx[i] = pts[2 * s] + (rnd() - 0.5) * j - anchor.x;
+    by[i] = pts[2 * s + 1] + (rnd() - 0.5) * j - anchor.y;
+  }
+}
+
+const HP = [];
+for (let k = 0; k < 160; k++) { const t = k / 160 * TAU; HP.push([16 * Math.pow(Math.sin(t), 3), 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)]); }
+const HY0 = Math.min(...HP.map(p => p[1])), HY1 = Math.max(...HP.map(p => p[1]));
+function inHeart(px, py) {
+  let c = false;
+  for (let i = 0, j = HP.length - 1; i < HP.length; j = i++) {
+    const xi = HP[i][0], yi = HP[i][1], xj = HP[j][0], yj = HP[j][1];
+    if ((yi > py) !== (yj > py) && px < (xj - xi) * (py - yi) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+}
+function buildHeart(r) {
+  const s = Math.min(W * 0.74 / 32, r.h * 0.8 / (HY1 - HY0)), cyh = (HY0 + HY1) / 2;
+  const { bx, by } = P;
+  for (let i = 0; i < N; i++) {
+    let hx, hy;
+    if (rnd() < 0.2) {                          // 가장자리를 또렷하게
+      const t = rnd() * TAU, k = 0.985 + 0.03 * rnd();
+      hx = 16 * Math.pow(Math.sin(t), 3) * k;
+      hy = (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * k;
+    } else {
+      do { hx = (rnd() * 2 - 1) * 16; hy = HY0 + rnd() * (HY1 - HY0); } while (!inHeart(hx, hy));
+    }
+    bx[i] = hx * s; by[i] = -(hy - cyh) * s;
+  }
+}
+
+const gauss = () => Math.sqrt(-2 * Math.log(1 - rnd())) * Math.cos(TAU * rnd());
+function buildGalaxy(r) {
+  const Rg = Math.min(W * 0.5, r.h * 0.78);
+  const { gr, ga, gw } = P;
+  for (let i = 0; i < N; i++) {
+    let rr, th;
+    if (rnd() < 0.2) { rr = Math.min(Rg, Rg * 0.12 * Math.abs(gauss())); th = rnd() * TAU; }
+    else {
+      rr = Rg * Math.pow(rnd(), 0.7);
+      th = (rnd() < 0.5 ? 0 : Math.PI) + 3.7 * (rr / Rg) + gauss() * (0.12 + 0.3 * (1 - rr / Rg));
+    }
+    gr[i] = rr; ga[i] = th; gw[i] = 0.32 / (0.45 + rr / Rg * 1.4);
+  }
+}
+
+function buildTargets() {
+  const r = region(); anchor.x = W / 2; anchor.y = r.cy; dotT = 1;
+  if (shape === 'text') buildText(); else if (shape === 'heart') buildHeart(r); else if (shape === 'galaxy') buildGalaxy(r);
+}
+
+const TILT = -0.32, cT = Math.cos(TILT), sT = Math.sin(TILT);
+function updateTargets() {
+  const { tx, ty, bx, by, ga, gr, gw, ph } = P, ox = anchor.x, oy = anchor.y;
+  if (shape === 'galaxy') {
+    for (let i = 0; i < N; i++) {
+      const a = ga[i] + T * gw[i], ex = Math.cos(a) * gr[i], ey = Math.sin(a) * gr[i] * 0.46;
+      tx[i] = ox + ex * cT - ey * sT; ty[i] = oy + ex * sT + ey * cT;
+    }
+  } else {
+    let sc = 1;
+    if (shape === 'heart' && !reduced) {         // 두근두근
+      const p = (T % 1.15) / 1.15;
+      sc = 1 + 0.045 * (Math.exp(-Math.pow((p - 0.1) / 0.07, 2)) + 0.7 * Math.exp(-Math.pow((p - 0.3) / 0.07, 2)));
+    }
+    const amp = reduced ? 0 : (W <= 600 ? 1.1 : 1.5);
+    for (let i = 0; i < N; i++) {                // 아주 천천히 흔들림
+      tx[i] = ox + bx[i] * sc + Math.sin(T * 0.42 + ph[i] * 2) * amp;
+      ty[i] = oy + by[i] * sc + Math.cos(T * 0.36 + ph[i] * 3) * amp;
+    }
+  }
+}
+
+// ---------- 불꽃 ----------
+const groundY = () => Math.max(H * 0.5, H - uiH + 12);
+const fireG = () => Math.max(520, H * 1.05);
+function launch(i, delayed) {
+  const { x, y, vx, vy, wt } = P, e = i % 5, gx = W * (0.12 + 0.19 * e), g = groundY();
+  x[i] = gx + (rnd() - 0.5) * 26; y[i] = g + rnd() * 12;
+  const apex = (g - 20) * (0.3 + 0.62 * Math.pow(rnd(), 0.8));
+  vy[i] = -Math.sqrt(2 * fireG() * apex);
+  vx[i] = (rnd() - 0.5) * 160 + (W / 2 - gx) * 0.1 * (0.5 + rnd());
+  wt[i] = delayed ? rnd() * 0.9 : 0;
+}
+function enterFire() {
+  const { vx, vy, wt } = P;
+  for (let i = 0; i < N; i++) { wt[i] = 0; vx[i] += (rnd() - 0.5) * 220; vy[i] = -(300 + rnd() * 700); }
+}
+
+// ---------- 모양/문장 전환 ----------
+function regather(stagger, kick) {
+  const { wt, st, vx, vy } = P;
+  for (let i = 0; i < N; i++) {
+    wt[i] = rnd() * stagger; st[i] = 0;
+    if (kick) { const a = rnd() * TAU, v = kick * (0.4 + rnd()); vx[i] += Math.cos(a) * v; vy[i] += Math.sin(a) * v; }
+  }
+}
+function updateLive() {
+  live.textContent = shape === 'text' ? list[idx] : SHAPE_NAME[shape] + ' 모양. 현재 문장: ' + list[idx];
+}
+function updateButtons() {
+  document.querySelectorAll('[data-shape]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.shape === shape)));
+}
+function stillFire() {                          // 동작 줄이기: 솟는 별을 한 장면으로 고정
+  const { x, y, vx, vy, wt } = P, G = fireG();
+  for (let i = 0; i < N; i++) {
+    launch(i, false);
+    const t = rnd() * (-vy[i] / G * 2);
+    x[i] += vx[i] * t; y[i] += vy[i] * t + 0.5 * G * t * t; wt[i] = 0; vx[i] = 0; vy[i] = -200;
+  }
+}
+function snapStill() {                          // 동작 줄이기: 순간 배치 + 한 장 그림
+  dotK = dotT;
+  if (shape === 'fire') stillFire();
+  else { updateTargets(); P.x.set(P.tx); P.y.set(P.ty); P.vx.fill(0); P.vy.fill(0); }
+  draw();
+}
+function setShape(s) {
+  shape = s; updateButtons(); updateLive();
+  if (s === 'fire') { if (reduced) snapStill(); else enterFire(); return; }
+  buildTargets();
+  if (reduced) snapStill(); else regather(0.4, 150);
+}
+function showSentence(txt) {
+  let i = list.indexOf(txt);
+  if (i < 0) { list.push(txt); i = list.length - 1; if (list.length > 14) { list.splice(2, 1); i = list.indexOf(txt); } }
+  idx = i; shape = 'text'; updateButtons(); updateLive(); buildTargets();
+  if (reduced) snapStill(); else regather(0.5, 420);
+}
+const clean = s => Array.from(String(s).replace(/\s+/g, ' ').trim()).slice(0, MAX_LEN).join('');
+
+// ---------- 섬광 (1초에 MAX_FLASH회 이하) ----------
+function tryFlash(x, y, s) {
+  if (reduced) return;
+  const now = performance.now() / 1000;
+  while (flashes.length && now - flashes[0] > 1) flashes.shift();
+  if (flashes.length >= MAX_FLASH) return;
+  flashes.push(now); flashT0 = now; flashS = s;
+  flashEl.style.setProperty('--fx', x + 'px'); flashEl.style.setProperty('--fy', y + 'px');
+}
+
+// ---------- 오프닝 ----------
+function explode() {
+  const { x, y, vx, vy } = P, cx = W / 2, cy = H / 2, scale = Math.hypot(W, H) / 1700;
+  for (let i = 0; i < N; i++) {
+    const a = rnd() * TAU, lobe = 1 + 0.38 * Math.cos(2 * a + 0.4);   // 두 팔이 생기도록 살짝 찌그러뜨림
+    const s = (160 + 1350 * Math.pow(rnd(), 1.3)) * lobe * scale;
+    x[i] = cx + Math.cos(a) * 4; y[i] = cy + Math.sin(a) * 4; vx[i] = Math.cos(a) * s; vy[i] = Math.sin(a) * s;
+  }
+}
+function initSwirl() {
+  const { x, y, oR, oA } = P, cx = W / 2, cy = H / 2;
+  for (let i = 0; i < N; i++) { oR[i] = Math.hypot(x[i] - cx, y[i] - cy); oA[i] = Math.atan2(y[i] - cy, x[i] - cx); }
+}
+function beginLive() {
+  intro.stage = 3; document.body.classList.add('ready');
+  const { wt, st } = P;
+  for (let i = 0; i < N; i++) { wt[i] = rnd() * 0.22; st[i] = 0; }
+  updateLive();
+}
+function skipIntro() {
+  if (!intro.on || intro.stage >= 3) return;
+  if (intro.stage === 0) explode();
+  intro.t = Math.max(intro.t, 3.0); beginLive();
+}
+function introStep(dt) {
+  intro.t += dt;
+  const t = intro.t, { x, y, vx, vy, oR, oA } = P, cx = W / 2, cy = H / 2;
+  if (intro.stage === 0 && t >= 0.6) { explode(); intro.stage = 1; tryFlash(cx, cy, 1); }
+  if (intro.stage === 1 && t >= 1.6) { initSwirl(); intro.stage = 2; }
+  if (intro.stage === 1) {
+    const dr = Math.exp(-1.15 * dt);
+    for (let i = 0; i < N; i++) { x[i] += vx[i] * dt; y[i] += vy[i] * dt; vx[i] *= dr; vy[i] *= dr; }
+  } else if (intro.stage === 2) {
+    const e = Math.min(1, (t - 1.6) / 0.7), ys = 1 - 0.4 * e * e * (3 - 2 * e), dc = Math.exp(-0.28 * dt);
+    for (let i = 0; i < N; i++) {
+      const r = (oR[i] *= dc);
+      oA[i] += (2.6 / (1 + r / 200)) * dt;               // 안쪽일수록 빠르게: 은하처럼
+      const nx = cx + Math.cos(oA[i]) * r, ny = cy + Math.sin(oA[i]) * r * ys;
+      vx[i] = (nx - x[i]) / dt; vy[i] = (ny - y[i]) / dt; x[i] = nx; y[i] = ny;
+    }
+    if (t >= 3.0) beginLive();
+  }
+  if (intro.stage >= 3 && t >= 4.0) intro.on = false;
+}
+
+// ---------- 조작 효과 ----------
+function shockwave(px, py) {
+  shocks.push({ x: px, y: py, R: 0, prev: 0, pw: 1 });
+  rings.push({ x: px, y: py, t: 0, pw: 1, rgb: '190,215,255' });
+  tryFlash(px, py, 0.8);
+  const { wt, st } = P;
+  if (shape !== 'fire') {
+    if (shape === 'text') idx = (idx + 1) % list.length;
+    updateLive(); buildTargets();
+    for (let i = 0; i < N; i++) { wt[i] = 1.2 + rnd() * 0.3; st[i] = 0; }   // 1.2초 뒤 모임
+  }
+}
+function startBH() { bh.on = true; bh.x = ptr.x; bh.y = ptr.y; bh.t0 = T; }
+function supernova(held) {
+  const pw = Math.max(0, Math.min(1, (held - HOLD) / 2.2)), sp = 450 + 1300 * pw;
+  bh.on = false;
+  const { x, y, vx, vy, rf, wt, st, heat } = P;
+  for (let i = 0; i < N; i++) {
+    const dx = x[i] - bh.x, dy = y[i] - bh.y, d = Math.hypot(dx, dy);
+    const a = (d > 1 ? Math.atan2(dy, dx) : rnd() * TAU) + (rnd() - 0.5) * 0.5, v = sp * (0.35 + 0.65 * rf[i]);
+    vx[i] = Math.cos(a) * v; vy[i] = Math.sin(a) * v; heat[i] = 1;
+    if (shape !== 'fire') { wt[i] = 1.1 + 0.5 * pw + rnd() * 0.3; st[i] = 0; }
+  }
+  shocks.push({ x: bh.x, y: bh.y, R: 0, prev: 0, pw: 0.25 });
+  rings.push({ x: bh.x, y: bh.y, t: 0, pw: 1 + pw, rgb: '255,222,160' });
+  tryFlash(bh.x, bh.y, 1);
+}
+
+// ---------- 물리 ----------
+function liveStep(dt) {
+  const { x, y, vx, vy, tx, ty, kk, cz, ro, rf, wt, st, heat, ph } = P;
+  updateTargets();
+  dotK += (dotT - dotK) * Math.min(1, dt * 3);
+  if (ptr.down && !bh.on && !reduced && (performance.now() - ptr.t0) / 1000 >= HOLD) startBH();
+  if (bh.on) { bh.x = ptr.x; bh.y = ptr.y; }
+  const R = Math.max(80, Math.min(150, Math.min(W, H) * 0.15)), R2 = R * R;
+  const pushOn = ptr.in && !bh.on && !reduced;
+  const fire = shape === 'fire', G = fireG(), gy = groundY(), maxR = Math.hypot(W, H) + 300;
+  for (const s of shocks) { s.prev = s.R; s.R += SHOCK_V * dt; }
+  for (let k = shocks.length - 1; k >= 0; k--) if (shocks[k].R > maxR) shocks.splice(k, 1);
+  const bhA = T * 2.2;
+  for (let i = 0; i < N; i++) {
+    let px = x[i], py = y[i], vxi = vx[i], vyi = vy[i], ax = 0, ay = 0, damp;
+    if (bh.on) {
+      const a = bhA * (1 + 12 / (ro[i] + 6)) + ph[i] * 3;
+      const dx = bh.x + Math.cos(a) * ro[i] - px, dy = bh.y + Math.sin(a) * ro[i] - py;
+      ax = KBH * dx - dy * KBH * 0.42; ay = KBH * dy + dx * KBH * 0.42; damp = 4.2;
+    } else if (fire) {
+      if (wt[i] > 0) { wt[i] -= dt; if (wt[i] <= 0) launch(i, false); continue; }
+      ay = G; damp = 0.15;
+    } else if (wt[i] > 0) {
+      wt[i] -= dt; st[i] = 0; damp = 0.85;
+      ax = Math.cos(T * 0.9 + ph[i] * 5) * 18; ay = Math.sin(T * 0.8 + ph[i] * 7) * 18;
+    } else {
+      const s = st[i] = Math.min(1, st[i] + dt * RAMP), k = kk[i] * s;
+      ax = k * (tx[i] - px); ay = k * (ty[i] - py); damp = 0.85 + (cz[i] - 0.85) * s;
+    }
+    if (pushOn) {
+      const dx = px - ptr.x, dy = py - ptr.y, d2 = dx * dx + dy * dy;
+      if (d2 < R2) {
+        const d = Math.sqrt(d2) + 0.001, q = 1 - d / R, f = 14000 * q * Math.sqrt(q);
+        ax += (dx - dy * 0.18) / d * f; ay += (dy + dx * 0.18) / d * f;
+      }
+    }
+    for (let k = 0; k < shocks.length; k++) {
+      const s = shocks[k], dx = px - s.x, dy = py - s.y, d = Math.sqrt(dx * dx + dy * dy) + 0.001;
+      if (d > s.prev && d <= s.R) {
+        const f = 1100 * s.pw * (0.7 + 0.6 * rf[i]) / (1 + d / 450);
+        vxi += dx / d * f; vyi += dy / d * f;
+      }
+    }
+    vxi += (ax - damp * vxi) * dt; vyi += (ay - damp * vyi) * dt;
+    px += vxi * dt; py += vyi * dt;
+    if (fire && vyi > 0 && py > gy + 20) { launch(i, true); continue; }
+    x[i] = px; y[i] = py; vx[i] = vxi; vy[i] = vyi;
+    if (heat[i] > 0) heat[i] = Math.max(0, heat[i] - dt * 0.7);
+  }
+  for (const r of rings) r.t += dt;
+  for (let k = rings.length - 1; k >= 0; k--) if (rings[k].t > 0.8) rings.splice(k, 1);
+}
+
+// ---------- 그리기 ----------
+let movers = 1e9, calmTicks = 0, dotK = 1, dotT = 1;
+function draw() {
+  const c = ctx, trailOn = !reduced;
+  const ta = shape === 'fire' ? 0.14 : intro.stage === 1 ? 0.2 : 0.22;
+  // 별이 거의 멈춰 있으면 가끔 완전히 지워서, 8비트 반올림으로 남는 희미한 잔상 찌꺼기를 없앤다
+  let hard = !trailOn;
+  if (trailOn) { if (movers < N * 0.015) { if (++calmTicks >= 45) { calmTicks = 0; hard = true; } } else calmTicks = 0; }
+  const gain = hard ? 1 : ta;
+  c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (!hard) { c.globalCompositeOperation = 'destination-out'; c.globalAlpha = ta; c.fillStyle = '#000'; c.fillRect(0, 0, W, H); }
+  else { c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.clearRect(0, 0, W, H); }
+  c.globalCompositeOperation = 'lighter';
+  const glow = (gx, gy, D, a) => { c.globalAlpha = Math.min(1, a * gain); c.drawImage(sprites[0], gx - D / 2, gy - D / 2, D, D); };
+  const cx = W / 2, cy = H / 2;
+
+  if (intro.on) {
+    const t = intro.t;
+    bgc.style.opacity = Math.max(0, Math.min(1, (t - 0.6) / 1.0));
+    if (intro.stage === 0) {                       // 어둠 속 깜빡이는 빛 하나
+      const f = 0.5 + 0.5 * Math.sin(t * 44) * Math.sin(t * 27 + 1.3), a = (0.3 + 0.7 * f) * Math.min(1, t / 0.25 + 0.2);
+      glow(cx, cy, 9 + 7 * f + t * 14, a); glow(cx, cy, 90 + 40 * f + t * 90, 0.18 * a);
+    } else if (intro.stage === 1 && t < 1.4) {     // 터지는 빛
+      const u = (t - 0.6) / 0.8;
+      glow(cx, cy, 60 + 700 * u, 0.9 * Math.pow(1 - u, 1.6)); glow(cx, cy, 30 + 120 * u, 1 - u);
+    }
+  } else if (bgc.style.opacity !== '1') bgc.style.opacity = 1;
+
+  if (ptr.in && !bh.on && intro.stage >= 3 && !reduced) glow(ptr.x, ptr.y, 96, 0.1);
+  if (bh.on) {
+    const g = Math.min(1, (T - bh.t0) / 1.2);
+    glow(bh.x, bh.y, 40 + 150 * g, 0.55 * g); glow(bh.x, bh.y, 22 + 30 * g, 0.9 * g);
+  }
+  for (const r of rings) {
+    const age = r.t, fade = Math.max(0, 1 - age / 0.8);
+    c.globalAlpha = 0.5 * fade; c.strokeStyle = 'rgb(' + r.rgb + ')'; c.lineWidth = 1.5 + 5 * fade * r.pw;
+    c.beginPath(); c.arc(r.x, r.y, age * SHOCK_V * 0.9, 0, TAU); c.stroke();
+  }
+
+  if (intro.stage >= 1) {
+    const { x, y, vx, vy, sz, ph, sp, al, heat, wt } = P, fire = shape === 'fire';
+    let mv = 0;
+    for (let i = 0; i < N; i++) {
+      if (fire && wt[i] > 0) continue;
+      const px = x[i], py = y[i];
+      if (px < -20 || px > W + 20 || py < -20 || py > H + 20) { mv++; continue; }
+      const vxi = vx[i], vyi = vy[i], spd = Math.sqrt(vxi * vxi + vyi * vyi);
+      if (spd > 40) mv++;
+      const tw = reduced ? 0.8 : 0.5 + 0.5 * Math.sin(T * sp[i] + ph[i]);
+      let B = Math.min(1, al[i] * (0.5 + 0.5 * tw) * (1.9 - dotK * 0.9)), s = col[i];
+      if (fire) {
+        s = vyi < -160 ? 3 : vyi < 120 ? 4 : 5;
+        B *= (vyi > 0 ? Math.max(0.35, 1 - vyi / 900) : 1) * (reduced ? 1 : 0.6 + 0.4 * rnd());
+      } else if (heat[i] > 0.55) s = 3; else if (heat[i] > 0.25) s = 2;
+      const a = Math.min(1, gain * B + Math.min(0.5, spd * 0.001));
+      const D = sz[i] * 4.6 * dotK * (0.88 + 0.24 * tw);
+      c.globalAlpha = a; c.drawImage(sprites[s], px - D / 2, py - D / 2, D, D);
+    }
+    movers = mv;
+  } else movers = 1e9;
+
+  // 섬광 0.15초
+  if (flashS > 0) {
+    const k = 1 - (performance.now() / 1000 - flashT0) / 0.15;
+    if (k <= 0) { flashS = 0; flashEl.style.opacity = 0; } else flashEl.style.opacity = (flashS * k * 0.55).toFixed(3);
+  }
+  c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+}
+
+function frame(now) {
+  if (!running) return;
+  raf = requestAnimationFrame(frame);
+  let dt = (now - last) / 1000; last = now;
+  if (!(dt > 0)) return;
+  if (dt > 1 / 30) dt = 1 / 30;
+  T += dt;
+  if (intro.on) introStep(dt);
+  if (intro.stage >= 3) liveStep(dt);
+  draw();
+}
+function start() { if (running || reduced) return; running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
+function stop() { running = false; cancelAnimationFrame(raf); }
+
+// ---------- 크기 / 배치 ----------
+function layout() {
+  W = Math.max(1, Math.round(innerWidth)); H = Math.max(1, Math.round(innerHeight));
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  for (const cv of [sky, bgc]) {
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  }
+  drawBg();
+  uiH = ui.offsetHeight;
+  const want = W <= 600 ? 1800 : 4000;
+  if (want !== N) {
+    initParticles(want);
+    if (intro.stage >= 3) { const { x, y } = P; for (let i = 0; i < N; i++) { x[i] = rnd() * W; y[i] = rnd() * H; } }
+    else if (intro.stage >= 1) explode();
+  }
+  if (shape === 'fire') return reduced ? snapStill() : undefined;
+  buildTargets();
+  if (reduced) snapStill(); else if (intro.stage >= 3) regather(0.3, 0);
+}
+let rt = 0;
+const relayout = () => { clearTimeout(rt); rt = setTimeout(layout, 100); };
+addEventListener('resize', relayout);
+if (window.ResizeObserver) new ResizeObserver(() => { if (ui.offsetHeight !== uiH) relayout(); }).observe(ui);
+
+// ---------- 입력 ----------
+addEventListener('pointermove', e => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.in = true; });
+document.documentElement.addEventListener('pointerleave', () => { if (!ptr.down) ptr.in = false; });
+addEventListener('blur', () => { ptr.in = false; });
+addEventListener('pointerdown', e => {                       // 오프닝 중에는 어디를 눌러도 건너뛰기
+  if (intro.on && intro.stage < 3) { skipIntro(); ptr.skipped = true; }
+}, true);
+sky.addEventListener('pointerdown', e => {
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+  if (ptr.skipped) { ptr.skipped = false; return; }
+  ptr.x = e.clientX; ptr.y = e.clientY; ptr.in = true; ptr.down = true; ptr.t0 = performance.now();
+  try { sky.setPointerCapture(e.pointerId); } catch (_) {}
+});
+function onUp(e) {
+  ptr.skipped = false;
+  if (e.pointerType !== 'mouse') ptr.in = false;
+  if (!ptr.down) return;
+  ptr.down = false;
+  if (reduced) return;
+  const held = (performance.now() - ptr.t0) / 1000;
+  if (bh.on) supernova(held); else shockwave(ptr.x, ptr.y);
+}
+addEventListener('pointerup', onUp);
+addEventListener('pointercancel', e => { if (bh.on) { bh.on = false; regather(0.3, 0); } ptr.down = false; ptr.in = false; });
+sky.addEventListener('contextmenu', e => e.preventDefault());
+addEventListener('keydown', () => skipIntro());
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const t = clean(input.value);
+  if (!t) { input.focus(); return; }
+  showSentence(t); input.value = '';
+  if (coarse.matches) input.blur();
+});
+document.querySelectorAll('[data-shape]').forEach(b => b.addEventListener('click', () => setShape(b.dataset.shape)));
+
+let copyTimer = 0;
+copyBtn.addEventListener('click', async () => {
+  const url = location.href.split('#')[0].split('?')[0] + '?m=' + encodeURIComponent(list[idx]);
+  let ok = false;
+  try { await navigator.clipboard.writeText(url); ok = true; } catch (_) {}
+  if (!ok) {
+    const ta = document.createElement('textarea');
+    ta.value = url; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch (_) {}
+    ta.remove();
+  }
+  if (!ok) window.prompt('아래 링크를 복사하세요', url);
+  copyBtn.textContent = ok ? '복사했어요' : '링크 복사';
+  if (ok) live.textContent = '링크를 복사했어요';
+  clearTimeout(copyTimer);
+  copyTimer = setTimeout(() => { copyBtn.textContent = '링크 복사'; updateLive(); }, 1800);
+});
+
+document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
+const onMotion = e => {
+  reduced = e.matches; document.body.classList.toggle('reduced', reduced);
+  if (reduced) { stop(); intro.on = false; intro.stage = 3; document.body.classList.add('ready'); bgc.style.opacity = 1; shocks.length = rings.length = 0; bh.on = false; snapStill(); }
+  else { regather(0.3, 0); start(); }
+};
+if (mq.addEventListener) mq.addEventListener('change', onMotion); else if (mq.addListener) mq.addListener(onMotion);
+
+// ---------- 시작 ----------
+const m = clean(new URLSearchParams(location.search).get('m') || '');
+if (m) { if (list.indexOf(m) < 0) list.push(m); idx = list.indexOf(m); }
+document.body.classList.toggle('reduced', reduced);
+layout();
+updateLive();
+if (reduced) {
+  intro.on = false; intro.stage = 3; document.body.classList.add('ready'); bgc.style.opacity = 1; snapStill();
+} else start();
+})();
+</script>
+</body>
+</html>

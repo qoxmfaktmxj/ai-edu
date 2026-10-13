@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>빛이 사라지는 곳까지.</title>
+<meta name="description" content="스크롤을 내리면 수면에서 해구 바닥 약 11,000m까지 잠수하는 심해 탐험 사이트">
+<meta name="theme-color" content="#041a2e">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="is-intro">
+
+<canvas id="scene" aria-hidden="true"></canvas>
+<div id="track" aria-hidden="true"></div>
+
+<main id="ui">
+
+  <header id="hero">
+    <h1 id="title">빛이 사라지는 곳까지.</h1>
+    <p id="subtitle">스크롤을 내리면 잠수가 시작됩니다.</p>
+  </header>
+
+  <p id="hint"><span>스크롤로 잠수 시작</span><i class="chev"></i></p>
+
+  <aside id="hud" aria-label="잠수정 계기판">
+    <div class="gauge" aria-hidden="true">
+      <b class="seg s0"></b><b class="seg s1"></b><b class="seg s2"></b><b class="seg s3"></b><b class="seg s4"></b>
+      <em id="gmark"></em>
+    </div>
+    <dl class="cells">
+      <div class="cell main"><dt>수심</dt><dd><span id="v-depth">0</span><small> m</small></dd></div>
+      <div class="cell"><dt>수압</dt><dd><span id="v-press">약 1</span><small> 기압</small></dd></div>
+      <div class="cell"><dt>남은 햇빛</dt><dd><span id="v-sun">100</span><small> %</small></dd></div>
+      <div class="cell"><dt>지금 층</dt><dd><span id="v-layer">햇빛층</span></dd></div>
+    </dl>
+  </aside>
+
+  <section id="caption" aria-live="polite">
+    <h2 id="cap-layer">햇빛층</h2>
+    <p id="cap-text"></p>
+    <p id="cap-tag" class="tag"></p>
+  </section>
+
+  <section id="note">
+    <p>화면 속 생물의 위치는 연출이며 실제 서식 깊이와 다를 수 있습니다.</p>
+    <p>남은 햇빛 수치와 장면의 밝기도 이해를 돕기 위한 연출입니다.</p>
+  </section>
+
+  <div id="center-line" aria-live="polite">여기부터 햇빛은 닿지 않습니다.</div>
+
+  <section id="final">
+    <h2>가장 깊은 곳에 닿았습니다.</h2>
+    <button id="btn-return" type="button">수면으로 돌아가기</button>
+  </section>
+
+  <button id="btn-skip" type="button">오프닝 건너뛰기</button>
+  <button id="btn-sound" type="button" aria-pressed="false">소리 켜기</button>
+  <button id="btn-sonar" type="button" aria-label="소나 (스페이스 키)"><i class="ping"></i><span>소나</span></button>
+
+</main>
+
+<noscript><p class="noscript">이 사이트는 JavaScript가 켜져 있어야 동작합니다.</p></noscript>
+
+<script src="audio.js"></script>
+<script src="scene.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
