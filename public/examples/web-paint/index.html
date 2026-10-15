@@ -21,7 +21,7 @@
   .menubar strong { margin-right: 12px; font-weight: 600; }
   .menubar button { border: 0; background: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; }
   .menubar button:hover { background: #e6e6e6; }
-  .menubar .note { margin-left: auto; color: var(--muted); font-size: 12px; }
+  .menubar button:disabled { opacity: .5; cursor: default; }
 
   /* ribbon */
   .ribbon { display: flex; align-items: stretch; padding: 6px 10px 4px; background: var(--panel); border-block: 1px solid var(--line); overflow-x: auto; }
@@ -55,8 +55,17 @@
   /* work area */
   main { display: grid; grid-template-columns: 1fr 260px; min-height: 0; }
   .workspace { overflow: auto; background: var(--work); padding: 16px; position: relative; }
-  .stage { position: relative; width: max-content; box-shadow: 0 1px 4px rgba(0,0,0,.18); background: #fff; }
+  .stage { position: relative; width: max-content; margin: 0 12px 12px 0; box-shadow: 0 1px 4px rgba(0,0,0,.18); background: #fff; }
   .stage canvas { display: block; }
+  .canvas-resize { position: absolute; z-index: 4; width: 20px; height: 20px; padding: 0; border: 0; background: transparent; transform: translate(-50%, -50%); touch-action: none; }
+  .canvas-resize::after { content: ""; position: absolute; inset: 6px; border: 1px solid #737373; background: #fff; }
+  .canvas-resize:hover::after, .canvas-resize:focus-visible::after { border-color: var(--accent); background: var(--accent-soft); }
+  .canvas-resize:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .canvas-resize[data-resize="x"] { left: var(--resize-width, 100%); top: calc(var(--resize-height, 100%) / 2); cursor: ew-resize; }
+  .canvas-resize[data-resize="y"] { left: calc(var(--resize-width, 100%) / 2); top: var(--resize-height, 100%); cursor: ns-resize; }
+  .canvas-resize[data-resize="xy"] { left: var(--resize-width, 100%); top: var(--resize-height, 100%); cursor: nwse-resize; }
+  .stage.is-resizing::after { content: ""; position: absolute; z-index: 3; left: 0; top: 0; width: var(--resize-width); height: var(--resize-height); border: 1px dashed var(--accent); pointer-events: none; }
+  @media (pointer: coarse) { .canvas-resize { width: 40px; height: 40px; } .canvas-resize::after { inset: 15px; } }
   #overlay { position: absolute; left: 0; top: 0; pointer-events: none; }
   #main { cursor: crosshair; touch-action: none; }
   .floating { position: absolute; outline: 1px dashed var(--accent); cursor: move; touch-action: none; }
@@ -97,7 +106,6 @@
     .item { width: 170px; flex: none; }
     .thumb { height: 64px; }
     .menubar { overflow-x: auto; white-space: nowrap; }
-    .menubar .note { display: none; }
   }
 </style>
 </head>
@@ -106,10 +114,10 @@
     <strong>웹 그림판</strong>
     <button id="btnNew" title="새로 만들기">새로 만들기</button>
     <button id="btnSave" title="PNG로 저장 (Ctrl+S)">저장</button>
+    <button id="btnSaveAs" title="저장 위치와 파일명 선택 (Ctrl+Shift+S)">다른 이름으로 저장</button>
     <button id="btnUndo" title="실행 취소 (Ctrl+Z)">실행 취소</button>
     <button id="btnRedo" title="다시 실행 (Ctrl+Y)">다시 실행</button>
     <button id="btnPaste" title="붙여넣기 (Ctrl+V)">붙여넣기</button>
-    <span class="note">윈도우 그림판의 동작을 공부해 새로 만든 연습작</span>
   </div>
 
   <div class="ribbon">
@@ -185,6 +193,9 @@
       <div class="stage" id="stage">
         <canvas id="main" width="960" height="600"></canvas>
         <canvas id="overlay" width="960" height="600"></canvas>
+        <button class="canvas-resize" data-resize="x" aria-label="캔버스 가로 크기 조절" title="가로 크기 조절: 드래그 또는 좌우 방향키"></button>
+        <button class="canvas-resize" data-resize="y" aria-label="캔버스 세로 크기 조절" title="세로 크기 조절: 드래그 또는 위아래 방향키"></button>
+        <button class="canvas-resize" data-resize="xy" aria-label="캔버스 가로, 세로 크기 조절" title="가로, 세로 크기 조절: 드래그 또는 방향키 (Shift: 10px)"></button>
       </div>
     </div>
     <aside>
@@ -206,7 +217,7 @@
       <button id="zoomIn" title="확대 (Ctrl++)">+</button>
     </span>
   </div>
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast" role="status"></div>
 
 <script src="paint-core.js"></script>
 <script>
@@ -221,6 +232,7 @@
   const PALETTE = ["#000000", "#7f7f7f", "#880015", "#ed1c24", "#ff7f27", "#fff200", "#22b14c", "#00a2e8", "#3f48cc", "#a349a4",
                    "#ffffff", "#c3c3c3", "#b97a57", "#ffaec9", "#ffc90e", "#efe4b0", "#b5e61d", "#99d9ea", "#7092be", "#c8bfe7"];
   const ZOOMS = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8];
+  const MAX_SIDE = 8192;
   const FONT = '"Malgun Gothic", "Segoe UI", sans-serif', LINE = 1.25;
 
   const state = { tool: "pencil", prevTool: "pencil", primary: "#000000", secondary: "#ffffff", size: 3, tol: 0, zoom: 1, shapeFill: false, fontSize: 24 };
@@ -228,6 +240,7 @@
   let selectedId = null;
   let floating = null;     // image not yet committed: { el, src, w, h, x, y, kind: "paste" | "selection", url }
   let editor = null;       // text being typed: { el, x, y, color, size }
+  let canvasResize = null;
   const undo = [], redo = [];
 
   // ---------- helpers ----------
@@ -292,6 +305,7 @@
     $("zoom").value = String(z);
   }
   function setZoom(z) {
+    if (canvasResize) return;
     const old = state.zoom;
     if (z === old || !ZOOMS.includes(z)) return;
     const cx = (ws.scrollLeft + ws.clientWidth / 2) / old, cy = (ws.scrollTop + ws.clientHeight / 2) / old;
@@ -306,6 +320,69 @@
   $("zoomIn").addEventListener("click", () => stepZoom(1));
   $("zoomOut").addEventListener("click", () => stepZoom(-1));
   ws.addEventListener("wheel", (e) => { if (!e.ctrlKey) return; e.preventDefault(); stepZoom(e.deltaY < 0 ? 1 : -1); }, { passive: false });
+
+  // 드래그 중에는 경계만 미리 보고, 놓을 때 한 번 변경해 축소/재확대 시 원본을 보존한다.
+  const boundedSize = (n) => Math.max(1, Math.min(MAX_SIDE, Math.round(n)));
+  function changeCanvasSize(w, h) {
+    w = boundedSize(w); h = boundedSize(h);
+    if (w === canvas.width && h === canvas.height) return;
+    commitText();
+    commitFloating();
+    snapshot();
+    resizeCanvas(w, h);
+  }
+  function previewCanvasSize(e) {
+    const r = canvasResize;
+    if (!r || e.pointerId !== r.pointerId) return;
+    r.w = r.axis === "y" ? r.width : boundedSize(r.width + (e.clientX - r.x + ws.scrollLeft - r.scrollLeft) / r.zoom);
+    r.h = r.axis === "x" ? r.height : boundedSize(r.height + (e.clientY - r.y + ws.scrollTop - r.scrollTop) / r.zoom);
+    stage.style.setProperty("--resize-width", r.w * r.zoom + "px");
+    stage.style.setProperty("--resize-height", r.h * r.zoom + "px");
+    $("dim").textContent = `${r.w} × ${r.h}px`;
+  }
+  function finishCanvasSize(commit) {
+    const r = canvasResize;
+    if (!r) return;
+    canvasResize = null;
+    stage.classList.remove("is-resizing");
+    stage.style.removeProperty("--resize-width");
+    stage.style.removeProperty("--resize-height");
+    if (r.handle.hasPointerCapture(r.pointerId)) r.handle.releasePointerCapture(r.pointerId);
+    if (commit) changeCanvasSize(r.w, r.h);
+    $("dim").textContent = `${canvas.width} × ${canvas.height}px`;
+  }
+  document.querySelectorAll(".canvas-resize").forEach((handle) => {
+    handle.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0 || canvasResize || drag) return;
+      e.preventDefault();
+      commitText();
+      commitFloating();
+      canvasResize = { handle, pointerId: e.pointerId, axis: handle.dataset.resize, x: e.clientX, y: e.clientY,
+        width: canvas.width, height: canvas.height, w: canvas.width, h: canvas.height, zoom: state.zoom,
+        scrollLeft: ws.scrollLeft, scrollTop: ws.scrollTop };
+      handle.setPointerCapture(e.pointerId);
+      stage.classList.add("is-resizing");
+      previewCanvasSize(e);
+    });
+    handle.addEventListener("pointermove", previewCanvasSize);
+    handle.addEventListener("pointerup", (e) => {
+      if (canvasResize?.pointerId !== e.pointerId) return;
+      previewCanvasSize(e);
+      finishCanvasSize(true);
+    });
+    handle.addEventListener("pointercancel", (e) => { if (canvasResize?.pointerId === e.pointerId) finishCanvasSize(false); });
+    handle.addEventListener("lostpointercapture", (e) => { if (canvasResize?.pointerId === e.pointerId) finishCanvasSize(false); });
+    handle.addEventListener("keydown", (e) => {
+      if (canvasResize || e.ctrlKey || e.metaKey || e.altKey) return;
+      const axis = handle.dataset.resize, step = e.shiftKey ? 10 : 1;
+      const dx = axis !== "y" ? ({ ArrowLeft: -step, ArrowRight: step }[e.key] || 0) : 0;
+      const dy = axis !== "x" ? ({ ArrowUp: -step, ArrowDown: step }[e.key] || 0) : 0;
+      if (!dx && !dy) return;
+      e.preventDefault();
+      e.stopPropagation();
+      changeCanvasSize(canvas.width + dx, canvas.height + dy);
+    });
+  });
 
   // ---------- tools and colors ----------
   function setTool(t) {
@@ -413,6 +490,7 @@
   let drag = null; // { color, fillColor, start, last, raw, end }
   canvas.addEventListener("contextmenu", (e) => e.preventDefault());
   canvas.addEventListener("pointerdown", (e) => {
+    if (canvasResize) return;
     if (e.button !== 0 && e.button !== 2) return;
     const t = state.tool;
     if (editor) { commitText(); if (t === "text") return; } // click outside the text box finishes it
@@ -784,7 +862,6 @@
   }
 
   // Paste: put the image on the canvas first, then record it. A failing cache never blocks the paste.
-  const MAX_SIDE = 8192;
   async function handleImageBlob(blob) {
     try {
       const img = await blobToImage(blob);
@@ -821,21 +898,65 @@
   $("btnNew").addEventListener("click", () => { cancelText(); discardFloating(); snapshot(); resizeCanvas(960, 600, false); });
   $("btnUndo").addEventListener("click", () => restore(undo, redo));
   $("btnRedo").addEventListener("click", () => restore(redo, undo));
-  async function save() {
+  async function save(name = "그림.png") {
     commitText();
     commitFloating();
     const a = document.createElement("a");
     a.href = URL.createObjectURL(await canvasToBlob(canvas));
-    a.download = "그림.png";
+    a.download = name;
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
-  $("btnSave").addEventListener("click", save);
+  let savingAs = false;
+  async function saveAs() {
+    if (savingAs) return;
+    savingAs = true;
+    $("btnSaveAs").disabled = true;
+    let writable;
+    try {
+      if (typeof window.showSaveFilePicker !== "function") {
+        const entered = prompt("파일 이름을 입력하세요. 이 브라우저에서는 저장 위치를 직접 고를 수 없으며, 브라우저의 다운로드 설정에 따라 저장됩니다.", "그림.png");
+        if (entered === null) return;
+        const name = entered.trim();
+        if (!name) return toast("파일 이름을 입력해 주세요");
+        await save(/\.png$/i.test(name) ? name : name + ".png");
+        return;
+      }
+      // 사용자 클릭 직후 저장 창을 열고, 파일 선택이 끝난 뒤 PNG를 만든다.
+      const handle = await window.showSaveFilePicker({
+        suggestedName: "그림.png",
+        types: [{ description: "PNG 이미지", accept: { "image/png": [".png"] } }],
+        excludeAcceptAllOption: true,
+      });
+      commitText();
+      commitFloating();
+      const blob = await canvasToBlob(canvas);
+      if (!blob) throw new Error("PNG 파일을 만들지 못했습니다");
+      writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      writable = null;
+      toast("그림을 저장했습니다");
+    } catch (err) {
+      if (writable) await writable.abort().catch(() => {});
+      if (err?.name !== "AbortError") toast("저장하지 못했습니다: " + (err?.message || err));
+    } finally {
+      savingAs = false;
+      $("btnSaveAs").disabled = false;
+    }
+  }
+  $("btnSave").addEventListener("click", () => save());
+  $("btnSaveAs").addEventListener("click", saveAs);
   document.addEventListener("keydown", (e) => {
+    if (canvasResize) {
+      e.preventDefault();
+      if (e.key === "Escape") finishCanvasSize(false);
+      return;
+    }
     const k = e.key.toLowerCase(), c = e.ctrlKey || e.metaKey;
     if (c && k === "z" && !e.shiftKey) { e.preventDefault(); restore(undo, redo); }
     else if (c && (k === "y" || (k === "z" && e.shiftKey))) { e.preventDefault(); restore(redo, undo); }
-    else if (c && k === "s") { e.preventDefault(); save(); }
+    else if (c && k === "s") { e.preventDefault(); e.shiftKey ? saveAs() : save(); }
     else if (c && k === "a") { e.preventDefault(); selectAll(); }
     else if (c && (k === "c" || k === "x") && floating) { e.preventDefault(); copyFloating(k === "x"); }
     else if (c && k === "c" && $("history").contains(document.activeElement)) {
