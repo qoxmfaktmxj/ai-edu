@@ -5,7 +5,6 @@
   "summary": "Microsoft Copilot 에이전트로 보고서, 글 다듬기, 그림 설명을 직접 받아 보고, 같은 방법으로 내 반복 업무를 맡길 에이전트를 만듭니다.",
   "chapters": [
     "goal",
-    "try",
     "inside",
     "design",
     "build",
