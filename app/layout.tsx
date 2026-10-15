@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: "보고 끝나지 않습니다. 직접 부탁하고, 확인하고, 다시 다듬으며 회차마다 AI와 일하는 감각을 손으로 익힙니다.",
   openGraph: { title: SITE_NAME, type: "website", images: ["/assets/video/intro-poster.jpg"] },
   icons: {
-    icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231f45d3'/%3E%3Cpath d='M9 22l7-12 7 12' stroke='%23f7f8ff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+    icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2358cc02'/%3E%3Cpath d='M9 22l7-12 7 12' stroke='%23ffffff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
   },
 };
 

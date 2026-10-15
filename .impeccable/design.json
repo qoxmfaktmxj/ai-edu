@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T08:09:13.5471668Z",
+  "title": "AI 사이트 교실 디자인",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "surface",
+        "value": "0 2px 0 var(--line)",
+        "purpose": "카드와 보조 버튼의 아래쪽 두께"
+      },
+      {
+        "name": "action",
+        "value": "0 4px 0 var(--action-edge)",
+        "purpose": "주요 버튼의 아래쪽 두께"
+      }
+    ],
+    "motion": [
+      {
+        "name": "press",
+        "value": "translateY(4px)",
+        "purpose": "버튼 누름 상태"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "toc-drawer",
+        "value": "1100px"
+      },
+      {
+        "name": "chapter-mobile",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": []
+}
