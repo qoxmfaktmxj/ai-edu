@@ -8,7 +8,11 @@ const nextConfig: NextConfig = {
   // Next strips the trailing slash (/examples/x/ -> /examples/x), which would make ./styles.css resolve to /examples/styles.css,
   // so send folder URLs to the real index.html where relative paths stay inside the example folder.
   async redirects() {
-    return [{ source: "/examples/:name", destination: "/examples/:name/index.html", permanent: false }];
+    return [
+      { source: "/examples/:name", destination: "/examples/:name/index.html", permanent: false },
+      // Session 2 merged its install, Vercel and skills chapters into one setup chapter.
+      { source: "/courses/interactive-site/:old(install|vercel|skills)", destination: "/courses/interactive-site/setup", permanent: true },
+    ];
   },
   async rewrites() {
     return [{ source: "/examples/:name", destination: "/examples/:name/index.html" }];

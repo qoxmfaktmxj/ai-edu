@@ -1,31 +1,15 @@
 <section class="chapter" id="motion">
   <header class="chapter-head">
-    <span class="chapter-num">07</span>
-    <h2>hyperframes로 모션 영상 만들기</h2>
-    <p class="chapter-lead">말로 부탁하면 HTML로 장면이 만들어지고, 그것이 MP4 영상 파일이 됩니다. 이 사이트 맨 위의 소개 영상도 같은 방법으로 만들었고, 이 장에서 여러분의 영상을 만들어 사이트에 넣습니다.</p>
+    <span class="chapter-num">05</span>
+    <h2>모션 영상 만들기 (선택)</h2>
+    <p class="chapter-lead">hyperframes로 HTML 장면을 짜서 MP4로 렌더하고, 그 영상을 내 사이트 첫 화면에 넣습니다. 이 교육 사이트의 소개 영상과 1회차 4장의 비교 영상도 같은 방법으로 만들었습니다. 시간이 남거나 수업 뒤에 하는 선택 장입니다.</p>
   </header>
 
   <h3>hyperframes가 무엇인가요</h3>
-  <p><strong>hyperframes</strong>는 "HTML로 영상을 쓰고, MP4 파일로 뽑아내는" 오픈소스 도구입니다. 공식 소개 문구는 "Write HTML. Render video. Built for agents."(HTML을 쓰고, 영상을 뽑는다. 에이전트를 위해 만들었다)입니다. 여기서 에이전트란 Claude처럼 사람 대신 파일을 만들고 명령을 실행하는 AI를 말합니다.</p>
-  <p>여러분이 영상을 만드는 과정은 이렇게 흘러갑니다.</p>
-  <ol>
-    <li><strong>말로 부탁합니다.</strong> "10초짜리 소개 영상, 제목이 부드럽게 등장하고 장면은 3개"처럼 적습니다.</li>
-    <li><strong>Claude가 장면을 만듭니다.</strong> 화면의 글자, 색, 움직임을 HTML, CSS, JavaScript 파일로 짭니다. 여러분이 코드를 쓸 필요는 없습니다.</li>
-    <li><strong>미리보기로 확인하고 말로 고칩니다.</strong> 브라우저에서 영상을 재생해 보고 "2초 더 길게" 같은 수정을 말로 부탁합니다.</li>
-    <li><strong>MP4 파일로 뽑습니다(렌더).</strong> hyperframes가 장면을 한 컷씩 그려서 영상 파일로 합칩니다. 재생하면서 녹화하는 방식이 아니라 컷마다 정확히 그리기 때문에 PC가 느려도 장면이 끊기지 않는 것이 장점입니다.</li>
-  </ol>
-  <p>내 PC에서 렌더하는 한 별도 사용료는 없습니다. 도구는 Apache 2.0 라이선스의 오픈소스입니다. 이 교육 첫 화면의 소개 영상(<a href="/courses/interactive-site">첫 화면 보기</a>)도 이 도구로 만든 MP4 파일이고, 사이트에는 아래 6단계에서 배울 방식 그대로 들어 있습니다.</p>
-
-  <div class="callout word">
-    <i class="ph ph-book-open"></i>
-    <strong>렌더(Render), MP4, 스튜디오</strong>
-    <div>
-      <p><strong>렌더</strong>는 설계도(HTML)를 실제 완성품(영상 파일)으로 뽑아내는 작업입니다. <strong>MP4</strong>는 거의 모든 PC, 휴대폰, 브라우저에서 재생되는 가장 흔한 영상 파일 형식입니다. <strong>스튜디오</strong>는 hyperframes가 브라우저에서 열어 주는 미리보기 편집 화면입니다.</p>
-    </div>
-  </div>
+  <p><strong>hyperframes</strong>는 HTML, CSS, JavaScript로 장면을 쓰고 프레임 단위로 렌더해 MP4를 만드는 도구입니다("Write HTML. Render video. Built for agents."). 재생하며 녹화하는 방식이 아니라 프레임마다 정확히 그리기 때문에 PC 성능과 상관없이 결과가 같습니다. 사이트 안 모션은 방문자의 조작에 반응하고, 영상은 정해진 장면을 누구에게나 똑같이 보여 주며 사이트 밖(발표, 메일)에서도 씁니다.</p>
+  <p>Apache 2.0 라이선스의 오픈소스이고, 내 PC에서 렌더하면 사용료가 없습니다. Node.js 22 이상과 FFmpeg가 필요합니다(2장 표).</p>
 
   <h3>언제 쓰면 좋은가요</h3>
-  <p>"움직이는 장면을 한 번 정해서 보여 주고 싶을 때" 씁니다. 사이트용으로만 쓰는 도구가 아니고, 만든 MP4 파일은 발표 자료나 메신저, 메일 어디에도 올릴 수 있습니다.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>용도</th><th>예시</th><th>길이 감각</th><th>먼저 불러 볼 스킬</th></tr></thead>
     <tbody>
@@ -43,34 +27,6 @@
     <div><p>카운트업 영상에 실제 실적, 고객 이름, 미공개 계획 같은 회사 정보를 넣지 마세요. 연습은 "1,284건" 같은 가짜 숫자로 하고, 실제 업무 자료를 넣어도 되는지는 회사 보안 정책을 먼저 확인하세요.</p></div>
   </div>
 
-  <h3>사이트 안 모션과 무엇이 다른가요</h3>
-  <p>6장에서 만든 "스크롤하면 바뀌고, 누르면 반응하는" 모션과 hyperframes 영상은 둘 다 "움직이는 화면"이지만 성격이 다릅니다.</p>
-  <div class="compare">
-    <div>
-      <h4>사이트 안 모션 (CSS/JS)</h4>
-      <ul>
-        <li>방문자가 스크롤하고, 누르고, 슬라이더를 움직이면 <strong>화면이 그에 반응</strong>합니다.</li>
-        <li>코드가 방문자의 브라우저에서 그때그때 실행되어 용량이 작고 글자가 선명합니다.</li>
-        <li>화면 크기와 기기 성능에 따라 움직임이 조금씩 달라질 수 있습니다.</li>
-        <li>수정하면 새로고침만으로 바로 확인합니다.</li>
-      </ul>
-    </div>
-    <div>
-      <h4>hyperframes 영상 (MP4)</h4>
-      <ul>
-        <li><strong>정해진 장면</strong>이 처음부터 끝까지 똑같이 재생됩니다. 방문자는 보기만 합니다(재생, 일시정지 정도).</li>
-        <li>누가 어디서 열어도 만든 사람이 본 그대로 보입니다.</li>
-        <li>파일 하나라서 사이트 밖에서도 씁니다. 발표 오프닝, 메일, SNS 업로드가 가능합니다.</li>
-        <li>용량이 크고, 고치면 다시 렌더해야 합니다.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="callout why">
-    <i class="ph ph-question"></i>
-    <strong>무엇을 골라야 하나요?</strong>
-    <div><p>질문 하나로 정하세요. "방문자가 눌러 보게 하고 싶은가?"가 예라면 사이트 안 모션입니다. "내가 정한 이야기를 처음부터 끝까지 보여 주고 싶은가?"가 예라면 영상입니다. 둘을 섞는 것이 가장 좋습니다. 이 사이트도 첫 화면은 영상으로 첫인상을 주고, 아래의 복사 버튼과 목차 강조는 사이트 안 모션으로 만들었습니다.</p></div>
-  </div>
-
   <h3>준비물 확인하기</h3>
 
   <figure class="prompt" data-title="영상 제작 준비물 확인과 설치 부탁">
@@ -78,7 +34,7 @@
     <pre>내 PC에서 hyperframes로 영상을 만들 준비가 됐는지 확인해줘.
 1) Node.js 22 이상, FFmpeg 가 설치돼 있는지 버전까지 확인
 2) 없거나 버전이 낮으면 내 운영체제(Windows 또는 Mac)에 맞는 설치 방법을 알려주고, 내가 허락하면 설치까지 진행
-3) 설치 후 새 터미널에서도 두 명령이 잘 잡히는지(PATH) 확인하고, 마지막에 npx hyperframes doctor 결과를 쉬운 말로 설명
+3) 설치 후 새 터미널에서도 두 명령이 잘 잡히는지(PATH) 확인하고, 마지막에 npx hyperframes doctor 결과를 요약
 설치는 한 단계씩 진행하고, 명령을 실행하기 전에 무엇을 하는 명령인지 먼저 말해줘.</pre>
   </figure>
 
@@ -151,30 +107,6 @@
     <pre>hyperframes 카탈로그의 data-chart 블록을 써서 장면 2에 막대 그래프를 넣어줘.
 숫자는 연습용 가짜 값으로 월별 [1월 120, 2월 180, 3월 260]을 쓰고, 그래프가 차례로 올라오게 해줘.
 블록이 15초짜리라서 내 영상 길이(10초)에 맞게 줄여줘. 장면 1과 3은 건드리지 마.</pre>
-  </figure>
-
-  <h3>막히면 Claude에게 그대로 전달하세요</h3>
-
-  <figure class="prompt" data-title="막혔을 때 원인 찾기 (7장)">
-    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-    <pre>[몇 번째 단계, 예: 준비물 설치 / 영상 만들기 / 렌더 / 사이트에 넣기 / 배포]에서 막혔어요.
-나온 오류 문구나 화면은 아래와 같아요.
-[오류 문구를 그대로 붙여넣기]
-Node.js와 FFmpeg 버전, 영상 프로젝트 폴더, renders 폴더, 사이트의 영상 태그와 파일 이름을 먼저 확인해서 원인을 쉬운 말로 설명해줘. 해결 방법은 한 단계씩 알려주고, 내 PC를 바꾸는 작업은 하기 전에 무엇을 할지 먼저 알려줘.</pre>
-  </figure>
-
-  <h3>이 장을 마치며: Claude에게 확인받기</h3>
-
-  <figure class="prompt" data-title="7장 완료 확인">
-    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
-    <pre>7장 결과물이 제대로 되어 있는지 확인해줘. 파일은 아무것도 바꾸거나 올리지 말고 확인만 해줘.
-1. node --version 이 22 이상이고 ffmpeg -version 이 동작하는지
-2. 영상 프로젝트 폴더(예: my-video)가 있고, 그 폴더가 사이트 폴더(ai-site) 밖에 있는지
-3. 영상 프로젝트의 renders 폴더에 MP4 렌더 파일이 있는지 (경로, 길이, 파일 크기)
-4. 사이트 폴더의 assets/video/ 에 영상 파일이 있고, 크기가 10MB 이하(100MB를 넘지 않음)인지
-5. 사이트 HTML의 video 태그에 autoplay muted loop playsinline 이 있고, 경로와 실제 파일 이름이 대소문자까지 같은지
-6. 배포 주소에서 영상 파일이 실제로 열리는지 (주소를 확인할 수 있으면 확인)
-각 항목을 O 또는 X로 표로 정리해줘. X가 있으면 원인과 해결 방법을 알려주고, 모두 O이면 "완료"라고 답해줘.</pre>
   </figure>
 
 </section>

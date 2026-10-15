@@ -1,0 +1,152 @@
+<section class="chapter" id="setup">
+  <header class="chapter-head">
+    <span class="chapter-num">02</span>
+    <h2>준비: 설치, 저장소, 배포 연결, 스킬</h2>
+    <p class="chapter-lead">도구를 설치하고, 빈 저장소를 만들어 Claude 앱에서 열고, Vercel에 연결해 첫 배포를 한 뒤, 디자인과 모션 스킬을 넣습니다. 이미 있는 것은 건너뜁니다.</p>
+  </header>
+
+  <h3>필요한 도구</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>도구</th><th>확인</th><th>없으면 (Windows)</th></tr></thead>
+    <tbody>
+      <tr><td>Claude 데스크톱 앱</td><td>앱 실행, Code 탭이 열리는지</td><td><a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a></td></tr>
+      <tr><td>Git</td><td><code>git --version</code></td><td><code>winget install --id Git.Git -e</code></td></tr>
+      <tr><td>GitHub CLI</td><td><code>gh --version</code></td><td><code>winget install --id GitHub.cli -e</code></td></tr>
+      <tr><td>Node.js 22 이상</td><td><code>node -v</code></td><td><code>winget install --id OpenJS.NodeJS.LTS -e</code></td></tr>
+      <tr><td>FFmpeg (5장 선택)</td><td><code>ffmpeg -version</code></td><td><code>winget install --id Gyan.FFmpeg -e</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>Mac은 Git이 <code>git --version</code> 첫 실행 때 개발자 도구 설치 안내로 함께 들어오고, 나머지는 각 공식 사이트나 Homebrew로 설치합니다. 설치 뒤에는 터미널을 새로 엽니다.</p>
+
+  <div class="callout warn">
+    <i class="ph ph-warning"></i>
+    <strong>회사망에서 Node 기반 도구가 인증서 오류를 낼 때</strong>
+    <div><p>회사망이 TLS를 중간에서 검사하면 <code>npx</code>, <code>vercel</code> 같은 Node 도구가 <code>SELF_SIGNED_CERT_IN_CHAIN</code> 오류로 실패할 수 있습니다. 설치는 되는데 실행할 때 실패하는 경우가 많습니다. 아래처럼 Node가 Windows 인증서 저장소를 쓰게 하고 터미널을 새로 엽니다.</p>
+      <figure class="cmd">
+        <figcaption><i class="ph ph-terminal-window"></i>PowerShell</figcaption>
+        <pre><code>setx NODE_USE_SYSTEM_CA 1</code></pre>
+      </figure>
+    </div>
+  </div>
+
+  <h3>1. 저장소 만들고 내려받기</h3>
+  <p>사이트용 비공개 저장소 <code>ai-site</code>를 만들고 문서 폴더에 내려받습니다. <code>gh auth login</code>은 브라우저로 GitHub 로그인을 승인하는 방식(HTTPS)을 고르면 됩니다.</p>
+  <figure class="cmd">
+    <figcaption><i class="ph ph-terminal-window"></i>PowerShell</figcaption>
+    <pre><code>gh auth login
+cd ~\Documents
+gh repo create ai-site --private --clone
+git config --global user.name "[GitHub 사용자 이름]"
+git config --global user.email "[GitHub에 등록한 이메일]"</code></pre>
+  </figure>
+  <p>비공개 저장소도 Vercel Hobby 플랜으로 배포할 수 있습니다. 배포된 사이트 주소는 누구나 열 수 있습니다.</p>
+
+  <h3>2. Claude 앱에서 폴더 열기</h3>
+  <ol class="steps">
+    <li class="step">
+      <h4>Code 탭, Local, Select folder</h4>
+      <p>Claude 앱의 <strong>Code</strong> 탭에서 실행 환경을 <strong>Local</strong>로 두고 <strong>Select folder</strong>로 <code>ai-site</code>를 엽니다. 이 폴더가 작업 폴더이고, Claude는 이 안에서 파일을 읽고 고치고 명령을 실행합니다.</p>
+    </li>
+    <li class="step">
+      <h4>모델과 노력 수준</h4>
+      <p>이 교육은 <strong>Opus 5.5, 노력 수준 Extra high</strong> 기준입니다. 새 세션을 시작할 때 고르고, 대화 중에는 바꾸지 않습니다. 대화 중에 모델을 바꾸면 지금까지의 대화를 다시 읽느라 사용 한도를 더 씁니다.</p>
+      <figure class="shot" data-shot="02-model-change">
+        <img src="/assets/shots/02-model-change.png" alt="모델을 변경하시겠습니까 확인 창. 현재 세션은 기존 모델 기준으로 캐시되어 있고 다른 모델로 전환하면 전체 세션을 다시 읽어 한도를 더 사용한다는 안내" loading="lazy">
+        <figcaption>그림 설명: 대화 도중 모델을 바꾸려 할 때 뜨는 확인 창입니다. 바꾸면 세션 전체를 다시 읽어 한도를 더 쓴다고 알려 줍니다.</figcaption>
+      </figure>
+    </li>
+    <li class="step">
+      <h4>권한 모드</h4>
+      <p>입력창 옆 선택기에서 Claude가 묻지 않고 해도 되는 범위를 정합니다. 이 교육은 <strong>Accept edits</strong>로 합니다.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>모드</th><th>동작</th><th>쓰는 때</th></tr></thead>
+        <tbody>
+          <tr><td>Manual</td><td>파일 수정과 명령 실행 전에 매번 diff나 명령을 보여 주고 묻습니다.</td><td>회사 저장소, 처음 보는 코드</td></tr>
+          <tr><td>Accept edits</td><td>작업 폴더 안의 파일 수정, 폴더 만들기, 이동은 묻지 않고, 그 밖의 명령은 묻습니다.</td><td>이 교육의 기본</td></tr>
+          <tr><td>Plan</td><td>읽고 조사해서 계획만 제안하고 파일은 고치지 않습니다.</td><td>큰 변경 전</td></tr>
+          <tr><td>Auto</td><td>별도 검사기가 위험한 동작을 걸러 주고 나머지는 묻지 않습니다. 계정과 모델에 따라 없을 수 있습니다.</td><td>익숙해진 뒤</td></tr>
+          <tr><td>Bypass permissions</td><td>모든 확인을 건너뜁니다. 설정에서 켜야 보이고, 회사 계정은 조직 정책이 정합니다.</td><td>쓰지 않음</td></tr>
+        </tbody>
+      </table></div>
+    </li>
+    <li class="step">
+      <h4>터미널에서도 쓰려면 (선택)</h4>
+      <p>앱의 Code 탭에 Claude Code가 들어 있어 이 교육은 앱만으로 충분합니다. 터미널의 <code>claude</code> 명령도 쓰려면 공식 문서의 네이티브 설치를 따르고 <code>claude --version</code>으로 확인합니다. 앱과 터미널은 설정과 스킬을 함께 씁니다.</p>
+    </li>
+  </ol>
+
+  <h3>3. Vercel 연결과 첫 배포</h3>
+  <p>빈 저장소는 배포할 것이 없으므로 먼저 한 장짜리 페이지를 올립니다.</p>
+  <figure class="prompt" data-title="첫 페이지 만들고 올리기">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>index.html 하나로 "준비 완료" 페이지를 만들어줘. 가운데 제목 한 줄, 휴대폰에서도 깨지지 않게.
+"첫 페이지"라는 메시지로 커밋하고 main에 push해줘. 명령을 실행하기 전에 무엇을 하는지 한 줄씩 알려줘.</pre>
+  </figure>
+  <ol class="steps">
+    <li class="step">
+      <h4>가입</h4>
+      <p><a href="https://vercel.com/signup" target="_blank" rel="noopener">vercel.com/signup</a>에서 <strong>Continue with GitHub</strong>로 가입하고, 플랜을 물으면 <strong>Hobby</strong>를 고릅니다. Hobby는 개인, 비상업 용도 전용입니다. 이 방법으로 만든 사이트를 업무나 영업에 쓰려면 사내 정책과 Vercel 이용 조건을 먼저 확인합니다.</p>
+      <figure class="shot" data-shot="04-vercel-signup">
+        <img src="/assets/shots/04-vercel-signup.png" alt="Vercel 가입 페이지의 가입 방법 선택 화면" loading="lazy">
+        <figcaption>그림 설명: vercel.com/signup의 가입 방법 선택 화면입니다. Continue with GitHub를 누릅니다.</figcaption>
+      </figure>
+    </li>
+    <li class="step">
+      <h4>Import와 Deploy</h4>
+      <p><strong>Add New...</strong>, <strong>Project</strong>에서 GitHub 저장소 목록을 엽니다. 처음이면 Vercel GitHub App을 설치하라고 나오는데, 접근 범위는 <strong>Only select repositories</strong>로 <code>ai-site</code>만 고릅니다. <code>ai-site</code>를 Import하고 Framework Preset은 <strong>Other</strong>, 나머지는 기본값으로 두고 <strong>Deploy</strong>를 누릅니다. 프로젝트 이름이 주소가 되므로 실명이나 회사명은 넣지 않습니다.</p>
+    </li>
+    <li class="step">
+      <h4>주소 확인</h4>
+      <p>프로젝트 화면의 Domains에 있는 <code>https://[프로젝트이름].vercel.app</code>을 열고, 휴대폰에서도 열어 봅니다.</p>
+    </li>
+  </ol>
+  <div class="table-wrap"><table>
+    <thead><tr><th>푸시한 곳</th><th>배포</th><th>누가 열 수 있나</th></tr></thead>
+    <tbody>
+      <tr><td><code>main</code></td><td>Production. 내 사이트 주소가 바뀝니다.</td><td>누구나</td></tr>
+      <tr><td>다른 브랜치</td><td>Preview. 브랜치마다 따로 미리보기 주소가 생깁니다.</td><td>기본 설정에서는 Vercel에 로그인한 나만 (Settings, Deployment Protection에서 확인)</td></tr>
+    </tbody>
+  </table></div>
+  <p>4장에서는 이 차이를 이용해 브랜치에서 다듬고 미리보기 주소로 비교한 뒤 <code>main</code>에 합칩니다.</p>
+
+  <h3>4. 디자인과 모션 스킬 넣기</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>개념</th><th>정체</th></tr></thead>
+    <tbody>
+      <tr><td>스킬</td><td>작업 지침(<code>SKILL.md</code>)과 부속 스크립트 묶음. Claude가 필요할 때 읽고, <code>/스킬이름</code>으로 직접 부를 수도 있습니다.</td></tr>
+      <tr><td>플러그인</td><td>스킬, 명령, 훅(hook), MCP 서버 설정을 묶은 패키지. 마켓플레이스(목록 저장소)를 등록한 뒤 설치하고, <code>/플러그인:스킬</code>로 부릅니다.</td></tr>
+      <tr><td>MCP</td><td>외부 도구와 데이터를 Claude에 연결하는 표준 규격. 예: <a href="/courses/interactive-site/rea">부록 D의 REA</a></td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>이름</th><th>하는 일</th><th>출처</th><th>부르는 이름</th></tr></thead>
+    <tbody>
+      <tr><td>design-taste-frontend</td><td>뻔한 AI 디자인을 피하고 주제에 맞는 디자인 방향을 잡습니다</td><td>GitHub <code>Leonxlnx/taste-skill</code></td><td><code>/design-taste-frontend</code></td></tr>
+      <tr><td>impeccable</td><td>화면 비평(critique), 점검(audit), 다듬기(polish), 반응형, 접근성</td><td>GitHub <code>pbakaus/impeccable</code></td><td><code>/impeccable</code></td></tr>
+      <tr><td>ui-ux-pro-max</td><td>스타일, 팔레트, 글꼴 조합, UX 가이드라인 검색</td><td>마켓플레이스 <code>nextlevelbuilder/ui-ux-pro-max-skill</code></td><td><code>/ui-ux-pro-max:ui-ux-pro-max</code></td></tr>
+      <tr><td>hyperframes</td><td>HTML 장면을 MP4로 렌더 (5장)</td><td>마켓플레이스 <code>heygen-com/hyperframes</code></td><td><code>/hyperframes:hyperframes</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>스킬과 플러그인은 내 권한으로 실행되는 제3자 코드입니다. 설치 전에 무엇이 실행되는지 확인합니다.</p>
+  <figure class="prompt" data-title="스킬 2가지 확인 후 설치">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>아래 스킬 2가지를 Claude Code 사용자 범위(전역)에 npx skills add 로 설치하려고 해(대상 claude-code). 출처는 적은 곳만 쓰고, 이름이 비슷한 다른 저장소는 쓰지 마.
+1) design-taste-frontend: GitHub Leonxlnx/taste-skill 안의 design-taste-frontend만
+2) impeccable: GitHub pbakaus/impeccable
+설치 전에 각 저장소에서 실행되는 스크립트가 무엇을 하는지 세 줄씩 요약해서 보여주고, 내가 허락하면 설치해줘.
+확인 질문을 건너뛰는 옵션은 쓰지 말고, 끝나면 설치 위치를 알려줘.</pre>
+  </figure>
+  <p>플러그인 두 개는 앱 화면에서 설치합니다. 입력창의 <strong>+</strong>, <strong>Plugins</strong>, <strong>Add plugin</strong>에서 마켓플레이스 <code>nextlevelbuilder/ui-ux-pro-max-skill</code>과 <code>heygen-com/hyperframes</code>를 추가하고, 목록의 ui-ux-pro-max와 hyperframes를 설치합니다. 설치 전에 플러그인이 넣는 훅과 MCP 서버가 무엇인지 저장소에서 확인합니다. 터미널의 Claude Code를 쓴다면 <code>/plugin</code> 메뉴에서 같은 일을 합니다.</p>
+  <p>설치한 것은 새 세션(<kbd>Ctrl</kbd>+<kbd>N</kbd>)에서 목록에 나타납니다. 입력창에 <code>/</code>를 쳐서 네 이름이 보이는지 확인합니다.</p>
+
+  <h3>준비 완료 확인</h3>
+  <figure class="prompt" data-title="2장 준비 상태 확인">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>준비 상태를 확인해줘. 파일은 바꾸거나 올리지 말고 확인만 해줘.
+1. git remote -v 로 GitHub ai-site 저장소에 연결돼 있고, git status 가 깨끗한지
+2. gh auth status, node -v (22 이상)
+3. 내 Vercel 주소 [https://프로젝트이름.vercel.app] 가 200으로 열리고 "준비 완료"가 보이는지
+4. 이 세션의 스킬 목록에 design-taste-frontend, impeccable, ui-ux-pro-max, hyperframes 가 있는지
+항목마다 O 또는 X로 표로 정리하고, X는 원인과 해결 방법을 알려줘.</pre>
+  </figure>
+</section>

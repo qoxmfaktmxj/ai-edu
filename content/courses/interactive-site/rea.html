@@ -1,0 +1,110 @@
+<section class="chapter" id="rea">
+  <header class="chapter-head">
+    <span class="chapter-num">D</span>
+    <h2>REA로 프로그램 뜯어보기 (선택)</h2>
+    <p class="chapter-lead"><a href="https://github.com/morluto/rea" target="_blank" rel="noopener">REA(Reverse Engineer Anything)</a>는 Claude가 소스 코드 없이 프로그램 내부를 들여다볼 수 있게 Ghidra 같은 분석 도구를 연결해 주는 MCP 서버입니다. 2026년 10월 일주일 만에 GitHub 스타 10만 개를 넘겼습니다. 공룡 게임 속도 규칙과 윈도우 그림판 채우기 기능을 직접 분석해 봅니다.</p>
+  </header>
+
+  <h3>어떻게 동작하나요</h3>
+  <ol>
+    <li>내가 Claude에게 "이 프로그램의 이 기능이 어떻게 동작하는지" 묻습니다.</li>
+    <li>Claude가 REA를 통해 분석 도구를 부릅니다. 윈도우 프로그램은 Ghidra(미국 국가안보국이 만들어 2019년 공개한 무료 도구), 웹사이트는 Chrome, 안드로이드 앱은 JADX 같은 식입니다.</li>
+    <li>REA가 의사코드(사람이 읽기 쉽게 풀어 쓴 코드), 근거(파일 위치, 함수, 문자열), 모르는 부분을 돌려줍니다. 결과마다 <strong>관찰</strong>(직접 확인), <strong>추론</strong>, <strong>미확인</strong>이 구분되어 붙습니다.</li>
+    <li>Claude가 그 근거로 설명하거나, 내 프로젝트에 비슷한 기능을 새로 만들고 시험합니다.</li>
+  </ol>
+  <p>새로운 분석 기술은 아닙니다. 원래 전문가가 쓰던 도구를 Claude가 대신 쓰게 해 준 것입니다. <a href="https://majjangjjang.tistory.com/232" target="_blank" rel="noopener">국내 분석 글</a>은 REA를 이렇게 평가합니다. "REA의 가치는 '정답을 준다'가 아니라 '틀렸을 때 어디서 틀렸는지 추적할 수 있다'에 가깝습니다."</p>
+
+  <h3>개발자가 써 볼 만한 곳</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>상황</th><th>쓰는 법</th></tr></thead>
+    <tbody>
+      <tr><td>설명 문서가 없는 오래된 모듈</td><td>입력과 출력 규칙, 호출 흐름을 근거와 함께 정리합니다. 쓸 권한이 있는 프로그램만 대상으로 합니다.</td></tr>
+      <tr><td>오래된 시스템을 새로 옮길 때</td><td>계산 규칙을 뽑은 뒤, 같은 입력을 구버전과 새 버전에 넣어 결과를 비교하는 테스트를 먼저 만듭니다.</td></tr>
+      <tr><td>내가 만든 앱의 보안 점검</td><td>배포한 웹 화면 코드나 설치형 프로그램을 직접 열어 보고, 밖에서 보이는 업무 규칙, 키, 주소가 있는지 확인합니다. "이제 누구의 AI든 출시된 앱을 읽을 수 있다"는 말이 나온 이유입니다.</td></tr>
+      <tr><td>버전 사이에 바뀐 점 확인</td><td>두 배포본을 비교해 새로 생긴 통로나 사라진 검사를 찾습니다. REA에 버전 비교 기능이 들어 있습니다.</td></tr>
+      <tr><td>웹 화면 동작 연구</td><td>공개된 웹 게임이나 화면의 움직임 규칙을 찾아 내 사이트에 새로 구현합니다. 아래 실습 1이 이것입니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>설치 부탁하기</h3>
+  <p>REA는 일주일 사이에 큰 버전이 세 번 바뀔 만큼 빨리 바뀌고, 이름이 비슷한 가짜 안내도 돌고 있습니다. 그래서 공식 출처만 쓰고 버전을 고정합니다. Node.js 22.19 이상이 필요합니다.</p>
+  <figure class="prompt" data-title="REA 설치 (선택)">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>REA(Reverse Engineer Anything)를 Claude Code에 MCP로 설치해줘.
+공식 출처는 GitHub morluto/rea, 사이트 rea.tools, npm 패키지 rea-agents 세 곳만 써. 이름이 비슷한 다른 패키지는 쓰지 마.
+
+진행 방법:
+1. GitHub morluto/rea 의 README를 먼저 읽고, 필요한 Node.js 버전과 내 PC의 node --version 을 비교해줘.
+2. npm에서 rea-agents 최신 버전 번호를 확인하고, 그 버전으로 고정해서(rea-agents@버전) 진행해줘.
+3. 설정을 바꾸기 전에 setup 을 --client claude_code --dry-run 으로 실행해서, 어떤 파일이 어떻게 바뀌는지 보여주고 내 허락을 받아줘.
+4. 허락하면 실제로 적용하고, doctor 로 준비 상태를 확인해서 표로 정리해줘.
+5. 오류가 나면 오류 문구를 그대로 보여주고 원인을 설명해줘.
+6. 끝나면 새 세션을 시작해야 하는지 알려줘.</pre>
+  </figure>
+  <p class="prompt-note">회사망에서 인증서 오류(certificate, self-signed 같은 단어)가 나오면 그 문구를 그대로 Claude에게 전달하세요.</p>
+
+  <h3>실습 1. 크롬 공룡 게임의 속도 규칙 찾기</h3>
+  <p>인터넷이 끊기면 크롬에 나오는 공룡 게임은 원본 코드가 BSD 라이선스로 공개되어 있어 마음 놓고 연습할 수 있습니다. REA 공식 사례에서는 "시작 속도 6, 한 번 갱신할 때마다 0.001씩 빨라지고, 최대 13"이라는 규칙을 찾아냈습니다. 같은 답이 나오는지 직접 확인해 보세요.</p>
+  <figure class="prompt" data-title="REA 실습: 공룡 게임 속도 규칙">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>REA로 크롬 공룡 게임의 속도 규칙을 찾아줘.
+- 대상: GitHub wayou/t-rex-runner 를 내 사이트 폴더 밖의 새 폴더(예: 문서 폴더 아래 rea-lab)에 내려받은 것
+- 알고 싶은 것: 시작 속도, 빨라지는 정도, 최대 속도
+- 결과는 표로 정리하고, 근거(파일 이름, 줄 번호)를 붙이고, 직접 확인한 것과 추론한 것과 모르는 것을 나눠줘.
+
+규칙을 확인하면, 내 사이트에 "속도 실험실" 섹션을 새로 만들어줘. 슬라이더로 속도를 바꾸면 달리는 캐릭터의 속도가 바뀌는 작은 화면이면 돼. 원본 코드와 그림은 복사하지 말고 규칙만 참고해서 새로 짜고, 섹션 아래에 원본 출처(Chromium, BSD 라이선스)를 적어줘.</pre>
+  </figure>
+  <p class="prompt-note">웹 게임은 원래 코드가 보이기 때문에 REA 없이도 Claude가 읽을 수 있습니다. 차이는 근거가 정리되어 나오는지입니다. REA 없이 한 번, REA로 한 번 해서 결과를 비교해 보면 좋습니다.</p>
+
+  <h3>실습 2. 윈도우 그림판 뜯어보고 새 기능 붙이기</h3>
+  <p>윈도우에 들어 있는 그림판은 누구나 가진 프로그램이라 바로 시도해 볼 수 있습니다. 국내 유튜브 영상에서는 REA로 그림판을 다시 만들고, 원래 없던 "붙여 넣은 그림 목록" 패널을 11분 만에 붙였습니다. 윈도우 프로그램은 Ghidra와 Java(JDK 21)가 필요하고, 윈도우에서의 Ghidra 연결은 아직 실험 단계라 첫 실행에 몇 분이 걸리거나 실패할 수 있습니다.</p>
+  <figure class="prompt" data-title="REA 실습: 그림판 기능 분석과 새 기능">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>REA로 윈도우 그림판의 [채우기(페인트 통)] 기능이 어떻게 동작하는지 분석해줘. 개인 공부용이야.
+- 그림판 설치 위치는 PowerShell 의 Get-AppxPackage 로 찾아줘.
+- Ghidra나 JDK가 없으면 설치하기 전에 무엇을, 어디서, 얼마나 받는지 먼저 알려주고 내 허락을 받아줘.
+- 결과는 근거(함수 위치, 문자열 등)를 붙이고, 직접 확인한 것과 추론한 것과 모르는 것을 나눠줘.
+- 분석이 실패하면 억지로 진행하지 말고, 실패 이유를 알려준 뒤 그림판을 직접 써 보며 관찰하는 방식으로 바꿔줘.
+
+분석이 끝나면 내 사이트에 웹 그림판 페이지를 새로 만들어줘. 펜, 지우개, 채우기, 색 고르기, 이미지 붙여넣기를 넣고, 원래 그림판에 없는 "붙여 넣은 그림 목록" 패널을 오른쪽에 추가해줘. 붙여 넣을 때마다 목록에 작은 그림이 쌓이고, 누르면 다시 캔버스에 놓이게 해줘. 그림판의 코드, 아이콘, 이름은 쓰지 말고 동작만 참고해서 새로 만들어줘.</pre>
+  </figure>
+  <p class="prompt-note">분석이 실패해서 "관찰하기"로 바뀌어도 괜찮습니다. 포토샵을 따라 만든 ArtCraft도 원본을 뜯어보지 않고 동작을 관찰하는 방식으로 만들었습니다.</p>
+
+  <h3>완성 예시: 웹 그림판 연습작</h3>
+  <p>실습 2를 실제로 해서 만든 결과물입니다. REA로 그림판의 채우기 기능이 들어 있는 파일(BasePaint.dll)을 찾아 규칙을 확인하고, 원본 코드와 그림은 쓰지 않고 그 규칙대로 새로 짰습니다. 붙여 넣은 그림 목록(최근 10개, 다시 붙이기, 다시 복사)도 붙였습니다.</p>
+  <div class="examples">
+    <a class="example" href="/examples/web-paint/"><img src="/assets/img/ex-web-paint.jpg" alt="웹 그림판 연습작 화면. 집과 해를 그린 캔버스와 오른쪽의 붙여 넣은 그림 목록" loading="lazy"><span>웹 그림판 연습작 <i class="ph ph-arrow-up-right"></i></span></a>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>REA로 확인한 채우기 규칙</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>무엇과 비교하나</td><td>바로 옆 칸이 아니라 처음 누른 곳의 색과 비교합니다.</td></tr>
+      <tr><td>어디로 번지나</td><td>위, 아래, 왼쪽, 오른쪽 4방향으로만 번집니다. 대각선으로는 번지지 않습니다.</td></tr>
+      <tr><td>허용 오차</td><td>투명도와 빨강, 초록, 파랑 네 값의 거리가 "허용 오차 × 510" 이하이면 같은 색으로 봅니다. 0%는 똑같은 색만 칠합니다.</td></tr>
+      <tr><td>칠하는 색</td><td>투명도는 항상 불투명으로 고정됩니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prompt-note">실제로 해 보니 분석 한 번에 2분 30초 정도 걸렸습니다. 그림판 파일은 일반 폴더로 복사한 뒤 분석했습니다.</p>
+
+  <h3>잘 쓰는 법</h3>
+  <ul>
+    <li><strong>좁게 묻습니다.</strong> "이 앱 분석해 줘"보다 "채우기 버튼을 누르면 무슨 일이 일어나는지"가 좋습니다. 넓게 물으면 결과가 너무 길어 Claude가 앞 내용을 잊습니다.</li>
+    <li><strong>근거를 요구합니다.</strong> "근거와 모르는 부분을 같이 보여 줘"를 꼭 붙입니다.</li>
+    <li><strong>정답은 테스트로 판정합니다.</strong> 원본과 같은 입력을 넣고 결과를 비교하는 테스트를 먼저 만듭니다. "테스트 없이 하는 리버스 엔지니어링은 그냥 감"이라는 말이 나올 정도입니다.</li>
+    <li><strong>AI의 꼼수를 막습니다.</strong> 게임 하나를 통째로 복원한 개발자는 AI가 검증 기준을 슬쩍 고치려 들어서 검증 스크립트를 잠갔습니다. 그의 말은 "할 일이 해석의 여지를 남기면 AI는 꼼수를 쓰고 싶어 한다"였습니다.</li>
+    <li><strong>REA 없이 먼저 해 봅니다.</strong> 맥의 미리보기 앱을 따라 만드는 비교에서는 화면만 본 일반 Claude가 먼저 끝났습니다. 일반 방법으로 먼저 해 보고, 더 깊이 봐야 할 때 REA를 씁니다.</li>
+  </ul>
+
+  <div class="callout danger">
+    <i class="ph ph-prohibit"></i>
+    <strong>하지 말아야 할 것</strong>
+    <div>
+      <ul>
+        <li>남이 파는 프로그램을 분석해 똑같이 만들어 팔거나 배포하기. 우리 저작권법은 호환에 필요한 부분만 좁게 분석을 허용합니다.</li>
+        <li>회사 프로그램, 고객사 프로그램, 회사 소스를 분석 대상으로 쓰기. 분석 결과는 AI 회사로 넘어갑니다.</li>
+        <li>복제 방지, 라이선스 검사, 게임 보안 우회. REA도 금지 용도로 정해 두었습니다.</li>
+        <li>정품이 아닌 IDA, Hopper 같은 유료 분석 도구 쓰기.</li>
+      </ul>
+    </div>
+  </div>
+</section>
