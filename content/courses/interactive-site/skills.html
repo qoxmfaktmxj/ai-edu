@@ -255,6 +255,22 @@
   </figure>
   <p class="prompt-note">분석이 실패해서 "관찰하기"로 바뀌어도 괜찮습니다. 포토샵을 따라 만든 ArtCraft도 원본을 뜯어보지 않고 동작을 관찰하는 방식으로 만들었습니다.</p>
 
+  <h4>완성 예시: 웹 그림판 연습작</h4>
+  <p>실습 2를 실제로 해서 만든 결과물입니다. REA로 그림판의 채우기 기능이 들어 있는 파일(BasePaint.dll)을 찾아 규칙을 확인하고, 원본 코드와 그림은 쓰지 않고 그 규칙대로 새로 짰습니다. 붙여 넣은 그림 목록(최근 10개, 다시 붙이기, 다시 복사)도 붙였습니다.</p>
+  <div class="examples">
+    <a class="example" href="/examples/web-paint/"><img src="/assets/img/ex-web-paint.jpg" alt="웹 그림판 연습작 화면. 집과 해를 그린 캔버스와 오른쪽의 붙여 넣은 그림 목록" loading="lazy"><span>웹 그림판 연습작 <i class="ph ph-arrow-up-right"></i></span></a>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>REA로 확인한 채우기 규칙</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>무엇과 비교하나</td><td>바로 옆 칸이 아니라 처음 누른 곳의 색과 비교합니다.</td></tr>
+      <tr><td>어디로 번지나</td><td>위, 아래, 왼쪽, 오른쪽 4방향으로만 번집니다. 대각선으로는 번지지 않습니다.</td></tr>
+      <tr><td>허용 오차</td><td>투명도와 빨강, 초록, 파랑 네 값의 거리가 "허용 오차 × 510" 이하이면 같은 색으로 봅니다. 0%는 똑같은 색만 칠합니다.</td></tr>
+      <tr><td>칠하는 색</td><td>투명도는 항상 불투명으로 고정됩니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prompt-note">실제로 해 보니 분석 한 번에 2분 30초 정도 걸렸습니다. "Request timed out"이 나오면 Claude에게 도구 대기 시간을 늘려 달라고 부탁하세요. 그림판 파일은 일반 폴더로 복사한 뒤 분석했습니다.</p>
+
   <h4>잘 쓰는 법</h4>
   <ul>
     <li><strong>좁게 묻습니다.</strong> "이 앱 분석해 줘"보다 "채우기 버튼을 누르면 무슨 일이 일어나는지"가 좋습니다. 넓게 물으면 결과가 너무 길어 Claude가 앞 내용을 잊습니다.</li>

@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>웹 그림판 연습작</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23005fb8'/%3E%3Cpath d='M8 15l7-7 9 9-7 7z' fill='%23fff'/%3E%3Ccircle cx='25' cy='23' r='3' fill='%23ffc90e'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #f3f3f3; --panel: #fbfbfb; --line: #e1e1e1; --text: #1b1b1b; --muted: #616161;
+    --accent: #005fb8; --accent-soft: #e5f0fb; --work: #e8ebf0;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { font: 13px/1.4 "Segoe UI", "Malgun Gothic", system-ui, sans-serif; color: var(--text); background: var(--bg);
+    display: grid; grid-template-rows: auto auto 1fr auto; overflow: hidden; }
+  button, select { font: inherit; color: inherit; }
+
+  /* title bar + file actions */
+  .menubar { display: flex; align-items: center; gap: 4px; padding: 6px 10px; background: var(--bg); }
+  .menubar strong { margin-right: 12px; font-weight: 600; }
+  .menubar button { border: 0; background: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; }
+  .menubar button:hover { background: #e6e6e6; }
+  .menubar .note { margin-left: auto; color: var(--muted); font-size: 12px; }
+
+  /* ribbon */
+  .ribbon { display: flex; align-items: stretch; padding: 6px 10px 4px; background: var(--panel); border-block: 1px solid var(--line); overflow-x: auto; }
+  .group { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 12px; border-right: 1px solid var(--line); }
+  .group:last-child { border-right: 0; }
+  .group > .label { font-size: 11px; color: var(--muted); margin-top: auto; white-space: nowrap; }
+  .row { display: grid; grid-auto-flow: column; grid-template-rows: repeat(2, 32px); gap: 2px; }
+  .row.one { grid-template-rows: 32px; }
+  .tool { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 4px; background: none; cursor: pointer; }
+  .tool:hover { background: #ececec; }
+  .tool[aria-pressed="true"] { background: var(--accent-soft); border-color: #9cc3ea; }
+  .tool svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .tool svg .solid { fill: currentColor; stroke: none; }
+  .slider { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 150px; }
+  .slider[hidden] { display: none; }
+  .slider input[type="range"] { width: 150px; }
+  .slider output, .slider small { font-size: 11px; color: var(--muted); }
+  .slider select { padding: 2px 6px; }
+  .tolbar { position: relative; width: 150px; height: 10px; border-radius: 3px; border: 1px solid #b5b5b5; background: linear-gradient(90deg, #fff, #000); overflow: hidden; }
+  .tolbar span { position: absolute; inset: 0 auto 0 0; width: 0; border-right: 2px solid var(--accent); }
+  .colors { display: flex; align-items: center; gap: 10px; }
+  .current { position: relative; width: 44px; height: 44px; cursor: pointer; }
+  .current span { position: absolute; width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px #8a8a8a; }
+  .current .primary { left: 0; top: 0; z-index: 1; }
+  .current .secondary { right: 0; bottom: 0; }
+  .palette { display: grid; grid-template-columns: repeat(10, 18px); gap: 3px; }
+  .palette button { width: 18px; height: 18px; border-radius: 50%; border: 1px solid #b5b5b5; padding: 0; cursor: pointer; }
+  .palette button:hover { transform: scale(1.15); }
+  input[type="color"] { width: 28px; height: 28px; border: 0; padding: 0; background: none; cursor: pointer; }
+
+  /* work area */
+  main { display: grid; grid-template-columns: 1fr 260px; min-height: 0; }
+  .workspace { overflow: auto; background: var(--work); padding: 16px; position: relative; }
+  .stage { position: relative; width: max-content; box-shadow: 0 1px 4px rgba(0,0,0,.18); background: #fff; }
+  .stage canvas { display: block; }
+  #overlay { position: absolute; left: 0; top: 0; pointer-events: none; }
+  #main { cursor: crosshair; touch-action: none; }
+  .floating { position: absolute; outline: 1px dashed var(--accent); cursor: move; touch-action: none; }
+  .floating > * { display: block; pointer-events: none; user-select: none; image-rendering: pixelated; }
+  .text-editor { position: absolute; margin: 0; padding: 0; border: 1px dashed var(--accent); background: transparent; outline: none;
+    resize: none; overflow: hidden; white-space: pre; min-width: 20px; }
+
+  /* pasted history panel */
+  aside { display: flex; flex-direction: column; min-height: 0; background: var(--panel); border-left: 1px solid var(--line); }
+  aside header { padding: 12px 14px 8px; border-bottom: 1px solid var(--line); }
+  aside h2 { margin: 0; font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; }
+  aside h2 small { font-weight: 400; color: var(--muted); }
+  .history { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .empty { color: var(--muted); font-size: 12px; text-align: center; padding: 24px 8px; border: 1px dashed #c8c8c8; border-radius: 6px; }
+  .item { border: 1px solid var(--line); border-radius: 6px; background: #fff; padding: 6px; cursor: pointer; text-align: left; width: 100%; }
+  .item:hover { border-color: #b9b9b9; }
+  .item[aria-selected="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .thumb { height: 96px; display: grid; place-items: center; border-radius: 4px; overflow: hidden;
+    background: repeating-conic-gradient(#eee 0 25%, #fff 0 50%) 0 0 / 12px 12px; }
+  .thumb img { max-width: 100%; max-height: 100%; }
+  .meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; margin-top: 4px; }
+  .actions { display: none; gap: 6px; margin-top: 6px; }
+  .item[aria-selected="true"] .actions { display: flex; }
+  .actions button { flex: 1; text-align: center; padding: 4px 0; border: 0; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font-size: 12px; cursor: pointer; }
+  .actions button:hover { background: #d3e5f8; }
+
+  .status { display: flex; align-items: center; gap: 20px; padding: 4px 12px; border-top: 1px solid var(--line); background: var(--panel); color: var(--muted); font-size: 12px; }
+  .status .zoom { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+  .status .zoom button { border: 0; background: none; cursor: pointer; padding: 0 6px; font-size: 14px; }
+  .toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); background: #323232; color: #fff; padding: 8px 14px; border-radius: 6px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  /* narrow screens: the pasted list moves under the canvas and scrolls sideways */
+  @media (max-width: 760px) {
+    main { grid-template-columns: 1fr; grid-template-rows: 1fr 210px; }
+    aside { border-left: 0; border-top: 1px solid var(--line); }
+    aside header { padding: 8px 14px 6px; }
+    .history { flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px; }
+    .item { width: 170px; flex: none; }
+    .thumb { height: 64px; }
+    .menubar { overflow-x: auto; white-space: nowrap; }
+    .menubar .note { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="menubar">
+    <strong>웹 그림판</strong>
+    <button id="btnNew" title="새로 만들기">새로 만들기</button>
+    <button id="btnSave" title="PNG로 저장 (Ctrl+S)">저장</button>
+    <button id="btnUndo" title="실행 취소 (Ctrl+Z)">실행 취소</button>
+    <button id="btnRedo" title="다시 실행 (Ctrl+Y)">다시 실행</button>
+    <button id="btnPaste" title="붙여넣기 (Ctrl+V)">붙여넣기</button>
+    <span class="note">윈도우 그림판의 동작을 공부해 새로 만든 연습작</span>
+  </div>
+
+  <div class="ribbon">
+    <div class="group">
+      <div class="row one">
+        <button class="tool" data-tool="select" title="선택 (Ctrl+A: 전체 선택, Ctrl+C 복사, Ctrl+X 잘라내기, Delete 지우기)"><svg viewBox="0 0 20 20"><rect x="3.5" y="4.5" width="13" height="11" stroke-dasharray="2.5 2"/></svg></button>
+      </div>
+      <span class="label">선택</span>
+    </div>
+    <div class="group">
+      <div class="row">
+        <button class="tool" id="btnCrop" title="자르기 (선택한 영역만 남김)"><svg viewBox="0 0 20 20"><path d="M6 2v12h12"/><path d="M2 6h12v12"/></svg></button>
+        <button class="tool" id="btnRotR" title="오른쪽으로 90도 회전"><svg viewBox="0 0 20 20"><path d="M15 9a6 6 0 1 1-2.5-4.9"/><path d="M13 1.5l-.5 3 3 .3"/></svg></button>
+        <button class="tool" id="btnRotL" title="왼쪽으로 90도 회전"><svg viewBox="0 0 20 20"><path d="M5 9a6 6 0 1 0 2.5-4.9"/><path d="M7 1.5l.5 3-3 .3"/></svg></button>
+        <button class="tool" id="btnFlipH" title="좌우 대칭"><svg viewBox="0 0 20 20"><path d="M10 2v16" stroke-dasharray="2 2"/><path d="M7 5L2 15h5z"/><path d="M13 5l5 10h-5z"/></svg></button>
+        <button class="tool" id="btnFlipV" title="상하 대칭"><svg viewBox="0 0 20 20"><path d="M2 10h16" stroke-dasharray="2 2"/><path d="M5 7L15 2v5z"/><path d="M5 13l10 5v-5z"/></svg></button>
+      </div>
+      <span class="label">이미지</span>
+    </div>
+    <div class="group">
+      <div class="row">
+        <button class="tool" data-tool="pencil" title="연필"><svg viewBox="0 0 20 20"><path d="M4 16l1-4 8-8 3 3-8 8-4 1z"/><path d="M11 6l3 3"/></svg></button>
+        <button class="tool" data-tool="eraser" title="지우개 (보조 색으로 칠함)"><svg viewBox="0 0 20 20"><path d="M7 16l-4-4 8-8 6 6-6 6z"/><path d="M5 10l6 6"/><path d="M10 16h7"/></svg></button>
+        <button class="tool" data-tool="fill" title="채우기"><svg viewBox="0 0 20 20"><path d="M3 9l6-6 7 7-6 6z"/><path d="M3 9h13"/><path d="M17 13c1 1.5 1 3 0 3s-1-1.5 0-3z"/></svg></button>
+        <button class="tool" data-tool="picker" title="색 고르기"><svg viewBox="0 0 20 20"><path d="M12 3l5 5-2 2-5-5z"/><path d="M11 6l-7 7v3h3l7-7"/></svg></button>
+        <button class="tool" data-tool="text" title="텍스트"><svg viewBox="0 0 20 20"><path d="M4 16L10 3l6 13"/><path d="M6.5 11h7"/></svg></button>
+        <button class="tool" data-tool="brush" title="브러시"><svg viewBox="0 0 20 20"><path d="M15 3l2 2-7 7-2-2z"/><path d="M8 10c-3 0-4 2-4 4 0 1-1 2-2 2 2 1 6 1 7-2"/></svg></button>
+      </div>
+      <span class="label">도구</span>
+    </div>
+    <div class="group">
+      <div class="row">
+        <button class="tool" data-tool="line" title="선 (Shift: 45도 단위)"><svg viewBox="0 0 20 20"><path d="M4 16L16 4"/></svg></button>
+        <button class="tool" data-tool="rect" title="사각형 (Shift: 정사각형)"><svg viewBox="0 0 20 20"><rect x="3.5" y="5.5" width="13" height="9"/></svg></button>
+        <button class="tool" data-tool="ellipse" title="타원 (Shift: 원)"><svg viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="7" ry="5"/></svg></button>
+        <button class="tool" data-tool="roundrect" title="둥근 사각형 (Shift: 정사각형)"><svg viewBox="0 0 20 20"><rect x="3.5" y="5.5" width="13" height="9" rx="3"/></svg></button>
+        <button class="tool" data-tool="triangle" title="삼각형 (Shift: 같은 너비와 높이)"><svg viewBox="0 0 20 20"><path d="M10 4l7 12H3z"/></svg></button>
+        <button class="tool" id="btnShapeFill" aria-pressed="false" title="도형 안 채우기: 켜면 보조 색으로 채웁니다"><svg viewBox="0 0 20 20"><rect class="solid" x="4" y="6" width="12" height="9" rx="1"/></svg></button>
+      </div>
+      <span class="label">도형</span>
+    </div>
+    <div class="group" id="optGroup">
+      <div class="slider" id="sizeBox">
+        <input type="range" id="size" min="1" max="40" value="3">
+        <output id="sizeOut">3px</output>
+      </div>
+      <div class="slider" id="tolBox" hidden title="허용 오차: 누른 곳의 색과 얼마나 비슷한 색까지 함께 칠할지 정합니다. 0%는 똑같은 색만 칠하고, 높일수록 비슷한 색까지 칠합니다. 도형 가장자리의 흐린 픽셀까지 칠하려면 조금 올리세요.">
+        <input type="range" id="tol" min="0" max="100" value="0">
+        <div class="tolbar"><span id="tolReach"></span></div>
+        <small id="tolOut">0%: 똑같은 색만 칠함</small>
+      </div>
+      <div class="slider" id="fontBox" hidden>
+        <select id="fontSize"></select>
+        <output>글꼴 크기</output>
+      </div>
+      <span class="label" id="sliderLabel">크기</span>
+    </div>
+    <div class="group">
+      <div class="colors">
+        <div class="current" title="왼쪽 버튼: 기본 색 / 오른쪽 버튼: 보조 색. 누르면 두 색을 바꿉니다">
+          <span class="primary" id="primarySwatch"></span>
+          <span class="secondary" id="secondarySwatch"></span>
+        </div>
+        <div class="palette" id="palette"></div>
+        <input type="color" id="custom" title="색 직접 고르기 (기본 색)">
+      </div>
+      <span class="label">색 (왼쪽 클릭: 기본, 오른쪽 클릭: 보조)</span>
+    </div>
+  </div>
+
+  <main>
+    <div class="workspace" id="workspace">
+      <div class="stage" id="stage">
+        <canvas id="main" width="960" height="600"></canvas>
+        <canvas id="overlay" width="960" height="600"></canvas>
+      </div>
+    </div>
+    <aside>
+      <header>
+        <h2>붙여 넣은 그림 <small id="count">0/10</small></h2>
+      </header>
+      <div class="history" id="history" role="listbox" aria-label="붙여 넣은 그림 목록"></div>
+    </aside>
+  </main>
+
+  <div class="status">
+    <span id="pos">0, 0px</span>
+    <span id="selSize"></span>
+    <span id="dim">960 × 600px</span>
+    <span id="toolName">연필</span>
+    <span class="zoom">
+      <button id="zoomOut" title="축소 (Ctrl+-)">−</button>
+      <select id="zoom" title="확대/축소 (Ctrl+마우스 휠)"></select>
+      <button id="zoomIn" title="확대 (Ctrl++)">+</button>
+    </span>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script src="paint-core.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const canvas = $("main"), ctx = canvas.getContext("2d", { willReadFrequently: true });
+  const overlay = $("overlay"), octx = overlay.getContext("2d");
+  const stage = $("stage"), ws = $("workspace");
+  const SHAPES = ["line", "rect", "ellipse", "roundrect", "triangle"];
+  const TOOL_NAMES = { select: "선택", pencil: "연필", fill: "채우기", eraser: "지우개", picker: "색 고르기", text: "텍스트", brush: "브러시",
+                       line: "선", rect: "사각형", ellipse: "타원", roundrect: "둥근 사각형", triangle: "삼각형" };
+  const PALETTE = ["#000000", "#7f7f7f", "#880015", "#ed1c24", "#ff7f27", "#fff200", "#22b14c", "#00a2e8", "#3f48cc", "#a349a4",
+                   "#ffffff", "#c3c3c3", "#b97a57", "#ffaec9", "#ffc90e", "#efe4b0", "#b5e61d", "#99d9ea", "#7092be", "#c8bfe7"];
+  const ZOOMS = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8];
+  const FONT = '"Malgun Gothic", "Segoe UI", sans-serif', LINE = 1.25;
+
+  const state = { tool: "pencil", prevTool: "pencil", primary: "#000000", secondary: "#ffffff", size: 3, tol: 0, zoom: 1, shapeFill: false, fontSize: 24 };
+  let history = [];        // pasted images, newest first: { id, hash, blob, url, w, h, at }
+  let selectedId = null;
+  let floating = null;     // image not yet committed: { el, src, w, h, x, y, kind: "paste" | "selection", url }
+  let editor = null;       // text being typed: { el, x, y, color, size }
+  const undo = [], redo = [];
+
+  // ---------- helpers ----------
+  const toast = (msg) => { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 1800); };
+  const hexToRgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const rgbToHex = (r, g, b) => "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
+  const blobToImage = (blob) => new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(blob);
+    img.onload = () => res(img);
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error("그림을 읽을 수 없습니다")); };
+    img.src = url;
+  });
+  const canvasToBlob = (c) => new Promise((res) => c.toBlob(res, "image/png"));
+  const newCanvas = (w, h) => Object.assign(document.createElement("canvas"), { width: w, height: h });
+  // Hash is only for spotting the same image pasted twice; non-secure origins have no crypto.subtle.
+  async function hashOf(blob) {
+    if (!globalThis.crypto?.subtle) return undefined;
+    const buf = await crypto.subtle.digest("SHA-256", await blob.arrayBuffer());
+    return Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  // ---------- undo ----------
+  // Full snapshots, capped by memory rather than count (a 4K canvas is ~33MB each).
+  const UNDO_BYTES = 256 * 1024 * 1024;
+  const grab = () => ({ w: canvas.width, h: canvas.height, data: ctx.getImageData(0, 0, canvas.width, canvas.height) });
+  function pushUndo(s) {
+    undo.push(s);
+    let bytes = undo.reduce((n, u) => n + u.data.data.length, 0);
+    while (undo.length > 1 && bytes > UNDO_BYTES) bytes -= undo.shift().data.data.length;
+    redo.length = 0;
+  }
+  const snapshot = () => pushUndo(grab());
+  function restore(from, to) {
+    cancelText();
+    if (floating?.kind === "paste") return discardFloating(); // undo drops a fresh paste, like Paint
+    // a lifted selection: put it down where it was moved, then undo the whole move in one step
+    commitFloating();
+    if (!from.length) return;
+    to.push(grab());
+    const s = from.pop();
+    resizeCanvas(s.w, s.h, false);
+    ctx.putImageData(s.data, 0, 0);
+  }
+
+  // ---------- canvas size and zoom ----------
+  function resizeCanvas(w, h, keep = true) {
+    const old = keep ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
+    canvas.width = overlay.width = w;
+    canvas.height = overlay.height = h;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+    if (old) ctx.putImageData(old, 0, 0);
+    $("dim").textContent = `${w} × ${h}px`;
+    applyZoom();
+  }
+  function applyZoom() {
+    const z = state.zoom;
+    for (const c of [canvas, overlay]) { c.style.width = canvas.width * z + "px"; c.style.height = canvas.height * z + "px"; }
+    canvas.style.imageRendering = z > 1 ? "pixelated" : "auto";
+    if (floating) layoutFloating(floating);
+    if (editor) layoutEditor();
+    $("zoom").value = String(z);
+  }
+  function setZoom(z) {
+    const old = state.zoom;
+    if (z === old || !ZOOMS.includes(z)) return;
+    const cx = (ws.scrollLeft + ws.clientWidth / 2) / old, cy = (ws.scrollTop + ws.clientHeight / 2) / old;
+    state.zoom = z;
+    applyZoom();
+    ws.scrollLeft = cx * z - ws.clientWidth / 2;
+    ws.scrollTop = cy * z - ws.clientHeight / 2;
+  }
+  const stepZoom = (dir) => setZoom(ZOOMS[Math.max(0, Math.min(ZOOMS.length - 1, ZOOMS.indexOf(state.zoom) + dir))]);
+  ZOOMS.forEach((z) => $("zoom").append(new Option(Math.round(z * 100) + "%", String(z))));
+  $("zoom").addEventListener("change", (e) => setZoom(+e.target.value));
+  $("zoomIn").addEventListener("click", () => stepZoom(1));
+  $("zoomOut").addEventListener("click", () => stepZoom(-1));
+  ws.addEventListener("wheel", (e) => { if (!e.ctrlKey) return; e.preventDefault(); stepZoom(e.deltaY < 0 ? 1 : -1); }, { passive: false });
+
+  // ---------- tools and colors ----------
+  function setTool(t) {
+    commitText();
+    commitFloating();
+    if (t !== "picker") state.prevTool = t;
+    state.tool = t;
+    document.querySelectorAll("[data-tool]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tool === t)));
+    $("toolName").textContent = TOOL_NAMES[t];
+    $("tolBox").hidden = t !== "fill";
+    $("fontBox").hidden = t !== "text";
+    $("sizeBox").hidden = t === "fill" || t === "text";
+    $("sliderLabel").textContent = t === "fill" ? "허용 오차" : t === "text" ? "텍스트" : "크기";
+    canvas.style.cursor = t === "text" ? "text" : "crosshair";
+  }
+  function setColors() {
+    $("primarySwatch").style.background = state.primary;
+    $("secondarySwatch").style.background = state.secondary;
+    $("custom").value = state.primary;
+    $("tolReach").style.background = state.primary + "cc";
+    if (editor) { editor.color = state.primary; editor.el.style.color = state.primary; }
+  }
+  document.querySelectorAll("[data-tool]").forEach((b) => b.addEventListener("click", () => setTool(b.dataset.tool)));
+  PALETTE.forEach((c) => {
+    const b = document.createElement("button");
+    b.style.background = c; b.title = c;
+    b.addEventListener("click", () => { state.primary = c; setColors(); });
+    b.addEventListener("contextmenu", (e) => { e.preventDefault(); state.secondary = c; setColors(); });
+    $("palette").append(b);
+  });
+  $("custom").addEventListener("input", (e) => { state.primary = e.target.value; setColors(); });
+  document.querySelector(".current").addEventListener("click", () => { [state.primary, state.secondary] = [state.secondary, state.primary]; setColors(); });
+  $("size").addEventListener("input", (e) => { state.size = +e.target.value; $("sizeOut").textContent = `${state.size}px`; });
+  // Tolerance preview: the bar is a white-to-black gradient; the marked part is what one click on
+  // white would fill. Gray g matches white when sqrt(3)*(255-g) <= t*510 (colorMatch in paint-core.js).
+  function showTol() {
+    const v = +$("tol").value;
+    state.tol = v / 100;
+    $("tolOut").textContent = v === 0 ? "0%: 똑같은 색만 칠함" : `${v}%: 흰 곳을 누르면 막대만큼 칠함`;
+    $("tolReach").style.width = Math.min(1, (state.tol * 510) / (Math.sqrt(3) * 255)) * 100 + "%";
+  }
+  $("tol").addEventListener("input", showTol);
+  [12, 16, 20, 24, 32, 48, 72].forEach((s) => $("fontSize").append(new Option(s + "px", String(s), s === 24, s === 24)));
+  $("fontSize").addEventListener("change", (e) => { state.fontSize = +e.target.value; if (editor) { editor.size = state.fontSize; layoutEditor(); } });
+  $("btnShapeFill").addEventListener("click", (e) => {
+    state.shapeFill = !state.shapeFill;
+    e.currentTarget.setAttribute("aria-pressed", String(state.shapeFill));
+  });
+
+  // ---------- drawing ----------
+  const pointOf = (e) => {
+    const r = canvas.getBoundingClientRect();
+    return { x: Math.floor((e.clientX - r.left) * canvas.width / r.width), y: Math.floor((e.clientY - r.top) * canvas.height / r.height) };
+  };
+  function plotLine(x0, y0, x1, y1, plot) { // Bresenham
+    const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+    let err = dx + dy;
+    for (;;) {
+      plot(x0, y0);
+      if (x0 === x1 && y0 === y1) break;
+      const e2 = 2 * err;
+      if (e2 >= dy) { err += dy; x0 += sx; }
+      if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+  }
+  function constrain(a, b, tool) {
+    const dx = b.x - a.x, dy = b.y - a.y;
+    if (tool === "line") {
+      const ang = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4), len = Math.hypot(dx, dy);
+      return { x: a.x + Math.round(Math.cos(ang) * len), y: a.y + Math.round(Math.sin(ang) * len) };
+    }
+    const s = Math.max(Math.abs(dx), Math.abs(dy));
+    return { x: a.x + Math.sign(dx || 1) * s, y: a.y + Math.sign(dy || 1) * s };
+  }
+  function drawShape(c, tool, a, b, color, fillColor) {
+    const x = Math.min(a.x, b.x) + .5, y = Math.min(a.y, b.y) + .5, w = Math.abs(b.x - a.x), h = Math.abs(b.y - a.y);
+    c.save();
+    c.strokeStyle = color; c.lineWidth = state.size; c.lineCap = "round"; c.lineJoin = "round";
+    c.beginPath();
+    if (tool === "line") { c.moveTo(a.x + .5, a.y + .5); c.lineTo(b.x + .5, b.y + .5); }
+    if (tool === "rect") c.rect(x, y, w, h);
+    if (tool === "roundrect") c.roundRect(x, y, w, h, Math.min(w, h) * 0.2);
+    if (tool === "ellipse") c.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+    if (tool === "triangle") { c.moveTo(x + w / 2, y); c.lineTo(x + w, y + h); c.lineTo(x, y + h); c.closePath(); }
+    if (state.shapeFill && tool !== "line") { c.fillStyle = fillColor; c.fill(); }
+    c.stroke();
+    c.restore();
+  }
+  // selection rectangle in canvas pixels, clamped to the canvas, both corners included
+  function rectOf(a, b) {
+    const x0 = Math.max(0, Math.min(a.x, b.x)), y0 = Math.max(0, Math.min(a.y, b.y));
+    const x1 = Math.min(canvas.width, Math.max(a.x, b.x) + 1), y1 = Math.min(canvas.height, Math.max(a.y, b.y) + 1);
+    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+  }
+  function drawMarquee() {
+    const r = rectOf(drag.start, drag.raw);
+    octx.clearRect(0, 0, overlay.width, overlay.height);
+    octx.save();
+    octx.setLineDash([4, 3]); octx.strokeStyle = "#005fb8"; octx.lineWidth = 1;
+    octx.strokeRect(r.x + .5, r.y + .5, Math.max(0, r.w - 1), Math.max(0, r.h - 1));
+    octx.restore();
+    $("selSize").textContent = `${r.w} × ${r.h}px`;
+  }
+
+  let drag = null; // { color, fillColor, start, last, raw, end }
+  canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+  canvas.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0 && e.button !== 2) return;
+    const t = state.tool;
+    if (editor) { commitText(); if (t === "text") return; } // click outside the text box finishes it
+    commitFloating();
+    const p = pointOf(e), right = e.button === 2;
+    const color = right ? state.secondary : state.primary;
+    if (t === "picker") {
+      const [r, g, b] = ctx.getImageData(p.x, p.y, 1, 1).data;
+      if (right) state.secondary = rgbToHex(r, g, b); else state.primary = rgbToHex(r, g, b);
+      setColors();
+      setTool(state.prevTool);
+      return;
+    }
+    if (t === "fill") {
+      const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const before = new ImageData(new Uint8ClampedArray(img.data), img.width, img.height);
+      if (PaintCore.floodFill(img, p.x, p.y, hexToRgb(color), state.tol)) {
+        pushUndo({ w: canvas.width, h: canvas.height, data: before });
+        ctx.putImageData(img, 0, 0);
+      }
+      return;
+    }
+    if (t === "text") { if (!right) openText(p); return; }
+    canvas.setPointerCapture(e.pointerId);
+    drag = { color: t === "eraser" ? state.secondary : color, fillColor: right ? state.primary : state.secondary, start: p, last: p, raw: p, end: p };
+    if (t === "select") return;
+    snapshot();
+    if (!SHAPES.includes(t)) stroke(p, p);
+  });
+  // The preview and the committed shape both use drag.end, so Shift state is the one last shown.
+  function previewShape(shift) {
+    drag.end = shift ? constrain(drag.start, drag.raw, state.tool) : drag.raw;
+    octx.clearRect(0, 0, overlay.width, overlay.height);
+    drawShape(octx, state.tool, drag.start, drag.end, drag.color, drag.fillColor);
+  }
+  canvas.addEventListener("pointermove", (e) => {
+    const p = pointOf(e);
+    $("pos").textContent = `${p.x}, ${p.y}px`;
+    if (!drag) return;
+    if (state.tool === "select") { drag.raw = p; drawMarquee(); }
+    else if (SHAPES.includes(state.tool)) { drag.raw = p; previewShape(e.shiftKey); }
+    else stroke(drag.last, p);
+    drag.last = p;
+  });
+  canvas.addEventListener("pointerup", () => {
+    if (!drag) return;
+    const d = drag; drag = null;
+    if (state.tool === "select") {
+      octx.clearRect(0, 0, overlay.width, overlay.height);
+      $("selSize").textContent = "";
+      if (d.raw.x !== d.start.x || d.raw.y !== d.start.y) {
+        const r = rectOf(d.start, d.raw);
+        if (r.w > 0 && r.h > 0) liftSelection(r);
+      }
+    } else if (SHAPES.includes(state.tool)) {
+      octx.clearRect(0, 0, overlay.width, overlay.height);
+      drawShape(ctx, state.tool, d.start, d.end, d.color, d.fillColor);
+    }
+  });
+  canvas.addEventListener("pointercancel", () => {
+    if (!drag) return;
+    if (state.tool === "select" || SHAPES.includes(state.tool)) {
+      octx.clearRect(0, 0, overlay.width, overlay.height);
+      if (state.tool !== "select") undo.pop(); // drop the unfinished shape's unused undo step
+    }
+    drag = null;
+  });
+  const shiftPreview = (e) => { if (e.key === "Shift" && drag && SHAPES.includes(state.tool)) previewShape(e.type === "keydown"); };
+  document.addEventListener("keydown", shiftPreview);
+  document.addEventListener("keyup", shiftPreview);
+
+  function stroke(a, b) {
+    const t = state.tool;
+    ctx.fillStyle = ctx.strokeStyle = drag.color;
+    if (t === "pencil") {
+      const s = Math.max(1, Math.round(state.size / 3)), o = Math.floor(s / 2);
+      plotLine(a.x, a.y, b.x, b.y, (x, y) => ctx.fillRect(x - o, y - o, s, s));
+    } else if (t === "eraser") {
+      const s = state.size * 3, o = Math.floor(s / 2);
+      plotLine(a.x, a.y, b.x, b.y, (x, y) => ctx.fillRect(x - o, y - o, s, s));
+    } else if (t === "brush") {
+      ctx.lineWidth = state.size; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.beginPath(); ctx.moveTo(a.x + .5, a.y + .5); ctx.lineTo(b.x + .5, b.y + .5); ctx.stroke();
+    }
+  }
+
+  // ---------- text ----------
+  function openText(p) {
+    const el = document.createElement("textarea");
+    el.className = "text-editor"; el.spellcheck = false; el.wrap = "off"; el.rows = 1;
+    el.setAttribute("aria-label", "텍스트 입력");
+    editor = { el, x: p.x, y: p.y, color: state.primary, size: state.fontSize };
+    stage.append(el);
+    layoutEditor();
+    el.addEventListener("input", fitEditor);
+    el.addEventListener("keydown", (e) => {
+      e.stopPropagation(); // typing must not trigger paint shortcuts
+      if (e.key === "Escape" || (e.key === "Enter" && e.ctrlKey)) { e.preventDefault(); commitText(); }
+    });
+    el.addEventListener("pointerdown", (e) => e.stopPropagation());
+    setTimeout(() => el.focus());
+  }
+  function layoutEditor() {
+    const { el, x, y, color, size } = editor, z = state.zoom;
+    Object.assign(el.style, { left: x * z - 1 + "px", top: y * z - 1 + "px", font: `${size * z}px/${LINE} ${FONT}`, color });
+    fitEditor();
+  }
+  function fitEditor() {
+    const el = editor.el;
+    el.style.width = el.style.height = "0px";
+    el.style.width = Math.max(editor.size * state.zoom, el.scrollWidth + 4) + "px";
+    el.style.height = el.scrollHeight + 2 + "px";
+  }
+  function commitText() {
+    if (!editor) return;
+    const { el, x, y, color, size } = editor;
+    editor = null;
+    const text = el.value;
+    el.remove();
+    if (!text.trim()) return;
+    snapshot();
+    ctx.save();
+    ctx.fillStyle = color; ctx.font = `${size}px ${FONT}`; ctx.textBaseline = "middle";
+    text.split("\n").forEach((line, i) => ctx.fillText(line, x, y + (i + 0.5) * size * LINE));
+    ctx.restore();
+  }
+  function cancelText() {
+    if (!editor) return;
+    editor.el.remove();
+    editor = null;
+  }
+
+  // ---------- floating image: a paste or a lifted selection ----------
+  function makeFloating({ src, w, h, x, y, kind, url }) {
+    commitText();
+    commitFloating();
+    const el = document.createElement("div");
+    el.className = "floating";
+    el.append(src);
+    stage.append(el);
+    const f = { el, src, w, h, x, y, kind, url };
+    floating = f;
+    layoutFloating(f);
+    $("selSize").textContent = `${w} × ${h}px`;
+    el.addEventListener("contextmenu", (e) => e.preventDefault());
+    el.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      e.stopPropagation();
+      el.setPointerCapture(e.pointerId);
+      const sx = e.clientX, sy = e.clientY, ox = f.x, oy = f.y;
+      const move = (m) => {
+        f.x = ox + Math.round((m.clientX - sx) / state.zoom);
+        f.y = oy + Math.round((m.clientY - sy) / state.zoom);
+        layoutFloating(f);
+      };
+      const end = () => ["pointermove", "pointerup", "pointercancel"].forEach((t, i) => el.removeEventListener(t, i ? end : move));
+      el.addEventListener("pointermove", move);
+      el.addEventListener("pointerup", end);
+      el.addEventListener("pointercancel", end);
+    });
+    return f;
+  }
+  function layoutFloating(f) {
+    const z = state.zoom;
+    f.el.style.left = f.x * z + "px";
+    f.el.style.top = f.y * z + "px";
+    f.src.style.width = f.w * z + "px";
+    f.src.style.height = f.h * z + "px";
+  }
+  function dropFloating(f) {
+    f.el.remove();
+    if (f.url) URL.revokeObjectURL(f.url);
+    $("selSize").textContent = "";
+  }
+  // A pasted image larger than the canvas grows the canvas when it is committed, so commit is one
+  // undo step and cancelling leaves the canvas size alone. A lifted selection saved its undo step
+  // when it was lifted, so moving it and committing is a single step too.
+  function commitFloating() {
+    if (!floating) return;
+    const f = floating;
+    floating = null;
+    if (f.kind === "paste") snapshot();
+    const w = Math.max(canvas.width, f.w), h = Math.max(canvas.height, f.h);
+    if (w !== canvas.width || h !== canvas.height) resizeCanvas(w, h);
+    ctx.drawImage(f.src, f.x, f.y);
+    dropFloating(f);
+  }
+  function discardFloating() {
+    if (!floating) return;
+    const f = floating;
+    floating = null;
+    dropFloating(f);
+  }
+  // Paint lifts the selected pixels and leaves the secondary color behind.
+  function liftSelection(r) {
+    snapshot();
+    const c = newCanvas(r.w, r.h);
+    c.getContext("2d").drawImage(canvas, r.x, r.y, r.w, r.h, 0, 0, r.w, r.h);
+    ctx.fillStyle = state.secondary;
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+    makeFloating({ src: c, w: r.w, h: r.h, x: r.x, y: r.y, kind: "selection" });
+  }
+  function selectAll() {
+    if (state.tool !== "select") setTool("select");
+    commitText();
+    commitFloating();
+    liftSelection({ x: 0, y: 0, w: canvas.width, h: canvas.height });
+  }
+  async function copyFloating(cut) {
+    const f = floating, c = newCanvas(f.w, f.h);
+    c.getContext("2d").drawImage(f.src, 0, 0);
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": canvasToBlob(c) })]);
+      toast(cut ? "잘라 내서 클립보드에 넣었습니다" : "선택 영역을 복사했습니다");
+      if (cut && floating === f) discardFloating();
+    } catch (err) {
+      toast("복사하지 못했습니다: " + (err?.message || err));
+    }
+  }
+  function crop() {
+    if (!floating) return toast("먼저 선택 도구로 남길 영역을 고르세요");
+    const f = floating;
+    floating = null;
+    if (f.kind === "paste") snapshot();
+    resizeCanvas(f.w, f.h, false);
+    ctx.drawImage(f.src, 0, 0);
+    dropFloating(f);
+  }
+  function transformCanvas(kind) {
+    commitText();
+    commitFloating();
+    snapshot();
+    const src = newCanvas(canvas.width, canvas.height);
+    src.getContext("2d").drawImage(canvas, 0, 0);
+    const turn = kind === "rotR" || kind === "rotL";
+    resizeCanvas(turn ? src.height : src.width, turn ? src.width : src.height, false);
+    ctx.save();
+    if (kind === "rotR") { ctx.translate(canvas.width, 0); ctx.rotate(Math.PI / 2); }
+    if (kind === "rotL") { ctx.translate(0, canvas.height); ctx.rotate(-Math.PI / 2); }
+    if (kind === "flipH") { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
+    if (kind === "flipV") { ctx.translate(0, canvas.height); ctx.scale(1, -1); }
+    ctx.drawImage(src, 0, 0);
+    ctx.restore();
+  }
+  $("btnCrop").addEventListener("click", crop);
+  $("btnRotR").addEventListener("click", () => transformCanvas("rotR"));
+  $("btnRotL").addEventListener("click", () => transformCanvas("rotL"));
+  $("btnFlipH").addEventListener("click", () => transformCanvas("flipH"));
+  $("btnFlipV").addEventListener("click", () => transformCanvas("flipV"));
+  ws.addEventListener("pointerdown", (e) => { if (e.target === ws) { commitText(); commitFloating(); } });
+
+  async function placeOnCanvas(blob) {
+    placeImage(await blobToImage(blob));
+  }
+  // Synchronous on purpose: two quick calls cannot both see "no floating image" across an await.
+  function placeImage(img) {
+    const z = state.zoom, w = img.naturalWidth, h = img.naturalHeight;
+    const x = Math.max(0, Math.min(canvas.width - w, Math.round(ws.scrollLeft / z)));
+    const y = Math.max(0, Math.min(canvas.height - h, Math.round(ws.scrollTop / z)));
+    makeFloating({ src: img, w, h, x, y, kind: "paste", url: img.src });
+  }
+
+  // ---------- pasted history (max 10, oldest replaced, cached in IndexedDB) ----------
+  const db = (() => {
+    let open;
+    const conn = () => open ??= new Promise((res, rej) => {
+      const r = indexedDB.open("web-paint", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("pasted", { keyPath: "id" });
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    });
+    const tx = async (mode, fn) => {
+      const d = await conn();
+      return new Promise((res, rej) => {
+        const t = d.transaction("pasted", mode), s = t.objectStore("pasted"), out = fn(s);
+        t.oncomplete = () => res(out?.result);
+        t.onerror = t.onabort = () => rej(t.error);
+      });
+    };
+    return {
+      all: () => tx("readonly", (s) => s.getAll()),
+      // write only what changed, so another open tab's items are not wiped
+      save: ({ id, hash, blob, w, h, at }, removedIds) => tx("readwrite", (s) => {
+        removedIds.forEach((k) => s.delete(k));
+        s.put({ id, hash, blob, w, h, at });
+      }),
+    };
+  })();
+
+  // Build a history item. Runs synchronously up to the first await, so the canvas
+  // conversion uses img before the caller hands img to the floating paste.
+  async function makeItem(blob, img) {
+    const w = img.naturalWidth, h = img.naturalHeight;
+    let png = blob;
+    if (blob.type !== "image/png") { // store PNG so it can be copied back as image/png
+      const c = newCanvas(w, h);
+      c.getContext("2d").drawImage(img, 0, 0);
+      png = await canvasToBlob(c);
+      if (!png) throw new Error("그림을 PNG로 바꾸지 못했습니다");
+    }
+    return { id: Date.now() + Math.random(), hash: await hashOf(png), blob: png, w, h, at: Date.now() };
+  }
+  function addToHistory(item) {
+    const next = PaintCore.pushHistory(history, item);
+    const dropped = history.filter((x) => !next.includes(x));
+    dropped.forEach((x) => x.url && URL.revokeObjectURL(x.url));
+    history = next;
+    selectedId = item.id;
+    renderHistory();
+    // the cache is a convenience; the panel works without it
+    db.save(item, dropped.map((x) => x.id)).catch(() => {});
+    return item;
+  }
+  async function addPasted(blob) {
+    const img = await blobToImage(blob);
+    try { return addToHistory(await makeItem(blob, img)); }
+    finally { URL.revokeObjectURL(img.src); }
+  }
+
+  function renderHistory() {
+    const list = $("history");
+    list.replaceChildren();
+    $("count").textContent = `${history.length}/${PaintCore.HISTORY_MAX}`;
+    if (!history.length) {
+      list.innerHTML = '<div class="empty">아직 붙여 넣은 그림이 없습니다.<br>그림을 복사한 뒤 Ctrl+V를 누르세요.</div>';
+      return;
+    }
+    history.forEach((it) => {
+      it.url ??= URL.createObjectURL(it.blob);
+      const el = document.createElement("div");
+      el.className = "item"; el.role = "option"; el.tabIndex = 0;
+      el.setAttribute("aria-selected", String(it.id === selectedId));
+      const time = new Date(it.at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      el.innerHTML = `<div class="thumb"><img alt="붙여 넣은 그림 ${it.w}×${it.h}"></div>
+        <div class="meta"><span>${it.w} × ${it.h}</span><span>${time}</span></div>
+        <div class="actions"><button type="button" data-act="place">캔버스에 붙이기</button><button type="button" data-act="copy" title="Ctrl+C">복사</button></div>`;
+      el.querySelector("img").src = it.url;
+      el.addEventListener("click", (e) => {
+        const act = e.target.dataset.act;
+        if (act === "place") placeFromHistory(it);
+        else if (act === "copy") copyImage(it);
+        else if (selectedId !== it.id) { selectedId = it.id; renderHistory(); list.querySelector('[aria-selected="true"]').focus(); }
+      });
+      el.addEventListener("dblclick", (e) => { if (!e.target.dataset.act) placeFromHistory(it); });
+      el.addEventListener("keydown", (e) => { if (e.target === el && e.key === "Enter") placeFromHistory(it); });
+      el.addEventListener("focus", () => { selectedId = it.id; list.querySelectorAll(".item").forEach((x) => x.setAttribute("aria-selected", String(x === el))); });
+      list.append(el);
+    });
+    list.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
+  }
+  function placeFromHistory(it) {
+    placeOnCanvas(it.blob).catch((err) => toast("붙이지 못했습니다: " + (err?.message || err)));
+  }
+
+  async function copyImage(it) {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": it.blob })]);
+      toast("그림을 클립보드에 복사했습니다");
+    } catch (err) {
+      toast("복사하지 못했습니다: " + (err?.message || err));
+    }
+  }
+
+  // Paste: put the image on the canvas first, then record it. A failing cache never blocks the paste.
+  const MAX_SIDE = 8192;
+  async function handleImageBlob(blob) {
+    try {
+      const img = await blobToImage(blob);
+      if (img.naturalWidth > MAX_SIDE || img.naturalHeight > MAX_SIDE) {
+        URL.revokeObjectURL(img.src);
+        return toast(`가로, 세로 ${MAX_SIDE}px 이하의 그림만 붙여 넣을 수 있습니다`);
+      }
+      const pending = makeItem(blob, img); // uses img synchronously before placeImage takes it
+      placeImage(img);
+      addToHistory(await pending);
+    } catch (err) {
+      toast("붙여 넣지 못했습니다: " + (err?.message || err));
+    }
+  }
+  document.addEventListener("paste", (e) => {
+    if (e.target.closest?.(".text-editor")) return; // plain text paste into the text box
+    const file = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith("image/"))?.getAsFile();
+    e.preventDefault();
+    if (file) handleImageBlob(file);
+    else toast("클립보드에 그림이 없습니다");
+  });
+  $("btnPaste").addEventListener("click", async () => {
+    let items;
+    try { items = await navigator.clipboard.read(); }
+    catch { return toast("이 브라우저에서는 Ctrl+V로 붙여 넣으세요"); }
+    for (const item of items) {
+      const type = item.types.find((t) => t.startsWith("image/"));
+      if (type) return handleImageBlob(await item.getType(type));
+    }
+    toast("클립보드에 그림이 없습니다");
+  });
+
+  // ---------- file actions and keys ----------
+  $("btnNew").addEventListener("click", () => { cancelText(); discardFloating(); snapshot(); resizeCanvas(960, 600, false); });
+  $("btnUndo").addEventListener("click", () => restore(undo, redo));
+  $("btnRedo").addEventListener("click", () => restore(redo, undo));
+  async function save() {
+    commitText();
+    commitFloating();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(await canvasToBlob(canvas));
+    a.download = "그림.png";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  $("btnSave").addEventListener("click", save);
+  document.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase(), c = e.ctrlKey || e.metaKey;
+    if (c && k === "z" && !e.shiftKey) { e.preventDefault(); restore(undo, redo); }
+    else if (c && (k === "y" || (k === "z" && e.shiftKey))) { e.preventDefault(); restore(redo, undo); }
+    else if (c && k === "s") { e.preventDefault(); save(); }
+    else if (c && k === "a") { e.preventDefault(); selectAll(); }
+    else if (c && (k === "c" || k === "x") && floating) { e.preventDefault(); copyFloating(k === "x"); }
+    else if (c && k === "c" && $("history").contains(document.activeElement)) {
+      const it = history.find((x) => x.id === selectedId);
+      if (it) { e.preventDefault(); copyImage(it); }
+    }
+    else if (c && (k === "=" || k === "+")) { e.preventDefault(); stepZoom(1); }
+    else if (c && k === "-") { e.preventDefault(); stepZoom(-1); }
+    else if (c && k === "0") { e.preventDefault(); setZoom(1); }
+    else if (floating && (k === "enter" || k === "escape")) commitFloating();
+    else if (floating && k === "delete") discardFloating();
+  });
+
+  // ---------- start ----------
+  resizeCanvas(960, 600, false);
+  setTool("pencil");
+  setColors();
+  showTol();
+  renderHistory();
+  // merge, in case something was pasted before the cache finished loading
+  db.all().then((items) => {
+    const known = (x) => history.some((h) => h.id === x.id || (h.hash !== undefined && h.hash === x.hash));
+    const cached = (items || []).sort((a, b) => b.at - a.at).filter((x) => !known(x));
+    history = [...history, ...cached].slice(0, PaintCore.HISTORY_MAX);
+    renderHistory();
+  }).catch(() => {});
+
+  // hook for automated checks
+  window.__paint = { addPasted, handleImageBlob, get history() { return history; }, canvas, setTool, commitFloating, selectAll, setZoom, crop,
+                     get floating() { return floating; }, get zoom() { return state.zoom; } };
+})();
+</script>
+</body>
+</html>
