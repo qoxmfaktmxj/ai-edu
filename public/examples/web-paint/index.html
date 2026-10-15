@@ -587,24 +587,27 @@
     if (f.url) URL.revokeObjectURL(f.url);
     $("selSize").textContent = "";
   }
-  // A pasted image larger than the canvas grows the canvas when it is committed, so commit is one
-  // undo step and cancelling leaves the canvas size alone. A lifted selection saved its undo step
-  // when it was lifted, so moving it and committing is a single step too.
+  // Both kinds save their undo step when they appear (a paste before the canvas grows to fit it,
+  // a selection before it is lifted), so moving and committing is a single undo step.
   function commitFloating() {
     if (!floating) return;
     const f = floating;
     floating = null;
-    if (f.kind === "paste") snapshot();
-    const w = Math.max(canvas.width, f.w), h = Math.max(canvas.height, f.h);
-    if (w !== canvas.width || h !== canvas.height) resizeCanvas(w, h);
     ctx.drawImage(f.src, f.x, f.y);
     dropFloating(f);
   }
+  // Dropping a paste rolls back to its saved step, which also undoes the canvas growth.
+  // Dropping a selection leaves the hole in the secondary color, like Paint's Delete.
   function discardFloating() {
     if (!floating) return;
     const f = floating;
     floating = null;
     dropFloating(f);
+    if (f.kind === "paste" && undo.length) {
+      const s = undo.pop();
+      resizeCanvas(s.w, s.h, false);
+      ctx.putImageData(s.data, 0, 0);
+    }
   }
   // Paint lifts the selected pixels and leaves the secondary color behind.
   function liftSelection(r) {
@@ -636,7 +639,6 @@
     if (!floating) return toast("먼저 선택 도구로 남길 영역을 고르세요");
     const f = floating;
     floating = null;
-    if (f.kind === "paste") snapshot();
     resizeCanvas(f.w, f.h, false);
     ctx.drawImage(f.src, 0, 0);
     dropFloating(f);
@@ -668,8 +670,13 @@
     placeImage(await blobToImage(blob));
   }
   // Synchronous on purpose: two quick calls cannot both see "no floating image" across an await.
+  // A paste larger than the canvas grows the canvas right away, like Paint.
   function placeImage(img) {
+    commitText();
+    commitFloating();
+    snapshot();
     const z = state.zoom, w = img.naturalWidth, h = img.naturalHeight;
+    if (w > canvas.width || h > canvas.height) resizeCanvas(Math.max(canvas.width, w), Math.max(canvas.height, h));
     const x = Math.max(0, Math.min(canvas.width - w, Math.round(ws.scrollLeft / z)));
     const y = Math.max(0, Math.min(canvas.height - h, Math.round(ws.scrollTop / z)));
     makeFloating({ src: img, w, h, x, y, kind: "paste", url: img.src });
