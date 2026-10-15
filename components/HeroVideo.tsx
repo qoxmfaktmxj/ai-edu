@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 // Looping intro video with a pause button (autoplaying motion must be stoppable).
 // Starts paused for people who ask for reduced motion.
-export default function HeroVideo({ note }: { note: string }) {
+export default function HeroVideo({ note }: { note?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(true);
 
@@ -41,7 +41,7 @@ export default function HeroVideo({ note }: { note: string }) {
           <i className={playing ? "ph ph-pause" : "ph ph-play"} />
         </button>
       </div>
-      <p className="hero-media-note">{note}</p>
+      {note && <p className="hero-media-note">{note}</p>}
     </div>
   );
 }

@@ -18,10 +18,10 @@ export default function Home() {
       <section className="home-hero">
         <div className="hero-anim">
           <h1 style={{ "--d": 0 } as React.CSSProperties}>
-            말로 부탁하고, <em>직접 만들며</em> 배우는 AI
+            <em>잘 부탁하는</em> 사람이 AI를 잘 씁니다
           </h1>
           <p className="hero-sub" style={{ "--d": 1 } as React.CSSProperties}>
-            코딩을 몰라도 따라 할 수 있는 실습형 AI 교육입니다. 한 회차씩 직접 만들면서 AI를 업무 도구로 익힙니다.
+            보고 끝나지 않습니다. 직접 부탁하고, 확인하고, 다시 다듬으며 회차마다 AI와 일하는 감각을 손으로 익힙니다.
           </p>
           <div className="hero-cta" style={{ "--d": 2 } as React.CSSProperties}>
             <Link className="btn btn-primary" href={`/courses/${first.slug}`}>
@@ -33,7 +33,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-video">
-          <HeroVideo note="이 소개 영상도 HTML로 만들었습니다. 2회차 7장에서 같은 방법으로 직접 만들어 봅니다." />
+          <HeroVideo />
         </div>
       </section>
 

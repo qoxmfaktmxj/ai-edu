@@ -11,7 +11,6 @@
     "topics",
     "build",
     "motion",
-    "finish",
     "work",
     "prompts",
     "glossary",
@@ -59,7 +58,7 @@
       "text": "프롬프트로 한 번에 만들고 하나씩 다듬기"
     },
     {
-      "to": "finish",
+      "to": "build",
       "icon": "ph-rocket-launch",
       "title": "배포하고 다듬기",
       "text": "내 주소로 공개하고 한 번 더 개선"

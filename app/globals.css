@@ -264,17 +264,11 @@ body:has(.layout) { background: var(--bg-soft); }
 .chapter + .chapter { border-top: 1px solid var(--line); margin-top: clamp(56px, 7vw, 96px); }
 .chapter-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 22px; align-items: start; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--line); }
 .chapter-num {
-  grid-row: span 3; font-weight: 800; font-size: clamp(40px, 5vw, 60px); font-variant-numeric: tabular-nums;
+  grid-row: span 2; font-weight: 800; font-size: clamp(40px, 5vw, 60px); font-variant-numeric: tabular-nums;
   line-height: 1; color: var(--accent); letter-spacing: -0.04em; padding-top: 4px;
 }
 .chapter-head h1, .chapter-head h2 { font-size: clamp(27px, 3.2vw, 38px); font-weight: 800; }
 .chapter-lead { font-size: 18px; color: var(--text-2); margin: 10px 0 0; max-width: 40em; }
-.chapter-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.chapter-meta span {
-  display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600;
-  color: var(--text-2); background: var(--surface); border: 1px solid var(--line);
-  padding: 4px 12px; border-radius: 999px;
-}
 @media (max-width: 640px) { .chapter-head { grid-template-columns: minmax(0, 1fr); } .chapter-num { grid-row: auto; font-size: 36px; } }
 
 .content h3 { font-size: 23px; font-weight: 800; margin: 52px 0 14px; }
