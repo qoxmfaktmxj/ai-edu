@@ -31,6 +31,8 @@ export default async function ChapterPage({ params }: { params: Params }) {
   const i = heads.findIndex((h) => h.id === id);
   const prev = heads[i - 1];
   const next = heads[i + 1];
+  const lastLesson = heads.filter((h) => /^\d+$/.test(h.num)).at(-1);
+  const nextCourse = lastLesson?.id === id ? getCourses().find((c) => c.no > course.no) : undefined;
 
   return (
     <div className="layout">
@@ -63,6 +65,18 @@ export default async function ChapterPage({ params }: { params: Params }) {
 
       <main className="content" id="main">
         <div dangerouslySetInnerHTML={{ __html: chapter.html }} />
+        {nextCourse && (
+          <section className="course-next" aria-labelledby="next-course-title">
+            <div>
+              <p className="course-next-label">다음 교육</p>
+              <h3 id="next-course-title">{nextCourse.no}회차, {nextCourse.title}</h3>
+              <p className="course-next-description">{nextCourse.summary}</p>
+            </div>
+            <Link className="btn btn-primary" href={`/courses/${nextCourse.slug}/${nextCourse.chapters[0]}`}>
+              {nextCourse.no}회차 시작하기 <i className="ph ph-arrow-right" aria-hidden="true" />
+            </Link>
+          </section>
+        )}
         <nav className="pager" aria-label="이전, 다음 장">
           {prev ? (
             <Link href={`${base}/${prev.id}`} className="pager-prev">

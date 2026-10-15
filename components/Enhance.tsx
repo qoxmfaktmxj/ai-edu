@@ -160,7 +160,7 @@ export default function Enhance() {
     );
 
     // Progress, kept only in this browser: "last:<course>" is the chapter opened most recently,
-    // "done:<course>/<chapter>" is set once the reader reaches the pager at the end of a chapter.
+    // 다음 회차 안내 또는 이전/다음 장 이동 영역에 도달하면 읽음으로 기록한다.
     const paintDone = () =>
       document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="/courses/"], .chapter-list a').forEach((a) => {
         // Checked by the mark itself: React may rewrite className on client navigation.
@@ -171,7 +171,7 @@ export default function Enhance() {
     if (here) {
       const [, course, chapter] = here;
       store.set(`last:${course}`, JSON.stringify({ id: chapter, num: document.querySelector(".chapter-num")?.textContent?.trim() ?? "" }));
-      const pager = document.querySelector(".pager");
+      const pager = document.querySelector(".course-next, .pager");
       if (pager) {
         const end = new IntersectionObserver((entries) => {
           if (!entries.some((e) => e.isIntersecting)) return;

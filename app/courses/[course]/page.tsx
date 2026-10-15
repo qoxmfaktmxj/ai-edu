@@ -22,6 +22,7 @@ export default async function CoursePage({ params }: { params: Promise<{ course:
   if (!course) notFound();
   const base = `/courses/${course.slug}`;
   const heads = getChapterHeads(course);
+  const nextCourse = getCourses().find((c) => c.no > course.no);
   // Course-specific hero and roadmap come from course.json; items pointing at missing chapters are dropped.
   const roadmap = (course.roadmap ?? []).filter((r) => course.chapters.includes(r.to));
   const second = course.secondaryCta && course.chapters.includes(course.secondaryCta.to) ? course.secondaryCta : undefined;
@@ -58,6 +59,14 @@ export default async function CoursePage({ params }: { params: Promise<{ course:
               </Link>
             )}
           </div>
+          {nextCourse && (
+            <p className="course-jump">
+              {nextCourse.no}회차를 찾고 계신가요?{" "}
+              <Link href={`/courses/${nextCourse.slug}/${nextCourse.chapters[0]}`}>
+                {nextCourse.no}회차 바로 시작 <i className="ph ph-arrow-right" aria-hidden="true" />
+              </Link>
+            </p>
+          )}
         </div>
         {course.videoNote && <HeroVideo note={course.videoNote} />}
       </section>
