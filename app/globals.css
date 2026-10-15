@@ -381,6 +381,8 @@ body:has(.layout) { background: var(--bg-soft); }
 .shot { margin: 22px 0 28px; }
 .shot img { width: 100%; border-radius: var(--r-lg); border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--surface); }
 .shot figcaption { font-size: 14.5px; color: var(--text-3); margin-top: 10px; }
+.shot.is-phone img { max-width: 300px; margin-inline: auto; }
+.shot.is-phone figcaption { text-align: center; }
 .shot.is-missing { display: none; }
 html.show-slots .shot.is-missing { display: block; }
 html.show-slots .shot.is-missing img { display: none; }

@@ -11,15 +11,11 @@
     <li class="step">
       <h4>에이전트 만들기 누르기</h4>
       <p>Copilot 왼쪽 메뉴의 에이전트 영역에서 <strong>에이전트 만들기</strong>(또는 새 에이전트)를 누릅니다. 왼쪽에 빌더 화면, 오른쪽에 시험해 볼 수 있는 미리 보기 창이 열립니다. 화면 문구는 업데이트로 조금 다를 수 있습니다.</p>
-      <figure class="shot" data-shot="ag-build-new">
-        <img src="/assets/shots/ag-build-new.png" alt="Copilot 왼쪽 메뉴에서 에이전트 만들기를 누른 뒤 빌더 화면이 열린 모습" loading="lazy">
-        <figcaption>그림 설명: 에이전트 빌더 화면입니다. 왼쪽 위에 설명 탭과 구성 탭이 있고, 오른쪽은 미리 보기 창입니다.</figcaption>
-      </figure>
     </li>
   </ol>
 
   <h3>2. 설계 카드 보내기</h3>
-  <p>빌더의 <strong>설명</strong> 탭은 대화로 에이전트를 만드는 곳입니다. 4장에서 채운 설계 카드를 아래 카드의 괄호 자리에 붙여 <strong>한 번만</strong> 보냅니다.</p>
+
   <figure class="prompt" data-title="빌더에 설계 카드 보내기">
     <figcaption><i class="ph ph-chat-circle-text"></i>빌더에게 이렇게 말하세요</figcaption>
     <pre>아래 설계 카드로 에이전트를 만들어 주세요.
@@ -28,7 +24,6 @@
 
 [설계 카드 4줄 붙여 넣기]</pre>
   </figure>
-  <p>빌더가 이름, 설명, 안내를 채우고, 무엇을 설정했는지 알려 줍니다. 추가 질문을 하면 짧게 답합니다.</p>
 
   <h3>3. 구성 탭에서 확인하고 고치기</h3>
   <ol class="steps">
@@ -39,10 +34,6 @@
     <li class="step">
       <h4>안내 읽기</h4>
       <p>안내 칸을 끝까지 읽습니다. 설계 카드의 '꼭 지킬 것'이 빠졌거나 말이 바뀌었으면 직접 고쳐 넣습니다. # 역할, # 결과 형식 같은 제목으로 나뉘어 있는지도 확인합니다.</p>
-      <figure class="shot" data-shot="ag-build-configure">
-        <img src="/assets/shots/ag-build-configure.png" alt="구성 탭의 안내 칸에 역할, 결과 형식, 꼭 지킬 것 제목으로 나뉜 안내가 보이는 모습" loading="lazy">
-        <figcaption>그림 설명: 구성 탭의 안내 칸입니다. # 역할, # 결과 형식, # 꼭 지킬 것 제목으로 나뉜 안내가 보입니다.</figcaption>
-      </figure>
     </li>
     <li class="step">
       <h4>직접 고친 뒤에는 설명 탭으로 돌아가지 않기</h4>
@@ -63,11 +54,10 @@
   </ol>
 
   <h3>4. 미리 보기로 시험하고 만들기</h3>
-  <ol class="steps">
-    <li class="step">
-      <h4>오른쪽 창에서 한 번 시험</h4>
-      <p>오른쪽 미리 보기 창에 가상 입력을 하나 보내 봅니다. 회의 메모 정리라면 지어낸 짧은 메모를 씁니다. 결과가 설계 카드의 '결과'와 같은 모양인지 봅니다.</p>
-      <figure class="prompt" data-title="시험용 가상 회의 메모">
+
+  <h4>오른쪽 창에서 한 번 시험</h4>
+
+  <figure class="prompt" data-title="시험용 가상 회의 메모">
         <figcaption><i class="ph ph-chat-circle-text"></i>미리 보기 창에 이렇게 보내 보세요</figcaption>
         <pre>10월 셋째 주 주간 회의 메모(가상)
 - 신규 입사자 교육 일정은 11월 첫 주로 확정
@@ -75,26 +65,5 @@
 - 회의실 예약 시스템 교체는 비용 확인 후 다시 논의
 - 다음 회의는 10월 27일</pre>
       </figure>
-    </li>
-    <li class="step">
-      <h4>만들기</h4>
-      <p>오른쪽 위의 <strong>만들기</strong>를 누릅니다. 만들어진 에이전트는 Copilot 왼쪽 메뉴의 에이전트 목록에 나타납니다.</p>
-    </li>
-    <li class="step">
-      <h4>안내 백업</h4>
-      <p>구성 탭의 안내를 전부 복사해 메모장이나 OneDrive에 저장해 둡니다. 6장에서 고치다가 망가져도 되돌릴 수 있습니다.</p>
-    </li>
-  </ol>
 
-  <div class="callout warn">
-    <i class="ph ph-warning"></i>
-    <strong>공유는 범위를 정해서</strong>
-    <div><p>에이전트 화면의 공유 단추로 링크를 만들 수 있습니다. 공유받은 사람은 같은 안내로 동작하는 에이전트를 씁니다. 처음에는 같은 팀 몇 명에게만 공유해 써 보게 하고, 안내에 개인정보나 기밀이 없는지 다시 확인한 뒤 넓힙니다.</p></div>
-  </div>
-
-  <div class="callout tip">
-    <i class="ph ph-lightbulb"></i>
-    <strong>수업 80분이 지났는데 안내가 채워지지 않았다면</strong>
-    <div><p>빌더 대화 대신 구성 탭에 직접 적어도 됩니다. 3장의 예시 안내를 복사해 안내 칸에 붙이고, 내 설계 카드에 맞게 역할과 꼭 지킬 것만 바꿉니다. 에이전트 만들기 메뉴가 아예 없으면 <a href="/courses/copilot-agent/nobuilder">부록 C</a>로 넘어갑니다.</p></div>
-  </div>
 </section>

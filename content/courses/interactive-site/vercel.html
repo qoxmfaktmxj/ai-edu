@@ -31,9 +31,6 @@
   </div>
 
   <h3>1. 아주 간단한 첫 페이지 만들어 GitHub에 올리기</h3>
-  <p>배포할 대상이 있어야 하므로 먼저 아주 작은 사이트를 하나 만듭니다. 파일은 <code>index.html</code> 하나면 충분합니다. 웹 서버는 주소만 입력하면 그 폴더의 <code>index.html</code>을 가장 먼저 보여 주는 약속이 있어서, 파일 이름을 꼭 <code>index.html</code>로 해야 합니다.</p>
-
-  <p>2장에서 내려받은 문서 아래의 <code>ai-site</code> 폴더를 Code 탭에서 선택한 상태로 진행합니다. 그다음 아래처럼 말합니다.</p>
 
   <figure class="prompt" data-title="첫 사이트 index.html 만들고 올리기">
     <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
@@ -45,19 +42,6 @@
 만든 다음 내 PC의 브라우저에서 열어 볼 수 있게 열어줘. 내가 확인하고 괜찮다고 하면, GitHub 저장소 ai-site 의 main 브랜치에 올려줘.
 회사 자료나 개인정보는 파일에 넣지 마.</pre>
   </figure>
-  <p class="prompt-note">Claude가 파일을 만들고, 브라우저로 열어 주고, 내가 "좋아"라고 하면 GitHub로 올립니다. 올리기 전에 내 눈으로 먼저 확인하는 순서입니다.</p>
-
-  <h4>잘 됐는지 확인하기</h4>
-  <ul>
-    <li><strong>내 PC에서:</strong> 브라우저에 큰 제목, 소개 문장, 버튼이 보이고 버튼을 누르면 문구가 바뀝니다. 브라우저 주소창에는 <code>file:///C:/Users/...</code>처럼 내 PC 경로가 보이는데, 이 주소는 나만 볼 수 있습니다. 아직 인터넷에 올라가지 않은 상태입니다.</li>
-    <li><strong>GitHub에서:</strong> <code>github.com/[내 사용자 이름]/ai-site</code>를 열어 파일 목록에 <code>index.html</code>이 보이면 성공입니다. 안 보이면 페이지를 새로고침하고, 그래도 없으면 Claude에게 "GitHub에 올라갔는지 확인하고 알려줘"라고 부탁하세요.</li>
-  </ul>
-
-  <div class="callout warn">
-    <i class="ph ph-warning"></i>
-    <strong>배포한 사이트는 주소를 아는 누구나 볼 수 있습니다</strong>
-    <div><p>저장소가 Private이어도 Vercel에 배포한 사이트 화면은 공개 주소로 열립니다. 사이트에 넣는 글, 사진, 이름에는 회사 내부 정보, 고객 정보, 개인정보를 넣지 마세요. 이 교육의 사이트에는 연습용 내용만 담습니다.</p></div>
-  </div>
 
   <h3>2. Vercel 가입하기</h3>
 
@@ -105,10 +89,6 @@
     <li class="step">
       <h4>플랜이나 사용 목적을 물으면 Hobby 선택</h4>
       <p>가입 과정 중이나 가입 직후에 사용 목적, 이름, 플랜을 묻는 화면이 나올 수 있습니다. 나오지 않으면 이 단계는 건너뛰어도 됩니다. 플랜을 고르는 화면이 나오면 <strong>Hobby</strong>(개인 프로젝트용, 무료)를 고릅니다. 이름 칸이 있으면 화면에 표시될 이름을 입력하고 Continue를 누릅니다. 화면 문구와 순서는 업데이트로 조금 다를 수 있으니 "Hobby"라는 단어를 찾으면 됩니다. 카드 번호를 요구하는 화면이 나오면 Pro를 고른 것이므로 멈추고 Hobby로 돌아가세요.</p>
-      <figure class="shot" data-shot="04-vercel-plan">
-        <img src="/assets/shots/04-vercel-plan.png" alt="Vercel에서 Hobby 플랜을 선택하는 화면" loading="lazy">
-        <figcaption>그림 설명: Hobby(개인, 무료)와 Pro가 나란히 보이는 화면. Hobby 쪽을 고르는 위치를 표시하세요. 이런 화면이 나오지 않는 계정도 있습니다.</figcaption>
-      </figure>
     </li>
     <li class="step">
       <h4>가입 완료 화면 확인</h4>
@@ -165,10 +145,6 @@
         </div>
       </div>
       <p>접근 범위를 고른 뒤 초록색 <strong>Install</strong> 버튼을 누릅니다. 비밀번호나 2단계 인증을 한 번 더 요구하면 입력합니다. Vercel이 요구하는 권한은 "저장소 파일을 읽고, 배포 결과를 GitHub에 표시하고, 새 파일이 올라오면 알림을 받는 것" 등입니다.</p>
-      <figure class="shot" data-shot="04-vercel-github-app">
-        <img src="/assets/shots/04-vercel-github-app.png" alt="GitHub에서 Vercel 앱을 설치하며 저장소 접근 범위를 고르는 화면" loading="lazy">
-        <figcaption>그림 설명: GitHub의 Vercel 앱 설치 화면. Repository access에서 Only select repositories를 선택하고, ai-site를 고른 뒤 Install 버튼을 누르는 위치를 표시하세요.</figcaption>
-      </figure>
       <div class="callout tip">
         <i class="ph ph-lightbulb"></i>
         <strong>나중에 저장소를 더 추가하려면</strong>
@@ -178,10 +154,6 @@
     <li class="step">
       <h4>ai-site 옆의 Import 누르기</h4>
       <p>설치가 끝나면 Vercel Import 화면으로 돌아오고, 저장소 목록에 <code>ai-site</code>가 한 줄로 나타납니다. 그 줄 오른쪽 끝에 있는 <strong>Import</strong> 버튼을 누릅니다. 목록에 없으면 페이지를 새로고침해 보세요. 그래도 없으면 이 장 끝의 "막히면 Claude에게 그대로 전달하세요"를 따라 하세요.</p>
-      <figure class="shot" data-shot="04-vercel-import">
-        <img src="/assets/shots/04-vercel-import.png" alt="Vercel에서 GitHub 저장소 목록 중 ai-site를 Import 하는 화면" loading="lazy">
-        <figcaption>그림 설명: "Import Git Repository" 목록에서 ai-site 줄 오른쪽의 Import 버튼을 누르는 위치를 표시하세요.</figcaption>
-      </figure>
     </li>
     <li class="step">
       <h4>Configure Project 화면: 건드릴 것과 건드리지 않을 것</h4>
@@ -197,10 +169,6 @@
         </tbody>
       </table></div>
       <p>이미 다른 사람이 같은 프로젝트 이름의 주소를 쓰고 있으면 주소 끝에 짧은 글자가 덧붙을 수 있습니다. 최종 주소는 배포가 끝난 뒤 "대시보드에서 내 사이트 주소 찾아 클릭하기" 단계의 Domains 항목에서 확인합니다.</p>
-      <figure class="shot" data-shot="04-vercel-configure">
-        <img src="/assets/shots/04-vercel-configure.png" alt="Vercel의 Configure Project 설정 화면" loading="lazy">
-        <figcaption>그림 설명: Configure Project 화면. Project Name 칸, Framework Preset(Other), Root Directory(./)가 보이고 맨 아래에 Deploy 버튼이 있습니다.</figcaption>
-      </figure>
     </li>
     <li class="step">
       <h4>Deploy 버튼 누르기</h4>
@@ -209,10 +177,6 @@
     <li class="step">
       <h4>축하 화면 확인</h4>
       <p>배포가 끝나면 "Congratulations!" 같은 축하 문구와 함께 내 사이트의 작은 미리보기 그림이 나옵니다. 오른쪽(또는 아래)에 <strong>Continue to Dashboard</strong> 버튼이 있습니다. 이 화면이 보이면 <strong>배포가 완료된 것</strong>입니다. 공식 문서에 따르면 새 프로젝트의 첫 배포는 항상 Production(실제 주소용)으로 만들어집니다. 화면 문구는 업데이트로 조금 다를 수 있습니다.</p>
-      <figure class="shot" data-shot="04-vercel-deploy-done">
-        <img src="/assets/shots/04-vercel-deploy-done.png" alt="Vercel 배포 완료 축하 화면" loading="lazy">
-        <figcaption>그림 설명: 축하 문구와 사이트 미리보기 그림이 보이는 배포 완료 화면. Continue to Dashboard 버튼의 위치를 표시하세요.</figcaption>
-      </figure>
     </li>
     <li class="step">
       <h4>대시보드에서 내 사이트 주소 찾아 클릭하기</h4>
@@ -222,18 +186,10 @@
         <li><strong>Domains</strong> 항목: <code>https://[프로젝트이름].vercel.app</code> 모양의 주소가 링크로 적혀 있습니다. 이것이 내 사이트 주소입니다. 이 링크를 누릅니다.</li>
       </ul>
       <p>화면 배치와 문구는 업데이트로 조금 다를 수 있습니다. "Ready"나 ".vercel.app으로 끝나는 주소"를 찾으면 됩니다.</p>
-      <figure class="shot" data-shot="04-vercel-domains">
-        <img src="/assets/shots/04-vercel-domains.png" alt="Vercel 프로젝트 화면의 Domains 항목에 보이는 내 사이트 주소" loading="lazy">
-        <figcaption>그림 설명: 프로젝트 화면의 Domains 항목. https://[프로젝트이름].vercel.app 링크와 Production Deployment의 Ready 표시를 가리키세요. 이 주소가 내 사이트 주소입니다.</figcaption>
-      </figure>
     </li>
     <li class="step">
       <h4>내 사이트가 뜨는 것 확인하기</h4>
       <p>새 탭이 열리고 이 장 맨 앞에서 만든 첫 페이지가 그대로 보입니다. 주소창에 <code>https://[프로젝트이름].vercel.app</code>이 보이고, 앞에 자물쇠 표시가 있습니다(https는 암호화된 안전한 연결이라는 뜻입니다). 이제 다른 브라우저 탭을 열어 이 주소를 직접 입력해도 같은 화면이 나옵니다. 이것이 "내 사이트 주소를 쳐서 띄운다"는 뜻입니다.</p>
-      <figure class="shot" data-shot="04-site-live">
-        <img src="/assets/shots/04-site-live.png" alt="브라우저 주소창에 내 사이트 주소를 입력해 첫 페이지가 열린 화면" loading="lazy">
-        <figcaption>그림 설명: 주소창에 https://[프로젝트이름].vercel.app이 보이고, 본문에 내가 만든 첫 페이지가 나온 화면. 주소창 부분을 강조해 캡처하세요.</figcaption>
-      </figure>
     </li>
     <li class="step">
       <h4>휴대폰으로도 열어 보기</h4>
@@ -261,65 +217,24 @@
   <p>다른 사람이 긴 주소를 열면 Vercel 로그인 화면이 나오는 것이 정상입니다. 지금 설정을 확인하려면 프로젝트 화면에서 <strong>Settings</strong>를 누르고 왼쪽 메뉴의 <strong>Deployment Protection</strong>으로 들어갑니다. Vercel Authentication 스위치와 보호 범위가 보입니다. 기본값은 시기와 프로젝트에 따라 다를 수 있으므로 이 화면에서 직접 확인하는 것이 가장 정확합니다. 공식 문서 기준으로 비밀번호 보호(Password Protection)는 Hobby 플랜에서 쓸 수 없고 Pro 이상에서 유료로 제공됩니다.</p>
 
   <h3>4. 고치면 저절로 새로워지는 것 체험하기 (자동 재배포)</h3>
-  <p>Vercel을 쓰는 가장 큰 이유가 이것입니다. 이번에는 Vercel 화면에서 아무 버튼도 누르지 않습니다. Claude에게 제목을 바꾸고 GitHub에 올려 달라고만 말합니다.</p>
 
-  <ol class="steps">
-    <li class="step">
-      <h4>Claude에게 제목 바꾸고 올려 달라고 말하기</h4>
-      <figure class="prompt" data-title="제목 바꾸고 GitHub에 올리기">
+  <h4>Claude에게 제목 바꾸고 올려 달라고 말하기</h4>
+
+  <figure class="prompt" data-title="제목 바꾸고 GitHub에 올리기">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
         <pre>ai-site 의 index.html 에서 큰 제목을 "[새 제목]" 으로 바꿔줘.
 바꾼 뒤에 변경 내용을 "제목 변경" 이라는 메시지로 저장(commit)하고, GitHub 의 main 브랜치에 올려줘(push).
 올린 다음 어떤 파일이 바뀌었는지 한 줄로 알려줘.</pre>
       </figure>
-      <p class="prompt-note">Claude가 파일을 고치고 commit, push를 합니다. push가 끝나면 GitHub가 Vercel에게 "새 내용이 올라왔다"고 알려 줍니다.</p>
-    </li>
-    <li class="step">
-      <h4>Vercel의 Deployments 탭에서 진행 보기</h4>
-      <p>Vercel 프로젝트 화면 위쪽 메뉴에서 <strong>Deployments</strong> 탭을 누릅니다. 목록 맨 위에 방금 올린 내용에 대한 새 줄이 생겨 있습니다. 줄에는 내가 쓴 메시지("제목 변경")와 브랜치 이름 <code>main</code>이 보입니다. 상태가 시간에 따라 이렇게 바뀝니다.</p>
-      <ul>
-        <li><strong>Building</strong>: 배포를 만드는 중입니다. 보통 몇 초에서 1분 정도 걸립니다.</li>
-        <li><strong>Ready</strong>: 완료입니다. 초록색 표시가 나오고 줄에 Production, Current 같은 표시가 붙습니다.</li>
-      </ul>
-      <p>새로 고침 버튼을 누르지 않아도 화면이 스스로 바뀌는 경우가 많지만, 안 바뀌면 브라우저를 새로고침하세요.</p>
-      <figure class="shot" data-shot="04-auto-redeploy">
-        <img src="/assets/shots/04-auto-redeploy.png" alt="Vercel Deployments 탭에서 새 배포가 Building에서 Ready로 바뀌는 화면" loading="lazy">
-        <figcaption>그림 설명: Deployments 목록의 맨 위 줄에 "제목 변경" 메시지와 main 브랜치, 상태(Building 또는 Ready)가 보이는 화면. 새 줄과 상태 표시를 강조하세요.</figcaption>
-      </figure>
-    </li>
-    <li class="step">
-      <h4>내 사이트 주소 새로고침해서 바뀐 제목 확인하기</h4>
-      <p>상태가 Ready가 되면, 앞에서 열어 둔 내 사이트 탭으로 가서 <kbd>F5</kbd>로 새로고침합니다. 예전 모습이 그대로 보이면 <kbd>Ctrl</kbd>+<kbd>F5</kbd>(캐시를 무시하고 새로 불러오기)를 누르세요. 새 제목이 보이면 성공입니다. 휴대폰에서도 새로고침하면 같은 새 제목이 나타납니다.</p>
-      <p>정리하면 내 PC에서 한 일은 "GitHub에 올리기" 하나뿐인데, 배포 버튼을 누르지 않고도 인터넷의 내 사이트가 바뀌었습니다.</p>
-    </li>
-  </ol>
 
   <h3>main에 올리면 진짜 사이트, 다른 브랜치에 올리면 미리보기</h3>
-  <p>Vercel은 "어느 브랜치에 올렸느냐"로 실제 사이트에 반영할지 정합니다. 브랜치(branch)는 같은 프로젝트의 별도 작업 줄기라고 생각하면 됩니다. <code>main</code>이 "진짜 줄기"이고, 새 줄기를 만들어 실험할 수 있습니다.</p>
 
-  <div class="table-wrap"><table>
-    <thead><tr><th>GitHub에 올리는 곳</th><th>Vercel이 만드는 것</th><th>내 사이트 주소에 영향</th></tr></thead>
-    <tbody>
-      <tr><td><code>main</code> 브랜치에 push (또는 합치기)</td><td>Production 배포</td><td>있습니다. 내 사이트 주소의 내용이 바뀝니다.</td></tr>
-      <tr><td><code>main</code>이 아닌 다른 브랜치에 push, 또는 Pull Request 생성</td><td>Preview 배포 (미리보기 주소가 새로 생김)</td><td>없습니다. 진짜 주소는 그대로이고, 시험용 주소만 하나 더 생깁니다.</td></tr>
-    </tbody>
-  </table></div>
-
-  <p>단, 공식 문서에 따르면 프로젝트의 가장 첫 배포는 어느 브랜치에서 했든 항상 Production입니다. 그 이후부터 위 표의 규칙이 적용됩니다. 미리보기 주소는 앞의 "누구나 열 수 있나요" 표처럼 기본적으로 Vercel 로그인을 요구합니다.</p>
-
-  <details class="detail">
-    <summary>선택 실습: 미리보기 배포 만들어 보기 (진짜 사이트는 건드리지 않음)</summary>
-    <div class="detail-body">
-      <figure class="prompt" data-title="미리보기 브랜치로 올려 보기">
+  <figure class="prompt" data-title="미리보기 브랜치로 올려 보기">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
         <pre>ai-site 에서 new-title 이라는 새 브랜치를 만들어줘.
 그 브랜치에서 index.html 의 큰 제목을 "[시험용 제목]" 으로 바꾸고 commit 한 뒤, GitHub 에 new-title 브랜치로 올려줘.
 main 브랜치에는 합치지 말고, 올린 뒤 브랜치 이름을 알려줘.</pre>
       </figure>
-      <p>Vercel Deployments 탭에 새 줄이 생기고, 환경 표시가 Production이 아닌 <strong>Preview</strong>로 나옵니다. 그 줄을 눌러 열리는 상세 화면에서 미리보기 주소(<code>[프로젝트이름]-git-new-title-[내 계정].vercel.app</code> 모양)를 열어 보면 시험용 제목이 보입니다. 이때 내 사이트 주소(<code>[프로젝트이름].vercel.app</code>)는 이전 제목 그대로입니다. 로그인하지 않은 브라우저(시크릿 창)에서 미리보기 주소를 열면 Vercel 로그인 화면이 나오는데, 이것이 앞에서 말한 보호 기능입니다.</p>
-      <p>마음에 들면 Claude에게 "new-title 브랜치를 main에 합쳐서 올려줘"라고 말하세요. 그러면 Production 배포가 일어나 진짜 주소가 바뀝니다.</p>
-    </div>
-  </details>
 
   <h3>주소 이름 바꾸기</h3>
   <p>내 사이트 주소는 프로젝트 이름에서 만들어집니다. 마음에 안 들면 두 가지 방법으로 바꿀 수 있습니다. 개인 도메인(예: <code>내이름.com</code>)을 사서 연결하는 방법도 있지만 이번 교육 범위 밖입니다.</p>
@@ -349,43 +264,27 @@ main 브랜치에는 합치지 말고, 올린 뒤 브랜치 이름을 알려줘.
   </div>
 
   <h3>대안: Vercel CLI로 배포하기 (선택)</h3>
-  <p>GitHub 연결이 계속 막힌다면, 내 PC 폴더를 Vercel에 곧바로 올리는 방법이 있습니다. Vercel CLI(명령어 도구)를 쓰는 방식이며, Claude에게 부탁하면 됩니다. 단, 이 방식은 GitHub와 연결하지 않으므로 파일을 고쳐 GitHub에 올려도 자동으로 새로워지지 않습니다. 고칠 때마다 다시 배포 명령을 실행하거나, 프로젝트 Settings의 Git 항목에서 나중에 저장소를 연결해야 합니다. 이 교육의 기본 방법은 앞에서 한 GitHub 연결입니다.</p>
 
-  <ol class="steps">
-    <li class="step">
-      <h4>Claude에게 Vercel CLI 설치 부탁하기</h4>
-      <p>Vercel CLI는 Node.js가 있어야 설치됩니다(Vercel 공식 문서는 Node.js 18 이상을 안내합니다). Node.js가 없다면 Claude가 먼저 알려 줍니다.</p>
-      <figure class="prompt" data-title="Vercel CLI 설치 부탁">
+  <h4>Claude에게 Vercel CLI 설치 부탁하기</h4>
+
+  <figure class="prompt" data-title="Vercel CLI 설치 부탁">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
         <pre>Vercel CLI를 설치해줘.
 먼저 node --version 으로 Node.js가 설치되어 있는지 확인하고, 없으면 설치 방법을 알려줘.
 있다면 npm i -g vercel 로 전역 설치하고, 끝나면 vercel --version 결과를 보여줘.
 로그인(vercel login)은 내가 직접 할 테니 실행하지 마.</pre>
       </figure>
-    </li>
-    <li class="step">
-      <h4>vercel login은 내가 직접 (PowerShell)</h4>
-      <p>새 PowerShell 창을 열고 아래 명령을 입력합니다. 로그인은 본인 계정 확인이 필요한 단계라 내가 직접 합니다.</p>
-      <figure class="cmd">
-        <figcaption><i class="ph ph-terminal-window"></i>PowerShell (Windows)</figcaption>
-        <pre><code>vercel login</code></pre>
-      </figure>
-      <p>브라우저가 열리면 Vercel 로그인 화면에서 <strong>Continue with GitHub</strong>로 로그인하고 화면의 승인 버튼을 누릅니다. 성공하면 PowerShell에 로그인이 되었다는 문구가 나타납니다. 이후 단계가 화면에 안내된 대로 이어지며, 문구는 CLI 버전에 따라 조금 다를 수 있습니다.</p>
-    </li>
-    <li class="step">
-      <h4>Claude에게 배포 부탁하기</h4>
-      <figure class="prompt" data-title="Vercel CLI로 배포 부탁">
+
+  <h4>Claude에게 배포 부탁하기</h4>
+
+  <figure class="prompt" data-title="Vercel CLI로 배포 부탁">
         <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
         <pre>vercel login 을 마쳤어. ai-site 폴더에서 Vercel CLI로 배포해줘.
 처음 배포라서 프로젝트 연결 질문이 나올 거야. 프로젝트 이름은 ai-site 로 하고, 기본값으로 진행하되 어떤 질문이 나왔고 무엇으로 답했는지 알려줘.
 먼저 미리보기 배포를 하고, 내가 확인하면 vercel --prod 로 실제 주소(Production)에 배포해줘. 끝나면 주소를 알려줘.</pre>
       </figure>
-      <p class="prompt-note">Claude가 알려 준 주소를 브라우저에 입력해 내 사이트가 열리는지 확인하세요. 로그인 화면이 나오면 위의 "누구나 열 수 있나요" 설명을 참고하세요.</p>
-    </li>
-  </ol>
 
   <h3>막히면 Claude에게 그대로 전달하세요</h3>
-  <p>이 장에서 오류가 나거나 화면이 안내와 다르면, 직접 원인을 찾지 말고 <strong>나온 문구를 그대로 Claude에게 전달</strong>하세요. 앱도 Git도 이미 설치했으므로 Code 탭의 <code>ai-site</code> 폴더에서 물어보면 Claude가 파일, GitHub 반영 상태, 배포 주소를 직접 확인하고 원인을 찾아 줍니다. Vercel 화면의 오류(빨간 Error, Build Logs)는 문구를 복사하거나 화면을 캡처해서 붙이세요. 로그에 비밀번호나 키 같은 값이 섞여 있지 않은지 먼저 눈으로 확인하고 붙여넣습니다.</p>
 
   <figure class="prompt" data-title="막혔을 때 원인 찾기 (3장)">
     <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
@@ -395,14 +294,7 @@ main 브랜치에는 합치지 말고, 올린 뒤 브랜치 이름을 알려줘.
 ai-site 폴더의 index.html 위치와 GitHub main 브랜치 반영 상태를 먼저 확인해서 원인을 쉬운 말로 설명해줘. 해결 방법은 한 단계씩 알려주고, 파일을 바꾸거나 GitHub에 올리는 작업은 하기 전에 무엇을 할지 먼저 알려줘.</pre>
   </figure>
 
-  <ul>
-    <li>Vercel 화면 설정(GitHub App의 저장소 접근 범위, Deployment Protection, 프로젝트 Settings)이 원인이면 Claude가 안내하는 위치를 보고 내가 직접 바꿉니다. Hobby 플랜은 GitHub 조직(회사 등) 소유의 비공개 저장소를 배포할 수 없고 개인 계정 저장소만 가능합니다. 계정, 플랜, 회사 보안 정책 문제는 Claude가 풀 수 없으니 계정 설정이나 해당 담당자에게 문의하세요.</li>
-    <li>회사 업무용, 영업용, 광고가 붙은 사이트는 Hobby 범위를 벗어날 수 있고, 회사 자료를 외부 서비스에 올리려면 사내 정보보안 정책과 승인 절차가 먼저입니다. 업무 활용은 9장(업무로 가져가기)을 참고하세요.</li>
-    <li>창을 열어 둔 채 설치나 로그인을 했는데 안 된다면 창을 닫고 새로 열거나 앱을 다시 켜 보세요. 가입 때 쓴 GitHub 계정을 바꾸려면 GitHub에서 로그아웃한 뒤 Vercel 가입을 다시 시작합니다.</li>
-  </ul>
-
   <h3>이 장을 마치며: Claude에게 확인받기</h3>
-  <p>이 장의 결과물이 제대로 되어 있는지는 Claude가 확인합니다. 아래 부탁을 <code>ai-site</code> 폴더의 Code 탭에 붙여넣고, 내 Vercel 사이트 주소를 알려 주세요. 결과가 모두 O로 나오면 이 장은 완료입니다.</p>
 
   <figure class="prompt" data-title="3장 완료 확인">
     <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
@@ -414,9 +306,4 @@ ai-site 폴더의 index.html 위치와 GitHub main 브랜치 반영 상태를 �
 각 항목을 O 또는 X로 표로 정리해줘. X가 있으면 원인과 해결 방법을 알려주고, 모두 O이면 "완료"라고 답해줘.</pre>
   </figure>
 
-  <div class="callout check">
-    <i class="ph ph-check-circle"></i>
-    <strong>여기까지 왔다면 내 주소가 생긴 것입니다</strong>
-    <div><p>Claude가 "완료"라고 답했다면 이 장은 끝입니다. 이제 나만의 사이트 주소 <code>https://[프로젝트이름].vercel.app</code>이 있고, 파일을 고쳐 GitHub에 올리면 이 주소의 내용이 저절로 새로워집니다. 다음 장에서는 Claude에게 디자인과 모션 실력을 더해 주는 스킬을 설치합니다.</p></div>
-  </div>
 </section>
