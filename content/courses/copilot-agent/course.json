@@ -12,7 +12,8 @@
     "test",
     "prompts",
     "library",
-    "nobuilder"
+    "nobuilder",
+    "reverse"
   ],
   "hero": {
     "before": "써 보고, 뜯어 보고,",
@@ -28,7 +29,7 @@
       "to": "try",
       "icon": "ph-hand-tap",
       "title": "써 보기",
-      "text": "보고서 파일, 글 다듬기, 그림 설명을 직접 받아 보기"
+      "text": "PPT 보고서, 글 다듬기, 그림 설명을 직접 받아 보기"
     },
     {
       "to": "inside",
