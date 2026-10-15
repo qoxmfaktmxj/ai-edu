@@ -417,7 +417,7 @@ html.show-slots .shot.is-missing::before {
 .table-wrap { overflow-x: auto; margin: 20px 0 28px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); }
 .table-wrap table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 15.5px; line-height: 1.6; }
 .table-wrap th, .table-wrap td { text-align: left; padding: 16px 18px; vertical-align: top; }
-.table-wrap thead th { font-size: 15px; color: var(--text); font-weight: 800; background: var(--surface); border-bottom: 1px solid var(--selected-line); white-space: nowrap; }
+.table-wrap thead th { font-size: 16px; color: var(--text); font-weight: 800; background: var(--surface); border-bottom: 1px solid var(--selected-line); white-space: nowrap; }
 .table-wrap tbody tr + tr td { border-top: 1px solid var(--line); }
 .table-wrap td:first-child { font-weight: 700; color: var(--text); }
 
