@@ -30,8 +30,8 @@
   --code-dim: #9ca3af;
   --shadow: 0 2px 0 var(--line);
   --shadow-lift: 0 2px 0 var(--selected-line);
-  --r-lg: 16px;
-  --r-md: 12px;
+  --r-lg: 8px;
+  --r-md: 6px;
   --font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --mono: "D2Coding", ui-monospace, "Cascadia Code", Consolas, "SFMono-Regular", Menlo, monospace;
   --nav-h: 64px;
@@ -214,7 +214,7 @@ mark { background: var(--accent-soft); color: inherit; padding: 0 .2em; border-r
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
-  min-height: 50px; padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 15px; letter-spacing: .8px;
+  min-height: 50px; padding: 0 16px; border-radius: 8px; font-weight: 700; font-size: 15px; letter-spacing: .8px;
   text-decoration: none; border: 2px solid transparent; cursor: pointer; font-family: inherit;
   transition: transform .12s, background-color .15s, border-color .15s, box-shadow .12s;
 }
@@ -328,7 +328,8 @@ body:has(.layout) { background: var(--bg-soft); }
   display: flex; align-items: center; gap: 8px; padding: 11px 16px; font-size: 14px; font-weight: 700;
   color: var(--text-2); border-bottom: 1px solid var(--line); padding-right: 96px;
 }
-.prompt > figcaption { background: var(--surface-2); color: var(--text); border-bottom-color: var(--line); }
+.prompt { box-shadow: none; }
+.prompt > figcaption { background: var(--surface); color: var(--text); border-bottom-color: var(--line); }
 .prompt > figcaption i { color: var(--selected); }
 .prompt > figcaption i, .cmd > figcaption i { font-size: 18px; }
 .prompt pre, .cmd pre { margin: 0; padding: 18px 20px; overflow-x: auto; }
@@ -413,11 +414,11 @@ html.show-slots .shot.is-missing::before {
 }
 
 /* ---------- tables ---------- */
-.table-wrap { overflow-x: auto; margin: 20px 0 28px; border: 2px solid var(--line); border-radius: var(--r-lg); background: var(--surface); }
+.table-wrap { overflow-x: auto; margin: 20px 0 28px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); }
 .table-wrap table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 15.5px; line-height: 1.6; }
 .table-wrap th, .table-wrap td { text-align: left; padding: 16px 18px; vertical-align: top; }
-.table-wrap thead th { font-size: 15px; color: var(--text); font-weight: 700; background: var(--surface-2); border-bottom: 2px solid var(--line); white-space: nowrap; }
-.table-wrap tbody tr + tr td { border-top: 2px solid var(--line); }
+.table-wrap thead th { font-size: 15px; color: var(--text); font-weight: 800; background: var(--surface); border-bottom: 1px solid var(--selected-line); white-space: nowrap; }
+.table-wrap tbody tr + tr td { border-top: 1px solid var(--line); }
 .table-wrap td:first-child { font-weight: 700; color: var(--text); }
 
 /* ---------- compare (두 갈래 비교) ---------- */
