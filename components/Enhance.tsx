@@ -106,6 +106,14 @@ export default function Enhance() {
       t.setAttribute("aria-label", "표 (옆으로 스크롤할 수 있음)");
     });
 
+    // Chapter clips autoplay muted with controls; people who ask for reduced motion start them paused.
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll<HTMLVideoElement>(".shot video[autoplay]").forEach((v) => {
+        v.autoplay = false;
+        v.pause();
+      });
+    }
+
     const reveal = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
