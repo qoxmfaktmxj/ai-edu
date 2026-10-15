@@ -16,7 +16,13 @@ export type Course = {
   secondaryCta?: { to: string; label: string };
   videoNote?: string;
   roadmap?: { to: string; icon: string; title: string; text: string }[];
+  icon?: string;
+  works?: Work[];
+  worksChapter?: string;
+  worksMeta?: string[];
 };
+export type Work = { title: string; href: string; img: string; video?: string; text: string };
+export type WorkCard = Work & { meta: string[]; prompt?: string; promptChars?: number };
 export type ChapterHead = { id: string; num: string; title: string; lead: string };
 export type Chapter = ChapterHead & { html: string; sections: { id: string; title: string }[] };
 
@@ -32,6 +38,25 @@ export function getCourses(): Course[] {
 
 export function getCourse(slug: string): Course | undefined {
   return getCourses().find((c) => c.slug === slug);
+}
+
+const decode = (s: string) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+
+// Home gallery: works from every course, linked to the chapter that publishes their prompt.
+// The prompt card there is titled "완성작 프롬프트: <work title>"; its length is shown on the card.
+export function getWorks(): WorkCard[] {
+  return getCourses().flatMap((c) => {
+    const html = c.worksChapter ? readFragment(c.slug, c.worksChapter) : "";
+    return (c.works ?? []).map((w) => {
+      const pre = html.match(new RegExp(`data-title="완성작 프롬프트: ${w.title}">[^]*?<pre>([^]*?)</pre>`))?.[1];
+      return {
+        ...w,
+        meta: c.worksMeta ?? [],
+        prompt: c.worksChapter && `/courses/${c.slug}/${c.worksChapter}`,
+        promptChars: pre ? decode(pre.replace(/<[^>]+>/g, "")).length : undefined,
+      };
+    });
+  });
 }
 
 function readFragment(course: string, id: string): string {

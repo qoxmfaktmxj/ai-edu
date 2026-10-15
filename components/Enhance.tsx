@@ -151,6 +151,74 @@ export default function Enhance() {
       on,
     );
 
+    // Progress, kept only in this browser: "last:<course>" is the chapter opened most recently,
+    // "done:<course>/<chapter>" is set once the reader reaches the pager at the end of a chapter.
+    const paintDone = () =>
+      document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="/courses/"], .chapter-list a').forEach((a) => {
+        // Checked by the mark itself: React may rewrite className on client navigation.
+        if (a.querySelector(".done-mark") || store.get(`done:${a.getAttribute("href")!.slice(9)}`) !== "1") return;
+        a.insertAdjacentHTML("beforeend", '<i class="ph ph-check-circle done-mark" role="img" aria-label="다 읽음"></i>');
+      });
+    const here = pathname.match(/^\/courses\/([^/]+)\/([^/]+)$/);
+    if (here) {
+      const [, course, chapter] = here;
+      store.set(`last:${course}`, JSON.stringify({ id: chapter, num: document.querySelector(".chapter-num")?.textContent?.trim() ?? "" }));
+      const pager = document.querySelector(".pager");
+      if (pager) {
+        const end = new IntersectionObserver((entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          store.set(`done:${course}/${chapter}`, "1");
+          paintDone();
+          end.disconnect();
+        });
+        end.observe(pager);
+        ac.signal.addEventListener("abort", () => end.disconnect());
+      }
+    }
+    paintDone();
+
+    // Course page: the primary button resumes at the last chapter opened.
+    document.querySelectorAll<HTMLAnchorElement>("a[data-resume]").forEach((a) => {
+      const course = a.dataset.resume!;
+      let last: { id: string; num: string } | null = null;
+      try {
+        last = JSON.parse(store.get(`last:${course}`) ?? "null");
+      } catch {}
+      if (!last || a.getAttribute("href")!.endsWith(`/${last.id}`)) return;
+      a.href = `/courses/${course}/${last.id}`;
+      a.innerHTML = `${/^\d+$/.test(last.num) ? `${Number(last.num)}장부터` : "부록부터"} 이어서 보기 <i class="ph ph-arrow-right"></i>`;
+    });
+
+    // Home: "N of M chapters read" under each course card.
+    document.querySelectorAll<HTMLElement>("[data-progress]").forEach((el) => {
+      const ids = (el.dataset.chapters ?? "").split(" ").filter(Boolean);
+      const done = ids.filter((id) => store.get(`done:${el.dataset.progress}/${id}`) === "1").length;
+      el.hidden = done === 0;
+      el.textContent = `${ids.length}개 장 중 ${done}개 읽음`;
+      el.style.setProperty("--p", String(done / ids.length));
+    });
+
+    // Home gallery: the work clip plays only while the card is hovered or focused.
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll<HTMLElement>(".work").forEach((card) => {
+        const v = card.querySelector("video");
+        if (!v) return;
+        const play = () => {
+          card.classList.add("is-playing");
+          v.play().catch(() => card.classList.remove("is-playing"));
+        };
+        const stop = () => {
+          card.classList.remove("is-playing");
+          v.pause();
+          v.currentTime = 0;
+        };
+        card.addEventListener("pointerenter", play, on);
+        card.addEventListener("pointerleave", stop, on);
+        card.addEventListener("focusin", play, on);
+        card.addEventListener("focusout", stop, on);
+      });
+    }
+
     return () => ac.abort();
   }, [pathname, router]);
 

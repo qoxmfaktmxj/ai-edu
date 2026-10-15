@@ -64,5 +64,34 @@
       "title": "배포하고 다듬기",
       "text": "내 주소로 공개하고 한 번 더 개선"
     }
+  ],
+  "icon": "ph-browsers",
+  "works": [
+    {
+      "title": "별이 된 문장",
+      "href": "/examples/stardust/",
+      "img": "/assets/img/ex-stardust.jpg",
+      "video": "/assets/video/works/stardust.mp4",
+      "text": "손을 대면 흩어지고, 놓으면 다시 모입니다."
+    },
+    {
+      "title": "심해 탐험",
+      "href": "/examples/deep-sea-dive/",
+      "img": "/assets/img/ex-deep-sea-dive.jpg",
+      "video": "/assets/video/works/deep-sea-dive.mp4",
+      "text": "스크롤을 내리면 잠수가 시작됩니다."
+    },
+    {
+      "title": "태양계 여행",
+      "href": "/examples/space/",
+      "img": "/assets/img/ex-space.jpg",
+      "video": "/assets/video/works/space.mp4",
+      "text": "태양에서 명왕성까지, 열 개의 세계를 차례로 찾아갑니다."
+    }
+  ],
+  "worksChapter": "topics",
+  "worksMeta": [
+    "Claude 최신 모델, Extra high",
+    "프롬프트 한 번 + 다듬기"
   ]
 }

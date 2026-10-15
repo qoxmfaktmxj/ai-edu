@@ -46,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <nav className="topbar-links" aria-label="주요 메뉴">
             {/* Plain anchor: a same-URL hash jump with next/link does not scroll. */}
             <a href="/#courses">교육 목록</a>
+            <a href="/#works">완성작</a>
           </nav>
           <HeaderControls />
           <span className="progress" aria-hidden="true" />

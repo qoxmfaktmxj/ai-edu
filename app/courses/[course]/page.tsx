@@ -30,6 +30,9 @@ export default async function CoursePage({ params }: { params: Promise<{ course:
     <main id="main">
       <section className="hero">
         <div className="hero-anim">
+          <span className="hero-course" style={{ "--d": 0 } as React.CSSProperties}>
+            {course.no}회차
+          </span>
           <h1 style={{ "--d": 0 } as React.CSSProperties}>
             {course.hero ? (
               <>
@@ -45,7 +48,8 @@ export default async function CoursePage({ params }: { params: Promise<{ course:
             {course.summary}
           </p>
           <div className="hero-cta" style={{ "--d": 2 } as React.CSSProperties}>
-            <Link className="btn btn-primary" href={`${base}/${course.chapters[0]}`}>
+            {/* data-resume: Enhance.tsx swaps this to the last chapter opened, when there is one. */}
+            <Link className="btn btn-primary" href={`${base}/${course.chapters[0]}`} data-resume={course.slug}>
               1장부터 시작 <i className="ph ph-arrow-right" />
             </Link>
             {second && (
@@ -78,7 +82,7 @@ export default async function CoursePage({ params }: { params: Promise<{ course:
       )}
 
       <div className="home">
-        <h2>목차</h2>
+        <h2 id="chapters">목차</h2>
         <ol className="chapter-list">
           {heads.map((h) => (
             <li key={h.id}>
