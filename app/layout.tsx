@@ -55,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="footer">
           <div className="footer-in">
             <span>{SITE_NAME}. 사내 AI 활용 실습 교육</span>
-            <span>Next.js로 만들고 Vercel로 배포했습니다.</span>
+            <span>Next.js로 만들고 Vercel로 배포했습니다. GitHub에 올릴 때마다 자동으로 다시 배포됩니다.</span>
           </div>
         </footer>
         <p id="live" className="sr-only" aria-live="polite" />
