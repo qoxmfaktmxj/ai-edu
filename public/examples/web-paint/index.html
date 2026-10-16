@@ -91,6 +91,9 @@
   .item[aria-selected="true"] .actions { display: flex; }
   .actions button { flex: 1; text-align: center; padding: 4px 0; border: 0; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font-size: 12px; cursor: pointer; }
   .actions button:hover { background: #d3e5f8; }
+  .actions button[data-act="place"] { flex: 2; }
+  .actions button[data-act="delete"] { background: #fde7e9; color: #a4262c; }
+  .actions button[data-act="delete"]:hover { background: #f9d5d9; }
 
   .status { display: flex; align-items: center; gap: 20px; padding: 4px 12px; border-top: 1px solid var(--line); background: var(--panel); color: var(--muted); font-size: 12px; }
   .status .zoom { margin-left: auto; display: flex; align-items: center; gap: 6px; }
@@ -779,6 +782,7 @@
     };
     return {
       all: () => tx("readonly", (s) => s.getAll()),
+      remove: (id) => tx("readwrite", (s) => s.delete(id)),
       // write only what changed, so another open tab's items are not wiped
       save: ({ id, hash, blob, w, h, at }, removedIds) => tx("readwrite", (s) => {
         removedIds.forEach((k) => s.delete(k));
@@ -817,6 +821,18 @@
     finally { URL.revokeObjectURL(img.src); }
   }
 
+  function deleteHistoryItem(it) {
+    const index = history.indexOf(it);
+    if (index < 0) return;
+    history.splice(index, 1);
+    if (selectedId === it.id) selectedId = history[Math.min(index, history.length - 1)]?.id ?? null;
+    if (it.url) URL.revokeObjectURL(it.url);
+    renderHistory();
+    ($("history").querySelector('[aria-selected="true"]') || $("btnPaste")).focus();
+    toast("목록에서 그림을 삭제했습니다");
+    db.remove(it.id).catch(() => toast("저장된 목록에서 삭제하지 못했습니다. 새로고침하면 다시 나타날 수 있습니다"));
+  }
+
   function renderHistory() {
     const list = $("history");
     list.replaceChildren();
@@ -833,16 +849,20 @@
       const time = new Date(it.at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
       el.innerHTML = `<div class="thumb"><img alt="붙여 넣은 그림 ${it.w}×${it.h}"></div>
         <div class="meta"><span>${it.w} × ${it.h}</span><span>${time}</span></div>
-        <div class="actions"><button type="button" data-act="place">캔버스에 붙이기</button><button type="button" data-act="copy" title="Ctrl+C">복사</button></div>`;
+        <div class="actions"><button type="button" data-act="place">캔버스에 붙이기</button><button type="button" data-act="copy" title="Ctrl+C">복사</button><button type="button" data-act="delete" title="목록에서 삭제">삭제</button></div>`;
       el.querySelector("img").src = it.url;
       el.addEventListener("click", (e) => {
         const act = e.target.dataset.act;
         if (act === "place") placeFromHistory(it);
         else if (act === "copy") copyImage(it);
+        else if (act === "delete") deleteHistoryItem(it);
         else if (selectedId !== it.id) { selectedId = it.id; renderHistory(); list.querySelector('[aria-selected="true"]').focus(); }
       });
       el.addEventListener("dblclick", (e) => { if (!e.target.dataset.act) placeFromHistory(it); });
-      el.addEventListener("keydown", (e) => { if (e.target === el && e.key === "Enter") placeFromHistory(it); });
+      el.addEventListener("keydown", (e) => {
+        if (e.target.dataset.act === "delete" && (e.key === "Enter" || e.key === " ")) e.stopPropagation();
+        if (e.target === el && e.key === "Enter") placeFromHistory(it);
+      });
       el.addEventListener("focus", () => { selectedId = it.id; list.querySelectorAll(".item").forEach((x) => x.setAttribute("aria-selected", String(x === el))); });
       list.append(el);
     });
