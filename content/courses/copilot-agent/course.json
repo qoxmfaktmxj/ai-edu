@@ -10,7 +10,8 @@
     "build",
     "test",
     "library",
-    "reverse"
+    "reverse",
+    "travel"
   ],
   "hero": {
     "before": "써 보고, 뜯어 보고,",
