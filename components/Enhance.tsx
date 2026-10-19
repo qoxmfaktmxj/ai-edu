@@ -161,12 +161,6 @@ export default function Enhance() {
 
     // Progress, kept only in this browser: "last:<course>" is the chapter opened most recently,
     // 다음 회차 안내 또는 이전/다음 장 이동 영역에 도달하면 읽음으로 기록한다.
-    const paintDone = () =>
-      document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="/courses/"], .chapter-list a').forEach((a) => {
-        // Checked by the mark itself: React may rewrite className on client navigation.
-        if (a.querySelector(".done-mark") || store.get(`done:${a.getAttribute("href")!.slice(9)}`) !== "1") return;
-        a.insertAdjacentHTML("beforeend", '<i class="ph ph-check-circle done-mark" role="img" aria-label="다 읽음"></i>');
-      });
     const here = pathname.match(/^\/courses\/([^/]+)\/([^/]+)$/);
     if (here) {
       const [, course, chapter] = here;
@@ -176,14 +170,12 @@ export default function Enhance() {
         const end = new IntersectionObserver((entries) => {
           if (!entries.some((e) => e.isIntersecting)) return;
           store.set(`done:${course}/${chapter}`, "1");
-          paintDone();
           end.disconnect();
         });
         end.observe(pager);
         ac.signal.addEventListener("abort", () => end.disconnect());
       }
     }
-    paintDone();
 
     // Course page: the primary button resumes at the last chapter opened.
     document.querySelectorAll<HTMLAnchorElement>("a[data-resume]").forEach((a) => {
