@@ -1,0 +1,199 @@
+<section class="chapter" id="workflows">
+  <header class="chapter-head">
+    <span class="chapter-num">06</span>
+    <h2>매일 정해진 시간에 Teams로 보고받기</h2>
+    <p class="chapter-lead">매번 부탁하지 않아도 정해진 시각에 메일을 살펴 Teams로 보고하게 만듭니다. Copilot의 Workflows에 공통 프롬프트를 붙여 넣어 평일 아침 중요 메일 보고를 만들고, 저장한 뒤 바로 테스트합니다.</p>
+  </header>
+
+  <h3>예약된 프롬프트와 Workflows</h3>
+  <p>정해진 시각에 Copilot을 실행하는 방법은 두 가지입니다. 결과를 Copilot 화면에서 확인해도 되면 예약된 프롬프트가 가장 간단합니다. Teams 메시지로 받아야 하면 Workflows를 씁니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>구분</th><th>예약된 프롬프트</th><th>Workflows</th></tr></thead>
+    <tbody>
+      <tr><td>결과를 받는 곳</td><td>Copilot 왼쪽 채팅 목록에 새 대화로 쌓입니다. 원하면 이메일 알림도 받습니다.</td><td>Teams 채팅으로 카드가 옵니다.</td></tr>
+      <tr><td>만드는 방법</td><td>Copilot 채팅에서 실행한 프롬프트에 마우스를 올리고 Schedule this prompt(이 프롬프트 예약)를 누릅니다.</td><td>Workflows 에이전트에게 원하는 흐름을 문장으로 설명합니다.</td></tr>
+      <tr><td>조건</td><td>Microsoft 365 Copilot 라이선스. 최대 10개까지 만들 수 있습니다.</td><td>회사가 Frontier(미리 보기 기능)를 켜 두어야 보입니다.</td></tr>
+      <tr><td>나눠 쓰기</td><td colspan="2">둘 다 만든 사람만 씁니다. 동료에게는 프롬프트 문장을 공유합니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout warn">
+    <i class="ph ph-warning"></i>
+    <strong>먼저 쓸 수 있는지 확인합니다</strong>
+    <div>
+      <ul>
+        <li>Copilot 왼쪽의 에이전트에서 에이전트 스토어를 열고 'Workflows'를 검색합니다. 'Workflows Agent (Frontier)'가 보이면 추가해서 바로 씁니다.</li>
+        <li>보이지 않으면 회사 관리자에게 Frontier와 Workflows 에이전트 사용 허용을 요청합니다. 공식 문서에는 지역과 언어별로 차례대로 배포된다고 적혀 있어서, 설정을 켜도 바로 보이지 않을 수 있습니다.</li>
+        <li>공식 문서 기준으로 Workflows와 나누는 대화는 영어만 지원합니다. 아래 프롬프트도 영어로 씁니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>1. Workflows 열기</h3>
+  <ol>
+    <li>브라우저에서 Microsoft 365 Copilot(m365.cloud.microsoft)에 회사 계정으로 로그인합니다. Microsoft 365 Copilot 앱을 써도 됩니다.</li>
+    <li>왼쪽 메뉴의 <strong>에이전트</strong>에 마우스를 올리면 목록이 열립니다.</li>
+    <li>목록에서 <strong>Workflows (Frontier)</strong>를 누릅니다. 화면 위쪽에 '워크플로 (프런티어) &gt; 새 워크플로'가 보이면 맞게 들어온 것입니다.</li>
+  </ol>
+
+  <figure class="shot" data-shot="06-workflows-agent">
+    <img src="/assets/shots/06-workflows-agent.png" style="max-width:643px" alt="Copilot 왼쪽 메뉴의 에이전트 목록. 맨 위에 Workflows (Frontier)가 있고, 오른쪽 위에 워크플로 (프런티어) 새 워크플로 화면 제목이 보인다" loading="lazy">
+    <figcaption>에이전트 목록 맨 위의 Workflows (Frontier)에서 작업합니다. 목록에 없으면 위 확인 방법대로 에이전트 스토어에서 추가합니다.</figcaption>
+  </figure>
+
+  <p>워크플로 첫 화면이 열립니다. 가운데 입력창에 만들 흐름을 설명하고, 만든 워크플로는 아래 '내 워크플로'에 쌓입니다. 입력창 아래 카드는 Microsoft가 준비한 예시 템플릿입니다.</p>
+
+  <figure class="shot" data-shot="06-workflows-home">
+    <img src="/assets/shots/06-workflows-home.png" alt="Workflows (Frontier) 첫 화면. 가운데 입력창, 그 아래 Daily Brief in Teams, Acknowledge and Track, Unread Email Digest 템플릿 카드, 맨 아래 내 워크플로 목록에 평일 오전 중요 메일 보고가 보인다" loading="lazy">
+    <figcaption>입력창에 프롬프트를 붙여 넣습니다. 만든 워크플로는 아래 내 워크플로 목록에서 다시 열고, 끄고, 지웁니다.</figcaption>
+  </figure>
+
+  <h3>2. 공통 프롬프트 붙여 넣기</h3>
+  <p>아래 프롬프트를 입력창에 그대로 붙여 넣고 보냅니다. 평일 오전 8시에 전날 오전 8시 이후 받은 메일(월요일은 금요일 오전 8시 이후)을 살펴, 중요한 메일을 Teams로 보내는 흐름입니다. 받은편지함뿐 아니라 규칙으로 나눠 둔 폴더까지 모두 살피고, 보낸 편지함, 임시 보관함, 지운 편지함, 정크 메일은 뺍니다. 회사 이름이나 업무 용어 없이 누구에게나 통하는 기준으로 썼습니다.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>프롬프트 부분</th><th>하는 일</th></tr></thead>
+    <tbody>
+      <tr><td>Step 1. 제외</td><td>자동 알림, 광고, 결재 완료 알림, 전체 공지는 규칙으로 고정해 먼저 뺍니다. 날마다 결과가 흔들리지 않게 하는 부분입니다.</td></tr>
+      <tr><td>Step 2. 분류</td><td>남은 메일을 AI가 '꼭 읽어야 할 메일'과 '기타 중요 메일'로 나눕니다. 애매하면 기타 중요 메일로 보냅니다. 나를 받는 사람(To)으로 넣은 메일은 요청이 없어도 기타 중요 메일에 남깁니다.</td></tr>
+      <tr><td>Step 3. 카드</td><td>결과를 한글 카드로 만들어 나와의 Teams 채팅에 보냅니다. 메일이 없는 섹션은 숨깁니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure class="prompt" data-title="공통 프롬프트: 오전 8시 중요 메일 보고">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Workflows 입력창에 붙여 넣으세요</figcaption>
+    <pre>Every weekday (Monday to Friday) at 8:00 AM Korea Standard Time (UTC+09:00), search emails I received in all folders of my Outlook mailbox, including the Inbox and every subfolder or custom folder that my rules move emails into. Do not search Sent Items, Drafts, Outbox, Deleted Items, or Junk Email.
+
+Time range:
+- Tuesday to Friday: emails received since 8:00 AM KST on the previous day.
+- Monday: emails received since 8:00 AM KST on the previous Friday, including the weekend.
+
+Step 1. EXCLUDE these emails (do not show them):
+- Senders containing "no-reply" or "noreply", including Teams notification emails
+- Newsletters, advertisements, marketing, and training promotions
+- Approval notifications whose subject says the approval is completed or rejected (for example "승인 완료", "결재 완료", "반려")
+- Announcements sent to a distribution list or to 20 or more recipients
+
+Step 2. Use AI judgment to classify the remaining emails:
+- MUST READ: I am in the To field and the email asks me to reply, decide, review, or take action; OR it has a deadline; OR it is a work request from a sender whose email domain is different from mine; OR it is marked high importance; OR it is a reply to an email I sent and it asks a question, changes a plan, or needs my action.
+- OTHER IMPORTANT: no direct request to me, but it contains a schedule change, an issue update, or an organization or personnel change I should know.
+- OTHER IMPORTANT: any other email where I am in the To field (not only CC).
+- If unsure between the two, choose OTHER IMPORTANT.
+
+Step 3. Send me the result in Teams chat as an adaptive card. Write every label and summary in Korean, using the exact Korean text below:
+1. Title: "오전 중요 메일 보고" followed by today's date.
+2. Section "꼭 읽어야 할 메일": for each email, show the subject in red bold text (TextBlock color "Attention", weight "Bolder"), then the sender, received time, a 1-2 sentence summary, and the required action or deadline.
+3. Section "기타 중요 메일": subject in normal bold, sender, and a short summary.
+4. If a section has no emails, do not show that section.
+5. If there are no important emails at all, show only "새로 온 중요한 메일이 없습니다."
+
+Language rule (mandatory):
+- All output in the Teams message must be written in Korean only.
+- Keep the original email subject and sender name as they are. Do not translate them.</pre>
+  </figure>
+
+  <p>프롬프트는 영어로 쓰지만 결과 카드는 한글로 받습니다. 카드에 들어갈 제목과 섹션 이름은 따옴표 안에 한글로 직접 적어 두었습니다. 따옴표 안을 영어로 적으면 요약만 한글이고 제목과 섹션 이름은 영어로 나옵니다.</p>
+
+  <figure class="shot" data-shot="06-workflow-paste">
+    <img src="/assets/shots/06-workflow-paste.png" style="max-width:920px" alt="입력창에 붙여 넣은 공통 프롬프트가 대화 말풍선으로 보이고, 아래에 Workflows (Frontier): 검색하는 중이라고 표시된 화면" loading="lazy">
+    <figcaption>보내면 Workflows가 흐름을 만들기 시작합니다. 잠시 기다립니다.</figcaption>
+  </figure>
+
+  <h3>3. 저장하고 테스트하기</h3>
+  <ol>
+    <li>흐름이 만들어지면 왼쪽에 '워크플로가 준비되었습니다'라는 안내가, 오른쪽에 단계 카드 세 개가 나옵니다.</li>
+    <li>오른쪽 카드를 위에서부터 읽으며 아래 표대로 확인합니다.</li>
+    <li>오른쪽 위 <strong>저장</strong>을 누릅니다. 저장해야 예약 실행이 켜집니다.</li>
+    <li>저장 옆의 <strong>테스트</strong>를 누릅니다. 오전 8시까지 기다리지 않고 지금 한 번 실행됩니다. 1분 정도 걸립니다.</li>
+    <li>위쪽에 '워크플로가 성공적으로 실행되었습니다'가 나오면 Teams를 엽니다.</li>
+  </ol>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>단계 카드</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td>1. 트리거</td><td>평일(월요일부터 금요일) 오전 8시, 한국 시간으로 되어 있는지</td></tr>
+      <tr><td>2. Copilot</td><td>모든 메일 폴더를 살피는지, 시간 범위(전날 오전 8시부터, 월요일은 금요일 오전 8시부터), 제외 규칙, 분류 기준이 프롬프트대로 옮겨졌는지</td></tr>
+      <tr><td>3. Microsoft Teams</td><td>받는 사람이 나인지, 카드 제목과 섹션 이름이 한글인지</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure class="shot" data-shot="06-workflow-created">
+    <img src="/assets/shots/06-workflow-created.png" alt="왼쪽에 Workflows의 완료 안내, 오른쪽에 트리거 평일 오전 8시 실행, Copilot, Microsoft Teams 단계 카드와 오른쪽 위 저장 버튼이 보이는 화면. 이름과 메일 주소가 들어간 줄은 가렸다" loading="lazy">
+    <figcaption>오른쪽 위 저장을 누릅니다. Copilot과 Teams 단계에는 내 이름과 메일 주소가 자동으로 들어갑니다. 그림에서는 그 줄을 가렸습니다.</figcaption>
+  </figure>
+
+  <figure class="shot" data-shot="06-workflow-tested">
+    <img src="/assets/shots/06-workflow-tested.png" alt="워크플로가 성공적으로 실행되었습니다 안내 아래, 트리거와 Copilot 단계에 성공 표시와 1분이 붙고 Copilot 단계 아래에 결과 펼치기가 보이는 화면" loading="lazy">
+    <figcaption>테스트가 끝난 화면입니다. 단계마다 성공 표시와 걸린 시간이 붙습니다. 실패한 단계가 있으면 그 단계를 펼쳐 이유를 봅니다.</figcaption>
+  </figure>
+
+  <p>Teams 왼쪽의 채팅에서 <strong>워크플로</strong> 채팅을 열면 카드가 와 있습니다.</p>
+
+  <figure class="shot" data-shot="06-teams-report">
+    <img src="/assets/shots/06-teams-report.png" style="max-width:605px" alt="Teams 채팅에 온 오전 중요 메일 보고 카드. 꼭 읽어야 할 메일 섹션에 빨간 굵은 제목, 보낸 사람, 받은 시각, 요약, 필요한 조치 또는 마감일이 이어진다. 메일 내용은 가렸다" loading="lazy">
+    <figcaption>테스트로 받은 보고 카드입니다. 메일 제목, 보낸 사람, 내용은 가렸습니다. 기타 중요 메일이 없는 날이라 그 섹션은 보이지 않습니다.</figcaption>
+  </figure>
+
+  <h3>4. 테스트 결과 확인하기</h3>
+  <p>카드가 왔다고 끝이 아닙니다. 아래 순서대로 확인하고, 맞지 않는 곳은 5의 문장으로 고칩니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>확인할 것</th><th>보는 곳</th><th>이러면 통과</th></tr></thead>
+    <tbody>
+      <tr><td>1. 카드가 왔는지</td><td>Teams의 워크플로 채팅</td><td>테스트를 누르고 몇 분 안에 '오전 중요 메일 보고' 카드가 옵니다.</td></tr>
+      <tr><td>2. 모양</td><td>카드</td><td>꼭 읽어야 할 메일의 제목이 빨간 굵은 글씨이고, 메일이 없는 섹션은 보이지 않습니다.</td></tr>
+      <tr><td>3. 언어</td><td>카드</td><td>제목, 섹션 이름, 요약, 할 일이 모두 한글입니다. 메일 제목과 보낸 사람은 원래 글자 그대로입니다.</td></tr>
+      <tr><td>4. 여러 폴더를 보는지</td><td>카드</td><td>받은편지함이 아닌 폴더(규칙으로 옮겨지는 폴더)의 메일도 나옵니다. 잘 모르겠으면 5의 '폴더 이름 표시' 문장을 보내고 다시 테스트합니다. 확인한 뒤에는 그 줄을 뺍니다.</td></tr>
+      <tr><td>5. 빠진 메일</td><td>Outlook 메일함</td><td>어제 오전 8시부터 지금까지 온 메일을 폴더별로 훑어봅니다. 답장이 필요하거나 기한이 있는 메일이 카드에 들어 있으면 됩니다.</td></tr>
+      <tr><td>6. 실패한 단계</td><td>워크플로 화면 위쪽 활동 탭</td><td>트리거와 각 단계가 모두 성공입니다. 실패가 있으면 그 실행을 눌러 어느 단계에서 왜 멈췄는지 봅니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>테스트는 누른 시각을 기준으로 범위를 잡습니다. 그래서 범위가 맞는지는 다음 날 확인합니다.</p>
+  <ol>
+    <li>다음 평일 오전 8시가 지나면 Teams의 워크플로 채팅에 카드가 왔는지 봅니다.</li>
+    <li>워크플로 화면의 활동 탭에서 그날 실행이 오전 8시 무렵 성공으로 남아 있는지 봅니다. 시각이 9시간 어긋나 있으면 한국 시간이 아니라 세계 표준시로 잡힌 것입니다. 이때는 새로 만듭니다.</li>
+    <li>카드의 가장 이른 받은 시각이 전날 오전 8시 이후인지 봅니다. 월요일 카드에는 금요일 오전 8시 이후 메일과 주말 메일이 함께 나옵니다.</li>
+  </ol>
+
+  <h3>5. 만든 뒤 고치는 곳</h3>
+  <p>공통 프롬프트로 만든 뒤 내 업무에 맞게 고칩니다. 프롬프트의 각 부분은 워크플로 화면의 단계 카드로 들어가 있습니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>프롬프트 부분</th><th>워크플로 화면 카드</th><th>여기서 바꾸는 것</th></tr></thead>
+    <tbody>
+      <tr><td>첫 줄(실행 요일과 시각)</td><td>1. 트리거</td><td>실행 시각</td></tr>
+      <tr><td>첫 줄의 검색 범위, Time range, Step 1, Step 2</td><td>2. Copilot</td><td>살필 폴더와 기간, 뺄 메일, 중요 기준</td></tr>
+      <tr><td>Step 3, Language rule</td><td>3. Microsoft Teams</td><td>카드 제목, 섹션, 표시 방식</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>고칠 내용은 같은 채팅에 영어로 보냅니다. 고친 뒤에는 저장하고 테스트로 다시 확인합니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>이렇게 하고 싶으면</th><th>보낼 문장</th></tr></thead>
+    <tbody>
+      <tr><td>규칙으로 나눈 폴더의 메일이 안 나온다</td><td><code>In the Copilot step, also search the "[폴더 이름]" folder.</code></td></tr>
+      <tr><td>여러 폴더를 보는지 확인하고 싶다(확인 뒤 다시 뺌)</td><td><code>In the Teams step, also show the folder name after the sender.</code></td></tr>
+      <tr><td>꼭 챙길 보낸 사람 추가</td><td><code>In the Copilot step, add to MUST READ: emails from [이름 또는 메일 주소].</code></td></tr>
+      <tr><td>빼고 싶은 메일 추가</td><td><code>In the Copilot step, also exclude emails with [제목에 들어가는 말] in the subject.</code></td></tr>
+      <tr><td>직접 받은 메일이 너무 많이 나온다</td><td><code>In the Copilot step, remove the rule that puts every email where I am in the To field into OTHER IMPORTANT.</code></td></tr>
+      <tr><td>계열사 메일을 사내로 보기</td><td><code>In the Copilot step, treat senders from [계열사 도메인] as internal.</code></td></tr>
+      <tr><td>카드 제목 바꾸기</td><td><code>In the Teams step, change the card title to "[원하는 제목]".</code></td></tr>
+      <tr><td>제목이 빨간색으로 보이지 않는다</td><td><code>In the Teams step, add "[중요]" before each MUST READ subject.</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <ul>
+    <li>실행 시각은 채팅으로 바꾸지 못할 수 있습니다. 새 시각으로 다시 만들고, 기존 워크플로는 내 워크플로 목록의 메뉴에서 끕니다. 두 개를 모두 켜 두면 보고가 두 번 옵니다.</li>
+    <li>고친 내용이 테스트 결과에 반영되지 않으면, 프롬프트를 고쳐 새로 만드는 편이 확실합니다.</li>
+  </ul>
+
+  <h3>알아둘 점</h3>
+  <ul>
+    <li>만든 워크플로는 다른 사람에게 공유되지 않습니다. 동료에게는 공통 프롬프트를 건네고, 각자 자기 Workflows에서 만들게 합니다. 메일과 Teams는 각자의 계정으로 연결되므로 결과도 본인에게만 갑니다.</li>
+    <li>토요일과 일요일에는 실행되지 않습니다. 주말에 온 메일은 월요일 보고에 금요일 오전 8시 이후 메일과 함께 나옵니다.</li>
+    <li>반복 일정은 한국 공휴일을 따로 알지 못해서, 평일 공휴일에도 실행되고 보고가 옵니다. 매번 전날 오전 8시부터 살피므로 메일이 빠지지는 않습니다. 공휴일에 보고를 받지 않으려고 워크플로를 꺼 두면, 다음 날 보고에서 공휴일 전날 메일이 빠지니 다시 켜는 날 범위를 확인합니다.</li>
+    <li>무엇이 중요한 메일인지는 AI가 고릅니다. Copilot 검색은 메일을 빠짐없이 나열하는 방식이 아니라 관련 있는 메일을 찾아오는 방식이어서, 메일이 아주 많은 날에는 일부를 놓칠 수 있습니다. 보고는 놓친 메일이 없는지 돌아보는 용도이고, 메일함 확인을 대신하지 않습니다.</li>
+    <li>보고 카드와 단계 카드에는 실제 메일 내용, 내 이름과 메일 주소가 들어갑니다. 화면을 캡처해 공유할 때는 1장의 보안 수칙대로 가립니다.</li>
+  </ul>
+
+  <p>참고: <a href="https://support.microsoft.com/en-us/topic/8c6aba25-db31-443d-8319-bc79747b280a" target="_blank" rel="noopener">Microsoft의 Workflows 시작 안내</a>, <a href="https://support.microsoft.com/en-US/Microsoft-365-Copilot/schedule-your-most-used-copilot-prompts" target="_blank" rel="noopener">Microsoft의 예약된 프롬프트 안내</a>. 2026년 10월 20일에 확인한 내용이며 바뀔 수 있습니다.</p>
+</section>

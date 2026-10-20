@@ -8,64 +8,14 @@
 
 | 상태 | 파일 | 무엇을 찍나 |
 |---|---|---|
-| 필요 | `ag-try-report.png` | 그림 설명: 받은 보고서 HTML을 Edge로 연 화면입니다. 맨 위에 로고와 색 띠, 그 아래 제목과 결론 한 문장, 작성 정보, 1. 현황부터 번호가 붙은 항목이 이어집니다. |
-| 필요 | `ag-try-pdf.png` | 그림 설명: Edge 인쇄 창입니다. 왼쪽 대상에서 PDF로 저장을 고르면 오른쪽 미리 보기에 로고와 띠가 함께 보입니다. |
-| 필요 | `ag-try-eli5.png` | 그림 설명: 그림 설명 HTML입니다. 장면마다 아이콘으로 그린 그림과 두세 줄 설명이 있습니다. |
-| 필요 | `ag-inside-skill-zip.png` | 그림 설명: 보고서 기술 ZIP을 연 모습입니다. 맨 위에 SKILL.md, 그 옆에 scripts(스크립트)와 templates(양식) 폴더가 있습니다. |
-| 필요 | `ag-inside-config.png` | 그림 설명: 구성 탭입니다. 위에서부터 이름, 설명, 안내, 지식, 기능, 기술, 추천 프롬프트 칸이 이어집니다. |
-| 필요 | `ag-build-new.png` | 그림 설명: 에이전트 빌더 화면입니다. 왼쪽 위에 설명 탭과 구성 탭이 있고, 오른쪽은 미리 보기 창입니다. |
-| 필요 | `ag-build-configure.png` | 그림 설명: 구성 탭의 안내 칸입니다. # 역할, # 결과 형식, # 꼭 지킬 것 제목으로 나뉜 안내가 보입니다. |
-| 필요 | `01-final-site-address.png` | 그림 설명: 맨 위 주소창에 .vercel.app으로 끝나는 내 주소가 보이고, 아래에 완성된 사이트가 열려 있습니다. 교육이 끝났을 때 이 모습이 목표입니다. |
-| 완료 | `02-claude-download.png` | 그림 설명: claude.com/download 페이지(한국어 화면)입니다. 큰 제목 "Claude 다운로드" 아래에 내 컴퓨터용 다운로드 버튼이 있습니다. Windows에서 열면 "Windows용 다운로드" 버튼이 보이고, Windows ARM 컴퓨터용 "Windows(arm64)" 링크와 Microsoft Store 배지도 함께 보입니다. Mac에서 열면 Mac용 버튼이 먼저 보입니다. 화면 구성과 문구는 업데이트로 조금 다를 수 있습니다. |
-| 필요 | `03-new-repo.png` | 그림 설명: Repository name에 ai-site, 공개 범위는 Private, README 추가는 꺼진 상태에서 Create repository 버튼을 누르는 위치를 표시하세요. |
-| 필요 | `03-repo-quick-setup.png` | 그림 설명: 빈 저장소를 만든 직후의 Quick setup 화면입니다. HTTPS 버튼과 저장소 주소, 그 오른쪽 복사 버튼의 위치를 표시하세요. |
-| 필요 | `03-gcm-signin.png` | 그림 설명: git clone을 입력하면 뜨는 GitHub 로그인 창입니다. Sign in with your browser 버튼의 위치를 표시하세요. |
-| 필요 | `03-gcm-authorize.png` | 그림 설명: 브라우저에 열린 GitHub 승인 화면입니다. Authorize 버튼의 위치를 표시하세요. |
-| 필요 | `03-clone-done.png` | 그림 설명: clone이 끝난 cmd 창입니다. Cloning into 'ai-site' 줄과 빈 저장소 안내 줄이 보입니다. |
-| 완료 | `02-model-change.png` | 그림 설명: 대화 도중에 모델을 바꾸려 할 때 뜨는 확인 창입니다. 현재 세션이 지금 모델 기준으로 캐시되어 있어, 바꾸면 Claude가 전체 세션을 다시 읽으며 한도를 더 많이 사용한다고 알려 줍니다. 모델 이름은 업데이트로 다를 수 있습니다. |
-| 완료 | `02-code-tab.png` | 그림 설명: 앱 위쪽에 채팅 및 Cowork 탭과 Code 탭이 나란히 있고, 그중 Code 탭이 선택된 모습입니다. 아래쪽에 입력창이 보이고, 입력창 근처에 Local 선택과 Select folder 버튼이 있습니다. |
-| 필요 | `02-folder-select.png` | 그림 설명: Select folder를 눌러 나온 폴더 선택 창에서 문서 아래의 ai-site 폴더를 고른 모습입니다. 확인을 누르면 Code 탭 입력창 근처에 ai-site 폴더 이름이 표시됩니다. 그 폴더가 Claude의 작업 장소입니다. |
-| 필요 | `02-permission-dialog.png` | 그림 설명: Accept edits 모드에서 Claude가 실행하려는 명령(예: claude.ai의 공식 설치 명령)이나 바꾸려는 파일 내용을 보여 주며 허용을 묻는 화면입니다. 내용을 읽은 뒤 Accept(허용) 또는 Reject(거절) 버튼을 누릅니다. 입력창 옆에는 현재 권한 모드(Accept edits)를 보여 주는 선택기가 보입니다. 버튼 이름은 업데이트로 조금 다를 수 있습니다. |
-| 필요 | `02-claude-version.png` | 그림 설명: 새로 연 PowerShell 창입니다. 첫 줄 맨 앞에 PS가 보이고, claude --version 입력 아래에 "2.1.xxx (Claude Code)" 형태의 버전 줄이 나온 모습입니다. 이 줄이 보이면 설치와 PATH 등록이 모두 성공한 것입니다. |
-| 완료 | `04-vercel-signup.png` | 그림 설명: vercel.com/signup 화면. "Continue with GitHub" 버튼 위치를 표시하세요. 이 버튼이 이 교재에서 누를 버튼입니다. |
-| 필요 | `04-vercel-plan.png` | 그림 설명: Hobby(개인, 무료)와 Pro가 나란히 보이는 화면. Hobby 쪽을 고르는 위치를 표시하세요. 이런 화면이 나오지 않는 계정도 있습니다. |
-| 필요 | `04-vercel-github-app.png` | 그림 설명: GitHub의 Vercel 앱 설치 화면. Repository access에서 Only select repositories를 선택하고, ai-site를 고른 뒤 Install 버튼을 누르는 위치를 표시하세요. |
-| 필요 | `04-vercel-import.png` | 그림 설명: "Import Git Repository" 목록에서 ai-site 줄 오른쪽의 Import 버튼을 누르는 위치를 표시하세요. |
-| 필요 | `04-vercel-configure.png` | 그림 설명: Configure Project 화면. Project Name 칸, Framework Preset(Other), Root Directory(./)가 보이고 맨 아래에 Deploy 버튼이 있습니다. |
-| 필요 | `04-vercel-deploy-done.png` | 그림 설명: 축하 문구와 사이트 미리보기 그림이 보이는 배포 완료 화면. Continue to Dashboard 버튼의 위치를 표시하세요. |
-| 필요 | `04-vercel-domains.png` | 그림 설명: 프로젝트 화면의 Domains 항목. https://[프로젝트이름].vercel.app 링크와 Production Deployment의 Ready 표시를 가리키세요. 이 주소가 내 사이트 주소입니다. |
-| 필요 | `04-site-live.png` | 그림 설명: 주소창에 https://[프로젝트이름].vercel.app이 보이고, 본문에 내가 만든 첫 페이지가 나온 화면. 주소창 부분을 강조해 캡처하세요. |
-| 필요 | `04-auto-redeploy.png` | 그림 설명: Deployments 목록의 맨 위 줄에 "제목 변경" 메시지와 main 브랜치, 상태(Building 또는 Ready)가 보이는 화면. 새 줄과 상태 표시를 강조하세요. |
-| 필요 | `05-skills-install.png` | 그림 설명: Claude 앱 Code 탭에서 설치 프롬프트를 보낸 직후의 화면입니다. 가운데 대화창에 Claude가 "먼저 node와 npx를 확인하겠습니다" 같은 설명과 함께 확인 명령을 실행하는 모습, 아래쪽 입력창 옆에 권한 모드 선택기(Accept edits)가 보입니다. |
-| 필요 | `05-permission.png` | 그림 설명: 실행할 명령(예: npx skills add 로 시작하는 줄)과 출처 이름(owner/repo)이 보이고, 그 아래에 "Do you want to proceed?"와 함께 Yes, No 선택지가 있는 화면입니다. 명령 속 출처가 프롬프트에 적은 것과 같은지 먼저 봅니다. |
-| 필요 | `05-new-session.png` | 그림 설명: 왼쪽 사이드바 위쪽의 "+ New session" 버튼(누를 곳)과, 눌러서 새로 열린 빈 대화 화면입니다. 이전 세션이 사이드바 목록에 남아 있는 것도 확인하세요. |
-| 필요 | `05-slash-menu.png` | 그림 설명: 입력창에 / 를 입력하자 입력창 위로 목록이 펼쳐진 화면입니다. design-taste-frontend, impeccable, ui-ux-pro-max:ui-ux-pro-max, hyperframes:hyperframes 가 각각 한 줄씩 보이고 오른쪽에 짧은 설명이 붙어 있습니다. |
-| 필요 | `07-slash-skill-list.png` | 그림 설명: 입력창에 /를 입력하면 입력창 바로 위로 명령과 스킬 목록이 나타납니다. 그 안에서 design-taste-frontend, impeccable, ui-ux-pro-max 이름이 보이면 준비된 것입니다. |
-| 필요 | `07-select-folder.png` | 그림 설명: Code 탭 입력창 근처에서 Local이 선택되어 있고, Select folder를 눌러 고른 작업 폴더의 이름이 표시된 모습입니다. |
-| 필요 | `07-attach-image.png` | 그림 설명: 입력창 안에 첨부한 캡처 이미지가 작은 그림으로 보이고, 그 옆에 "여기가 너무 어둡습니다" 같은 부탁 글이 적혀 있는 모습입니다. 이미지와 글을 함께 보냅니다. |
-| 필요 | `07-model-effort.png` | 그림 설명: 입력창 옆 모델 목록을 연 모습입니다. Opus 5.5를 고르고 노력 수준을 Extra high로 둡니다. |
-| 필요 | `07-preview-pane.png` | 그림 설명: 왼쪽은 Claude와의 대화, 오른쪽은 Browser 창입니다. Browser 창 안에 방금 만든 사이트가 그대로 나타나고, 대화에서 부탁을 보낼 때마다 이 화면이 바뀝니다. |
-| 필요 | `07-mobile-width.png` | 그림 설명: 미리보기 폭을 휴대폰처럼 좁게 줄인 모습입니다. 제목과 버튼이 잘리지 않고 화면 안에 맞게 보이며, 옆으로 스크롤바가 생기지 않으면 잘 된 것입니다. |
-| 필요 | `07-oneshot-result.png` | 그림 설명: 프롬프트 한 번으로 만든 첫 버전입니다. 별 입자가 모여 "별이 된 문장." 제목이 되고, 아래에 입력창과 모양 버튼이 있습니다. |
-| 필요 | `07-permission-prompt.png` | 그림 설명: Claude가 git push 같은 명령을 실행해도 되는지 묻는 화면입니다. 명령 내용이 보이고 허용 또는 거절을 고르는 버튼이 있습니다. 방금 부탁한 일과 맞으면 허용을 누릅니다. |
-| 필요 | `07-vercel-deployments.png` | 그림 설명: Deployments 화면의 목록 맨 위에 방금 올린 커밋 메시지가 있고, 상태가 Building에서 Ready로 바뀐 모습입니다. 줄 오른쪽에 Production 표시도 보입니다. |
-| 필요 | `07-vercel-domain.png` | 그림 설명: 프로젝트 첫 화면 위쪽의 미리보기 그림 옆에 Domains 칸이 있고, 프로젝트이름.vercel.app 주소와 Visit 버튼이 보입니다. 이 주소를 눌러 열고, 주소창의 주소를 복사해 둡니다. |
-| 필요 | `07-phone-check.png` | 그림 설명: 휴대폰 브라우저에 내 vercel.app 주소로 사이트가 열려 있는 모습입니다. 손가락으로 화면을 누르는 중이고, 글이 화면 안에 잘 들어가 있습니다. |
-| 필요 | `07-impeccable-critique.png` | 그림 설명: 비평 결과가 대화창에 목록으로 나타난 모습입니다. "잘된 점", "아쉬운 점", "추천 개선 3가지"가 번호와 함께 정리되어 있고, 사이트 파일은 아직 바뀌지 않았습니다. |
-| 필요 | `07-compare-two-versions.png` | 그림 설명: 왼쪽은 색 수가 적고 여백이 넓은 차분한 버전, 오른쪽은 밝은 색과 둥근 모서리의 귀여운 버전입니다. 같은 사이트가 분위기 설명만으로 전혀 다른 인상이 된 것을 비교합니다. |
-| 필요 | `08-hf-preview.png` | 그림 설명: 브라우저에 열린 hyperframes 스튜디오입니다. 가운데에 영상 미리보기, 그 아래에 타임라인, 왼쪽에 프로젝트 탭, 오른쪽에 설정 패널이 보입니다. 재생 버튼을 눌러 장면 3개가 순서대로 나오는지 확인하는 단계입니다. |
-| 필요 | `08-hf-render.png` | 그림 설명: 렌더가 끝난 화면입니다. Claude 대화창(또는 터미널)에 완료 메시지와 renders 폴더 안 MP4 파일 경로가 보이고, 파일 탐색기에서 같은 renders 폴더를 열어 영상 파일이 들어 있는 모습입니다. 이 파일을 더블클릭하면 재생됩니다. |
-| 필요 | `08-video-in-site.png` | 그림 설명: 내 사이트의 첫 화면(브라우저 미리보기)에서 소개 영상이 소리 없이 재생되고 있는 화면입니다. 영상 위나 옆에 제목과 소개 글이 함께 보이고, 영상이 화면 폭에 맞게 잘리지 않고 들어가 있는지 확인합니다. |
-| 필요 | `09-phone-open-site.png` | 휴대폰 브라우저 주소창에 vercel.app 주소를 입력해 연 모습입니다. 글자가 잘리지 않고 한 화면 안에 제목과 그림이 들어오면 잘 된 것입니다. |
-| 필요 | `09-devtools-device-toolbar.png` | F12를 눌러 연 개발자 도구에서 왼쪽 위의 휴대폰 모양 기기 아이콘과, 사이트 화면 위쪽의 Dimensions 목록 위치를 표시한 그림입니다. 이 목록에서 기기를 고르면 휴대폰 폭으로 바뀝니다. |
-| 필요 | `09-impeccable-critique.png` | /impeccable critique를 실행한 뒤의 대화창입니다. "잘 된 점" 아래에 P0부터 P3 등급이 붙은 문제 목록이 나오고, 마지막에 어느 부분을 먼저 고칠지 묻는 질문이 보입니다. 이 목록에서 하나만 고르면 됩니다. |
-| 필요 | `09-vercel-deployments-ready.png` | Vercel의 Deployments 목록입니다. 가장 위에 방금 올린 변경으로 만든 새 배포가 있고, 상태가 Ready로 바뀌었으면 배포가 끝난 것입니다. 옆에 Production 표시가 있는지 확인하세요. |
-| 필요 | `11-code-tab-folder.png` | 그림 설명: Code 탭의 시작 화면입니다. 환경은 Local로 두고, Select folder 버튼으로 새로 만든 빈 연습 폴더를 고릅니다. 폴더 이름이 화면에 표시되면 준비가 끝난 것입니다. 입력창 옆에 권한 모드를 고르는 메뉴도 보입니다. |
-| 필요 | `11-dashboard-result.png` | 그림 설명: 가짜 데이터로 만든 대시보드의 완성 모습입니다. 맨 위에 큰 숫자 카드 3개, 가운데에 월별 막대그래프, 맨 아래에 표가 보이면 성공입니다. |
-| 필요 | `11-dry-run-list.png` | 그림 설명: 스크립트를 처음 실행한 화면입니다. "이렇게 바꿀 예정입니다"라는 목록만 줄줄이 나오고, 폴더의 실제 파일은 그대로입니다. 이 목록을 눈으로 확인한 뒤에만 확인용 옵션을 붙여 다시 실행합니다. |
-| 필요 | `c-copilot-model.png` | 그림 설명: Copilot 오른쪽 위 모델 이름을 누르면 모드(자동, 빠른 응답, 깊이 생각하기)와 Claude, GPT 모델 목록이 열립니다. |
-| 필요 | `c-copilot-download.png` | 그림 설명: Copilot 답변 안에 index.html 파일 링크가 보입니다. 이 링크를 누르면 파일이 내려받아집니다. |
+| 완료 | `06-workflows-agent.png` | 에이전트 목록 맨 위의 Workflows (Frontier)에서 작업합니다. 목록에 없으면 위 확인 방법대로 에이전트 스토어에서 추가합니다. |
+| 완료 | `06-workflows-home.png` | 입력창에 프롬프트를 붙여 넣습니다. 만든 워크플로는 아래 내 워크플로 목록에서 다시 열고, 끄고, 지웁니다. |
+| 완료 | `06-workflow-paste.png` | 보내면 Workflows가 흐름을 만들기 시작합니다. 잠시 기다립니다. |
+| 완료 | `06-workflow-created.png` | 오른쪽 위 저장을 누릅니다. Copilot과 Teams 단계에는 내 이름과 메일 주소가 자동으로 들어갑니다. 그림에서는 그 줄을 가렸습니다. |
+| 완료 | `06-workflow-tested.png` | 테스트가 끝난 화면입니다. 단계마다 성공 표시와 걸린 시간이 붙습니다. 실패한 단계가 있으면 그 단계를 펼쳐 이유를 봅니다. |
+| 완료 | `06-teams-report.png` | 테스트로 받은 보고 카드입니다. 메일 제목, 보낸 사람, 내용은 가렸습니다. 기타 중요 메일이 없는 날이라 그 섹션은 보이지 않습니다. |
+| 완료 | `01-final-site-address.png` | 그림 설명: 완성 예시 중 하나인 태양계 여행의 첫 화면입니다. |
+| 완료 | `02-model-change.png` | 그림 설명: 대화 도중 모델을 바꾸려 할 때 뜨는 확인 창입니다. 바꾸면 세션 전체를 다시 읽어 한도를 더 쓴다고 알려 줍니다. |
+| 완료 | `04-vercel-signup.png` | 그림 설명: vercel.com/signup의 가입 방법 선택 화면입니다. Continue with GitHub를 누릅니다. |
+| 완료 | `08-video-in-site.png` | 그림 설명: 이 교육 사이트 첫 화면도 같은 방식으로 소개 영상을 넣었습니다. 영상이 소리 없이 재생되고, 화면 폭에 맞게 잘리지 않고 들어가 있는지 확인합니다. |
 | 완료 | `c-vercel-drop.png` | 그림 설명: vercel.com/drop 화면입니다. 위쪽 가운데에 "Drop to Deploy", 화면 가운데에 "Drop It. It's Live." 제목과 "Drag and drop a file, a folder, or .zip to deploy." 안내가 보입니다. 이어지는 "Or choose a file or a folder." 안의 파란 file 글자를 누르면 파일을 직접 고를 수 있습니다. |
-| 필요 | `c-vercel-drop-deploy.png` | 그림 설명: 파일을 놓으면 나오는 화면입니다. 팀 선택, 프로젝트 이름 칸, Deploy 버튼 위치를 확인하세요. |
-| 필요 | `c-vercel-drop-done.png` | 그림 설명: 배포가 끝난 화면입니다. vercel.app으로 끝나는 내 주소가 보입니다. |
-| 필요 | `c-vercel-redeploy.png` | 그림 설명: 대시보드의 내 프로젝트 화면에 폴더를 끌어다 놓는 모습입니다. vercel.com/drop이 아니라 이 화면이라는 점이 중요합니다. |
