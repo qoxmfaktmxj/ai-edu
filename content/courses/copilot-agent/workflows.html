@@ -2,7 +2,7 @@
   <header class="chapter-head">
     <span class="chapter-num">06</span>
     <h2>매일 정해진 시간에 Teams로 보고받기</h2>
-    <p class="chapter-lead">매번 부탁하지 않아도 정해진 시각에 메일을 살펴 Teams로 보고하게 만듭니다. Copilot의 Workflows에 공통 프롬프트를 붙여 넣어 평일 아침 중요 메일 보고를 만들고, 저장한 뒤 바로 테스트합니다.</p>
+    <p class="chapter-lead">매번 부탁하지 않아도 평일 아침마다 메일함을 살펴 Teams로 보고하게 만듭니다. Copilot의 Workflows에 공통 프롬프트를 붙여 넣고, 저장한 뒤 바로 테스트합니다.</p>
   </header>
 
   <h3>예약된 프롬프트와 Workflows</h3>
@@ -24,10 +24,16 @@
       <ul>
         <li>Copilot 왼쪽의 에이전트에서 에이전트 스토어를 열고 'Workflows'를 검색합니다. 'Workflows Agent (Frontier)'가 보이면 추가해서 바로 씁니다.</li>
         <li>보이지 않으면 회사 관리자에게 Frontier와 Workflows 에이전트 사용 허용을 요청합니다. 공식 문서에는 지역과 언어별로 차례대로 배포된다고 적혀 있어서, 설정을 켜도 바로 보이지 않을 수 있습니다.</li>
-        <li>공식 문서 기준으로 Workflows와 나누는 대화는 영어만 지원합니다. 아래 프롬프트도 영어로 씁니다.</li>
+        <li>공식 문서 기준으로 Workflows와 나누는 대화는 영어만 지원합니다. 아래 프롬프트도 영어로 씁니다. 결과 카드는 한글로 받습니다.</li>
       </ul>
     </div>
   </div>
+
+  <h3>전체 순서</h3>
+  <p>각자 자기 Copilot에서 아래 순서로 만듭니다. 만든 워크플로는 공유되지 않으므로 공통 프롬프트만 나눠 주면 됩니다.</p>
+  <figure class="diagram" style="margin:22px 0 28px">
+<svg viewBox="0 0 760 300" role="img" aria-labelledby="wf-setup-t" style="width:100%;height:auto;display:block"><title id="wf-setup-t">직원 설정 순서: 1 공통 프롬프트 받기, 2 Teams Copilot 탭에서 Workflows 열기, 3 프롬프트 붙여 넣기, 4 본인 계정 연결, 5 받는 사람에 본인 메일 주소 입력, 6 저장 후 테스트. Flow bot 채팅에 카드가 오면 완료, 오지 않으면 활동 탭에서 실패 단계를 확인하고 고친 뒤 6부터 다시</title><defs><marker id="wf-setup-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--text-3)"/></marker></defs><rect x="8" y="10" width="226" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="121.0" y="44.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">1. 공통 프롬프트 받기</text><rect x="267" y="10" width="226" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="35.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">2. Teams Copilot 탭에서</text><text x="380.0" y="53.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">Workflows (Frontier) 열기</text><rect x="526" y="10" width="226" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="639.0" y="44.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">3. 프롬프트 붙여 넣기</text><path d="M234 39 H263" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><path d="M493 39 H522" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><rect x="526" y="108" width="226" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="639.0" y="133.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">4. Outlook, Teams, Copilot을</text><text x="639.0" y="151.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">본인 계정으로 연결</text><rect x="267" y="108" width="226" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="133.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">5. 받는 사람에</text><text x="380.0" y="151.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">본인 메일 주소 입력</text><rect x="8" y="108" width="226" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="121.0" y="142.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">6. 저장한 뒤 테스트</text><path d="M639.0 68 V104" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><path d="M526 137 H497" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><path d="M267 137 H238" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><path d="M121.0 166 V196" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><polygon points="121.0,198.0 231.0,236 121.0,274.0 11.0,236" style="fill:var(--surface);stroke:var(--selected);stroke-width:1.5"/><text x="121.0" y="232.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">Flow bot 채팅에</text><text x="121.0" y="250.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">카드가 왔나?</text><rect x="287" y="207" width="226" height="58" rx="8" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5"/><text x="400.0" y="232.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">완료</text><text x="400.0" y="250.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">평일 오전 8시에 자동 실행</text><path d="M231.0 236 H283" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><text x="257.0" y="228" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">예</text><rect x="546" y="207" width="206" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="649.0" y="232.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">활동 탭에서 실패 단계 확인</text><text x="649.0" y="250.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">고친 뒤 6부터 다시</text><path d="M121.0 274 V298 H649.0 V269" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-setup-a)"/><text x="155.0" y="292" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">아니오</text></svg>
+  </figure>
 
   <h3>1. Workflows 열기</h3>
   <ol>
@@ -44,89 +50,156 @@
   <p>워크플로 첫 화면이 열립니다. 가운데 입력창에 만들 흐름을 설명하고, 만든 워크플로는 아래 '내 워크플로'에 쌓입니다. 입력창 아래 카드는 Microsoft가 준비한 예시 템플릿입니다.</p>
 
   <figure class="shot" data-shot="06-workflows-home">
-    <img src="/assets/shots/06-workflows-home.png" alt="Workflows (Frontier) 첫 화면. 가운데 입력창, 그 아래 Daily Brief in Teams, Acknowledge and Track, Unread Email Digest 템플릿 카드, 맨 아래 내 워크플로 목록에 평일 오전 중요 메일 보고가 보인다" loading="lazy">
+    <img src="/assets/shots/06-workflows-home.png" alt="Workflows (Frontier) 첫 화면. 가운데 입력창, 그 아래 Daily Brief in Teams, Acknowledge and Track, Unread Email Digest 템플릿 카드, 맨 아래 내 워크플로 목록이 보인다" loading="lazy">
     <figcaption>입력창에 프롬프트를 붙여 넣습니다. 만든 워크플로는 아래 내 워크플로 목록에서 다시 열고, 끄고, 지웁니다.</figcaption>
   </figure>
 
   <h3>2. 공통 프롬프트 붙여 넣기</h3>
-  <p>아래 프롬프트를 입력창에 그대로 붙여 넣고 보냅니다. 평일 오전 8시에 전날 오전 8시 이후 받은 메일(월요일은 금요일 오전 8시 이후)을 살펴, 중요한 메일을 Teams로 보내는 흐름입니다. 받은편지함뿐 아니라 규칙으로 나눠 둔 폴더까지 모두 살피고, 보낸 편지함, 임시 보관함, 지운 편지함, 정크 메일은 뺍니다. 회사 이름이나 업무 용어 없이 누구에게나 통하는 기준으로 썼습니다.</p>
+  <p>아래 프롬프트를 입력창에 그대로 붙여 넣고 보냅니다. 평일 오전 8시에 메일함을 살펴 중요한 메일을 Teams 카드로 보내는 워크플로가 만들어집니다. Copilot이 두 번 일합니다. 첫 번째 단계가 메일을 찾아 분류하고, 두 번째 단계가 다시 검색해 빠진 메일을 채웁니다.</p>
 
-  <p>메일을 고르는 공통 기준은 아래와 같습니다. 빼는 메일은 규칙으로 고정해 날마다 결과가 흔들리지 않게 하고, 남은 메일만 AI가 판단합니다.</p>
+  <figure class="diagram" style="margin:22px 0 28px">
+<svg viewBox="0 0 760 690" role="img" aria-labelledby="wf-run-t" style="width:100%;height:auto;display:block"><title id="wf-run-t">워크플로 동작 순서: 평일 오전 8시에 실행, Copilot ①이 기간을 계산하고 받은편지함과 모든 하위 폴더에서 메일을 찾아 빼는 메일을 제외한 뒤 A, B, C로 분류, Copilot ②가 다시 검색해 빠진 메일을 추가하고 중복을 합침. 중요 메일이 없으면 없다는 카드, 있으면 섹션별 건수와 메일마다 3줄인 카드를 만들어 Teams Flow bot 채팅으로 나에게 보냄</title><defs><marker id="wf-run-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--text-3)"/></marker></defs><rect x="210.0" y="8" width="340" height="46" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="36.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">트리거: 평일 오전 8시 (한국 시간)</text><path d="M380 54 V80" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><rect x="210.0" y="84" width="340" height="60" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="110.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">Copilot ① 중요 메일 검토와 분류</text><text x="380.0" y="128.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">기간 계산, 받은편지함과 모든 하위 폴더 검색</text><path d="M380 144 V138" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><polygon points="380,139.0 500.0,176 380,213.0 260.0,176" style="fill:var(--surface);stroke:var(--selected);stroke-width:1.5"/><text x="380" y="181.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">빼는 메일인가?</text><rect x="30" y="152" width="160" height="48" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="110.0" y="181.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">제외</text><path d="M260 176 H194" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="225" y="168" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">예</text><path d="M380 213 V242" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="410" y="234" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">아니오</text><rect x="210.0" y="246" width="340" height="60" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="272.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">A, B, C로 분류</text><text x="380.0" y="290.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">A 고객사 회신, B 내 조치 필요, C 참고</text><path d="M380 306 V328" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><rect x="210.0" y="332" width="340" height="60" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="358.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">Copilot ② 누락 방지 검증</text><text x="380.0" y="376.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">다시 검색, 빠진 메일 추가, 중복 합치기</text><path d="M380 392 V418" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><polygon points="380,419.0 500.0,456 380,493.0 260.0,456" style="fill:var(--surface);stroke:var(--selected);stroke-width:1.5"/><text x="380" y="461.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">중요 메일이 있나?</text><rect x="20" y="520" width="300" height="60" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="170.0" y="546.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">카드: 새로 온 중요한</text><text x="170.0" y="564.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">메일이 없습니다.</text><rect x="440" y="520" width="300" height="60" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="590.0" y="546.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">카드 만들기</text><text x="590.0" y="564.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">섹션별 건수, 메일마다 3줄</text><path d="M260 456 H170 V516" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="250" y="448" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">없음</text><path d="M500 456 H590 V516" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="510" y="448" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">있음</text><rect x="210.0" y="630" width="340" height="50" rx="8" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5"/><text x="380.0" y="660.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">Teams Flow bot 채팅으로 나에게 보내기</text><path d="M170 580 V605 H370 V626" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><path d="M590 580 V605 H390 V626" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/></svg>
+  </figure>
+
+  <p>메일을 고르는 공통 기준은 아래와 같습니다. 특정 사람 이름이나 메일 주소 없이 누구에게나 통하는 기준으로 썼습니다.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>구분</th><th>기준</th></tr></thead>
     <tbody>
-      <tr><td>Step 1. 빼는 메일</td><td>
+      <tr><td>살피는 기간</td><td>
         <ul>
-          <li>보낸 사람 주소에 no-reply 또는 noreply가 들어간 메일(Teams 알림 메일 포함)</li>
-          <li>뉴스레터, 광고, 마케팅, 교육 홍보</li>
-          <li>제목에 '승인 완료', '결재 완료', '반려'처럼 끝났다는 말이 있는 결재 알림</li>
-          <li>배포 목록이나 20명 이상에게 보낸 공지</li>
+          <li>화요일부터 금요일: 전날 오전 8시부터 실행 시각까지</li>
+          <li>월요일: 직전 금요일 오전 8시부터 실행 시각까지(주말 포함)</li>
+          <li>테스트 실행: 어제 오전 8시부터 지금까지</li>
         </ul>
       </td></tr>
-      <tr><td>Step 2. 꼭 읽어야 할 메일<br>(하나만 맞아도 해당)</td><td>
+      <tr><td>살피는 곳</td><td>받은편지함과 그 아래 모든 하위 폴더. 보낸 편지함, 임시 보관함, 보낼 편지함, 지운 편지함, 정크 메일, RSS 피드, 대화 기록은 뺍니다.</td></tr>
+      <tr><td>빼는 메일</td><td>
         <ul>
-          <li>나를 받는 사람(To)으로 넣고 회신, 결정, 검토, 조치를 요청한 메일</li>
-          <li>마감일이 있는 메일</li>
-          <li>내 메일 주소와 도메인이 다른 곳(회사 밖)에서 온 업무 요청</li>
-          <li>중요도 '높음'으로 표시된 메일</li>
-          <li>내가 보낸 메일에 온 답장 중 질문, 계획 변경, 내 조치가 필요한 메일</li>
+          <li>no-reply, noreply 발신 메일과 Teams 자동 알림</li>
+          <li>마케팅, 광고, 뉴스레터, 교육 홍보</li>
+          <li>시스템이 보내는 상태 메시지</li>
+          <li>이미 승인, 반려, 취소된 결재 알림</li>
         </ul>
       </td></tr>
-      <tr><td>Step 2. 기타 중요 메일</td><td>
+      <tr><td>꼭 넣는 메일</td><td>
         <ul>
-          <li>나에게 직접 요청은 없지만 일정 변경, 이슈 공유, 조직이나 인사 변경을 알리는 메일</li>
-          <li>그 밖에 나를 받는 사람(To)으로 넣은 메일. 참조(CC)로만 받은 메일은 해당하지 않습니다.</li>
-          <li>둘 중 어느 쪽인지 애매하면 기타 중요 메일로 보냅니다.</li>
+          <li>사내 IT, 인프라, 운영, 개발, 인사, 지원 조직의 질문, 확인 요청, 원인 문의, 조사, 조치 요청</li>
+          <li>서비스 장애, 외부 공격, 보안, 배포 오류, 복구, 장애 보고, 서비스 영향과 정상화 관련 메일</li>
+          <li>'회신 부탁드립니다', '검토 후 의견 부탁드립니다', '금일 중 회신 요청', 'Please reply'처럼 직접 회신을 요청한 메일. 이런 메일은 C로 분류하지 않습니다.</li>
         </ul>
       </td></tr>
-      <tr><td>Step 3. 카드</td><td>결과를 한글 카드로 만들어 나와의 Teams 채팅에 보냅니다. 꼭 읽어야 할 메일의 제목은 빨간 굵은 글씨로 쓰고, 메일이 없는 섹션은 숨깁니다.</td></tr>
+      <tr><td>분류</td><td>
+        <ul>
+          <li>A: 회신이 필요한 고객사 메일</li>
+          <li>B: 내가 작업, 확인, 검토, 조치를 해야 하는 메일</li>
+          <li>C: 업무에 참고할 중요한 소식</li>
+          <li>애매하면 빼지 않고 넣습니다.</li>
+        </ul>
+      </td></tr>
+      <tr><td>누락 방지 검증</td><td>두 번째 Copilot 단계가 같은 기간을 다시 검색해, 사내 발신이라서, 받는 사람이 많아서 빠진 메일이 없는지 확인하고 추가합니다. 중복은 하나로 합칩니다.</td></tr>
+      <tr><td>카드</td><td>섹션별 건수를 붙이고(A '고객사 회신 필요', B '꼭 읽어야 할 메일', C '기타 중요 메일'), 메일마다 3줄로 짧게 씁니다. 메일이 많으면 메일을 빼지 않고 요약을 줄입니다. 메일이 없는 섹션은 숨깁니다.</td></tr>
     </tbody>
   </table></div>
 
-  <figure class="prompt" data-title="공통 프롬프트: 오전 8시 중요 메일 보고">
+  <figure class="prompt" data-title="공통 프롬프트: 평일 오전 8시 중요 메일 보고">
     <figcaption><i class="ph ph-chat-circle-text"></i>Workflows 입력창에 붙여 넣으세요</figcaption>
-    <pre>Every weekday (Monday to Friday) at 8:00 AM Korea Standard Time (UTC+09:00), search emails I received in all folders of my Outlook mailbox, including the Inbox and every subfolder or custom folder that my rules move emails into. Do not search Sent Items, Drafts, Outbox, Deleted Items, or Junk Email.
+    <pre>Create a workflow named "평일 오전 8시 중요 메일 보고".
 
-Time range:
-- Tuesday to Friday: emails received since 8:00 AM KST on the previous day.
-- Monday: emails received since 8:00 AM KST on the previous Friday, including the weekend.
+[Trigger]
+Run every weekday (Monday to Friday) at 08:00 AM, timezone Asia/Seoul.
 
-Step 1. EXCLUDE these emails (do not show them):
-- Senders containing "no-reply" or "noreply", including Teams notification emails
-- Newsletters, advertisements, marketing, and training promotions
-- Approval notifications whose subject says the approval is completed or rejected (for example "승인 완료", "결재 완료", "반려")
-- Announcements sent to a distribution list or to 20 or more recipients
+[Step 1 - Copilot: 중요 메일 검토 및 분류]
+Search and analyze emails in my Outlook mailbox for the following period:
+- Normal weekday run: Tuesday to Friday, from the previous day 08:00 KST to the current run time. On Monday, from the previous Friday 08:00 KST to the current run time, including the weekend.
+- Test run: from yesterday 08:00 KST to the current run time.
 
-Step 2. Use AI judgment to classify the remaining emails:
-- MUST READ: I am in the To field and the email asks me to reply, decide, review, or take action; OR it has a deadline; OR it is a work request from a sender whose email domain is different from mine; OR it is marked high importance; OR it is a reply to an email I sent and it asks a question, changes a plan, or needs my action.
-- OTHER IMPORTANT: no direct request to me, but it contains a schedule change, an issue update, or an organization or personnel change I should know.
-- OTHER IMPORTANT: any other email where I am in the To field (not only CC).
-- If unsure between the two, choose OTHER IMPORTANT.
+Scope:
+- Search the Inbox and ALL of its subfolders.
+- Exclude Sent Items, Drafts, Outbox, Deleted Items, Junk Email, RSS Feeds, and Conversation History.
 
-Step 3. Post the result as an adaptive card in Teams, as Flow bot in "Chat with Flow bot", sent to my own email address (the signed-in user). Write every label and summary in Korean, using the exact Korean text below:
-1. Title: "오전 중요 메일 보고" followed by today's date.
-2. Section "꼭 읽어야 할 메일": for each email, show the subject in red bold text (TextBlock color "Attention", weight "Bolder"), then the sender, received time, a 1-2 sentence summary, and the required action or deadline.
-3. Section "기타 중요 메일": subject in normal bold, sender, and a short summary.
-4. If a section has no emails, do not show that section.
-5. If there are no important emails at all, show only "새로 온 중요한 메일이 없습니다."
+Exclude:
+- no-reply / noreply senders
+- automatic Teams notifications
+- marketing, advertising, newsletters, and training promotions
+- system-generated status messages
+- approval notifications that are already completed, rejected, or canceled
 
-Language rule (mandatory):
-- All output in the Teams message must be written in Korean only.
-- Keep the original email subject and sender name as they are. Do not translate them.</pre>
+Include:
+- Questions, confirmation requests, cause inquiries, investigations, and action requests from internal IT, infrastructure, operations, development, HR, or support organizations.
+- Emails about service outages, external attacks, security, deployment or release errors, recovery, downtime, incident reports, service impact, or service normalization.
+- Any email with a direct request for a reply, such as '회신 부탁드립니다', '답변 부탁드립니다', '답장 부탁드립니다', '답신 부탁드립니다', '확인 후 회신 바랍니다', '검토 후 의견 부탁드립니다', '금일 중 회신 요청', '회신 요청', '답변 요청', '답장 요청', '답신 요청', 'Reply requested', 'Please respond', 'Please reply'. These must never be classified as C.
+
+Classification (judge based on the signed-in user and the user's team):
+- A: Customer emails that require a reply.
+- B: Emails that require work, confirmation, review, or action from me.
+- C: Important updates for my work reference.
+If uncertain, include the email.
+
+[Step 2 - Copilot: 누락 방지 검증]
+Using the result of Step 1, re-verify the classification to prevent omissions. Re-check the original Outlook search results, subjects, bodies, and conversation context.
+1. Confirm the search period and the Inbox + all subfolders scope match the instructions.
+2. Re-check non-excluded emails for questions, confirmations, reviews, feedback, reply requests, actions, investigations, scheduling, document reviews, customer support, or follow-up requests.
+3. Make sure no email was excluded because the sender is internal, because it came from HR/IT/operations, because it is not in a customer folder, or because there are many recipients.
+4. Separately re-search for incident, security, deployment, service-impact, and cause-confirmation emails, emails where a reply or action is expected from me or my team, and emails with direct reply request expressions.
+5. Add any missed emails while keeping the original subject and sender name. External customer reply requests go to A. Internal IT/HR/operations work questions, cause confirmations, or action requests go to at least B. Direct reply requests go to A or B. Updates with work impact go to C.
+6. Merge duplicates into one, but do not delete emails that were added.
+Do not use any specific person's name or fixed email address as a verification criterion.
+
+[Output format rules - apply to Step 1 and Step 2]
+Keep the output compact for a Teams Adaptive Card, even when many important emails are found.
+For each email, output only:
+- subject: the original subject, unchanged
+- sender: the original sender name, unchanged
+- receivedTime: HH:mm (add MM/DD if it was not received today)
+- company: the company name, if available
+- summary: one line, within 60 Korean characters if possible. Summarize only the core request, issue, or information. Do not repeat the subject. Do not quote the body. No background explanations.
+- status: exactly '회신 필요' or '내용 확인 필요'
+- subjectStyle: 'redBold' for A and B, 'normal' for C
+Do not output classificationReason, requiredAction, dueDate, or requiredActionOrDeadline.
+Never remove an important email to shorten the card. If many emails are found, shorten each summary instead.
+Also output reportDate (MM/DD) and the number of emails in each category.
+If there are no important emails, set noImportantEmails to true and set message to exactly '새로 온 중요한 메일이 없습니다.'
+Write all generated text in Korean.
+
+[Step 3 - Microsoft Teams: Post adaptive card in a chat or channel]
+Use the final result of Step 2 to post an Adaptive Card.
+- Post as: Flow bot
+- Post in: Chat with Flow bot
+- Recipient: my own Microsoft 365 email address. If the Recipient field requires an explicit email address, ask me to enter my own company email address during workflow creation. Do not use a Copilot step to discover or infer my email address. Do not hard-code another user's email address.
+
+Card layout:
+- Title: '오전 중요 메일 보고 (' + reportDate + ')'
+- Sections, with counts, in this order:
+- '🔴 고객사 회신 필요 (n)' for categoryA
+- '🔴 꼭 읽어야 할 메일 (n)' for categoryB
+- '기타 중요 메일 (n)' for categoryC
+- Omit empty sections.
+- Each email takes 3 lines:
+Line 1: subject (red bold for A and B, normal for C)
+Line 2: sender / receivedTime / company
+Line 3: status | summary
+- Use a separator between emails. Keep the card compact.
+- If noImportantEmails is true, show only the message.
+- Do not show classification reasons, required actions, deadlines, body quotes, or detailed explanations.
+- Do not change the original subject or sender name.
+
+All responses and card text must be in Korean.</pre>
   </figure>
 
-  <p>프롬프트는 영어로 쓰지만 결과 카드는 한글로 받습니다. 카드에 들어갈 제목과 섹션 이름은 따옴표 안에 한글로 직접 적어 두었습니다. 따옴표 안을 영어로 적으면 요약만 한글이고 제목과 섹션 이름은 영어로 나옵니다.</p>
+  <h3>3. 연결하고 저장한 뒤 테스트하기</h3>
+  <ol>
+    <li>보내면 Workflows가 흐름을 만들면서 Outlook, Teams, Copilot 연결을 확인합니다. 연결을 묻는 버튼이 나오면 <strong>본인 계정</strong>으로 연결합니다. Copilot 단계에 연결한 계정의 메일함이 검색됩니다.</li>
+    <li>받는 사람(Recipient) 메일 주소를 물으면 <strong>본인 회사 메일 주소</strong>를 입력합니다. 다른 사람 주소를 넣으면 그 사람에게 카드가 갑니다.</li>
+    <li>흐름이 만들어지면 오른쪽에 단계 카드 네 개가 나옵니다. 아래 표대로 확인합니다.</li>
+    <li>오른쪽 위 <strong>저장</strong>을 누릅니다. 위쪽에 'Saving workflow...'가 나오고, 끝나면 단계마다 초록 체크가 붙습니다.</li>
+    <li>저장 옆의 <strong>테스트</strong>를 누릅니다. 오전 8시까지 기다리지 않고 지금 한 번 실행됩니다. 위쪽에 '워크플로를 실행하는 중...'이 나오고 단계마다 '테스트 중'이 차례로 붙습니다. 몇 분 걸립니다.</li>
+    <li>끝나면 Teams 왼쪽의 채팅에서 <strong>워크플로</strong> 채팅을 엽니다. 카드가 와 있으면 성공입니다.</li>
+  </ol>
 
-  <figure class="shot" data-shot="06-workflow-paste">
-    <img src="/assets/shots/06-workflow-paste.png" style="max-width:920px" alt="입력창에 붙여 넣은 공통 프롬프트가 대화 말풍선으로 보이고, 아래에 Workflows (Frontier): 검색하는 중이라고 표시된 화면" loading="lazy">
-    <figcaption>보내면 Workflows가 흐름을 만들기 시작합니다. 잠시 기다립니다.</figcaption>
-  </figure>
-
-  <h3>3. 저장하고 테스트하기</h3>
   <div class="callout tip">
     <i class="ph ph-lightbulb"></i>
-    <strong>Teams 채팅 대상을 확인해 달라는 안내가 나오면</strong>
-    <div><p>붙여 넣고 나면 "Teams의 Flow bot 채팅 대상 리소스를 확인하려면 실제 conversationId가 필요합니다"처럼 Teams로 보낼 곳을 묻는 안내가 거의 항상 나옵니다. 오류가 아니라 받을 곳을 정해 달라는 질문입니다. 같은 채팅에 아래 문장을 그대로 보내면 다음 단계로 넘어갑니다.</p></div>
+    <strong>conversationId를 달라는 안내가 나오면</strong>
+    <div><p>"Teams의 Flow bot 채팅 대상 리소스를 확인하려면 실제 conversationId가 필요합니다"처럼 Teams로 보낼 곳을 묻는 안내가 나올 수 있습니다. 오류가 아니라 받을 곳을 정해 달라는 질문입니다. 같은 채팅에 아래 문장을 그대로 보내면 다음 단계로 넘어갑니다.</p></div>
   </div>
 
   <figure class="prompt" data-title="Teams 대상 질문에 답하기">
@@ -134,76 +207,69 @@ Language rule (mandatory):
     <pre>For the Teams step, post the adaptive card as Flow bot in "Chat with Flow bot", and set the recipient to my own email address (the signed-in user).</pre>
   </figure>
 
-  <ol>
-    <li>흐름이 만들어지면 왼쪽에 '워크플로가 준비되었습니다'라는 안내가, 오른쪽에 단계 카드 세 개가 나옵니다.</li>
-    <li>오른쪽 카드를 위에서부터 읽으며 아래 표대로 확인합니다.</li>
-    <li>오른쪽 위 <strong>저장</strong>을 누릅니다. 저장해야 예약 실행이 켜집니다.</li>
-    <li>저장 옆의 <strong>테스트</strong>를 누릅니다. 오전 8시까지 기다리지 않고 지금 한 번 실행됩니다. 1분 정도 걸립니다.</li>
-    <li>위쪽에 '워크플로가 성공적으로 실행되었습니다'가 나오면 Teams를 엽니다.</li>
-  </ol>
-
   <div class="table-wrap"><table>
     <thead><tr><th>단계 카드</th><th>확인할 것</th></tr></thead>
     <tbody>
-      <tr><td>1. 트리거</td><td>평일(월요일부터 금요일) 오전 8시, 한국 시간으로 되어 있는지</td></tr>
-      <tr><td>2. Copilot</td><td>모든 메일 폴더를 살피는지, 시간 범위(전날 오전 8시부터, 월요일은 금요일 오전 8시부터), 제외 규칙, 분류 기준이 프롬프트대로 옮겨졌는지</td></tr>
-      <tr><td>3. Microsoft Teams</td><td>보내는 쪽이 Flow bot, 보낼 곳이 Chat with Flow bot, 받는 사람이 내 메일 주소인지, 카드 제목과 섹션 이름이 한글인지</td></tr>
+      <tr><td>1. 트리거</td><td>'평일 오전 8시 실행', 반복(Recurrence)</td></tr>
+      <tr><td>2. Copilot ①</td><td>살피는 기간에 '테스트 실행: 어제 08:00부터 지금까지' 문구가 들어 있는지, 받은편지함과 모든 하위 폴더를 살피는지</td></tr>
+      <tr><td>3. Copilot ②</td><td>누락 방지 검증 단계가 따로 있는지</td></tr>
+      <tr><td>4. Microsoft Teams</td><td>Flow bot이 Chat with Flow bot으로 보내는지, 받는 사람이 본인 메일 주소인지</td></tr>
     </tbody>
   </table></div>
 
-  <figure class="shot" data-shot="06-workflow-created">
-    <img src="/assets/shots/06-workflow-created.png" alt="왼쪽에 Workflows의 완료 안내, 오른쪽에 트리거 평일 오전 8시 실행, Copilot, Microsoft Teams 단계 카드와 오른쪽 위 저장 버튼이 보이는 화면. 이름과 메일 주소가 들어간 줄은 가렸다" loading="lazy">
-    <figcaption>오른쪽 위 저장을 누릅니다. Copilot과 Teams 단계에는 내 이름과 메일 주소가 자동으로 들어갑니다. 그림에서는 그 줄을 가렸습니다.</figcaption>
+  <figure class="shot" data-shot="06-workflow-saving">
+    <img src="/assets/shots/06-workflow-saving.png" alt="저장을 누른 뒤 Saving workflow 안내가 나오고, 트리거 평일 오전 8시 실행, Copilot 중요 메일 검토 단계, Copilot 누락 방지 검증 단계에 초록 체크가 붙은 화면" loading="lazy">
+    <figcaption>저장하는 화면입니다. 트리거와 Copilot 두 단계에 체크가 붙습니다. Copilot 단계에는 프롬프트가 한글로 옮겨져 들어갑니다.</figcaption>
   </figure>
 
-  <figure class="shot" data-shot="06-workflow-tested">
-    <img src="/assets/shots/06-workflow-tested.png" alt="워크플로가 성공적으로 실행되었습니다 안내 아래, 트리거와 Copilot 단계에 성공 표시와 1분이 붙고 Copilot 단계 아래에 결과 펼치기가 보이는 화면" loading="lazy">
-    <figcaption>테스트가 끝난 화면입니다. 단계마다 성공 표시와 걸린 시간이 붙습니다. 실패한 단계가 있으면 그 단계를 펼쳐 이유를 봅니다.</figcaption>
+  <figure class="shot" data-shot="06-workflow-running">
+    <img src="/assets/shots/06-workflow-running.png" alt="테스트를 누른 뒤 워크플로를 실행하는 중 안내가 나오고, 트리거에 체크, Copilot 단계에 테스트 중 표시가 붙은 화면" loading="lazy">
+    <figcaption>테스트를 실행하는 중입니다. 단계마다 차례로 '테스트 중'이 붙고, 끝나면 체크로 바뀝니다.</figcaption>
   </figure>
-
-  <p>Teams 왼쪽의 채팅에서 <strong>워크플로</strong> 채팅을 열면 카드가 와 있습니다.</p>
 
   <figure class="shot" data-shot="06-teams-report">
-    <img src="/assets/shots/06-teams-report.png" style="max-width:605px" alt="Teams 채팅에 온 오전 중요 메일 보고 카드. 꼭 읽어야 할 메일 섹션에 빨간 굵은 제목, 보낸 사람, 받은 시각, 요약, 필요한 조치 또는 마감일이 이어진다. 메일 내용은 가렸다" loading="lazy">
-    <figcaption>테스트로 받은 보고 카드입니다. 메일 제목, 보낸 사람, 내용은 가렸습니다. 기타 중요 메일이 없는 날이라 그 섹션은 보이지 않습니다.</figcaption>
+    <img src="/assets/shots/06-teams-report.png" style="max-width:580px" alt="Teams 워크플로 채팅에 온 오전 중요 메일 보고 카드. 고객사 회신 필요 섹션과 기타 중요 메일 섹션에 건수가 붙고, 메일마다 제목, 보낸 사람과 받은 시각과 회사, 상태와 요약 세 줄이 보인다. 메일 내용은 가렸다" loading="lazy">
+    <figcaption>테스트로 받은 카드입니다. 섹션마다 건수가 붙고 메일마다 3줄로 나옵니다. 메일 제목, 보낸 사람, 요약은 가렸습니다.</figcaption>
   </figure>
 
-  <p>마지막으로 Copilot 화면 왼쪽의 에이전트에서 Workflows (Frontier)로 다시 들어갑니다. 첫 화면 아래 '내 워크플로'에 방금 만든 워크플로 이름이 보이면 저장까지 끝난 것입니다. 실제로 매일 실행되는지는 4의 다음 날 확인으로 봅니다.</p>
+  <p>마지막으로 Copilot 화면 왼쪽의 에이전트에서 Workflows (Frontier)로 다시 들어갑니다. 첫 화면 아래 '내 워크플로'에 방금 만든 워크플로 이름이 보이면 저장까지 끝난 것입니다.</p>
 
   <figure class="shot" data-shot="06-workflows-saved">
     <img src="/assets/shots/06-workflows-saved.png" style="max-width:960px" alt="Workflows (Frontier) 첫 화면 아래 내 워크플로 목록에 평일 오전 중요 메일 보고가 있고, 마지막으로 수정한 날짜와 만든 시각, 오른쪽에 메뉴 버튼이 보인다" loading="lazy">
     <figcaption>내 워크플로 목록에 보이면 완료입니다. 이름을 누르면 다시 열리고, 오른쪽 메뉴에서 끄거나 지웁니다.</figcaption>
   </figure>
 
-  <h3>4. 테스트 결과 확인하기</h3>
-  <p>카드가 왔다고 끝이 아닙니다. 아래 순서대로 확인하고, 맞지 않는 곳은 5의 방법으로 고칩니다.</p>
+  <h3>4. 적용 체크포인트</h3>
+  <p>만든 뒤 아래 항목을 하나씩 확인합니다.</p>
   <div class="table-wrap"><table>
-    <thead><tr><th>확인할 것</th><th>보는 곳</th><th>이러면 통과</th></tr></thead>
+    <thead><tr><th>확인할 것</th><th>이러면 통과</th></tr></thead>
     <tbody>
-      <tr><td>1. 카드가 왔는지</td><td>Teams의 워크플로 채팅</td><td>테스트를 누르고 몇 분 안에 '오전 중요 메일 보고' 카드가 옵니다.</td></tr>
-      <tr><td>2. 모양</td><td>카드</td><td>꼭 읽어야 할 메일의 제목이 빨간 굵은 글씨이고, 메일이 없는 섹션은 보이지 않습니다.</td></tr>
-      <tr><td>3. 언어</td><td>카드</td><td>제목, 섹션 이름, 요약, 할 일이 모두 한글입니다. 메일 제목과 보낸 사람은 원래 글자 그대로입니다.</td></tr>
-      <tr><td>4. 여러 폴더를 보는지</td><td>카드</td><td>받은편지함이 아닌 폴더(규칙으로 옮겨지는 폴더)의 메일도 나옵니다. 잘 모르겠으면 5의 방법으로 '보낸 사람 뒤에 폴더 이름도 보여 줘'를 부탁해 다시 만들고 테스트합니다. 확인한 뒤에는 원래 프롬프트로 돌아갑니다.</td></tr>
-      <tr><td>5. 빠진 메일</td><td>Outlook 메일함</td><td>어제 오전 8시부터 지금까지 온 메일을 폴더별로 훑어봅니다. 답장이 필요하거나 기한이 있는 메일이 카드에 들어 있으면 됩니다.</td></tr>
-      <tr><td>6. 실패한 단계</td><td>워크플로 화면 위쪽 활동 탭</td><td>트리거와 각 단계가 모두 성공입니다. 실패가 있으면 그 실행을 눌러 어느 단계에서 왜 멈췄는지 봅니다.</td></tr>
+      <tr><td>단계 구성</td><td>트리거, Copilot ①, Copilot ②, Teams 순서의 4단계입니다.</td></tr>
+      <tr><td>메일 주소 확인 단계</td><td>내 메일 주소를 알아내는 Copilot 단계가 따로 없습니다.</td></tr>
+      <tr><td>Teams 받는 사람</td><td>본인 메일 주소가 들어 있습니다.</td></tr>
+      <tr><td>Copilot 연결 계정</td><td>본인 계정입니다. 이 계정의 메일함을 검색합니다.</td></tr>
+      <tr><td>테스트 결과</td><td>Teams의 워크플로(Flow bot) 채팅에 카드가 1장 옵니다.</td></tr>
+      <tr><td>카드 모양</td><td>섹션마다 건수가 보이고, 메일마다 3줄이며, 고객사 회신과 꼭 읽어야 할 메일의 제목은 빨간 굵은 글씨입니다.</td></tr>
+      <tr><td>빠진 메일</td><td>Outlook에서 어제 오전 8시 이후 메일을 폴더별로 훑어보고, 답장이나 조치가 필요한 메일이 카드에 들어 있는지 봅니다.</td></tr>
     </tbody>
   </table></div>
 
-  <p>테스트는 누른 시각을 기준으로 범위를 잡습니다. 그래서 범위가 맞는지는 다음 날 확인합니다.</p>
+  <p>테스트는 '어제 오전 8시부터 지금까지'를 살핍니다. 실제 예약 실행의 범위가 맞는지는 다음 날 확인합니다.</p>
   <ol>
     <li>다음 평일 오전 8시가 지나면 Teams의 워크플로 채팅에 카드가 왔는지 봅니다.</li>
     <li>워크플로 화면의 활동 탭에서 그날 실행이 오전 8시 무렵 성공으로 남아 있는지 봅니다. 시각이 9시간 어긋나 있으면 한국 시간이 아니라 세계 표준시로 잡힌 것입니다. 이때는 새로 만듭니다.</li>
-    <li>카드의 가장 이른 받은 시각이 전날 오전 8시 이후인지 봅니다. 월요일 카드에는 금요일 오전 8시 이후 메일과 주말 메일이 함께 나옵니다.</li>
+    <li>실패한 단계가 있으면 활동 탭에서 그 실행을 눌러 어느 단계에서 왜 멈췄는지 봅니다.</li>
   </ol>
 
   <h3>5. 만든 뒤 고치는 곳</h3>
-  <p>공통 프롬프트로 만든 뒤 내 업무에 맞게 고칩니다. 프롬프트의 각 부분은 워크플로 화면의 단계 카드로 들어가 있습니다.</p>
+  <p>공통 프롬프트의 각 부분은 워크플로 화면의 단계 카드로 들어가 있습니다.</p>
   <div class="table-wrap"><table>
-    <thead><tr><th>프롬프트 부분</th><th>워크플로 화면 카드</th><th>여기서 바꾸는 것</th></tr></thead>
+    <thead><tr><th>프롬프트 부분</th><th>워크플로 화면 카드</th><th>여기서 바뀌는 것</th></tr></thead>
     <tbody>
-      <tr><td>첫 줄(실행 요일과 시각)</td><td>1. 트리거</td><td>실행 시각</td></tr>
-      <tr><td>첫 줄의 검색 범위, Time range, Step 1, Step 2</td><td>2. Copilot</td><td>살필 폴더와 기간, 뺄 메일, 중요 기준</td></tr>
-      <tr><td>Step 3, Language rule</td><td>3. Microsoft Teams</td><td>카드 제목, 섹션, 표시 방식</td></tr>
+      <tr><td>[Trigger]</td><td>1. 트리거</td><td>실행 요일과 시각</td></tr>
+      <tr><td>[Step 1]</td><td>2. Copilot ①</td><td>살피는 기간과 폴더, 빼는 메일, 꼭 넣는 메일, A, B, C 기준</td></tr>
+      <tr><td>[Step 2]</td><td>3. Copilot ②</td><td>누락 방지 검증</td></tr>
+      <tr><td>[Output format rules], [Step 3]</td><td>4. Microsoft Teams</td><td>받는 사람, 카드 제목, 섹션, 메일마다 보여 줄 내용</td></tr>
     </tbody>
   </table></div>
 
@@ -211,7 +277,7 @@ Language rule (mandatory):
   <ol>
     <li>Teams의 Copilot 탭에서 새 채팅을 엽니다. Workflows가 아니라 일반 Copilot 채팅입니다.</li>
     <li>아래 요청의 [바꾸고 싶은 점]을 채우고, 맨 아래에 지금 쓰는 프롬프트를 붙여 보냅니다.</li>
-    <li>받은 전체 프롬프트를 Workflows 첫 화면 입력창에 붙여 넣어 새로 만듭니다. 대상 질문이 나오면 3의 문장을 보냅니다.</li>
+    <li>받은 전체 프롬프트를 Workflows 첫 화면 입력창에 붙여 넣어 새로 만듭니다.</li>
     <li>내 워크플로 목록에서 예전 워크플로의 메뉴를 열어 끄거나 지웁니다. 두 개를 모두 켜 두면 보고가 두 번 옵니다.</li>
     <li>새 워크플로를 저장하고 테스트로 확인합니다.</li>
   </ol>
@@ -220,11 +286,11 @@ Language rule (mandatory):
     <figcaption><i class="ph ph-chat-circle-text"></i>일반 Copilot 새 채팅에 보내세요</figcaption>
     <pre>아래는 Copilot Workflows에 넣는 중요 메일 보고 프롬프트입니다. [바꾸고 싶은 점]을 반영해 전체 프롬프트를 다시 써 주세요.
 
-- 프롬프트는 영어로 씁니다. 따옴표 안의 한글 문구(카드 제목, 섹션 이름, 메일이 없을 때 문구)는 그대로 둡니다.
+- 프롬프트는 영어로 씁니다. 따옴표 안의 한글 문구(워크플로 이름, 카드 제목, 섹션 이름, 메일이 없을 때 문구)는 그대로 둡니다.
 - 바꾸라고 한 곳 외에는 고치지 않습니다.
 - 무엇을 바꿨는지 한국어로 짧게 알려 주고, 전체 프롬프트는 코드 블록 하나로 줍니다.
 
-바꾸고 싶은 점: [예: 협력사 담당자 메일은 꼭 읽어야 할 메일로 보기, 매주 오는 주간 리포트 메일은 빼기]
+바꾸고 싶은 점: [예: 협력사 담당자 메일은 B로 보기, 매주 오는 주간 리포트 메일은 빼기]
 
 지금 프롬프트:
 [지금 쓰는 프롬프트 전체를 붙여 넣기]</pre>
@@ -232,21 +298,20 @@ Language rule (mandatory):
 
   <p>[바꾸고 싶은 점]에는 이런 내용을 우리말로 적으면 됩니다.</p>
   <ul>
-    <li>살필 폴더: 규칙으로 옮기는 '[폴더 이름]' 폴더도 꼭 살펴 줘</li>
-    <li>꼭 챙길 사람: [이름 또는 메일 주소]가 보낸 메일은 꼭 읽어야 할 메일로 봐 줘</li>
+    <li>살필 폴더: 받은편지함 밖에 따로 만든 '[폴더 이름]' 폴더도 살펴 줘</li>
+    <li>꼭 챙길 사람: [이름 또는 메일 주소]가 보낸 메일은 B로 봐 줘</li>
     <li>뺄 메일: 제목에 '[들어가는 말]'이 있는 메일은 빼 줘</li>
-    <li>양 줄이기: 요청 없이 나를 받는 사람으로 넣은 메일은 보고하지 마</li>
-    <li>사내 범위: [계열사 도메인]에서 온 메일은 회사 안으로 봐 줘</li>
+    <li>분류 바꾸기: [이런 메일]은 C가 아니라 B로 봐 줘</li>
     <li>실행 시각: 매일 오전 [시각]에 보내 줘</li>
-    <li>표시 방식: 빨간색이 안 보이니 꼭 읽어야 할 메일 제목 앞에 [중요]를 붙여 줘</li>
+    <li>카드 모양: 요약을 [몇 자] 이내로 줄여 줘</li>
   </ul>
 
   <h3>알아둘 점</h3>
   <ul>
     <li>만든 워크플로는 다른 사람에게 공유되지 않습니다. 동료에게는 공통 프롬프트를 건네고, 각자 자기 Workflows에서 만들게 합니다. 메일과 Teams는 각자의 계정으로 연결되므로 결과도 본인에게만 갑니다.</li>
     <li>토요일과 일요일에는 실행되지 않습니다. 주말에 온 메일은 월요일 보고에 금요일 오전 8시 이후 메일과 함께 나옵니다.</li>
-    <li>반복 일정은 한국 공휴일을 따로 알지 못해서, 평일 공휴일에도 실행되고 보고가 옵니다. 매번 전날 오전 8시부터 살피므로 메일이 빠지지는 않습니다. 공휴일에 보고를 받지 않으려고 워크플로를 꺼 두면, 다음 날 보고에서 공휴일 전날 메일이 빠지니 다시 켜는 날 범위를 확인합니다.</li>
-    <li>무엇이 중요한 메일인지는 AI가 고릅니다. Copilot 검색은 메일을 빠짐없이 나열하는 방식이 아니라 관련 있는 메일을 찾아오는 방식이어서, 메일이 아주 많은 날에는 일부를 놓칠 수 있습니다. 보고는 놓친 메일이 없는지 돌아보는 용도이고, 메일함 확인을 대신하지 않습니다.</li>
+    <li>반복 일정은 한국 공휴일을 따로 알지 못해서, 평일 공휴일에도 실행되고 보고가 옵니다. 매번 전날 오전 8시부터 살피므로 메일이 빠지지는 않습니다.</li>
+    <li>무엇이 중요한 메일인지는 AI가 고릅니다. 두 번 검토해도 메일이 아주 많은 날에는 일부를 놓칠 수 있습니다. 보고는 놓친 메일이 없는지 돌아보는 용도이고, 메일함 확인을 대신하지 않습니다.</li>
     <li>보고 카드와 단계 카드에는 실제 메일 내용, 내 이름과 메일 주소가 들어갑니다. 화면을 캡처해 공유할 때는 1장의 보안 수칙대로 가립니다.</li>
   </ul>
 
