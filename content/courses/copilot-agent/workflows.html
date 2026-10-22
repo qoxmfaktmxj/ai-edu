@@ -55,24 +55,36 @@
   </figure>
 
   <h3>2. 공통 프롬프트 붙여 넣기</h3>
-  <p>아래 프롬프트를 입력창에 그대로 붙여 넣고 보냅니다. 평일 오전 8시에 메일함을 살펴 중요한 메일을 Teams 카드로 보내는 워크플로가 만들어집니다. 단계는 트리거, Copilot, Teams 세 개뿐입니다. Copilot 한 단계가 메일 검색, 제거, 분류에 카드에 들어갈 글(제목, 부제, A와 B 글, C 글)까지 모두 만듭니다.</p>
+  <p>아래 프롬프트를 입력창에 그대로 붙여 넣고 보냅니다. 평일 오전 8시에 한 번 실행되어, 전날 아침부터 지금까지 받은 메일을 2시간 단위 시간대로 나눠 요약하고 Teams 카드 한 장으로 보냅니다. 단계는 트리거 하나, Copilot 일곱 개(시간대마다 하나), Teams 하나로 모두 아홉 개입니다.</p>
+
+  <div class="callout tip">
+    <i class="ph ph-lightbulb"></i>
+    <strong>왜 시간대로 나눴나요</strong>
+    <div>
+      <p>Workflows는 Copilot 단계의 결과를 Teams 단계로 넘길 때 글이 길면 뒤를 자릅니다(실행 기록에 &lt;truncated&gt;가 보임). 정확한 한도는 공개되지 않았고, 시험해 보니 한 번에 1,000자 안팎이었습니다. 그래서 Copilot 단계 하나로 하루치를 요약하면 메일이 많은 사람은 몇 통만 보이고 나머지가 잘렸습니다.</p>
+      <p>Teams 카드 자체는 훨씬 길게 담을 수 있습니다(카드 전체 28KB 이하, 한글로 수천 자). 그래서 받은 시각으로 하루를 일곱 구간으로 나누고, 구간마다 Copilot 단계가 따로 1,000자 이내로 요약하게 했습니다. 구간당 메일이 적어서 거의 다 들어가고, 일곱 개를 모으면 카드 한 장에 하루치가 담깁니다.</p>
+      <p>구간은 메일을 찾는 범위일 뿐이고, 워크플로는 오전 8시에 한 번만 실행됩니다. 자정 구간이 있다고 밤에 알림이 오지 않습니다.</p>
+    </div>
+  </div>
 
   <figure class="diagram" style="margin:22px 0 28px">
-<svg viewBox="0 0 760 830" role="img" aria-labelledby="wf-run-t" style="width:100%;height:auto;display:block"><title id="wf-run-t">워크플로 동작 순서: 평일 오전 8시에 실행. Copilot 한 단계가 기간 안에 받은 메일을 폴더 상관없이 찾고, 홍보와 모집 메일을 먼저 빼고, 보호 기준에 해당하면 A 고객사 회신 필요나 B 꼭 읽어야 할 메일로 남기고, 제거 기준에 명확히 해당하면 빼고, 애매하면 C 기타 중요 메일로 남김. 중요 메일이 없으면 없다는 카드, 있으면 출력이 1,000자를 넘지 않게 단계적으로 줄여(C부터 제목만, 건수만, 그다음 A와 B를 한 줄로, 그래도 넘치면 외 N건) Teams Flow bot 채팅으로 나에게 보냄. 잘려도 카드를 보내고 안내 문구를 붙임</title><defs><marker id="wf-run-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--text-3)"/></marker></defs><rect x="220" y="8" width="360" height="56" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="400.0" y="32.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">① 트리거: 평일 오전 8시 (한국 시간)</text><text x="400.0" y="50.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">테스트는 어제 오전 8시부터 지금까지</text><path d="M400 64 V112" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><rect x="4" y="84" width="752" height="472" rx="12" style="fill:none;stroke:var(--selected);stroke-width:1.5;stroke-dasharray:6 5"/><text x="18" y="104" style="fill:var(--selected);font-size:14px;font-weight:700;font-family:inherit">② Copilot 한 단계에서 검색, 제거, 분류, 카드 글 만들기</text><rect x="220" y="116" width="360" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="400.0" y="138.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">기간 안에 받은 메일 검색</text><text x="400.0" y="156.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">폴더 상관없이, 폴더 구조는 확인하지 않음</text><path d="M400 168 V184" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><polygon points="400,188.0 540.0,220 400,252.0 260.0,220" style="fill:var(--surface);stroke:var(--selected);stroke-width:1.5"/><text x="400" y="225" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">0. 홍보, 모집 메일인가?</text><rect x="14" y="196" width="186" height="48" rx="8" style="fill:var(--surface);stroke:var(--line);stroke-width:1.5"/><text x="107.0" y="225.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">제외 (건수만 셈)</text><path d="M260 220 H204" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="230" y="212" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">예</text><path d="M400 252 V280" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="426" y="274" text-anchor="start" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">아니오</text><polygon points="400,284.0 540.0,316 400,348.0 260.0,316" style="fill:var(--surface);stroke:var(--selected);stroke-width:1.5"/><text x="400" y="321" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">1. 보호 기준에 해당?</text><rect x="14" y="280" width="186" height="72" rx="8" style="fill:var(--danger-soft);stroke:var(--danger);stroke-width:1.5"/><text x="107.0" y="303.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">A 고객사 회신 필요</text><text x="107.0" y="321.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">B 꼭 읽어야 할 메일</text><text x="107.0" y="339.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">절대 빼지 않음</text><path d="M260 316 H204" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="230" y="308" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">예</text><path d="M400 348 V376" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="426" y="370" text-anchor="start" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">아니오</text><polygon points="400,380.0 540.0,412 400,444.0 260.0,412" style="fill:var(--surface);stroke:var(--selected);stroke-width:1.5"/><text x="400" y="417" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">2. 제거 기준에 명확히 해당?</text><rect x="88" y="388" width="120" height="48" rx="8" style="fill:var(--surface);stroke:var(--line);stroke-width:1.5"/><text x="148.0" y="417.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">제외 (건수만 셈)</text><path d="M260 412 H212" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="234" y="404" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">예</text><rect x="586" y="384" width="162" height="56" rx="8" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5"/><text x="667.0" y="408.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">C 기타 중요 메일</text><text x="667.0" y="426.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">애매하면 여기로</text><path d="M540 412 H582" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="563" y="404" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">아니오</text><rect x="250" y="486" width="300" height="44" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="400.0" y="513.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">중요 건수 = A + B + C</text><path d="M50 352 V508 H246" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><path d="M667 440 V508 H554" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><path d="M400 530 V570" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><polygon points="400,574.0 530.0,604 400,634.0 270.0,604" style="fill:var(--surface);stroke:var(--selected);stroke-width:1.5"/><text x="400" y="609" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit">중요 메일이 있나?</text><rect x="14" y="652" width="186" height="70" rx="8" style="fill:var(--surface);stroke:var(--line);stroke-width:1.5"/><text x="107.0" y="674.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">0건</text><text x="107.0" y="692.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">새로 온 중요한 메일이</text><text x="107.0" y="710.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">없습니다.</text><path d="M270 604 H107 V648" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><text x="200" y="596" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">없음</text><path d="M400 634 V642" style="stroke:var(--text-3);stroke-width:1.5;fill:none"/><text x="412" y="648" text-anchor="start" style="fill:var(--text-2);font-size:12.5px;font-weight:700;font-family:inherit">있음 (출력 1,000자에 맞춰 줄이기)</text><path d="M305 656 H665" style="stroke:var(--text-3);stroke-width:1.5;fill:none"/><path d="M400 642 V656" style="stroke:var(--text-3);stroke-width:1.5;fill:none"/><rect x="220" y="664" width="170" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="305.0" y="689.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">1단계: 모두 2줄</text><text x="305.0" y="707.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">A, B, C 메일마다 2줄</text><rect x="400" y="664" width="170" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="485.0" y="689.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">2~3단계: C 줄이기</text><text x="485.0" y="707.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">C는 제목만, 넘치면 건수만</text><rect x="580" y="664" width="170" height="58" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="665.0" y="689.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">4~5단계: A, B 한 줄</text><text x="665.0" y="707.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">넘치면 '외 N건'</text><path d="M305 656 V660" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><path d="M485 656 V660" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><path d="M665 656 V660" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><path d="M107 722 V748 H665 V722" style="stroke:var(--text-3);stroke-width:1.5;fill:none"/><path d="M305 722 V748" style="stroke:var(--text-3);stroke-width:1.5;fill:none"/><path d="M485 722 V748" style="stroke:var(--text-3);stroke-width:1.5;fill:none"/><path d="M400 748 V766" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><rect x="200" y="770" width="400" height="52" rx="8" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5"/><text x="400.0" y="792.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">③ Teams Flow bot 채팅으로 나에게 보내기</text><text x="400.0" y="810.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">잘려도 게시하고, 잘리면 안내 문구 추가</text></svg>
+<svg viewBox="0 0 760 430" role="img" aria-labelledby="wf-run-t" style="width:100%;height:auto;display:block"><title id="wf-run-t">워크플로 동작 순서: 평일 오전 8시에 한 번 실행. Copilot 7단계가 전날 08시부터 2시간 단위 구간 1~5, 전날 18시부터 자정까지 구간 6, 자정부터 실행 시각까지 구간 7의 메일을 각각 따로 찾아 홍보 제외, 보호, 제거, A B C 분류를 한 뒤 1,000자 이내로 정리함. 길면 C부터 줄이고 그래도 넘치면 그 구간만 직접 확인 안내를 넣음. Teams 단계가 최신 구간부터 7칸을 담은 카드 한 장을 보냄</title><defs><marker id="wf-run-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--text-3)"/></marker></defs><rect x="200" y="8" width="360" height="56" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="32.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">① 트리거: 평일 오전 8시에 한 번</text><text x="380.0" y="50.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">구간은 검색 범위일 뿐, 실행은 한 번</text><path d="M380 64 V86" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><rect x="4" y="90" width="752" height="250" rx="12" style="fill:none;stroke:var(--selected);stroke-width:1.5;stroke-dasharray:6 5"/><text x="18" y="112" style="fill:var(--selected);font-size:14px;font-weight:700;font-family:inherit">② Copilot 7단계: 받은 시각대로 나눠 따로 요약</text><rect x="24.0" y="128" width="172" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="110.0" y="150.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">구간 1</text><text x="110.0" y="168.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">전날 08:00~10:00</text><rect x="204.0" y="128" width="172" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="290.0" y="150.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">구간 2</text><text x="290.0" y="168.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">전날 10:00~12:00</text><rect x="384.0" y="128" width="172" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="470.0" y="150.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">구간 3</text><text x="470.0" y="168.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">전날 12:00~14:00</text><rect x="564.0" y="128" width="172" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="650.0" y="150.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">구간 4</text><text x="650.0" y="168.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">전날 14:00~16:00</text><rect x="114.0" y="190" width="172" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="200.0" y="212.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">구간 5</text><text x="200.0" y="230.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">전날 16:00~18:00</text><rect x="294.0" y="190" width="172" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="380.0" y="212.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">구간 6</text><text x="380.0" y="230.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">전날 18:00~24:00</text><rect x="474.0" y="190" width="172" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--selected-line);stroke-width:1.5"/><text x="560.0" y="212.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">구간 7</text><text x="560.0" y="230.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">00:00~실행 시각</text><text x="380" y="270" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">단계마다 홍보 제외, 보호 기준, 제거 기준, A/B/C 분류 후 1,000자 이내로 정리</text><text x="380" y="292" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">길면 C부터 줄이고, 그래도 넘치면 그 구간만 '직접 확인' 안내</text><text x="380" y="314" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">월요일은 구간 7에 토요일부터 월요일 아침까지 들어감</text><path d="M380 340 V362" style="stroke:var(--text-3);stroke-width:1.5;fill:none" marker-end="url(#wf-run-a)"/><rect x="170" y="366" width="420" height="56" rx="8" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5"/><text x="380.0" y="390.0" text-anchor="middle" style="fill:var(--text);font-size:14px;font-family:inherit;font-weight:700">③ Teams 카드 1장 (Flow bot 채팅)</text><text x="380.0" y="408.0" text-anchor="middle" style="fill:var(--text-2);font-size:12.5px;font-family:inherit">제목 아래 최신 구간부터 7칸: 구간 7, 6, 5 ... 1</text></svg>
   </figure>
 
-  <p>메일을 고르는 공통 기준은 아래와 같습니다. 특정 사람 이름이나 메일 주소 없이 누구에게나 통하는 기준으로 썼고, 위에서부터 순서대로 적용합니다.</p>
+  <p>메일을 고르는 공통 기준은 아래와 같습니다. 일곱 개 Copilot 단계가 같은 기준을 쓰고, 맡은 시간대만 다릅니다. 특정 사람 이름이나 메일 주소 없이 누구에게나 통하는 기준으로 썼습니다.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>구분</th><th>기준</th></tr></thead>
     <tbody>
-      <tr><td>살피는 기간</td><td>
+      <tr><td>시간대 구간</td><td>
         <ul>
-          <li>화요일부터 금요일: 전날 오전 8시부터 실행 시각까지</li>
-          <li>월요일: 직전 금요일 오전 8시부터 실행 시각까지(주말 포함)</li>
-          <li>테스트 실행: 어제 오전 8시부터 지금까지</li>
+          <li>'전 영업일'은 화요일부터 금요일에는 어제, 월요일에는 직전 금요일입니다.</li>
+          <li>구간 1~5: 전 영업일 08:00~10:00, 10:00~12:00, 12:00~14:00, 14:00~16:00, 16:00~18:00</li>
+          <li>구간 6: 전 영업일 18:00부터 다음 날 00:00까지</li>
+          <li>구간 7: 그다음 날 00:00부터 실행 시각까지. 월요일에는 토요일 00:00부터 월요일 실행 시각까지라 주말이 모두 들어갑니다.</li>
+          <li>테스트 실행은 어제를 전 영업일로 봅니다. 아직 시작하지 않은 구간은 메일이 없습니다.</li>
         </ul>
       </td></tr>
-      <tr><td>살피는 곳</td><td>폴더와 상관없이 받은 메일을 모두 살핍니다. 보낸 메일, 임시 보관 메일, 지운 메일, 정크 메일은 뺍니다. 폴더 이름은 사람마다 달라서 폴더 구조는 확인하지 않고, 폴더 때문에 실패하지 않게 했습니다.</td></tr>
+      <tr><td>살피는 곳</td><td>폴더와 상관없이 받은 메일을 모두 살핍니다. 보낸 메일, 임시 보관 메일, 지운 메일, 정크 메일, 그리고 이 보고 자체(Flow bot, Workflows가 보낸 메일)는 뺍니다. 폴더 구조는 확인하지 않아서 폴더 때문에 실패하지 않습니다.</td></tr>
       <tr><td>0. 홍보 메일 먼저 빼기</td><td>교육, 세미나, 행사, 상품 홍보나 신청, 접수, 수강, 입금, 선착순, 할인을 권하는 메일은 사람이 보냈더라도 뺍니다. '마감', '서둘러' 같은 말이 있어도 중요 메일이 되지 않습니다. 단, 나나 우리 팀이 참여한 업무 대화 안의 답장은 남깁니다.</td></tr>
       <tr><td>1. 보호 기준(절대 안 뺌)</td><td>
         <ul>
@@ -94,7 +106,7 @@
         </ul>
       </td></tr>
       <tr><td>3. 애매하면 C로 남기기</td><td>전사나 부서 공지, 질문 없는 사내 자료 공유, 요청 없이 참조로만 받은 업무 메일, 중요도를 판단하기 어려운 메일</td></tr>
-      <tr><td>같은 대화</td><td>같은 대화의 메일이 여러 통이면 가장 최근 메일 하나만 보여 주고, 대화 전체에서 가장 중요한 요청을 기준으로 분류합니다.</td></tr>
+      <tr><td>같은 대화</td><td>한 구간에 같은 대화의 메일이 여러 통이면 가장 최근 메일 하나만 보여 주고, 대화 전체에서 가장 중요한 요청을 기준으로 분류합니다. 더 늦은 구간에 같은 대화의 새 메일이 있으면 앞 구간에서는 빼고 늦은 구간에서 보여 줍니다.</td></tr>
       <tr><td>분류</td><td>
         <ul>
           <li>A 고객사 회신 필요: 회신이나 결과물이 필요한 고객사 메일(간접 질문, 참조로 받은 경우 포함)</li>
@@ -106,7 +118,7 @@
     </tbody>
   </table></div>
 
-  <p>카드에 들어갈 글은 Copilot 단계가 미리 만들고, 전체 길이가 1,000자를 넘지 않게 줄입니다. 메일마다 2줄로 쓰고, 길면 아래 순서대로 C부터 줄입니다. A와 B는 끝까지 남깁니다. 섹션 머리말의 건수는 줄여 보여 줘도 항상 실제 전체 건수입니다.</p>
+  <p>구간마다 결과는 1,000자 이내로 만듭니다. 맨 윗줄에 구간 시각과 받은 메일, 중요 메일 건수를 쓰고, 길면 아래 순서대로 줄입니다. 섹션 머리말의 건수는 줄여 보여 줘도 항상 실제 전체 건수입니다.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>단계</th><th>A, B</th><th>C</th></tr></thead>
     <tbody>
@@ -114,38 +126,40 @@
       <tr><td>2단계</td><td>2줄</td><td>제목만 한 줄씩</td></tr>
       <tr><td>3단계</td><td>2줄</td><td>'기타 중요 메일 N건은 Outlook에서 확인하세요.'</td></tr>
       <tr><td>4단계</td><td>'굵은 제목 / 보낸 사람 / 상태' 한 줄씩</td><td>건수만</td></tr>
-      <tr><td>5단계</td><td>굵은 제목만 한 줄씩. 그래도 넘치면 A부터 들어가는 만큼 쓰고 '외 N건은 Outlook에서 확인하세요.'</td><td>건수만</td></tr>
+      <tr><td>넘침</td><td colspan="2">그래도 넘치면 그 구간만 '⚠️ 이 시간대는 메일이 많아 요약하지 못했습니다. Outlook에서 직접 확인하세요.'와 A, B, C 건수를 쓰고, 들어가는 만큼 A 메일 제목을 보여 줍니다. 다른 구간은 그대로 나옵니다.</td></tr>
     </tbody>
   </table></div>
 
-  <div class="callout tip">
-    <i class="ph ph-lightbulb"></i>
-    <strong>카드에 메일이 일부만 나오거나 실패했던 이유</strong>
-    <div><p>Workflows는 단계 사이에 넘기는 글의 길이에 한도가 있습니다. Microsoft가 정확한 한도를 공개하지 않았고, 시험해 보니 메일 몇 통 분량에서 뒤가 잘렸습니다(실행 기록에 &lt;truncated&gt;가 보임). 앞쪽만 남아 메일이 두 통만 나오거나, 잘린 글을 받은 Teams 단계가 멈췄습니다. 그래서 이 프롬프트는 Copilot 단계의 결과를 4개 칸, 1,000자 이내로 줄이고, Teams 단계는 글이 잘려도 카드를 보내고 '※ 일부 내용이 잘려 표시되지 않았습니다.'를 붙이게 했습니다. 1,000자 제한은 프롬프트 길이가 아니라 Copilot 단계 결과의 길이입니다.</p></div>
-  </div>
-
-  <figure class="prompt" data-title="공통 프롬프트: 평일 오전 8시 중요 메일 보고">
+  <figure class="prompt" data-title="공통 프롬프트: 평일 오전 8시 중요 메일 보고 (7구간 분할)">
     <figcaption><i class="ph ph-chat-circle-text"></i>Workflows 입력창에 붙여 넣으세요</figcaption>
-    <pre>Create a workflow named "평일 오전 8시 중요 메일 보고".
-The workflow must have exactly 3 steps: Recurrence, ONE Copilot step, and ONE Microsoft Teams step. Do not add any other Copilot step.
+    <pre>Create a workflow named "평일 오전 8시 중요 메일 보고 (7구간 분할)".
+The workflow must have exactly 9 steps: Recurrence, SEVEN Copilot steps (Step 1 to Step 7), and ONE Microsoft Teams step (Step 8). Do not add any other step. Do not merge the Copilot steps into one.
 
 [Trigger]
 Run every weekday (Monday to Friday) at 08:00 AM, timezone Asia/Seoul.
+This is the ONLY trigger. The time slices below are only email search ranges, not run times. The workflow runs once at 08:00 and posts ONE card.
 
-[Step 1 - Copilot: 중요 메일 선별, 분류 및 카드 텍스트 생성 (single step)]
-Search emails I received in my Outlook mailbox during this period:
-- Normal weekday run: Tuesday to Friday, from the previous day 08:00 KST to the current run time. On Monday, from the previous Friday 08:00 KST to the current run time, including the weekend.
-- Test run: from yesterday 08:00 KST to the current run time.
+[Time slices]
+"Previous business day" (PBD) means yesterday on Tuesday to Friday, and the previous Friday on Monday.
+"Next day of PBD" means the calendar day right after PBD (on Monday this is Saturday).
+- Slice 1: PBD 08:00 to PBD 10:00 KST
+- Slice 2: PBD 10:00 to PBD 12:00 KST
+- Slice 3: PBD 12:00 to PBD 14:00 KST
+- Slice 4: PBD 14:00 to PBD 16:00 KST
+- Slice 5: PBD 16:00 to PBD 18:00 KST
+- Slice 6: PBD 18:00 to Next day of PBD 00:00 KST
+- Slice 7: Next day of PBD 00:00 KST to the current run time (on Monday this covers Saturday, Sunday, and Monday until the run time)
+Test run: use yesterday as PBD, and if the current time is before a slice start, that slice has no emails.
+Each email belongs to exactly one slice by its received time (start inclusive, end exclusive). Never include an email outside the slice of that step.
 
+[Common rules for every Copilot step]
 Search rules:
 - Include received emails regardless of folder (Inbox and all subfolders, and any other folders where received mail is stored).
 - Exclude emails I sent, drafts, and deleted or junk emails if they can be identified.
+- Exclude emails sent by Flow bot or Workflows about this report.
 - Do NOT verify folder paths or folder structure. Folder names may differ by user or language (e.g., Inbox / 받은 편지함). Never fail because of folders.
-
 Review each email internally and apply the rules below. Do NOT output the full email list.
-
 Apply the rules in this exact order:
-
 0. PROMOTION CHECK (checked FIRST, before protection rules):
 Remove the email if it is a promotional or solicitation email, even if it is sent by a real person and even if it contains deadline or urgency words. Signs include:
 - Promotes a training course, seminar, webinar, event, product, or service to many recipients
@@ -153,7 +167,6 @@ Remove the email if it is a promotional or solicitation email, even if it is sen
 - Is not part of an existing work conversation with me or my team
 Deadline or urgency words inside a promotional email (e.g., 마감, 조기 마감, 서둘러) do NOT make it important.
 Exception: keep it if it is a reply within an existing work thread that I or my team participated in.
-
 1. PROTECTION RULES (if ANY applies, never remove; applies only to non-promotional work emails):
 - Direct reply requests such as '회신 부탁드립니다', '답변 부탁드립니다', '답장 부탁드립니다', '답신 부탁드립니다', '확인 후 회신 바랍니다', '검토 후 의견 부탁드립니다', '금일 중 회신 요청', '회신 요청', '답변 요청', '답장 요청', '답신 요청', 'Reply requested', 'Please respond', 'Please reply'
 - Indirect questions or requests that expect an answer or deliverable, such as '~할 수 있을까요?', '~가능할까요?', '~주실 수 있나요?', '~받아볼 수 있을까요?', '요청드립니다', '부탁드립니다', '공유 부탁드립니다'
@@ -162,7 +175,6 @@ Exception: keep it if it is a reply within an existing work thread that I or my 
 - Work emails with a deadline related to my or my team's tasks
 - A pending approval request not yet processed
 - Any question or request from a customer company in a work conversation, even if I am only in CC
-
 2. REMOVAL RULES (only if no protection rule applies, and only when clearly matched):
 - Sender address contains no-reply, noreply, donotreply, or mailer-daemon
 - Automatic notifications from Teams, SharePoint, OneDrive, Planner, Viva, or similar Microsoft 365 services
@@ -171,24 +183,21 @@ Exception: keep it if it is a reply within an existing work thread that I or my 
 - Newsletters and advertising
 - System messages reporting only normal or successful status. Do NOT remove failure or error notifications.
 - Approval result notifications already completed, rejected, or canceled
-
 3. KEEP AS CATEGORY C if uncertain:
 - Company-wide or department announcements
 - Internal work sharing or FYI emails (e.g., document or file sharing without a question)
 - Work emails where I am only in CC and no question or request is included
 - Any non-promotional email whose importance cannot be clearly determined
-
 Conversation rule:
-- If multiple emails belong to the same conversation, show only the latest one and classify it by the most important request in the whole conversation.
+- If multiple emails of the same conversation are in this slice, show only the latest one and classify it by the most important request in the whole conversation.
+- If the same conversation has a newer email received after this slice ends (up to the current run time), skip it in this slice; it will be shown in the later slice.
 - A question or request from a customer in the latest reply makes the conversation category A, even if I am only in CC.
-
 Classification (based on the signed-in user and the user's team):
 - A: Customer company emails that require a reply or deliverable (including indirect questions, and including when I am only in CC)
 - B: Emails requiring work, confirmation, review, or action from me or my team (internal IT/HR/operations requests and error alerts are at least B)
 - C: Important updates for reference, internal FYI sharing, and uncertain non-promotional emails
 - Emails with a direct or indirect reply request must be A or B, never C.
 - Do not use any specific person's name or fixed email address as a criterion.
-
 Field rules for each kept email:
 - s: original subject (unchanged; if longer than 30 characters, cut and add '…'; remove prefixes such as RE:, FW:, 회신:, 전달:, and remove bracket tags like [회사명] only if the subject is still clear)
 - f: original sender name only (no email address, title, or department)
@@ -196,59 +205,81 @@ Field rules for each kept email:
 - co: company name ONLY for category A (customer); omit for B and C
 - sum: within 25 Korean characters, core request or issue only, noun-ending style (e.g., '변경 인원 인력 프로파일 요청')
 - st: exactly '회신 필요' or '내용 확인 필요'
-
+2-line format for one email:
+'- **' + s + '**' + '\n' + '  ' + f + ' / ' + t + (co for A only: ' / ' + co) + ' | ' + st + ' / ' + sum
 LENGTH LIMIT (very important):
-The data passed to the Teams step has a small size limit and long output gets truncated.
-The ENTIRE output of this step, including all 4 fields, must be within 1,000 characters in total.
+The output of each Copilot step is passed to the Teams step and long output gets truncated.
+The ENTIRE output of each step must be within 1,000 characters in total.
 Before outputting, count the characters. Use the most detailed level that fits within 1,000 characters, in this order:
 - Level 1: A, B, C all in 2-line format
 - Level 2: A and B in 2-line format; C as one line per email: '- ' + s
 - Level 3: A and B in 2-line format; C as count only: '기타 중요 메일 ' + countC + '건은 Outlook에서 확인하세요.'
 - Level 4: A and B as one line per email: '- **' + s + '** / ' + f + ' / ' + st; C as count only
-- Level 5: A and B as one line per email: '- **' + s + '**'; C as count only. If it still does not fit, list as many A emails first and then B emails as fit, and add '외 ' + (remaining count) + '건은 Outlook에서 확인하세요.' at the end of that section.
-Always list A emails before B emails. Do not remove an A or B email unless Level 5 still exceeds the limit.
-
-2-line format for one email:
-'- **' + s + '**' + '\n' + '  ' + f + ' / ' + t + (co for A only: ' / ' + co) + ' | ' + st + ' / ' + sum
-
-OUTPUT exactly these 4 fields, in this order, and nothing else:
-1. title: '오전 중요 메일 보고 (' + reportDate(MM/DD) + ')'
-2. subtitle: '수신 ' + totalReceived + '건 / 중요 ' + importantCount + '건 / 제외 ' + removedCount + '건'
-3. textAB: category A then category B in one text.
-   If countA &gt; 0, start with '🔴 고객사 회신 필요 (' + countA + ')' + '\n' and then the A emails.
-   If countB &gt; 0, add '\n\n' + '🔴 꼭 읽어야 할 메일 (' + countB + ')' + '\n' and then the B emails.
-   If there are no A and B emails, set textAB to empty string.
-4. textC: if countC &gt; 0, '기타 중요 메일 (' + countC + ')' + '\n' + C content by the chosen level; otherwise empty string.
-
-The counts in the section headers (countA, countB, countC) must always show the real total number of emails in each category, even if some emails are shown as '외 N건'.
-If no important emails remain, set textAB to exactly '새로 온 중요한 메일이 없습니다.' and textC to empty string.
-Do not output removed emails, email bodies, classification reasons, required actions, deadlines, or any explanation.
+- OVERFLOW (if Level 4 still exceeds 1,000 characters): this slice has too many emails to summarize. Output the first line, then '⚠️ 이 시간대는 메일이 많아 요약하지 못했습니다. Outlook에서 직접 확인하세요.', then '고객사 회신 필요 ' + countA + '건 / 꼭 읽어야 할 메일 ' + countB + '건 / 기타 ' + countC + '건', then as many A email subjects as fit, one per line as '- **' + s + '**'. If not all A emails fit, add '외 ' + (remaining A count) + '건'.
+Always list A emails before B emails.
+OUTPUT of each step: exactly ONE field named sliceText, built as follows, and nothing else:
+- First line: '⏱ ' + sliceStart(MM/DD HH:mm) + ' ~ ' + sliceEnd(MM/DD HH:mm) + ' / 수신 ' + totalReceived + '건 / 중요 ' + importantCount + '건'
+- If countA &gt; 0: '\n' + '🔴 고객사 회신 필요 (' + countA + ')' + '\n' + A emails
+- If countB &gt; 0: '\n' + '🔴 꼭 읽어야 할 메일 (' + countB + ')' + '\n' + B emails
+- If countC &gt; 0: '\n' + '기타 중요 메일 (' + countC + ')' + '\n' + C content by the chosen level
+- In OVERFLOW, use the OVERFLOW format instead of the sections above.
+- If no important emails remain in this slice: first line + '\n' + '중요한 메일이 없습니다.'
+The counts must always show the real total number in each category.
+Do not output removed emails, email bodies, classification reasons, or any explanation.
 Counts may be approximate if exact counting is not possible.
-Never stop or fail, and never ask for more input. If some information cannot be confirmed, proceed with what you found.
+Never stop or fail, and never ask for more input. If the search fails or nothing can be confirmed, output only the first line + '\n' + '확인된 메일이 없습니다.'
 Write all generated text in Korean.
 
-[Step 2 - Microsoft Teams: Post adaptive card in a chat or channel]
-Post an Adaptive Card using the 4 fields from Step 1.
+[Step 1 - Copilot: Slice 1 중요 메일 요약]
+Apply the Common rules only to emails received in Slice 1 (PBD 08:00 to 10:00). Output sliceText1.
+Do not use or depend on the output of any other Copilot step.
+
+[Step 2 - Copilot: Slice 2 중요 메일 요약]
+Apply the Common rules only to emails received in Slice 2 (PBD 10:00 to 12:00). Output sliceText2.
+Do not use or depend on the output of any other Copilot step.
+
+[Step 3 - Copilot: Slice 3 중요 메일 요약]
+Apply the Common rules only to emails received in Slice 3 (PBD 12:00 to 14:00). Output sliceText3.
+Do not use or depend on the output of any other Copilot step.
+
+[Step 4 - Copilot: Slice 4 중요 메일 요약]
+Apply the Common rules only to emails received in Slice 4 (PBD 14:00 to 16:00). Output sliceText4.
+Do not use or depend on the output of any other Copilot step.
+
+[Step 5 - Copilot: Slice 5 중요 메일 요약]
+Apply the Common rules only to emails received in Slice 5 (PBD 16:00 to 18:00). Output sliceText5.
+Do not use or depend on the output of any other Copilot step.
+
+[Step 6 - Copilot: Slice 6 중요 메일 요약]
+Apply the Common rules only to emails received in Slice 6 (PBD 18:00 to Next day of PBD 00:00). Output sliceText6.
+Do not use or depend on the output of any other Copilot step.
+
+[Step 7 - Copilot: Slice 7 중요 메일 요약]
+Apply the Common rules only to emails received in Slice 7 (Next day of PBD 00:00 to the current run time; on Monday this includes the whole weekend). Output sliceText7.
+Do not use or depend on the output of any other Copilot step.
+
+[Step 8 - Microsoft Teams: Post adaptive card in a chat or channel]
+Post ONE Adaptive Card using the outputs of Step 1 to Step 7.
 - Post as: Flow bot
 - Post in: Chat with Flow bot
 - Recipient: my own Microsoft 365 email address. If the Recipient field requires an explicit email address, ask me to enter my own company email address during workflow creation. Do not use a Copilot step to discover or infer my email address. Do not hard-code another user's email address.
-
-Card structure (fixed, exactly 4 TextBlocks in this order, all with wrap = true; no loops, no per-email blocks):
-1. title: size Large, weight Bolder
-2. subtitle: size Small, isSubtle true
-3. textAB: color Attention, spacing Medium
-4. textC: color Default, spacing Medium
-
-Put each Step 1 field into its TextBlock.
-
+Card structure (fixed, exactly 8 TextBlocks in this order, all with wrap = true; no loops, no per-email blocks):
+1. title: '오전 중요 메일 보고 (' + reportDate(MM/DD) + ')', size Large, weight Bolder
+2. sliceText7 (most recent slice first), color Attention, spacing Medium, separator true
+3. sliceText6, color Attention, spacing Medium, separator true
+4. sliceText5, color Attention, spacing Medium, separator true
+5. sliceText4, color Attention, spacing Medium, separator true
+6. sliceText3, color Attention, spacing Medium, separator true
+7. sliceText2, color Attention, spacing Medium, separator true
+8. sliceText1, color Attention, spacing Medium, separator true
 ALWAYS POST THE CARD. NEVER FAIL:
-- If the input from Step 1 is truncated, incomplete, or a field is missing, still post the card with whatever content is available.
+- If any step output is truncated, incomplete, or missing, still post the card with whatever content is available.
 - Remove any truncation markers such as '&lt;truncated&gt;' or '...&lt;truncated&gt;'.
-- If any content was truncated or missing, add this line at the end of the last non-empty TextBlock: '※ 일부 내용이 잘려 표시되지 않았습니다. Outlook에서 확인하세요.'
+- If a slice output is missing, show '이 시간대 메일을 확인하지 못했습니다. Outlook에서 확인하세요.' in that TextBlock.
+- If any content was truncated, add '※ 일부 내용이 잘려 표시되지 않았습니다. Outlook에서 확인하세요.' at the end of that TextBlock.
 - If title is missing, use '오전 중요 메일 보고'.
 - Do not ask for the input again. Do not stop the run.
 No images, no buttons, no extra containers.
-
 All responses and card text must be in Korean.</pre>
   </figure>
 
@@ -256,9 +287,9 @@ All responses and card text must be in Korean.</pre>
   <ol>
     <li>보내면 Workflows가 흐름을 만들면서 Outlook, Teams, Copilot 연결을 확인합니다. 연결을 묻는 버튼이 나오면 <strong>본인 계정</strong>으로 연결합니다. Copilot 단계에 연결한 계정의 메일함이 검색됩니다.</li>
     <li>받는 사람(Recipient) 메일 주소를 물으면 <strong>본인 회사 메일 주소</strong>를 입력합니다. 다른 사람 주소를 넣으면 그 사람에게 카드가 갑니다.</li>
-    <li>흐름이 만들어지면 오른쪽에 단계 카드 세 개가 나옵니다. 아래 표대로 확인합니다.</li>
+    <li>흐름이 만들어지면 오른쪽에 단계 카드 아홉 개가 나옵니다. 아래 표대로 확인합니다. Copilot 단계가 하나로 합쳐져 있으면 이 구조가 만들어지지 않은 것이니 새로 만듭니다.</li>
     <li>오른쪽 위 <strong>저장</strong>을 누릅니다. 위쪽에 'Saving workflow...'가 나오고, 끝나면 단계마다 초록 체크가 붙습니다.</li>
-    <li>저장 옆의 <strong>테스트</strong>를 누릅니다. 오전 8시까지 기다리지 않고 지금 한 번 실행됩니다. 위쪽에 '워크플로를 실행하는 중...'이 나오고 단계마다 '테스트 중'이 차례로 붙습니다. 몇 분 걸립니다.</li>
+    <li>저장 옆의 <strong>테스트</strong>를 누릅니다. 오전 8시까지 기다리지 않고 지금 한 번 실행됩니다. Copilot 단계가 일곱 번 차례로 돌아서 몇 분 걸립니다.</li>
     <li>끝나면 Teams 왼쪽의 채팅에서 <strong>워크플로</strong> 채팅을 엽니다. 카드가 와 있으면 성공입니다.</li>
   </ol>
 
@@ -276,20 +307,20 @@ All responses and card text must be in Korean.</pre>
   <div class="table-wrap"><table>
     <thead><tr><th>단계 카드</th><th>확인할 것</th></tr></thead>
     <tbody>
-      <tr><td>1. 트리거</td><td>'평일 오전 8시 실행', 반복(Recurrence)</td></tr>
-      <tr><td>2. Copilot</td><td>살피는 기간에 '테스트 실행: 어제 08:00부터 현재 실행 시각까지' 문구가 있는지, 폴더 상관없이 살피는지, 홍보 검사, 보호 규칙, 제거 규칙 순서가 들어 있는지, 결과를 title, subtitle, textAB, textC 4개 칸 1,000자 이내로 만드는지</td></tr>
-      <tr><td>3. Microsoft Teams</td><td>Flow bot이 Chat with Flow bot으로 보내는지, 받는 사람이 본인 메일 주소인지, 카드가 글 칸 4개로 고정되어 있는지, 글이 잘려도 카드를 보내라는 규칙이 있는지</td></tr>
+      <tr><td>1. 트리거</td><td>'평일 오전 8시 실행', 반복(Recurrence). 트리거는 이것 하나뿐입니다.</td></tr>
+      <tr><td>2~8. Copilot (7개)</td><td>단계마다 맡은 시간대가 PBD 08:00~10:00, 10:00~12:00 ... 처럼 겹치지 않게 들어 있는지, '다른 단계에 의존하지 않는다'는 문구가 있는지, 결과가 sliceText 하나이고 1,000자 이내인지</td></tr>
+      <tr><td>9. Microsoft Teams</td><td>Flow bot이 Chat with Flow bot으로 보내는지, 받는 사람이 본인 메일 주소인지, 카드가 글 칸 8개(제목, 구간 7부터 1까지)로 고정되어 있는지, 글이 잘리거나 빠져도 카드를 보내라는 규칙이 있는지</td></tr>
     </tbody>
   </table></div>
 
-  <figure class="shot" data-shot="06-workflow-test">
-    <img src="/assets/shots/06-workflow-test.png" alt="테스트를 누른 뒤 워크플로를 실행하는 중 안내가 나오고, 트리거와 Copilot 단계에 체크가 붙고 Copilot 단계에 1분, Microsoft Teams 단계에 테스트 중 표시가 붙은 화면. 받는 사람 메일 주소는 가렸다" loading="lazy">
-    <figcaption>테스트를 실행하는 중입니다. 단계는 트리거, Copilot, Microsoft Teams 세 개이고, Copilot 단계에는 프롬프트가 한글로 옮겨져 들어갑니다. Teams 단계의 받는 사람 주소는 가렸습니다.</figcaption>
+  <figure class="shot" data-shot="06-workflow-slices">
+    <img src="/assets/shots/06-workflow-slices.png" style="max-width:634px" alt="저장한 워크플로 화면. 트리거 평일 오전 8시 실행 아래 Copilot 단계 일곱 개가 시간대별로 이어지고, 마지막에 Microsoft Teams 단계가 있다. 단계마다 초록 체크가 붙어 있다. 받는 사람 메일 주소는 가렸다" loading="lazy">
+    <figcaption>저장한 화면입니다. 트리거, 시간대별 Copilot 단계 일곱 개, Microsoft Teams 단계 순서로 아홉 개가 이어집니다. Teams 단계의 받는 사람 주소는 가렸습니다.</figcaption>
   </figure>
 
   <figure class="shot" data-shot="06-teams-report">
-    <img src="/assets/shots/06-teams-report.png" style="max-width:580px" alt="Teams 워크플로 채팅에 온 오전 중요 메일 보고 카드. 고객사 회신 필요 섹션과 기타 중요 메일 섹션에 건수가 붙고, 메일마다 제목, 보낸 사람과 받은 시각과 회사, 상태와 요약 세 줄이 보인다. 메일 내용은 가렸다" loading="lazy">
-    <figcaption>이전 프롬프트로 받은 카드 예시입니다. 섹션마다 건수가 붙는 모양은 같습니다. 지금 프롬프트로 만들면 제목 아래에 수신, 중요, 제외 건수 부제가 붙고, 메일마다 2줄로 더 짧게 나옵니다. 메일 제목, 보낸 사람, 요약은 가렸습니다.</figcaption>
+    <img src="/assets/shots/06-teams-report.png" style="max-width:580px" alt="Teams 워크플로 채팅에 온 오전 중요 메일 보고 카드. 고객사 회신 필요 섹션과 기타 중요 메일 섹션에 건수가 붙고, 메일마다 제목, 보낸 사람과 받은 시각과 회사, 상태와 요약이 보인다. 메일 내용은 가렸다" loading="lazy">
+    <figcaption>이전 프롬프트로 받은 카드 예시입니다. 지금 프롬프트로 만들면 제목 아래에 구간마다 '⏱ 시각 / 수신 N건 / 중요 N건' 줄과 그 구간의 섹션이 최신 구간부터 차례로 붙습니다. 메일 제목, 보낸 사람, 요약은 가렸습니다.</figcaption>
   </figure>
 
   <p>마지막으로 Copilot 화면 왼쪽의 에이전트에서 Workflows (Frontier)로 다시 들어갑니다. 첫 화면 아래 '내 워크플로'에 방금 만든 워크플로 이름이 보이면 저장까지 끝난 것입니다.</p>
@@ -300,24 +331,23 @@ All responses and card text must be in Korean.</pre>
   </figure>
 
   <h3>4. 적용 체크포인트</h3>
-  <p>만든 뒤 아래 항목을 하나씩 확인합니다.</p>
+  <p>만든 뒤 아래 항목을 하나씩 확인합니다. 메일이 많은 사람의 계정으로 먼저 시험하면 문제가 빨리 드러납니다.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>확인할 것</th><th>이러면 통과</th></tr></thead>
     <tbody>
-      <tr><td>단계 구성</td><td>트리거, Copilot, Teams 순서의 3단계입니다. Copilot 단계가 두 개 이상이면 새로 만듭니다.</td></tr>
-      <tr><td>메일 주소 확인 단계</td><td>내 메일 주소를 알아내는 Copilot 단계가 따로 없습니다.</td></tr>
+      <tr><td>단계 구성</td><td>트리거, Copilot 7개, Teams 순서의 9단계입니다. Copilot이 하나로 합쳐졌으면 새로 만듭니다.</td></tr>
       <tr><td>Teams 받는 사람</td><td>본인 메일 주소가 들어 있습니다.</td></tr>
       <tr><td>Copilot 연결 계정</td><td>본인 계정입니다. 이 계정의 메일함을 검색합니다.</td></tr>
       <tr><td>테스트 결과</td><td>Teams의 워크플로(Flow bot) 채팅에 카드가 1장 옵니다.</td></tr>
-      <tr><td>카드 모양</td><td>제목 아래 수신, 중요, 제외 건수가 보이고, A와 B는 빨간 글씨로 섹션마다 건수가 붙고, 메일마다 2줄(메일이 많으면 더 짧게)로 나옵니다.</td></tr>
-      <tr><td>메일 수</td><td>섹션 머리말의 건수와 실제로 보이는 A, B 메일 수가 같습니다. '외 N건'이 붙었으면 그 수까지 더해 맞으면 됩니다.</td></tr>
-      <tr><td>결과 길이</td><td>활동 탭에서 Copilot 단계의 결과를 열면 1,000자 안팎입니다.</td></tr>
-      <tr><td>잘림 안내</td><td>카드 끝에 '※ 일부 내용이 잘려 표시되지 않았습니다.'가 없습니다. 이 문구가 자주 나오면 1,000자를 더 줄인 프롬프트로 다시 만듭니다.</td></tr>
-      <tr><td>빠진 메일</td><td>Outlook에서 어제 오전 8시 이후 메일을 폴더별로 훑어보고, 답장이나 조치가 필요한 메일이 카드에 들어 있는지 봅니다. 홍보 메일이 섞이지 않았는지도 봅니다.</td></tr>
+      <tr><td>구간 경계</td><td>카드의 ⏱ 줄이 겹치거나 비는 시간 없이 이어집니다. 화요일 실행이라면 구간 6은 '월 18:00 ~ 화 00:00', 구간 7은 '화 00:00 ~ 화 08:00'처럼 나옵니다.</td></tr>
+      <tr><td>월요일 실행</td><td>구간 7이 '토 00:00 ~ 월 08:00'으로 나오고, 금요일 18:00~24:00 메일은 구간 6에 들어 있습니다.</td></tr>
+      <tr><td>잘림</td><td>활동 탭에서 각 Copilot 단계의 결과에 &lt;truncated&gt;가 없고, 카드에 '※ 일부 내용이 잘려' 문구가 없습니다. 자주 잘리면 구간당 한도를 800자로 낮춘 프롬프트로 다시 만듭니다.</td></tr>
+      <tr><td>넘침</td><td>'메일이 많아 요약하지 못했습니다' 안내가 자주 나오는 구간이 있으면 그 구간을 더 잘게 나눕니다(예: 월요일 구간 7).</td></tr>
+      <tr><td>빠진 메일</td><td>Outlook에서 어제 오전 8시 이후 메일을 훑어보고, 답장이나 조치가 필요한 메일이 카드에 들어 있는지, 홍보 메일이 섞이지 않았는지 봅니다.</td></tr>
     </tbody>
   </table></div>
 
-  <p>테스트는 '어제 오전 8시부터 지금까지'를 살핍니다. 실제 예약 실행의 범위가 맞는지는 다음 날 확인합니다.</p>
+  <p>테스트는 어제를 전 영업일로 보고 지금까지를 살핍니다. 실제 예약 실행이 맞는지는 다음 날 확인합니다.</p>
   <ol>
     <li>다음 평일 오전 8시가 지나면 Teams의 워크플로 채팅에 카드가 왔는지 봅니다.</li>
     <li>워크플로 화면의 활동 탭에서 그날 실행이 오전 8시 무렵 성공으로 남아 있는지 봅니다. 시각이 9시간 어긋나 있으면 한국 시간이 아니라 세계 표준시로 잡힌 것입니다. 이때는 새로 만듭니다.</li>
@@ -330,8 +360,8 @@ All responses and card text must be in Korean.</pre>
     <thead><tr><th>프롬프트 부분</th><th>워크플로 화면 카드</th><th>여기서 바뀌는 것</th></tr></thead>
     <tbody>
       <tr><td>[Trigger]</td><td>1. 트리거</td><td>실행 요일과 시각</td></tr>
-      <tr><td>[Step 1]</td><td>2. Copilot</td><td>살피는 기간, 홍보 검사, 보호 기준, 제거 기준, A, B, C 기준, 카드에 들어갈 글 모양, 출력 길이와 줄이는 단계</td></tr>
-      <tr><td>[Step 2]</td><td>3. Microsoft Teams</td><td>받는 사람, 글 칸 4개의 글자 크기와 색, 잘렸을 때 처리</td></tr>
+      <tr><td>[Time slices], [Common rules], [Step 1]~[Step 7]</td><td>2~8. Copilot</td><td>구간 시간, 홍보 검사, 보호 기준, 제거 기준, A, B, C 기준, 구간마다 글 모양과 1,000자 한도</td></tr>
+      <tr><td>[Step 8]</td><td>9. Microsoft Teams</td><td>받는 사람, 글 칸 8개의 순서와 색, 잘리거나 빠졌을 때 처리</td></tr>
     </tbody>
   </table></div>
 
@@ -348,9 +378,8 @@ All responses and card text must be in Korean.</pre>
     <figcaption><i class="ph ph-chat-circle-text"></i>일반 Copilot 새 채팅에 보내세요</figcaption>
     <pre>아래는 Copilot Workflows에 넣는 중요 메일 보고 프롬프트입니다. [바꾸고 싶은 점]을 반영해 전체 프롬프트를 다시 써 주세요.
 
-- 프롬프트는 영어로 씁니다. 따옴표 안의 한글 문구(워크플로 이름, 카드 제목과 부제, 섹션 이름, 메일이 없을 때 문구)는 그대로 둡니다.
-- 단계는 트리거, Copilot 하나, Teams 하나인 3단계를 유지합니다.
-- Copilot 단계의 결과는 4개 칸, 전체 1,000자 이내로 만들고 Teams 카드는 글 칸 4개에 넣는 구조를 유지합니다.
+- 프롬프트는 영어로 씁니다. 따옴표 안의 한글 문구(워크플로 이름, 카드 제목, 섹션 이름, 안내 문구)는 그대로 둡니다.
+- 트리거 하나, 시간대별 Copilot 단계, Teams 하나인 구조와 단계마다 결과 1,000자 이내 규칙을 유지합니다.
 - 바꾸라고 한 곳 외에는 고치지 않습니다.
 - 무엇을 바꿨는지 한국어로 짧게 알려 주고, 전체 프롬프트는 코드 블록 하나로 줍니다.
 
@@ -365,14 +394,15 @@ All responses and card text must be in Korean.</pre>
     <li>꼭 챙길 사람: [이름 또는 메일 주소]가 보낸 메일은 B로 봐 줘</li>
     <li>뺄 메일: 제목에 '[들어가는 말]'이 있는 메일은 빼 줘</li>
     <li>홍보로 잘못 빠짐: [이런 메일]은 홍보가 아니니 남겨 줘</li>
-    <li>분류 바꾸기: [이런 메일]은 C가 아니라 B로 봐 줘</li>
-    <li>길이: 카드에 '일부 내용이 잘려' 문구가 자주 나오니 출력을 800자로 줄여 줘</li>
-    <li>실행 시각: 매일 오전 [시각]에 보내 줘</li>
+    <li>구간 나누기: 월요일 구간 7이 자주 넘치니 토요일, 일요일, 월요일 새벽으로 나눠 줘</li>
+    <li>길이: 카드에 '일부 내용이 잘려' 문구가 자주 나오니 구간당 한도를 800자로 줄여 줘</li>
+    <li>메일이 적은 사람용: 하루치를 Copilot 단계 하나로 요약하는 간단한 버전으로 바꿔 줘</li>
   </ul>
 
   <h3>알아둘 점</h3>
   <ul>
     <li>만든 워크플로는 다른 사람에게 공유되지 않습니다. 동료에게는 공통 프롬프트를 건네고, 각자 자기 Workflows에서 만들게 합니다. 메일과 Teams는 각자의 계정으로 연결되므로 결과도 본인에게만 갑니다.</li>
+    <li>Copilot 단계가 일곱 개라 실행에 몇 분 걸리고, 같은 고객사 메일도 받은 시각에 따라 여러 구간에 흩어져 나옵니다.</li>
     <li>토요일과 일요일에는 실행되지 않습니다. 주말에 온 메일은 월요일 보고에 금요일 오전 8시 이후 메일과 함께 나옵니다.</li>
     <li>반복 일정은 한국 공휴일을 따로 알지 못해서, 평일 공휴일에도 실행되고 보고가 옵니다. 매번 전날 오전 8시부터 살피므로 메일이 빠지지는 않습니다.</li>
     <li>무엇이 중요한 메일인지는 AI가 고릅니다. 메일이 아주 많은 날에는 일부를 놓치거나 건수가 대략으로 나올 수 있습니다. 보고는 놓친 메일이 없는지 돌아보는 용도이고, 메일함 확인을 대신하지 않습니다.</li>
