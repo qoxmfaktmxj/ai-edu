@@ -1,0 +1,146 @@
+<section class="chapter" id="browser-tools">
+  <header class="chapter-head">
+    <span class="chapter-num">07</span>
+    <h2>내 업무에 맞는 브라우저 자동화</h2>
+    <p class="chapter-lead">Aside, ego lite, Playwright, Computer Use가 무엇을 해결하는지 알아봅니다. 조사, 반복 검증, 여러 사이트 작업, 데스크톱 업무 중 내가 자주 하는 일을 기준으로 도구를 고릅니다. 설명 15분, 실습과 토론 15분을 권장합니다.</p>
+  </header>
+
+  <h3>같은 부탁도 작업 환경에 따라 달라집니다</h3>
+  <p>“이번 달 서비스 이용 요금을 비교해 줘”라는 부탁을 생각해 봅시다. 매번 다른 사이트를 읽고 조건을 해석하는 일과, 같은 페이지의 같은 항목을 매일 확인하는 일은 다릅니다. 웹에서 찾은 결과를 설치형 프로그램에 입력하는 일까지 포함되면 필요한 도구도 달라집니다.</p>
+  <p>이 장의 목표는 제품 이름을 외우는 것이 아닙니다. <strong>어디에서 일을 시작하는지, 무엇을 조작하는지, 같은 절차를 얼마나 반복하는지</strong>를 설명하고 알맞은 방식을 선택하는 것입니다.</p>
+
+  <h3>네 가지는 같은 종류의 제품이 아닙니다</h3>
+  <figure class="shot">
+    <a href="/assets/img/browser-tools/how-agents-work.png" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/how-agents-work.png" alt="Aside에서 직접 요청하는 방식, 외부 AI 에이전트가 브라우저 도구를 쓰는 방식, 화면을 보고 조작하는 방식의 비교" loading="lazy"></a>
+    <figcaption>교육용으로 새로 제작한 개념 그림입니다. 대표적인 시작 방식을 보여 주며, Aside도 외부 에이전트 연결을 지원합니다. Playwright 스크립트는 AI 없이 실행할 수 있습니다.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>구분</th><th>무엇인가</th><th>어떻게 일하는가</th><th>해결하려는 불편</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Aside</strong></td><td>AI 기능을 갖춘 브라우저 제품</td><td>브라우저 안에서 업무를 지시합니다. 외부 에이전트 연결도 지원합니다.</td><td>로그인한 웹사이트를 오가며 조사하고 정리하는 일을 브라우저에서 바로 맡기고 싶습니다.</td></tr>
+      <tr><td><strong>ego lite</strong></td><td>외부 AI 에이전트가 함께 쓰는 브라우저 제품</td><td>기존 에이전트가 ego-browser를 통해 웹을 조작하고, 작업별 Space를 사용합니다.</td><td>코드와 파일을 다루던 에이전트에게 웹 업무도 맡기되, 사람과 에이전트의 탭을 나눠 관리하고 싶습니다.</td></tr>
+      <tr><td><strong>Playwright</strong></td><td>브라우저 자동화 라이브러리와 테스트 도구</td><td>코드로 요소를 찾고 클릭, 입력, 결과 검증을 수행합니다. AI 연결은 선택입니다.</td><td>정해진 웹 동작을 반복 실행하고, 예상 결과와 같은지 자동으로 검증하고 싶습니다.</td></tr>
+      <tr><td><strong>Computer Use</strong></td><td>AI가 컴퓨터 화면을 조작하는 방식</td><td>화면 이미지 등을 관찰하고 마우스와 키보드 동작을 수행합니다. 실제 범위는 연결 도구가 정합니다.</td><td>웹 요소만으로 접근하기 어려운 화면이나 설치형 앱을 조작해야 합니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p>제품, 자동화 도구, 조작 방식이 섞인 비교입니다. 서로 배타적인 선택도 아닙니다. Aside도 Playwright 문법에 기반한 REPL을 활용한다고 설명합니다. 기존 기술을 버리고 새 기술로 갈아타는 관계로만 이해하지 않습니다. <a href="https://aside.com/blog/how-we-built-the-sota-browser-agent-that-outperforms-fable" target="_blank" rel="noopener">Aside 기술 설명</a></p>
+
+  <h3>무엇을 많이 하면 무엇부터 써 볼까요?</h3>
+  <p>다음은 영상과 공식 문서의 특징을 업무에 적용한 <strong>교육용 선택 기준</strong>입니다. 실제 사내 시스템에서 성능을 측정한 결과는 아닙니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>자주 하는 일</th><th>먼저 검토할 방식</th><th>업무 예시</th><th>선택 이유와 확인할 점</th></tr></thead>
+    <tbody>
+      <tr><td>브라우저에서 조사하고 결과를 정리</td><td>Aside</td><td>공개 서비스 3개의 요금, 제한, 출처를 비교표로 정리</td><td>브라우저에서 바로 시작하기 편합니다. 조건과 출처를 사람이 대조합니다.</td></tr>
+      <tr><td>코딩 에이전트로 파일 작업과 웹 조사를 연결</td><td>ego lite</td><td>여러 제품의 변경 공지를 조사하고 로컬 보고서 초안 작성</td><td>기존 에이전트의 작업 흐름을 이어 갑니다. Space별 대상과 결과를 구분합니다.</td></tr>
+      <tr><td>같은 웹 기능을 반복 검증</td><td>Playwright Test/스크립트</td><td>개발용 휴가 화면에서 필수값, 저장, 취소, 재조회를 매 변경마다 확인</td><td>기대 결과를 코드로 남겨 다시 실행할 수 있습니다. 화면 변경에 맞춰 테스트도 관리합니다.</td></tr>
+      <tr><td>AI가 낯선 웹 화면을 탐색하며 확인</td><td>Playwright MCP/CLI 또는 에이전트용 브라우저</td><td>개발용 화면의 오류를 재현하고 증거를 수집</td><td>현재 연결 방식과 세션 관리부터 확인합니다. 이미 잘 되는 환경을 무조건 바꿀 필요는 없습니다.</td></tr>
+      <tr><td>설치형 앱이나 일반 GUI까지 조작</td><td>Computer Use</td><td>가상 데이터를 사용하는 레거시 앱에서 메뉴와 입력 흐름 확인</td><td>해당 앱을 조작할 도구와 권한이 필요합니다. 화면 배치, 포커스, 팝업 때문에 실패할 수 있습니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p>파일 변환, 표 계산, 데이터 조회처럼 API, CLI, 파일 처리로 정확히 끝낼 수 있는 업무라면 그 경로도 먼저 검토합니다. Excel 파일을 만든다는 이유만으로 Excel 화면을 하나씩 클릭할 필요는 없습니다.</p>
+
+  <h3>Playwright를 세 가지로 나눠 이해하기</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>방식</th><th>누가 다음 행동을 정하나</th><th>주요 용도</th><th>AI 비용</th></tr></thead>
+    <tbody>
+      <tr><td>테스트/스크립트</td><td>작성된 코드와 조건문</td><td>회귀 테스트, 정해진 반복 절차</td><td>실행 중 AI를 호출하지 않는다면 모델 토큰 비용이 없습니다. 실행 환경과 유지보수 비용은 남습니다.</td></tr>
+      <tr><td>MCP</td><td>연결한 AI 에이전트</td><td>페이지 상태를 관찰하며 탐색하고 조작</td><td>도구 정의, 접근성 스냅샷, 호출 결과와 판단이 모델 입력/출력이 됩니다.</td></tr>
+      <tr><td>CLI + 스킬</td><td>연결한 AI 에이전트</td><td>코딩 작업 중 명령으로 브라우저 제어</td><td>필요한 결과를 선택해 전달하여 컨텍스트를 줄일 수 있습니다. 비용 절감 폭은 작업에 따라 다릅니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p>MCP의 대표 관찰 수단은 원시 HTML 전체가 아니라 <strong>구조화된 접근성 스냅샷</strong>입니다. “Playwright는 항상 DOM 전체를 AI에 보내므로 비싸다”라고 설명하면 스크립트 실행과 MCP 사용을 혼동하게 됩니다. <a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">MCP 공식 설명</a>, <a href="https://github.com/microsoft/playwright-cli" target="_blank" rel="noopener">CLI 공식 설명</a>, <a href="https://playwright.dev/docs/intro" target="_blank" rel="noopener">Playwright Test</a></p>
+
+  <h3>Space, 로그인, 병렬 작업은 따로 봅니다</h3>
+  <p>ego lite의 Space는 사람과 에이전트, 여러 작업의 탭을 분리해 관리하도록 돕습니다. 기존 로그인 상태를 활용하는 것과 작업 탭을 나누는 것은 서로 다른 기능입니다. <strong>Space를 나눴다고 계정 권한이나 서버 데이터까지 격리됐다고 판단하면 안 됩니다.</strong> 두 작업이 같은 업무 데이터를 수정하면 충돌할 수 있습니다. <a href="https://github.com/citrolabs/ego-lite" target="_blank" rel="noopener">ego lite 공식 설명</a></p>
+  <p>Playwright도 별도 브라우저 컨텍스트, 병렬 테스트, 창을 띄우지 않는 실행을 지원합니다. ego lite의 비교 포인트는 병렬 실행의 독점 여부보다, 일상 브라우저에서 에이전트 작업을 관리하는 경험입니다. <a href="https://playwright.dev/docs/browser-contexts" target="_blank" rel="noopener">컨텍스트 격리</a></p>
+  <p>Aside Vault는 자격 증명을 모델에 직접 보여 주지 않고 자동 입력하는 기능을 제공합니다. 이것이 로그인 후 페이지 내용까지 모델에 전달되지 않는다는 뜻은 아닙니다. 회사 계정과 업무 자료는 승인된 도구와 데이터 처리 정책을 따릅니다. <a href="https://aside.com" target="_blank" rel="noopener">Aside 제품 안내</a></p>
+
+  <h3>토큰이 적은 도구보다 완료 비용을 비교합니다</h3>
+  <p>페이지 관찰 → 다음 행동 판단 → 실행 → 결과 확인을 반복하면 관찰량과 재시도 횟수가 비용에 영향을 줍니다. 여러 동작을 코드로 묶고 필요한 값만 반환하면 왕복을 줄일 수 있지만, 판단이 필요한 중간 결과까지 생략하면 오류를 놓칠 수 있습니다.</p>
+  <p>영상의 ego lite 비용 비교는 개발사가 공개한 31개 작업 벤치마크를 소개한 것입니다. 모든 사이트에서 가장 저렴하다는 보장은 아닙니다. 모델, 작업 난도, 성공 판정, 재시도 조건이 같은지 확인하고 자신의 업무로 시험합니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>측정 항목</th><th>확인 방법</th></tr></thead>
+    <tbody>
+      <tr><td>완료율</td><td>필수 조건을 모두 충족한 작업 수 / 시도한 작업 수</td></tr>
+      <tr><td>완료 1건당 모델 비용</td><td>실패와 재시도에 쓴 모델 비용까지 합산 / 성공 건수. 성공이 0건이면 계산 불가로 기록</td></tr>
+      <tr><td>사람의 확인 시간</td><td>출처 확인, 누락 수정, 중단 후 이어가기 등에 쓴 시간</td></tr>
+      <tr><td>총 소요시간</td><td>준비부터 검토가 끝날 때까지의 시간</td></tr>
+      <tr><td>고정 비용</td><td>브라우저 요금제, 모델 구독, 실행 환경 비용을 별도로 기록</td></tr>
+    </tbody>
+  </table></div>
+  <p>예를 들어 A가 10회 시도에 1,000원을 쓰고 5회 성공했다면 성공 1건당 200원입니다. B가 1,500원을 쓰고 10회 성공했다면 150원입니다. 이 숫자는 계산 방법을 보여 주는 가상 값이며 제품 실측치가 아닙니다.</p>
+
+  <h3>같은 요청으로 비교하는 15분 실습</h3>
+  <p>회사 데이터 대신 공개된 서비스 요금 페이지 3곳을 사용합니다. 수강생이 이용할 수 있는 방식 2개를 골라 같은 요청을 보내고, 모델과 환경이 다르면 기록합니다. 도구를 설치하지 않은 사람은 진행자의 결과를 함께 평가합니다.</p>
+  <figure class="prompt" data-title="브라우저 조사 비교 실습">
+    <figcaption><i class="ph ph-chat-circle-text"></i>같은 자료와 완료 기준으로 비교하세요</figcaption>
+    <pre>다음 공개 페이지 3곳의 요금제를 비교해줘: [URL 1], [URL 2], [URL 3].
+서비스명, 요금제명, 통화, 월 결제 가격, 연 결제 조건, 주요 제한, 출처 URL, 확인 날짜를 표로 정리해줘.
+월 결제와 연 결제 환산 가격을 섞지 말고, 확인할 수 없는 값은 '미확인'으로 표시해줘.
+회원가입, 결제, 개인정보 입력은 하지 마.
+마지막에 누락 항목과 사람이 확인해야 할 조건을 알려줘.</pre>
+  </figure>
+  <p>2분 동안 입력과 기준을 맞추고, 8분 동안 실행한 뒤, 5분 동안 결과를 대조합니다. “표를 만들었다”가 아니라 출처와 값이 맞고 조건을 빠뜨리지 않았는지로 완료를 판단합니다. 비용 기록이 없으면 추정 숫자를 넣지 않고 미측정으로 표시합니다.</p>
+  <figure class="prompt" data-title="반복 검증을 Playwright 테스트로 남기기">
+    <figcaption><i class="ph ph-chat-circle-text"></i>개발 업무에서 이어서 연습하세요</figcaption>
+    <pre>[개발용 메모 앱 주소]에서 제목 입력과 저장을 검증해줘.
+빈 제목과 공백뿐인 제목은 저장되지 않아야 하고, 정상 제목은 한 번 저장되어야 해.
+기존 테스트 환경을 확인하고 이 세 경우를 재실행 가능한 Playwright 테스트로 남겨줘.
+운영 계정과 운영 데이터는 사용하지 마.
+실행 결과와 실패 증거를 알려주고, 실행하지 못했으면 미실행으로 표시해줘.</pre>
+  </figure>
+
+  <h3>헷갈리기 쉬운 설명 바로잡기</h3>
+  <p>참고 영상은 민둥이 | 쉽게 배우는 AI의 <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M" target="_blank" rel="noopener">AI 브라우저와 기존 자동화 비교</a>입니다. 영상과 관련 질의응답을 공식 문서와 대조해 다음 내용을 보완했습니다. 이 장의 업무 예시는 교육용이며, 직접 제품을 비교 실행한 결과는 아닙니다.</p>
+  <ul>
+    <li>“Space에서 충돌 없이 작업한다”는 말은 탭 간섭을 줄인다는 뜻으로 설명합니다. 같은 계정의 서버 데이터를 동시에 바꾸는 충돌까지 없어지는 것은 아닙니다.</li>
+    <li>“Computer Use로 모든 소프트웨어를 제어한다”는 표현 대신, 연결 도구가 지원하고 권한이 있는 화면을 조작할 수 있다고 설명합니다.</li>
+    <li>“Playwright가 DOM을 AI에 전달한다”는 설명은 MCP의 접근성 스냅샷과 AI 없이 실행하는 스크립트를 나눠 설명합니다.</li>
+    <li>“CLI는 정해진 절차만 실행한다”로 이해하지 않습니다. AI가 CLI를 호출하며 다음 행동을 판단할 수도 있습니다.</li>
+    <li>새 브라우저가 항상 빠르거나 저렴하다고 단정하지 않습니다. 개발사 벤치마크와 우리 업무의 측정 결과를 구분합니다.</li>
+  </ul>
+  <p>Computer Use 참고: <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool" target="_blank" rel="noopener">Anthropic 공식 도구 설명</a>. 기능 설명 확인일은 2026-10-23입니다. 가격, 지원 OS, 구독 연동과 설치 절차는 수업 직전 공식 안내를 다시 확인합니다.</p>
+
+  <h3>영상 전체 흐름 다시 보기</h3>
+  <p>핵심 구간을 누르면 해당 시점부터 원본 영상을 볼 수 있습니다. 캡처는 원본 화면을 설명하기 위한 보조 자료이며, 발표자의 설명 전체를 대체하지 않습니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>구간</th><th>내용</th><th>수업에서 던질 질문</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=0" target="_blank" rel="noopener">0:00</a></td><td>기존 자동화가 있는데 새 브라우저가 나온 이유</td><td>지금 쓰는 방식에서 무엇이 번거로운가?</td></tr>
+      <tr><td><a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=39" target="_blank" rel="noopener">0:39</a></td><td>Aside의 시작점과 기능</td><td>브라우저 안에서 바로 일을 맡기는 편이 좋은가?</td></tr>
+      <tr><td><a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=76" target="_blank" rel="noopener">1:16</a></td><td>ego lite, Space와 병렬 작업</td><td>기존 에이전트가 파일과 웹을 함께 다뤄야 하는가?</td></tr>
+      <tr><td><a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=131" target="_blank" rel="noopener">2:11</a></td><td>MCP, CLI, 코드 실행과 비용</td><td>페이지 전체를 반복 관찰할 필요가 있는가?</td></tr>
+      <tr><td><a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=201" target="_blank" rel="noopener">3:21</a></td><td>Computer Use와 화면 조작</td><td>웹 밖의 앱도 조작해야 하는가?</td></tr>
+      <tr><td><a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=227" target="_blank" rel="noopener">3:47</a></td><td>업무에 따른 선택</td><td>같은 절차를 반복하는가, 매번 새 판단이 필요한가?</td></tr>
+      <tr><td><a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=293" target="_blank" rel="noopener">4:53</a></td><td>마지막 추천 정리</td><td>내 업무 하나를 고르고 선택 이유를 말할 수 있는가?</td></tr>
+    </tbody>
+  </table></div>
+
+  <details><summary>영상 주요 장면 9장 펼쳐 보기</summary>
+<figure class="shot"><a href="/assets/img/browser-tools/01-intro-full.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/01-intro-full.jpg" alt="비교할 기준: 작동 방식과 작업 비용" loading="lazy"></a><figcaption>0:33 - 비교할 기준: 작동 방식과 작업 비용. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=33" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/02-aside-full.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/02-aside-full.jpg" alt="Aside Vault: 자격 증명 자동 입력" loading="lazy"></a><figcaption>1:06 - Aside Vault: 자격 증명 자동 입력. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=66" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/03-spaces-full.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/03-spaces-full.jpg" alt="여러 에이전트가 같은 탭을 조작할 때의 간섭" loading="lazy"></a><figcaption>1:39 - 여러 에이전트가 같은 탭을 조작할 때의 간섭. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=99" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/04-cost-full.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/04-cost-full.jpg" alt="토큰 비용을 비교할 때의 질문" loading="lazy"></a><figcaption>2:13 - 토큰 비용을 비교할 때의 질문. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=133" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/05-code.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/05-code.jpg" alt="여러 동작을 코드로 묶는 실행 방식" loading="lazy"></a><figcaption>2:46 - 여러 동작을 코드로 묶는 실행 방식. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=166" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/06-engine.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/06-engine.jpg" alt="토큰 효율은 제품 이름만으로 단정하지 않기" loading="lazy"></a><figcaption>3:19 - 토큰 효율은 제품 이름만으로 단정하지 않기. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=199" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/10-computer-use.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/10-computer-use.jpg" alt="Computer Use: 화면 이미지와 앱 조작" loading="lazy"></a><figcaption>3:29 - Computer Use: 화면 이미지와 앱 조작. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=209" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/07-selection.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/07-selection.jpg" alt="지금 하던 작업을 기준으로 선택" loading="lazy"></a><figcaption>3:53 - 지금 하던 작업을 기준으로 선택. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=233" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+<figure class="shot"><a href="/assets/img/browser-tools/09-summary.jpg" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/09-summary.jpg" alt="영상 마지막의 상황별 추천" loading="lazy"></a><figcaption>5:04 - 영상 마지막의 상황별 추천. 출처: 민둥이 | 쉽게 배우는 AI, <a href="https://www.youtube.com/watch?v=P6kBV7A-V8M&amp;t=304" target="_blank" rel="noopener">원본 구간 보기</a>.</figcaption></figure>
+  </details>
+
+  <h3>마지막 한 장: 내 업무에서 출발하기</h3>
+  <figure class="shot">
+    <a href="/assets/img/browser-tools/tool-selection.png" target="_blank" rel="noopener"><img src="/assets/img/browser-tools/tool-selection.png" alt="조사와 정리는 Aside, 기존 에이전트의 여러 웹 작업은 ego lite, 반복 테스트는 Playwright, 데스크톱 화면 조작은 Computer Use부터 검토하는 선택 기준" loading="lazy"></a>
+    <figcaption>내가 자주 하는 일을 기준으로 먼저 시험할 방식을 고릅니다. 제품의 우열이나 모든 작업의 성공을 보장하는 비교는 아닙니다.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>내가 자주 하는 일</th><th>먼저 검토</th><th>기억할 한 문장</th></tr></thead>
+    <tbody>
+      <tr><td>브라우저에서 조사하고 정리</td><td>Aside</td><td>브라우저 안에서 바로 AI에게 맡긴다.</td></tr>
+      <tr><td>기존 코딩 에이전트로 여러 웹 업무</td><td>ego lite</td><td>쓰던 에이전트에게 작업별 웹 공간을 제공한다.</td></tr>
+      <tr><td>반복 테스트와 정해진 웹 자동화</td><td>Playwright</td><td>같은 검증을 다시 실행할 수 있는 코드로 남긴다.</td></tr>
+      <tr><td>설치형 앱과 화면 조작</td><td>Computer Use</td><td>화면을 보고 조작하되, 지원 범위와 결과를 확인한다.</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>내 업무 하나를 골라 “나는 무엇을 자주 하므로, 어떤 방식부터 시험하겠다”라고 설명해 보세요.</strong> 이미 잘 작동하는 자동화는 유지하고, 번거로운 부분을 해결하는 데 필요한 도구를 더합니다.</p>
+</section>
