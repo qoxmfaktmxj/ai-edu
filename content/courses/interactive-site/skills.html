@@ -1,0 +1,270 @@
+<section class="chapter" id="skills">
+  <header class="chapter-head">
+    <span class="chapter-num">07</span>
+    <h2>스킬로 일하는 법</h2>
+    <p class="chapter-lead">유명한 AI 코딩 스킬 7종이 요구사항, 설계, 구현, 검증 네 단계에서 각각 어떻게 다르게 일하는지 인사시스템 휴가 기능 하나로 비교합니다. 그다음 개발 스킬 하나와 UI 스킬 하나를 직접 설치해 전후 차이를 확인합니다.</p>
+  </header>
+
+  <h3>스킬이란</h3>
+  <p><strong>스킬</strong>은 Claude가 특정 일을 할 때 따르는 작업 방법을 적은 파일 묶음입니다. 폴더 하나에 <code>SKILL.md</code>(언제 쓰는지, 어떤 순서로 일하는지)와 필요한 참고 파일이 들어 있습니다. 여러 스킬과 명령, 훅을 묶어 배포하는 단위가 <strong>플러그인</strong>이고, 플러그인을 모아 둔 목록이 <strong>마켓플레이스</strong>입니다. Claude Code에서는 <code>/plugin</code> 명령으로 설치합니다.</p>
+  <p>지금 공개된 유명 스킬들은 모두 "요구사항을 정리하고, 설계하고, 구현하고, 검증한다"고 소개합니다. 그런데 실제로 써 보면 어디에 힘을 주는지가 다릅니다. 어떤 스킬은 질문을 끝까지 하고, 어떤 스킬은 문서를 기준으로 삼고, 어떤 스킬은 리뷰를 여러 갈래로 나눕니다. 그래서 고르는 기준은 "가장 유명한 것"이 아니라 <strong>내 작업 방식에서 가장 약한 단계를 채워 주는 것</strong>입니다.</p>
+  <figure class="shot">
+    <a href="/assets/img/skills-stages.png" target="_blank" rel="noopener"><img src="/assets/img/skills-stages.png" alt="개발의 네 단계를 색 띠로 나눈 그림. 요구사항은 파랑, 설계는 초록, 구현은 보라, 검증은 주황입니다." loading="lazy"></a>
+    <figcaption>이 장은 네 단계를 색으로 구분합니다. 요구사항 파랑, 설계 초록, 구현 보라, 검증 주황.</figcaption>
+  </figure>
+
+  <h3>공통 예시: 인사시스템의 휴가 신청과 승인</h3>
+  <p>SaaS형 인사시스템에 휴가 기능을 새로 만든다고 가정합니다. 이 장의 모든 비교는 이 기능 하나로 합니다. 데이터는 모두 가짜입니다.</p>
+  <figure class="shot">
+    <a href="/assets/img/skills-leave-app.png" target="_blank" rel="noopener"><img src="/assets/img/skills-leave-app.png" alt="가상 휴가 신청 화면. 신청자 홍길동, 휴가 종류, 기간, 남은 연차, 승인자 칸이 있습니다." loading="lazy"></a>
+    <figcaption>교육용 가상 화면입니다.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>기본 흐름</td><td>직원이 휴가를 신청하고, 팀장이 승인하면 남은 연차가 줄어듭니다.</td></tr>
+      <tr><td>빠뜨리기 쉬운 예외</td><td>팀장이 없거나 부재 중일 때 누가 승인하나, 반차는 어떻게 세나, 승인 뒤 취소하면 연차를 돌려주나, 남은 연차보다 많이 신청하면 막나</td></tr>
+    </tbody>
+  </table></div>
+  <p>예외가 정리되지 않은 채 코드를 받으면, 화면은 그럴듯해도 운영에서 바로 문의가 들어옵니다. 스킬들이 갈리는 지점이 바로 여기입니다.</p>
+
+  <h3>1단계. 요구사항: 무엇을, 왜 만드나</h3>
+  <figure class="shot">
+    <a href="/assets/img/skills-step-req.png" target="_blank" rel="noopener"><img src="/assets/img/skills-step-req.png" alt="요구사항 단계 그림. 휴가 신청 화면 옆에 예외를 묻는 말풍선이 떠 있습니다." loading="lazy"></a>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>휴가 기능에서 하는 일</th></tr></thead>
+    <tbody>
+      <tr><td>Superpowers <code>brainstorming</code></td><td>코드를 쓰기 전에 질문을 한 번에 하나씩 합니다. "누가 쓰나", "왜 지금 필요한가"부터 묻고, 답을 모아 설계 문서로 만듭니다.</td></tr>
+      <tr><td>Matt Pocock <code>/grill-me</code>, <code>/grill-with-docs</code></td><td>결정하지 않은 예외를 끝까지 파고듭니다. "팀장이 없으면?"처럼 빈 곳을 찾습니다. grill-with-docs는 용어와 결정 사항을 문서로 남깁니다.</td></tr>
+      <tr><td>Addy Osmani <code>interview-me</code>, <code>idea-refine</code></td><td>질문으로 의도를 확인하고, 아이디어를 개발 가능한 요구사항 문장으로 다듬습니다.</td></tr>
+      <tr><td>gstack <code>/office-hours</code></td><td>기능을 정하기 전에 "이걸 만들 필요가 있나"를 먼저 따집니다. 실제 사용자 문제가 무엇인지 확인합니다.</td></tr>
+      <tr><td>Spec Kit <code>/speckit-specify</code>, <code>clarify</code></td><td>요구사항을 명세 문서로 씁니다. 빠진 규칙을 보완하고, 이 문서를 끝까지 기준으로 삼습니다.</td></tr>
+      <tr><td>Feature Dev <code>/feature-dev</code></td><td>기존 프로젝트 코드를 먼저 탐색합니다. 이미 있는 직원, 조직 구조와 어떻게 연결할지 묻습니다.</td></tr>
+      <tr><td>pstack <code>/pstack:poteto-mode</code></td><td>목표와 완료 조건을 주면, 새 기능인지 버그 수정인지 보고 맞는 작업 절차를 고릅니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>2단계. 설계: 어떻게 나눠 만드나</h3>
+  <figure class="shot">
+    <a href="/assets/img/skills-step-design.png" target="_blank" rel="noopener"><img src="/assets/img/skills-step-design.png" alt="설계 단계 그림. 세 가지 설계안 카드를 나란히 놓고 비교합니다." loading="lazy"></a>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>휴가 기능에서 하는 일</th></tr></thead>
+    <tbody>
+      <tr><td>Superpowers <code>writing-plans</code></td><td>고칠 파일, 만들 테스트, 순서를 작은 작업 단위로 적은 계획을 씁니다. 작업 중에 AI가 방향을 잃지 않게 합니다.</td></tr>
+      <tr><td>Addy Osmani <code>planning-and-task-breakdown</code></td><td>작업마다 완료 기준과 먼저 끝나야 할 작업을 정합니다.</td></tr>
+      <tr><td>Spec Kit <code>plan</code>, <code>tasks</code></td><td>명세에서 기술 구조를 잡고 <code>tasks.md</code>로 작업을 나눕니다. 명세의 요구사항이 작업에서 빠지지 않게 연결합니다.</td></tr>
+      <tr><td>Feature Dev</td><td>기존 코드 재사용과 새 모듈 분리 같은 설계안을 여러 개 내고 장단점을 비교해 고르게 합니다.</td></tr>
+      <tr><td>gstack <code>/plan-ceo-review</code>, <code>/plan-eng-review</code>, <code>/design-review</code></td><td>같은 계획을 제품, 기술, 화면 관점에서 따로 검토합니다. 예를 들어 승인이 실패했을 때 사용자가 어떻게 다시 시도하는지까지 봅니다.</td></tr>
+      <tr><td>Matt Pocock <code>wayfinder</code></td><td>한 번에 끝나지 않는 큰 작업의 결정 사항을 나눠, 여러 작업 세션에 걸쳐 이어 갈 수 있게 합니다.</td></tr>
+      <tr><td>pstack <code>architect</code>, <code>arena</code></td><td>타입, 함수 모양, 모듈 구조를 먼저 정합니다. arena는 여러 에이전트에게 다른 설계안을 만들게 한 뒤 좋은 점을 합칩니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>3단계. 구현: 어떤 순서로 코드를 쓰나</h3>
+  <figure class="shot">
+    <a href="/assets/img/skills-step-build.png" target="_blank" rel="noopener"><img src="/assets/img/skills-step-build.png" alt="구현 단계 그림. 화면, 서버, 저장 세 층을 관통하는 얇은 조각 하나가 완성된 모습입니다." loading="lazy"></a>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>휴가 기능에서 하는 일</th></tr></thead>
+    <tbody>
+      <tr><td>Superpowers</td><td><strong>TDD</strong>(테스트 주도 개발)를 강하게 지킵니다. "남은 연차보다 많이 신청하면 거절" 테스트를 먼저 쓰고 실패를 확인한 뒤 코드를 씁니다. 작업을 잘게 나눠 <strong>서브에이전트</strong>(작업 하나를 맡는 별도 Claude)에게 맡길 수 있습니다.</td></tr>
+      <tr><td>Addy Osmani <code>incremental-implementation</code></td><td>화면, 서버, 저장을 관통하는 얇은 조각 하나(예: 신청 저장)를 완전히 동작시키고 나서 다음 조각(승인)으로 넘어갑니다.</td></tr>
+      <tr><td>Spec Kit <code>implement</code></td><td><code>tasks.md</code>의 순서와 의존 관계대로 구현합니다.</td></tr>
+      <tr><td>Feature Dev</td><td>고른 설계안과 기존 코드 규칙에 맞춰 구현합니다.</td></tr>
+      <tr><td>Matt Pocock</td><td>지금 방식은 그대로 두고, 필요한 스킬(TDD, 구조 개선 등)만 골라 붙입니다.</td></tr>
+      <tr><td>gstack, pstack</td><td>앞 단계의 계획과 절차를 따라 관련 스킬을 이어서 실행합니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>4단계. 검증: 다 됐다고 어떻게 믿나</h3>
+  <figure class="shot">
+    <a href="/assets/img/skills-step-verify.png" target="_blank" rel="noopener"><img src="/assets/img/skills-step-verify.png" alt="검증 단계 그림. 요구사항 체크리스트 세 항목 중 두 개만 체크되어 있습니다." loading="lazy"></a>
+    <figcaption>신청과 승인은 되는데 승인 뒤 취소가 빠졌다면, 빌드가 성공해도 아직 완료가 아닙니다.</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>휴가 기능에서 하는 일</th></tr></thead>
+    <tbody>
+      <tr><td>Superpowers</td><td>테스트 통과와 함께, 서브에이전트가 쓴 코드가 요구사항을 지켰는지와 품질을 따로 검토합니다.</td></tr>
+      <tr><td>Feature Dev</td><td>리뷰 에이전트 셋이 동시에 봅니다. 하나는 단순함과 중복, 하나는 버그와 정확성, 하나는 프로젝트 규칙 준수입니다.</td></tr>
+      <tr><td>gstack <code>/review</code>, <code>/qa</code></td><td>코드 검토와 실제 동작 확인을 나눕니다. 빌드가 성공해도 앱을 띄워 신청부터 승인까지 직접 눌러 봅니다.</td></tr>
+      <tr><td>Spec Kit <code>analyze</code>, <code>converge</code></td><td>명세와 계획이 서로 맞는지 점검하고, 구현 뒤 아직 안 된 요구사항을 찾아 작업 목록에 다시 넣습니다. 다 채워질 때까지 반복합니다.</td></tr>
+      <tr><td>Addy Osmani</td><td>TDD 외에 코드 리뷰, 보안 점검, 브라우저 테스트 스킬을 따로 제공합니다.</td></tr>
+      <tr><td>pstack <code>interrogate</code></td><td>서로 다른 AI 모델이 같은 변경을 따로 검토하게 해서, 공통 지적과 의견 차이를 비교합니다. 문제를 재현하고 고친 뒤 실제 실행 결과를 증거로 남깁니다.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>한눈에 비교</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>시작</th><th>힘을 주는 곳</th><th>설치 부담</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Superpowers</a></td><td>자동 (설치하면 알아서 발동)</td><td>정해진 절차와 TDD를 끝까지 지키기</td><td>낮음: 공식 마켓 한 줄</td></tr>
+      <tr><td><a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">Matt Pocock</a></td><td><code>/grill-me</code></td><td>집요한 예외 질문, 필요한 스킬만 골라 쓰기</td><td>낮음: 공식 마켓 한 줄</td></tr>
+      <tr><td><a href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener">Addy Osmani</a></td><td><code>/spec</code></td><td>작은 조각으로 하나씩 완성, 폭넓은 실무 원칙</td><td>중간: 마켓 추가 필요, SSH 키가 없으면 HTTPS로</td></tr>
+      <tr><td><a href="https://github.com/garrytan/gstack" target="_blank" rel="noopener">gstack</a></td><td><code>/office-hours</code></td><td>만들 가치 판단, 역할별 검토, 실제 QA</td><td>높음: Bun 필요, 브라우저 내려받음</td></tr>
+      <tr><td><a href="https://github.com/github/spec-kit" target="_blank" rel="noopener">Spec Kit</a></td><td><code>/speckit-specify</code></td><td>명세 문서 기준으로 끝까지 추적</td><td>높음: Python 3.11, uv 필요</td></tr>
+      <tr><td><a href="https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev" target="_blank" rel="noopener">Feature Dev</a></td><td><code>/feature-dev</code></td><td>기존 코드 탐색부터 병렬 리뷰까지 한 흐름</td><td>낮음: 공식 마켓 한 줄, 실행 시 사용량 많음</td></tr>
+      <tr><td><a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">pstack</a></td><td><code>/pstack:poteto-mode</code></td><td>여러 설계안 비교, 다른 모델로 교차 검증</td><td>중간: 마켓 추가 필요, 다른 모델 연동이 없으면 일부 단계 생략</td></tr>
+    </tbody>
+  </table></div>
+  <p>더 가볍게 명세부터 시작하고 싶으면 <a href="https://github.com/Fission-AI/OpenSpec" target="_blank" rel="noopener">OpenSpec</a>(<code>/opsx:propose</code>), 작업할 때마다 배운 점을 문서로 쌓아 다음 작업을 쉽게 만들고 싶으면 <a href="https://github.com/EveryInc/compound-engineering-plugin" target="_blank" rel="noopener">Compound Engineering</a>(<code>/ce-brainstorm</code>)도 있습니다.</p>
+
+  <h3>어떻게 고르나</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>이런 사람이라면</th><th>먼저 볼 스킬</th></tr></thead>
+    <tbody>
+      <tr><td>AI가 성급하게 코드부터 쓰는 게 싫다</td><td>Superpowers</td></tr>
+      <tr><td>예외 상황을 늘 나중에 발견한다</td><td>Matt Pocock</td></tr>
+      <tr><td>한 번에 크게 만들다 자주 꼬인다</td><td>Addy Osmani</td></tr>
+      <tr><td>만들기 전에 가치와 화면 경험까지 따지고 싶다</td><td>gstack</td></tr>
+      <tr><td>요구사항 문서를 기준으로 관리해야 한다</td><td>Spec Kit</td></tr>
+      <tr><td>큰 기존 프로젝트에 기능을 붙인다</td><td>Feature Dev</td></tr>
+      <tr><td>설계안 여러 개와 여러 모델의 의견을 비교하고 싶다</td><td>pstack</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn">
+    <i class="ph ph-warning"></i>
+    <strong>많이 깔수록 좋은 게 아닙니다</strong>
+    <div>비슷한 절차를 가진 스킬을 여러 개 켜면 서로 겹치거나 충돌합니다. 질문이 두 번 나오고, 계획 문서가 두 벌 생깁니다. 내가 가장 보완하고 싶은 단계를 정하고 하나씩 써 본 뒤 맞는 것만 남깁니다.</div>
+  </div>
+
+  <h3>실습 1. 개발 스킬 설치: Superpowers</h3>
+  <p>설치 전과 후에 같은 부탁을 보내 차이를 봅니다. 관전 포인트는 질문을 하는 방식입니다. 한꺼번에 묻고 기본안을 내미는지, 한 번에 하나씩 업무 흐름부터 묻는지 봅니다.</p>
+  <ol class="steps">
+    <li class="step">
+      <h4>설치 전에 한 번 부탁합니다</h4>
+      <p>빈 연습 폴더에서 Claude Code를 열고 아래 부탁을 그대로 보냅니다. 답을 저장해 둡니다.</p>
+    </li>
+    <li class="step">
+      <h4>설치합니다</h4>
+      <p>Claude Code 입력창에 <code>/plugin install superpowers@claude-plugins-official</code> 를 입력합니다. 끝나면 Claude Code를 다시 시작합니다.</p>
+    </li>
+    <li class="step">
+      <h4>같은 부탁을 다시 보내고 비교합니다</h4>
+      <p>새 연습 폴더에서 같은 부탁을 보냅니다. 이번에는 <code>brainstorming</code> 스킬이 발동해 질문을 하나씩 합니다. 질문에 답해 가며 설계 문서와 계획이 만들어지는 과정을 끝까지 따라가 봅니다.</p>
+    </li>
+  </ol>
+  <figure class="prompt" data-title="스킬 실습: Superpowers 전후 비교">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>사내 인사시스템에 휴가 신청 화면 만들어 줘</pre>
+  </figure>
+  <p class="prompt-note">일부러 짧고 모호하게 부탁합니다. 스킬이 빈 곳을 어떻게 채우는지 보려는 것입니다.</p>
+  <h4>실제로 해 본 결과</h4>
+  <p>강사 PC에서 다른 플러그인과 개인 설정을 모두 끄고, 같은 부탁을 스킬 없이 한 번, Superpowers만 켜고 한 번 보냈습니다. 예상과 달리 스킬이 없어도 코드를 바로 쓰지 않고 질문부터 했습니다. 이 PC에는 회사가 정한 "불명확하면 질문" 지침이 들어 있어서 끌 수 없었기 때문입니다. 그래도 질문하는 방식은 분명히 달랐습니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>구분</th><th>스킬 없음</th><th>Superpowers 설치 뒤</th></tr></thead>
+    <tbody>
+      <tr><td>스킬 호출</td><td>없음</td><td><code>superpowers:brainstorming</code> 호출 기록 있음</td></tr>
+      <tr><td>질문 방식</td><td>질문 4묶음을 한 번에 보여 주고, 답이 없으면 정적 HTML 목업으로 바로 만들겠다는 기본안 제시</td><td>질문 하나만 던짐. 그 질문도 화면이 아니라 업무 흐름(신청을 마칠 때까지의 순서)을 물음</td></tr>
+      <tr><td>실제 답 발췌</td><td>"결과물 범위는 어디까지인가요? (해석이 여러 가지라서 여쭙니다)"</td><td>"직원이 이 화면에서 휴가를 신청할 때 어떤 과정을 거치게 되는지, 처음 들어와서 신청을 마칠 때까지를 순서대로 설명해 주시겠어요?"</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prompt-note">내 PC에 회사 지침이나 개인 <code>CLAUDE.md</code>가 없다면 스킬 없는 쪽은 질문 없이 바로 코드를 쓸 수도 있습니다. 결과가 위와 달라도 이상한 것이 아닙니다. 어떤 설정이 답을 바꿨는지 확인하는 것도 실습입니다.</p>
+  <figure class="shot" data-shot="07-superpowers-before">
+    <img src="/assets/shots/07-superpowers-before.png" alt="스킬 없이 같은 부탁을 보낸 Claude Code의 실제 답" loading="lazy">
+    <figcaption>스킬 없음</figcaption>
+  </figure>
+  <figure class="shot" data-shot="07-superpowers-after">
+    <img src="/assets/shots/07-superpowers-after.png" alt="Superpowers 설치 뒤 같은 부탁을 보낸 Claude Code의 실제 답" loading="lazy">
+    <figcaption>Superpowers 설치 뒤</figcaption>
+  </figure>
+  <div class="callout info">
+    <i class="ph ph-info"></i>
+    <strong>설치 뒤 알아 둘 것</strong>
+    <div>
+      <ul>
+        <li>Superpowers는 설치하면 이후 모든 작업에 자동으로 끼어듭니다. 실습 2 전에는 <code>/plugin</code> 화면에서 잠시 끕니다(Disable). 다시 쓸 때 켭니다.</li>
+        <li>기본으로 사용 통계를 보냅니다. 끄려면 환경 변수 <code>SUPERPOWERS_DISABLE_TELEMETRY</code>를 <code>1</code>로 둡니다.</li>
+        <li>질문을 건너뛰고 바로 진행하고 싶으면 "질문 없이 바로 진행해"라고 말하면 됩니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>실습 2. UI 스킬 설치: frontend-design</h3>
+  <p>Anthropic이 공식으로 만든 UI 스킬입니다. AI가 만든 화면에서 흔히 보이는 "어디서 본 듯한" 배치와 색을 피하고, 목적에 맞는 디자인 방향을 먼저 정한 뒤 화면을 만들게 합니다.</p>
+  <ol class="steps">
+    <li class="step">
+      <h4>스킬 없이 한 번 만듭니다</h4>
+      <p>빈 연습 폴더에서 아래 부탁을 보내고 만들어진 <code>index.html</code>을 브라우저로 엽니다.</p>
+    </li>
+    <li class="step">
+      <h4>설치합니다</h4>
+      <p><code>/plugin install frontend-design@claude-plugins-official</code> 를 입력하고 Claude Code를 다시 시작합니다.</p>
+    </li>
+    <li class="step">
+      <h4>새 폴더에서 스킬을 직접 불러 같은 부탁을 보내고 두 화면을 나란히 엽니다</h4>
+      <p>부탁 앞에 <code>/frontend-design:frontend-design</code> 을 붙여 보냅니다. 글자 크기의 대비, 색, 여백, 강조 방식이 어떻게 달라졌는지 봅니다.</p>
+    </li>
+  </ol>
+  <figure class="prompt" data-title="스킬 실습: frontend-design 전후 비교">
+    <figcaption><i class="ph ph-chat-circle-text"></i>Claude에게 이렇게 말하세요</figcaption>
+    <pre>휴가 신청 화면을 index.html 하나로 만들어 줘. 가짜 데이터만 써. 외부 CDN 쓰지 마.</pre>
+  </figure>
+  <h4>실제로 해 본 결과</h4>
+  <p>같은 방법으로 스킬 없이 한 번, frontend-design만 켜고 여러 번 보냈습니다. 부탁만 보냈을 때는 스킬이 목록에 있어도 자동으로 호출되지 않았고, 스킬 없을 때와 거의 같은 화면이 나왔습니다. 그래서 아래 "설치 뒤" 화면은 <code>/frontend-design:frontend-design</code> 으로 직접 불러 만든 결과입니다. 자동 발동을 기대하지 말고 필요할 때 직접 부르는 스킬로 생각하는 편이 맞습니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>구분</th><th>스킬 없음</th><th>frontend-design 직접 호출</th></tr></thead>
+    <tbody>
+      <tr><td>첫인상</td><td>파란 헤더, 요약 카드 3개, 아래쪽 표. 흔히 보는 관리 화면</td><td>큰 "7.5일 남았어요" 문구가 먼저 보이는 화면</td></tr>
+      <tr><td>입력</td><td>브라우저 기본 선택 상자와 날짜 입력</td><td>알약 모양 휴가 종류 버튼, 공휴일이 표시된 직접 만든 달력</td></tr>
+      <tr><td>연차 표시</td><td>숫자 카드</td><td>15칸 블록 막대(사용은 남색, 결재 대기는 빗금)</td></tr>
+      <tr><td>그 밖</td><td>없음</td><td>업무 대행자 항목, 움직임 줄이기 설정 대응</td></tr>
+      <tr><td>파일 크기</td><td>약 9KB</td><td>약 27KB</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="shot" data-shot="07-frontend-before">
+    <img src="/assets/shots/07-frontend-before.png" alt="스킬 없이 만든 휴가 신청 화면" loading="lazy">
+    <figcaption>스킬 없음</figcaption>
+  </figure>
+  <figure class="shot" data-shot="07-frontend-after">
+    <img src="/assets/shots/07-frontend-after.png" alt="frontend-design 설치 뒤 만든 휴가 신청 화면" loading="lazy">
+    <figcaption>frontend-design 설치 뒤</figcaption>
+  </figure>
+  <p>다른 UI 스킬도 같은 방법으로 비교해 볼 수 있습니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>특징</th><th>설치</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></td><td>점검(audit), 다듬기(polish) 같은 명령으로 기존 화면을 개선</td><td><code>npx impeccable install</code></td></tr>
+      <tr><td><a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener">ui-ux-pro-max</a></td><td>스타일, 색 조합, 글꼴 짝 데이터베이스에서 골라 씀</td><td><code>/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill</code> 후 <code>/plugin install ui-ux-pro-max@ui-ux-pro-max-skill</code></td></tr>
+      <tr><td><a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></td><td>템플릿 같은 결과물을 피하는 데 집중</td><td><code>/plugin marketplace add Leonxlnx/taste-skill</code> 후 <code>/plugin install taste-skill@taste-skill</code></td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn">
+    <i class="ph ph-warning"></i>
+    <strong>회사망에서 설치가 막히면</strong>
+    <div>인증서 오류나 연결 오류가 나오면 오류 문구를 그대로 Claude에게 전달하고 원인을 물어봅니다. 해결되지 않으면 강사에게 알려 주세요. 회사 정책상 허용되지 않은 플러그인은 설치하지 않습니다.</div>
+  </div>
+
+  <h3>더 보기: 찾아 쓸 만한 스킬</h3>
+  <p>설치는 선택입니다. 필요할 때 하나씩 써 봅니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>하는 일</th><th>설치</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/cathrynlavery/diagram-design" target="_blank" rel="noopener">diagram-design</a></td><td>구조도, 흐름도, 시퀀스, ER 등 다이어그램을 HTML/SVG로</td><td><code>/plugin marketplace add cathrynlavery/diagram-design</code> 후 <code>/plugin install diagram-design@diagram-design</code></td></tr>
+      <tr><td><a href="https://github.com/tt-a1i/archify" target="_blank" rel="noopener">archify</a></td><td>아이디어나 코드를 인터랙티브 다이어그램으로</td><td><code>npx skills add tt-a1i/archify -g</code></td></tr>
+      <tr><td><a href="https://github.com/Graphify-Labs/graphify" target="_blank" rel="noopener">graphify</a></td><td>코드베이스를 지식 그래프로 만들어 구조 질문에 답</td><td><code>uv tool install graphifyy</code></td></tr>
+      <tr><td><a href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener">hyperframes</a></td><td>HTML로 영상 만들기 (5장에서 사용)</td><td><code>claude plugin marketplace add heygen-com/hyperframes</code> 후 <code>claude plugin install hyperframes@hyperframes</code></td></tr>
+      <tr><td><a href="https://github.com/DietrichGebert/ponytail" target="_blank" rel="noopener">ponytail</a></td><td>필요 없는 코드와 과한 설계를 줄이게 함</td><td><code>/plugin marketplace add DietrichGebert/ponytail</code> 후 <code>/plugin install ponytail@ponytail</code></td></tr>
+      <tr><td><a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noopener">caveman</a></td><td>답을 짧게 줄여 사용량 절약</td><td><code>/plugin marketplace add JuliusBrussee/caveman</code> 후 <code>/plugin install caveman@caveman</code></td></tr>
+      <tr><td><a href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">claude-mem</a></td><td>세션이 바뀌어도 이전 작업을 기억</td><td><code>npx claude-mem install</code></td></tr>
+      <tr><td><a href="https://github.com/epoko77-ai/im-not-ai" target="_blank" rel="noopener">humanize-korean</a></td><td>AI 티 나는 한글 문장을 자연스럽게 윤문</td><td><code>/plugin marketplace add epoko77-ai/im-not-ai</code> 후 <code>/plugin install humanize-korean@im-not-ai</code></td></tr>
+    </tbody>
+  </table></div>
+  <p class="prompt-note">스킬 저장소는 누구나 올릴 수 있습니다. 설치 전에 저장소 주인과 README를 확인하고, 이름이 비슷한 가짜 저장소에 주의합니다.</p>
+
+  <h3>더 보기: 디자인 레퍼런스</h3>
+  <p>UI 스킬은 방향이 분명할 때 더 잘 일합니다. 마음에 드는 레퍼런스를 찾아 "이런 느낌으로"를 구체적으로 전달합니다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>사이트</th><th>무엇을 찾나</th><th>프롬프트에 쓰는 법</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.awwwards.com/" target="_blank" rel="noopener">Awwwards</a></td><td>상을 받은 웹사이트 모음</td><td>사이트 주소를 주고 "배치와 움직임만 참고하고 글, 그림, 코드는 새로 만들어 줘"</td></tr>
+      <tr><td><a href="https://bestfreefonts.com/" target="_blank" rel="noopener">Best Free Fonts</a></td><td>무료 글꼴</td><td>글꼴 이름과 라이선스를 확인하고 "이 글꼴을 내 폴더에 넣어 직접 제공해 줘"</td></tr>
+      <tr><td><a href="https://getdesign.md/" target="_blank" rel="noopener">getdesign.md</a></td><td>유명 서비스의 디자인 규칙을 정리한 <code>DESIGN.md</code> 모음</td><td>마음에 드는 파일을 프로젝트에 넣고 "이 DESIGN.md 규칙을 따라 만들어 줘"</td></tr>
+      <tr><td><a href="https://www.gdweb.co.kr/sub/list.asp" target="_blank" rel="noopener">GDWEB</a></td><td>국내 웹 디자인 수상작</td><td>국내 기업 사이트 느낌이 필요할 때 화면을 보고 특징을 말로 정리해 전달</td></tr>
+    </tbody>
+  </table></div>
+  <p class="prompt-note">남의 사이트의 글, 그림, 로고를 그대로 가져오지 않습니다. 참고는 배치, 비율, 움직임 같은 방향까지만 합니다.</p>
+
+  <p>참고: 이 장의 4단계 비교 흐름은 <a href="https://youtu.be/nTwbveOwuS4" target="_blank" rel="noopener">AI 코딩 스킬 7종 비교 영상</a>을 참고해 휴가 기능 예제로 새로 구성했습니다. 스킬 정보는 각 저장소의 README를 기준으로 했습니다(조사 기준일 2026-10). 스킬은 자주 바뀌므로 설치 전에 README를 다시 확인하세요.</p>
+</section>
